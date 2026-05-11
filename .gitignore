@@ -134,3 +134,20 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+# Cloudflare / OpenAI / Secrets
+.dev.vars
+.dev.vars.*
+.wrangler/
+wrangler.toml.local
+*.key
+*.pem
+*.p12
+*.crt
+
+# Local notes with secrets
+SEGREDOS*
+secrets*
+chaves*
+api-keys*
+COFRE_PRIVADO_NAO_PUBLICAR/
+02_COFRE_PRIVADO_NAO_PUBLICAR/

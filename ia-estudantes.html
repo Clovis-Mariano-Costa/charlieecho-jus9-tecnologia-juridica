@@ -18,7 +18,7 @@
 <main>
   <div class="card">
     <h1>IA para Estudantes</h1>
-    <p class="notice">Ambiente externo e educativo da Jus 9 Tecnologia Jurídica. Não substitui advogado, professor ou orientação jurídica profissional.</p>
+    <p class="notice">Ambiente público e educativo da Jus 9 Tecnologia Jurídica. Não envie segredo de justiça, documentos sigilosos ou dados pessoais sensíveis. A Charlie Echo não substitui advogado, professor ou orientação profissional.</p>
     <textarea id="message">Explique de forma simples o que é um DAJ — Dossiê Administrativo Jurídico.</textarea>
     <button onclick="askAI()">Perguntar</button>
     <h2>Resposta</h2>
@@ -33,12 +33,12 @@ async function askAI() {
     const res = await fetch('/api/ia', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ mode: 'estudantes', message: document.getElementById('message').value })
+      body: JSON.stringify({ message: document.getElementById('message').value })
     });
     const data = await res.json();
     answer.textContent = data.answer || JSON.stringify(data, null, 2);
   } catch (err) {
-    answer.textContent = 'Erro: ' + err.message;
+    answer.textContent = 'Não foi possível consultar a Charlie Echo agora. Tente novamente mais tarde.';
   }
 }
 </script>
