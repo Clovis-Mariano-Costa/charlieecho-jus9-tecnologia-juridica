@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IA para Estudantes | Jus 9 Tecnologia Jurídica</title>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; margin: 0; background: #f7f7fb; color: #141414; }
+    main { max-width: 860px; margin: 0 auto; padding: 32px 18px; }
+    .card { background: white; border-radius: 18px; padding: 24px; box-shadow: 0 12px 32px rgba(0,0,0,.08); }
+    textarea { width: 100%; min-height: 130px; padding: 14px; border-radius: 12px; border: 1px solid #ccc; font: inherit; box-sizing: border-box; }
+    button { margin-top: 12px; padding: 12px 18px; border: 0; border-radius: 999px; cursor: pointer; font-weight: 700; }
+    pre { white-space: pre-wrap; background: #f1f1f5; padding: 16px; border-radius: 12px; }
+    .notice { font-size: 14px; opacity: .8; }
+  </style>
+</head>
+<body>
+<main>
+  <div class="card">
+    <h1>IA para Estudantes</h1>
+    <p class="notice">Ambiente externo e educativo da Jus 9 Tecnologia Jurídica. Não substitui advogado, professor ou orientação jurídica profissional.</p>
+    <textarea id="message">Explique de forma simples o que é um DAJ — Dossiê Administrativo Jurídico.</textarea>
+    <button onclick="askAI()">Perguntar</button>
+    <h2>Resposta</h2>
+    <pre id="answer">Aguardando pergunta...</pre>
+  </div>
+</main>
+<script>
+async function askAI() {
+  const answer = document.getElementById('answer');
+  answer.textContent = 'Consultando a IA da Jus 9...';
+  try {
+    const res = await fetch('/api/ia', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode: 'estudantes', message: document.getElementById('message').value })
+    });
+    const data = await res.json();
+    answer.textContent = data.answer || JSON.stringify(data, null, 2);
+  } catch (err) {
+    answer.textContent = 'Erro: ' + err.message;
+  }
+}
+</script>
+</body>
+</html>
