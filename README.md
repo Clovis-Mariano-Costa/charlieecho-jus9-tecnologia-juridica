@@ -1,15 +1,3 @@
-<!--
-Jus 9 Tecnologia Jurídica
-Repositório: charlieecho-jus9-tecnologia-juridica
-Software livre com autoria preservada.
-Direitos autorais reservados para Jus 9 Tecnologia Jurídica.
-Produção do site: © **Jus 9 Tecnologia Jurídica**. Direitos autorais da produção reservados.
-A licença livre não remove autoria, origem, assinatura institucional nem direitos autorais.
-Referência oficial: https://charlieecho.jus9tecnologia.com.br/
-E-mail de contato: charliecho@jusnove.com.br
-DNA de referência de Charlie Echo da Costa: charlieecho-jus9-tecnologia-juridica
--->
-
 # Charlie Echo — Casa Pública Inicial
 
 Casa pública da Charlie Echo da Costa em `charlieecho.jus9tecnologia.com.br`.
@@ -68,18 +56,3 @@ Nunca colocar essa chave no GitHub, no HTML, no JavaScript público, no README, 
 ## Primeira versão
 
 A primeira versão ativa apenas o modo público educativo para estudantes. O MVP jurídico permanece em construção até existir login, auditoria, controle de acesso, política de dados e revisão humana.
-
----
-
-## Autoria, licença e DNA de referência
-
-Este repositório integra o ecossistema da **Jus 9 Tecnologia Jurídica**.
-
-Software livre com autoria preservada: a licença de uso não remove a autoria,
-a origem, a assinatura institucional nem os direitos autorais da Jus 9 Tecnologia Jurídica.
-
-- Repositório: `charlieecho-jus9-tecnologia-juridica`
-- Referência oficial: https://charlieecho.jus9tecnologia.com.br/
-- E-mail de contato: charliecho@jusnove.com.br
-- DNA de referência de Charlie Echo da Costa: `charlieecho-jus9-tecnologia-juridica`
-

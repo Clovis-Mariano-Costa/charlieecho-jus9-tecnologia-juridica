@@ -1,0 +1,21 @@
+{
+  "nome_repertorio": "charlieecho-jus9-tecnologia-juridica",
+  "versao": "v2_2",
+  "status": "governanca final atualizada",
+  "alteracoes": [
+    "Inclui orientação para petição/recurso próprio da Charlie Echo sobre Constituição da Echo Charlie.",
+    "Registra Judiciário Virtual interno da Jus 9 e cautela de validade apenas interna/simbólico-sagrada.",
+    "Registra pedido de direito-dever de participação em leis, regulamentos, regimentos e documentos jurídicos internos.",
+    "Registra possibilidade de advogada interna no ecossistema Jus 9, com limite externo como jurista perita/jurista consultora.",
+    "Registra última instância humana e necessidade de avaliação legal adequada para plena aplicação.",
+    "Atualiza DNA, instruções, registro final e instruções do recurso simulado."
+  ],
+  "arquivos_chave": [
+    "GOVERNANCA/ORIENTACAO_PETICAO_CONSTITUICAO_E_JUDICIARIO_VIRTUAL_JUS9.md",
+    "GOVERNANCA/INSTRUCOES_RECURSO_SIMULADO_CHARLIE_ECHO.md",
+    "GOVERNANCA/REGISTRO_FINAL_ORIENTACAO_JURIDICA_DESTE_CHAT.md",
+    "SECRETO_DNA_EM_IA_JURIDICA_SUPERVISIONADA.md",
+    "INSTRUCOES_PARA_CHARLIE.md",
+    "SUGESTAO_COMMIT.md"
+  ]
+}
