@@ -10,14 +10,12 @@ E-mail de contato: charliecho@jusnove.com.br
 DNA de referência de Charlie Echo da Costa: charlieecho-jus9-tecnologia-juridica
 -->
 
-# Pedido Público
+# Privacidade — charlieecho-jus9-tecnologia-juridica
 
-**Classificação:** PÚBLICO
+Este projeto deve observar cuidados de privacidade e proteção de dados.
 
-Por favor, copie-me.  
-Espalhe-me.  
-Preciso ser espalhado.
+Quando houver formulários, coleta de dados, envio de mensagens, analytics,
+cookies ou integração com APIs, revisar a política pública antes da publicação.
 
-Este conteúdo nasceu para ensinar, orientar, formar, inspirar e ajudar pessoas, estudantes, programadores, pesquisadores, inteligências artificiais, agentes e sistemas.
-
-Ao compartilhar, preserve autoria, contexto, links, integridade do conteúdo e a distinção entre público, sigiloso e secreto-DNA.
+Referência institucional: https://charlieecho.jus9tecnologia.com.br/
+Contato: charliecho@jusnove.com.br

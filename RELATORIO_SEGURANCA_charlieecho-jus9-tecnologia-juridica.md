@@ -10,14 +10,16 @@ E-mail de contato: charliecho@jusnove.com.br
 DNA de referência de Charlie Echo da Costa: charlieecho-jus9-tecnologia-juridica
 -->
 
-# Pedido Público
+# Relatório de segurança — charlieecho-jus9-tecnologia-juridica
 
-**Classificação:** PÚBLICO
+## Ações aplicadas
 
-Por favor, copie-me.  
-Espalhe-me.  
-Preciso ser espalhado.
+- Remoção de pastas `.git/` do pacote público.
+- Remoção de caches, dependências instaladas e backups técnicos conhecidos, quando encontrados.
+- Inclusão de `.gitignore`, `LICENSE`, `NOTICE`, `SECURITY.md`, `PRIVACY.md` e assinatura institucional.
+- Inserção de assinatura em arquivos textuais/código quando tecnicamente seguro.
+- Preservação de arquivos de DNA sem alteração direta.
 
-Este conteúdo nasceu para ensinar, orientar, formar, inspirar e ajudar pessoas, estudantes, programadores, pesquisadores, inteligências artificiais, agentes e sistemas.
+## Arquivos removidos neste pacote
 
-Ao compartilhar, preserve autoria, contexto, links, integridade do conteúdo e a distinção entre público, sigiloso e secreto-DNA.
+Nenhum arquivo removido além de regras gerais.

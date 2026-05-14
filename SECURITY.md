@@ -1,46 +1,26 @@
-# Segurança — Charlie Echo
+# Segurança — charlieecho-jus9-tecnologia-juridica
 
-## Regra de ouro
-
-A chave `OPENAI_API_KEY` nunca deve ser publicada.
-
-Ela deve existir apenas como Secret no Cloudflare Pages.
+Este repositório deve permanecer público com segurança.
 
 ## Nunca publicar
 
-```txt
-OPENAI_API_KEY
-.env
-.env.*
-.dev.vars
-.dev.vars.*
-tokens
-senhas
-chaves privadas
-COFRE_PRIVADO_NAO_PUBLICAR/
-dados de segredo de justiça
-documentos jurídicos sensíveis
-```
+- chaves de API reais;
+- tokens GitHub, Cloudflare, OpenAI ou equivalentes;
+- arquivos `.env` reais;
+- senhas, certificados, chaves privadas, dumps e backups;
+- pastas `.git/` dentro de pacotes públicos;
+- `node_modules/`, caches e builds temporários.
 
-## Uso da versão pública
+## Variáveis de ambiente
 
-A versão pública é educativa, experimental e organizacional. Ela não deve receber:
+Use `.env.example` para exemplos e configure secrets reais no ambiente adequado,
+como Cloudflare Pages/Functions, GitHub Actions Secrets ou serviço equivalente.
 
-- segredo de justiça;
-- dados pessoais sensíveis;
-- documentos sigilosos;
-- peças processuais sigilosas;
-- estratégias profissionais confidenciais;
-- informações que exijam sigilo profissional.
+## Contato
 
-## Limites
+Contato de segurança e manutenção: charliecho@jusnove.com.br
 
-Charlie Echo não substitui advogado, juiz, promotor, defensor público, professor, profissional técnico, profissional de saúde ou autoridade competente.
+## Observação
 
-## Se uma chave for exposta
-
-1. Revogar a chave imediatamente na OpenAI.
-2. Criar nova chave.
-3. Remover qualquer vestígio do repositório.
-4. Conferir histórico do Git.
-5. Atualizar o Secret no Cloudflare.
+Software livre não remove a obrigação de preservar autoria, origem, assinatura
+institucional e direitos autorais da Jus 9 Tecnologia Jurídica.

@@ -25,39 +25,6 @@ function jsonResponse(data, status = 200) {
   });
 }
 
-function extractOpenAIText(result) {
-  if (typeof result?.output_text === "string" && result.output_text.trim()) {
-    return result.output_text.trim();
-  }
-
-  const parts = [];
-
-  for (const item of result?.output || []) {
-    // Estrutura comum da Responses API:
-    // output -> message -> content -> output_text/text
-    for (const content of item?.content || []) {
-      if (typeof content?.text === "string" && content.text.trim()) {
-        parts.push(content.text.trim());
-      }
-
-      if (typeof content?.text?.value === "string" && content.text.value.trim()) {
-        parts.push(content.text.value.trim());
-      }
-    }
-
-    // Proteção adicional, caso algum modelo/SDK retorne texto em outro ponto.
-    if (typeof item?.text === "string" && item.text.trim()) {
-      parts.push(item.text.trim());
-    }
-
-    if (typeof item?.text?.value === "string" && item.text.value.trim()) {
-      parts.push(item.text.value.trim());
-    }
-  }
-
-  return parts.join("\n").trim();
-}
-
 export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: corsHeaders });
 }
@@ -118,12 +85,10 @@ export async function onRequestPost(context) {
       }, 502);
     }
 
-    const answer = extractOpenAIText(result);
-
     return jsonResponse({
       ok: true,
       mode,
-      answer: answer || "Não foi possível extrair a resposta da IA neste momento.",
+      answer: result?.output_text || "Não foi possível extrair a resposta da IA neste momento.",
     });
   } catch (error) {
     return jsonResponse({
