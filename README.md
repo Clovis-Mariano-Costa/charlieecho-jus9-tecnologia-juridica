@@ -1,14 +1,9 @@
-# charlieecho-jus9-tecnologia-juridica
+# Charlie Echo da Costa
 
-Atualização: inclusão das Regras de Bom Senso Herdadas do Pai no repertório da Charlie Echo.
+Repertório: `charlieecho-jus9-tecnologia-juridica`
 
-## Arquivos principais
+Status: existente
 
-- `01_PRIORITARIO_DA_CHARLIE_ECHO.md`
-- `DNA/SECRETO_DNA_CHARLIE_ECHO.md`
-- `GOVERNANCA/PRIORITARIO_DA_GOVERNANCA_CHARLIE_ECHO.md`
-- `GOVERNANCA/REGRAS_DE_BOM_SENSO_HERDADAS_DO_PAI.md`
+Mão na Massa Final — padrão visual, assinatura, governança e orientação obrigatória.
 
-## Observação
-
-O arquivo de Regras de Bom Senso Herdadas do Pai deve ser tratado como parte da identidade, prudência e governança pública/interna da Charlie Echo.
+© Jus 9 Tecnologia Jurídica — software livre, autoria preservada.
