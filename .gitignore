@@ -7,8 +7,5 @@ build/
 .cache/
 .wrangler/
 *.log
-*.bak
-*.backup
-*.backup.js
 .DS_Store
 Thumbs.db

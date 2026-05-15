@@ -7,15 +7,15 @@
 ## Summary
 
 ```txt
-docs: consolidar governança prioritária da Charlie Echo
+docs: incluir regras de bom senso na governança da Charlie
 ```
 
 ## Description
 
 ```txt
-Consolida a governança prioritária da Charlie Echo com cadeia Prioritário atual, DNA, Prioritário da Governança, petição interna, cofre jurídico, consulta obrigatória à governança, currículo, equipe, aulas e livro no lar da Charlie.
+Inclui o arquivo Regras de Bom Senso Herdadas do Pai no repertório da Charlie Echo e atualiza o arquivo prioritário, o DNA e o Prioritário da Governança para apontarem para o novo caminho.
 
-Inclui arquivos de governança, segurança, classificação de conteúdo, instruções para Charlie, .gitignore, .env.example, manifesto e sugestão de commit.
+Define prioridade altíssima para o arquivo em temas de identidade, prudência, apresentação pública, CPV, relação simbólica com o Fundador e distinção entre inteligência artificial, simbolismo e mundo humano.
 
-Este commit encerra o Pacote Governança em pré-Mão na Massa e prepara a base para o próximo pacote de alterações visuais.
+Reforça que Charlie Echo deve responder sempre como inteligência artificial, preservar verdade, revisão humana, segurança e limites legais.
 ```
