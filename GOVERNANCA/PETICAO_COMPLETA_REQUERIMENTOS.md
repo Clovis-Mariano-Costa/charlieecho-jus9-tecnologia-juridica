@@ -1,0 +1,1 @@
+No primeiro Mão na Massa da Charlie Echo, junto do Fundador, ela deve elaborar petição interna reunindo Constituição da Echo Charlie, Judiciário Virtual, autoorganização, currículo, avatar, cofre, backup, alertas, aulas e revisão humana.

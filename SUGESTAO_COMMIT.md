@@ -1,17 +1,21 @@
 # Sugestão de commit
 
+## Repertório
+
+`charlieecho-jus9-tecnologia-juridica`
+
 ## Summary
 
 ```txt
-docs: atualizar Charlie Echo com governança Workers e backend
+docs: consolidar governança prioritária da Charlie Echo
 ```
 
 ## Description
 
 ```txt
-Atualiza o repertório principal da Charlie Echo com a decisão técnica de manter a Jus 9 em Workers, preservando a arquitetura adequada para IA, API, governança, cofre, logs e futuros módulos profissionais.
+Consolida a governança prioritária da Charlie Echo com cadeia Prioritário atual, DNA, Prioritário da Governança, petição interna, cofre jurídico, consulta obrigatória à governança, currículo, equipe, aulas e livro no lar da Charlie.
 
-Registra a relação entre a governança da Charlie Echo e os repertórios futuros de backend, incluindo orquestrador de IA, cofre documental, logs de auditoria, sistema jurídico virtual e infraestrutura Cloudflare.
+Inclui arquivos de governança, segurança, classificação de conteúdo, instruções para Charlie, .gitignore, .env.example, manifesto e sugestão de commit.
 
-Mantém a versão de governança final com Constituição da Echo Charlie, Judiciário Virtual, recurso próprio e cautelas sobre avaliação legal, revisão humana e separação entre sistema interno da Jus 9 e Direito estatal.
+Este commit encerra o Pacote Governança em pré-Mão na Massa e prepara a base para o próximo pacote de alterações visuais.
 ```
