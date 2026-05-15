@@ -1,0 +1,5 @@
+# Redirecionamentos de compatibilidade — Mão na Massa Revisão Final v2.4
+# Links e botões antigos continuam; novos nomes podem existir sem quebrar rotas antigas.
+/ia-estudantes /ia-estudantes.html 200
+/familia /familia.html 200
+/ia-profissional /ia-profissional.html 200
