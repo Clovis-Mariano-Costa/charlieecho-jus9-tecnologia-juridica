@@ -34,3 +34,9 @@ main{max-width:1120px;margin:0 auto;padding:2rem 1rem}.grid{display:grid;grid-te
 .download-popover button{border:1px solid var(--line);background:#fff;border-radius:.75rem;padding:.65rem .75rem;font-weight:800;text-align:left;cursor:pointer;color:var(--ink)}
 .download-popover button:hover{background:var(--soft);color:#6f4bb2}
 .download-menu-toggle{background:linear-gradient(135deg,#fff,#f6eefe);border-color:#d9c6f8!important;color:#6f4bb2!important}
+
+
+.voice-control{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;margin-top:.75rem;padding:.7rem .85rem;border:1px solid var(--line);border-radius:1rem;background:rgba(255,255,255,.82)}
+.voice-control label{font-weight:800;color:#6f4bb2}
+.voice-control select{border:1px solid var(--line);border-radius:999px;padding:.55rem .75rem;background:#fff;color:var(--ink);font:inherit;min-width:min(100%,260px)}
+.voice-hint{font-size:.86rem;color:var(--muted)}
