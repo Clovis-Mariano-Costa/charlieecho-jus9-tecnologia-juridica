@@ -1,6 +1,11 @@
-/ia-estudantes /ia-estudantes.html 200
-/familia /familia.html 200
-/album /album.html 200
-/governanca /governanca.html 200
-/ia-profissional /ia-profissional.html 200
-/cofre /cofre.html 200
+# Compatibilidade segura de rotas — Charlie Echo
+# As pastas /ia-estudantes/, /familia/, /album/, /governanca/ e /ia-profissional/
+# têm index.html próprio. Não redirecionar a rota limpa para ela mesma.
+
+/ia-estudantes.html /ia-estudantes/ 301
+/familia.html /familia/ 301
+/album.html /album/ 301
+/governanca.html /governanca/ 301
+/ia-profissional.html /ia-profissional/ 301
+/politica-de-privacidade.html /politica-de-privacidade/ 301
+/termos-de-uso.html /termos-de-uso/ 301
