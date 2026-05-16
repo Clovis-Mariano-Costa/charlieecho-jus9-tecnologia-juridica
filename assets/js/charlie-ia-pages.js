@@ -85,6 +85,35 @@
     return downloadBlob(base + '.txt', safeText, 'text/plain;charset=utf-8', statusEl);
   }
 
+  function showDownloadMenu(button, text, kind, statusEl){
+    var old = document.querySelector('.download-popover');
+    if(old) old.remove();
+    var menu = document.createElement('div');
+    menu.className = 'download-popover';
+    menu.innerHTML = '<button type="button" data-format="txt">Baixar .txt</button>' +
+      '<button type="button" data-format="md">Baixar .md</button>' +
+      '<button type="button" data-format="link">Gerar link futuramente</button>';
+    document.body.appendChild(menu);
+    var rect = button.getBoundingClientRect();
+    menu.style.left = Math.min(rect.left, window.innerWidth - 240) + 'px';
+    menu.style.top = (rect.bottom + window.scrollY + 8) + 'px';
+    menu.addEventListener('click', function(ev){
+      var fmt = ev.target.getAttribute('data-format');
+      if(!fmt) return;
+      if(fmt === 'link'){
+        if(statusEl) statusEl.textContent = 'Link real de download depende da rota /api/gerar-download com armazenamento. Por enquanto, use .txt ou .md local.';
+      } else {
+        downloadResponse(text, kind, fmt, statusEl);
+      }
+      menu.remove();
+    });
+    setTimeout(function(){
+      document.addEventListener('click', function close(ev){
+        if(!menu.contains(ev.target) && ev.target !== button){ menu.remove(); document.removeEventListener('click', close); }
+      });
+    }, 0);
+  }
+
   function extractAnswer(data){
     if(!data) return '';
     if(typeof data === 'string') return data.trim();
@@ -165,24 +194,34 @@
     rec.start();
   }
 
+  function bindEnterToSubmit(input, actionButton, statusEl){
+    if(!input || !actionButton) return;
+    input.addEventListener('keydown', function(ev){
+      if(ev.key === 'Enter' && !ev.shiftKey){
+        ev.preventDefault();
+        actionButton.click();
+      }
+      if(ev.key === 'Enter' && ev.shiftKey){
+        if(statusEl) statusEl.textContent = 'Quebra de linha inserida com Shift+Enter.';
+      }
+    });
+  }
+
+  function clearWorkspace(input, responseEl, statusEl, defaultText){
+    if(input) { input.value = ''; input.focus(); }
+    setText(responseEl, defaultText || 'Área limpa e pronta para nova interação.');
+    setText(statusEl, 'Tela limpa. Digite nova pergunta ou use o botão Falar.');
+    stopSpeaking();
+  }
+
   function initStudent(){
     var input = qs('pergunta-estudante');
     var resposta = qs('resposta-estudante');
     var status = qs('status-estudante');
-    var exemplos = [
-      'Explique o que é cidadania em linguagem simples.',
-      'Resuma este texto em três tópicos: [cole o texto aqui].',
-      'Me dê cinco temas de estudo sobre Direito e tecnologia.',
-      'Crie um roteiro de estudos de 30 minutos sobre LGPD.'
-    ];
-    var temas = [
-      'Direito e tecnologia',
-      'LGPD e privacidade',
-      'Cidadania digital',
-      'Inteligência artificial responsável',
-      'Organização de estudos',
-      'Ética no uso da IA'
-    ];
+    var perguntarBtn = document.querySelector('[data-student-action="perguntar"]');
+    bindEnterToSubmit(input, perguntarBtn, status);
+    var exemplos = ['Explique o que é cidadania em linguagem simples.','Resuma este texto em três tópicos: [cole o texto aqui].','Me dê cinco temas de estudo sobre Direito e tecnologia.','Crie um roteiro de estudos de 30 minutos sobre LGPD.'];
+    var temas = ['Direito e tecnologia','LGPD e privacidade','Cidadania digital','Inteligência artificial responsável','Organização de estudos','Ética no uso da IA'];
     function currentText(){ return input ? input.value.trim() : ''; }
     function answer(text){ setText(resposta, text); }
     document.querySelectorAll('[data-student-action]').forEach(function(btn){
@@ -197,14 +236,13 @@
         if(ac === 'documento') return answer('Análise de documento: versão pública preparada para orientar leitura. Não envie dados sensíveis sem necessidade. A análise real deve ocorrer por backend seguro e, quando cabível, com revisão humana.');
         if(ac === 'imagem') return answer('Análise de imagem: descreva a imagem ou use futura função de upload seguro. Evite enviar documentos pessoais ou conteúdos sigilosos.');
         if(ac === 'copiar') return copyText(resposta ? resposta.textContent : '', status);
-        if(ac === 'baixar-txt') return downloadResponse(resposta ? resposta.textContent : '', 'resposta-estudantes-charlie-echo', 'txt', status);
-        if(ac === 'baixar-md') return downloadResponse(resposta ? resposta.textContent : '', 'resposta-estudantes-charlie-echo', 'md', status);
+        if(ac === 'download') return showDownloadMenu(btn, resposta ? resposta.textContent : '', 'resposta-estudantes-charlie-echo', status);
         if(ac === 'ouvir') return speakText(resposta ? resposta.textContent : '', status);
         if(ac === 'parar') return stopSpeaking(status);
         if(ac === 'traduzir') return answer('Tradução preparada como função futura. Na versão pública atual, a página registra apenas a intenção e preserva seus dados no navegador.');
         if(ac === 'simplificar') return answer(t ? 'Versão simplificada: explique o assunto com frases curtas, uma ideia por vez e um exemplo concreto.' : 'Escreva um texto ou pergunta para simplificar.');
         if(ac === 'avaliar') return setText(status, 'Feedback local registrado: em versão futura, esta ação poderá enviar avaliação sem dados sensíveis.');
-        if(ac === 'limpar'){ if(input) input.value = ''; answer('Área de resposta pronta para nova interação.'); setText(status, 'Campos limpos.'); return; }
+        if(ac === 'limpar') return clearWorkspace(input, resposta, status, 'Área preparada para resposta da IA. Use Enter para enviar; Shift+Enter quebra linha.');
       });
     });
   }
@@ -213,6 +251,8 @@
     var input = qs('consulta-profissional');
     var resposta = qs('resposta-profissional');
     var status = qs('status-profissional');
+    var consultarBtn = document.querySelector('[data-prof-action="consultar"]');
+    bindEnterToSubmit(input, consultarBtn, status);
     function currentText(){ return input ? input.value.trim() : ''; }
     function answer(text){ setText(resposta, text); }
     document.querySelectorAll('[data-prof-action]').forEach(function(btn){
@@ -226,11 +266,10 @@
         if(ac === 'revisar') return answer('Revisão documental: clareza, coerência, consistência terminológica, riscos e necessidade de revisão humana habilitada.');
         if(ac === 'juris') return answer('Jurisprudência: busque tribunal, tema, palavras-chave, período e entendimento que deseja comparar.');
         if(ac === 'copiar') return copyText(resposta ? resposta.textContent : '', status);
-        if(ac === 'baixar-txt') return downloadResponse(resposta ? resposta.textContent : '', 'documento-profissional-charlie-echo', 'txt', status);
-        if(ac === 'baixar-md') return downloadResponse(resposta ? resposta.textContent : '', 'documento-profissional-charlie-echo', 'md', status);
+        if(ac === 'download') return showDownloadMenu(btn, resposta ? resposta.textContent : '', 'documento-profissional-charlie-echo', status);
         if(ac === 'ouvir') return speakText(resposta ? resposta.textContent : '', status);
         if(ac === 'parar') return stopSpeaking(status);
-        if(ac === 'limpar'){ if(input) input.value = ''; answer('Área de resposta profissional pronta para nova consulta.'); setText(status, 'Campos limpos.'); return; }
+        if(ac === 'limpar') return clearWorkspace(input, resposta, status, 'Área preparada para resposta jurídico-assistiva. Use Enter para consultar; Shift+Enter quebra linha.');
       });
     });
   }
