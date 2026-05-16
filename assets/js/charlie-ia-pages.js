@@ -31,6 +31,34 @@
     }
   }
 
+  function extractAnswer(data){
+    if(!data) return '';
+    if(typeof data === 'string') return data.trim();
+    const candidates = [data.answer, data.resposta, data.response, data.output_text, data.text, data.content, data.message];
+    for(const item of candidates){
+      if(typeof item === 'string' && item.trim()) return item.trim();
+    }
+    if(Array.isArray(data.choices)){
+      const msg = data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+      if(typeof msg === 'string' && msg.trim()) return msg.trim();
+      const txt = data.choices[0] && data.choices[0].text;
+      if(typeof txt === 'string' && txt.trim()) return txt.trim();
+    }
+    if(Array.isArray(data.output)){
+      const parts = [];
+      data.output.forEach(function(item){
+        if(Array.isArray(item.content)){
+          item.content.forEach(function(c){
+            if(c && typeof c.text === 'string') parts.push(c.text);
+          });
+        }
+      });
+      const joined = parts.join('\n\n').trim();
+      if(joined) return joined;
+    }
+    return '';
+  }
+
   async function callCharlieApi(message, mode, statusEl){
     const endpoints = ['/api/ia', '/work/api/ia', '/api/work/ia'];
     let lastError = null;
@@ -42,19 +70,21 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message, mode })
         });
+        const raw = await res.text();
         let data = null;
-        try { data = await res.json(); } catch(e) { data = null; }
-        if(res.ok && data && data.ok){
+        try { data = raw ? JSON.parse(raw) : null; } catch(e) { data = { answer: raw }; }
+        const answer = extractAnswer(data);
+        if(res.ok && answer){
           if(statusEl) statusEl.textContent = 'Resposta recebida da Charlie Echo.';
-          return data.answer || 'A Charlie respondeu, mas a resposta veio vazia.';
+          return answer;
         }
-        lastError = (data && (data.error || data.message)) || ('Endpoint respondeu com status ' + res.status);
+        lastError = (data && (data.error || data.message || data.detail)) || raw || ('Endpoint respondeu com status ' + res.status);
         if(res.status !== 404) break;
       }catch(err){
         lastError = err && err.message ? err.message : 'Falha de conexão.';
       }
     }
-    if(statusEl) statusEl.textContent = 'API indisponível ou ainda não configurada. Mantive resposta local segura.';
+    if(statusEl) statusEl.textContent = 'API indisponível ou sem resposta textual reconhecida: ' + (lastError || 'sem detalhes') + '. Mantive resposta local segura.';
     return null;
   }
 
@@ -106,7 +136,7 @@
         const ac = btn.getAttribute('data-student-action');
         const t = currentText();
         if(ac === 'falar') return startVoiceInput(input, status);
-        if(ac === 'perguntar') { if(!t) return answer('Digite ou fale sua pergunta de estudo para continuar.'); callCharlieApi(t, 'estudantes', status).then(apiAnswer => answer(apiAnswer || 'Resposta educativa local: identifique o tema principal, a dúvida específica e um exemplo. A API ainda não respondeu neste ambiente.')); return; }
+        if(ac === 'perguntar') { if(!t) return answer('Digite ou fale sua pergunta de estudo para continuar.'); callCharlieApi(t, 'estudantes', status).then(apiAnswer => answer(apiAnswer || 'Resposta educativa local: identifique o tema principal, a dúvida específica e um exemplo. A API ainda não respondeu com texto reconhecido neste ambiente.')); return; }
         if(ac === 'exemplos'){
           if(input) input.value = exemplos.join('\n');
           answer('Exemplos preenchidos na caixa de estudo.');
@@ -143,7 +173,7 @@
         const ac = btn.getAttribute('data-prof-action');
         const t = currentText();
         if(ac === 'falar') return startVoiceInput(input, status);
-        if(ac === 'consultar') { if(!t) return answer('Digite ou fale sua consulta jurídica para continuar.'); callCharlieApi(t, 'profissional', status).then(apiAnswer => answer(apiAnswer || 'Consulta jurídica assistiva local: organize fatos, pedido, documentos e objetivo. A API ainda não respondeu neste ambiente.')); return; }
+        if(ac === 'consultar') { if(!t) return answer('Digite ou fale sua consulta jurídica para continuar.'); callCharlieApi(t, 'profissional', status).then(apiAnswer => answer(apiAnswer || 'Consulta jurídica assistiva local: organize fatos, pedido, documentos e objetivo. A API ainda não respondeu com texto reconhecido neste ambiente.')); return; }
         if(ac === 'peticao') return answer('Análise de petição: verifique estrutura, fatos, fundamentos, pedidos, riscos processuais e clareza da redação. Não envie dados sigilosos em ambiente público.');
         if(ac === 'resumir') return answer(t ? 'Resumo do caso: fatos essenciais, questão jurídica, tese central, risco principal e próximo passo sugerido.' : 'Descreva o caso para preparar um resumo objetivo.');
         if(ac === 'revisar') return answer('Revisão documental: clareza, coerência, consistência terminológica, riscos e necessidade de revisão humana habilitada.');
