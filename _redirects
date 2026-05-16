@@ -1,18 +1,4 @@
-# Rewrites seguros — Charlie Echo
-# Mantém rotas antigas sem criar redirecionamento no navegador.
-# Evita ERR_TOO_MANY_REDIRECTS.
-
-/ia-estudantes /ia-estudantes.html 200
-/ia-estudantes/ /ia-estudantes.html 200
-/familia /familia.html 200
-/familia/ /familia.html 200
-/album /album.html 200
-/album/ /album.html 200
-/governanca /governanca.html 200
-/governanca/ /governanca.html 200
-/ia-profissional /ia-profissional.html 200
-/ia-profissional/ /ia-profissional.html 200
-/politica-de-privacidade /politica-de-privacidade.html 200
-/politica-de-privacidade/ /politica-de-privacidade.html 200
-/termos-de-uso /termos-de-uso.html 200
-/termos-de-uso/ /termos-de-uso.html 200
+# Charlie Echo — Cloudflare Pages
+# Rotas limpas são atendidas por pastas reais com index.html.
+# Não usar regra /* /index.html 200 neste repositório, pois isso faz as páginas caírem no Lar Doce Lar.
+# Não usar redirecionamento 301 entre /ia-estudantes e /ia-estudantes/ para evitar loop.
