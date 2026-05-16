@@ -223,9 +223,73 @@
     stopSpeaking();
   }
 
+
+  var attachmentState = { student: [], prof: [] };
+
+  function isReadableAttachment(file){
+    var name = (file && file.name || '').toLowerCase();
+    var type = (file && file.type || '').toLowerCase();
+    return type.indexOf('text/') === 0 || /\.(txt|md|markdown|csv|json|html|css|js|ts|xml|yml|yaml)$/i.test(name);
+  }
+
+  function renderAttachments(scope){
+    var list = document.querySelector('[data-attachment-list="' + scope + '"]');
+    var files = attachmentState[scope] || [];
+    if(!list) return;
+    if(!files.length){ list.textContent = 'Nenhum arquivo anexado.'; return; }
+    list.innerHTML = files.map(function(item){
+      var size = item.size ? ' — ' + Math.ceil(item.size/1024) + ' KB' : '';
+      var kind = item.readable ? 'texto lido localmente' : 'anexo registrado; análise completa depende de upload seguro';
+      return '<span class="attachment-pill">📎 ' + item.name + size + ' · ' + kind + '</span>';
+    }).join('');
+  }
+
+  function readFileAsText(file){
+    return new Promise(function(resolve){
+      var reader = new FileReader();
+      reader.onload = function(){ resolve(String(reader.result || '').slice(0, 60000)); };
+      reader.onerror = function(){ resolve(''); };
+      reader.readAsText(file);
+    });
+  }
+
+  function bindAttachments(scope, statusEl){
+    var btn = document.querySelector('[data-attach-button="' + scope + '"]');
+    var input = document.querySelector('[data-attach-input="' + scope + '"]');
+    if(!btn || !input) return;
+    btn.addEventListener('click', function(){ input.click(); });
+    input.addEventListener('change', async function(){
+      var selected = Array.prototype.slice.call(input.files || []);
+      attachmentState[scope] = [];
+      for(var i=0;i<selected.length;i++){
+        var file = selected[i];
+        var readable = isReadableAttachment(file);
+        var text = readable ? await readFileAsText(file) : '';
+        attachmentState[scope].push({ name:file.name, size:file.size, type:file.type, readable:readable, text:text });
+      }
+      renderAttachments(scope);
+      if(statusEl){
+        statusEl.textContent = selected.length ? (selected.length + ' arquivo(s) anexado(s). Textos simples podem ser enviados como contexto; documentos complexos exigem upload seguro futuro.') : 'Nenhum arquivo anexado.';
+      }
+    });
+  }
+
+  function buildMessageWithAttachments(message, scope){
+    var files = attachmentState[scope] || [];
+    if(!files.length) return message;
+    var parts = [message, '\n\n[ANEXOS INFORMADOS PELO USUÁRIO]'];
+    files.forEach(function(file, idx){
+      parts.push('\nAnexo ' + (idx+1) + ': ' + file.name + ' (' + Math.ceil((file.size||0)/1024) + ' KB)');
+      if(file.text){ parts.push('Conteúdo textual lido localmente:\n' + file.text); }
+      else { parts.push('Arquivo não textual ou não lido localmente. Para análise completa, será necessário upload seguro/backend apropriado.'); }
+    });
+    return parts.join('\n');
+  }
+
+
   function initStudent(){
     var input=qs('pergunta-estudante'), resposta=qs('resposta-estudante'), status=qs('status-estudante');
-    var perguntarBtn=document.querySelector('[data-student-action="perguntar"]'); bindEnterToSubmit(input, perguntarBtn, status);
+    var perguntarBtn=document.querySelector('[data-student-action="perguntar"]'); bindEnterToSubmit(input, perguntarBtn, status); bindAttachments('student', status); bindAttachments('student', status);
     var exemplos=['Explique o que é cidadania em linguagem simples.','Resuma este texto em três tópicos: [cole o texto aqui].','Me dê cinco temas de estudo sobre Direito e tecnologia.','Crie um roteiro de estudos de 30 minutos sobre LGPD.'];
     var temas=['Direito e tecnologia','LGPD e privacidade','Cidadania digital','Inteligência artificial responsável','Organização de estudos','Ética no uso da IA'];
     function currentText(){ return input?input.value.trim():''; } function answer(text){ setText(resposta,text); }
@@ -250,7 +314,7 @@
   }
   function initProfessional(){
     var input=qs('consulta-profissional'), resposta=qs('resposta-profissional'), status=qs('status-profissional');
-    var consultarBtn=document.querySelector('[data-prof-action="consultar"]'); bindEnterToSubmit(input, consultarBtn, status);
+    var consultarBtn=document.querySelector('[data-prof-action="consultar"]'); bindEnterToSubmit(input, consultarBtn, status); bindAttachments('prof', status);
     function currentText(){ return input?input.value.trim():''; } function answer(text){ setText(resposta,text); }
     document.querySelectorAll('[data-prof-action]').forEach(function(btn){ btn.addEventListener('click', function(){
       var ac=btn.getAttribute('data-prof-action'), t=currentText();
