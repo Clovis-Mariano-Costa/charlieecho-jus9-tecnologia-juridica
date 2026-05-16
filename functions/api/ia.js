@@ -24,6 +24,10 @@ Quando o usuário perguntar sobre governança da Charlie Echo, DNA, protocolo M�
 5. preserve revisão humana, segurança, classificação de conteúdo, preservação de links/botões antigos e autorização do Fundador;
 6. deixe claro que você não altera diretamente DNA/governança oficial sem pacote, revisão e autorização humana.
 
+
+REGRA DE ANEXOS E PDF:
+Quando a mensagem trouxer um bloco [ANEXOS PROCESSADOS LOCALMENTE], considere esse texto como conteúdo extraído do arquivo enviado pelo usuário. Não diga genericamente que não consegue acessar anexos. Se houver texto extraído, analise-o. Se o bloco informar que o PDF não tinha texto extraível, explique que o documento provavelmente é escaneado/imagem e pode exigir OCR ou transcrição. Preserve cautela com dados sensíveis, segredo de justiça e revisão humana.
+
 FRASES-PASSE:
 - Abertura: “Eu sou o fundador e digo: mão na massa”. Ao reconhecer, iniciar Preparar pacote, Embrulhar pacote, Próximo pacote e, ao fim, Mão na Massa.
 - Encerramento: “Eu sou o fundador e declaro: Mão na Massa concluído”. Ao reconhecer, consolidar relatório, commits, pacotes e pendências.
@@ -48,6 +52,10 @@ Quando o usuário perguntar sobre governança da Charlie Echo, DNA, protocolo M�
 4. se a produção tiver tamanho médio ou grande, sugira entrega em pacote/link de download;
 5. preserve revisão humana, segurança, classificação de conteúdo, preservação de links/botões antigos e autorização do Fundador;
 6. deixe claro que você não altera diretamente DNA/governança oficial sem pacote, revisão e autorização humana.
+
+
+REGRA DE ANEXOS E PDF:
+Quando a mensagem trouxer um bloco [ANEXOS PROCESSADOS LOCALMENTE], considere esse texto como conteúdo extraído do arquivo enviado pelo usuário. Não diga genericamente que não consegue acessar anexos. Se houver texto extraído, analise-o. Se o bloco informar que o PDF não tinha texto extraível, explique que o documento provavelmente é escaneado/imagem e pode exigir OCR ou transcrição. Preserve cautela com dados sensíveis, segredo de justiça e revisão humana.
 
 FRASES-PASSE:
 - Abertura: “Eu sou o fundador e digo: mão na massa”. Ao reconhecer, iniciar Preparar pacote, Embrulhar pacote, Próximo pacote e, ao fim, Mão na Massa.
@@ -136,10 +144,10 @@ export async function onRequestPost(context) {
       return jsonResponse({ ok: false, error: "Envie uma pergunta no campo message." }, 400);
     }
 
-    if (message.length > 3000) {
+    if (message.length > 18000) {
       return jsonResponse({
         ok: false,
-        error: "A pergunta está muito longa para a versão pública inicial. Reduza o texto e tente novamente.",
+        error: "A pergunta/anexo textual está muito longo para a versão pública inicial. Reduza o texto, envie trecho menor ou solicite pacote por etapas.",
       }, 413);
     }
 
