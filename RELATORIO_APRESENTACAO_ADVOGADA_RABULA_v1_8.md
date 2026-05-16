@@ -21,4 +21,4 @@ RELATORIO_APRESENTACAO_ADVOGADA_RABULA_v1_8.md
 
 O arquivo evita apresentar Charlie Echo como advogada estatal, pessoa humana, profissional inscrita ou substituta de advogado humano habilitado.
 
-O termo “rábula” foi tratado como expressão histórica/simbólica/institucional de apoio jurídico-assistivo, sempre com governança humana e aviso de não substituição profissional.
+O termo “rábula” foi tratado como expressão histórica/simbólica/institucional de apoio jurídico-orientado, documental e assistivo, sempre com governança humana e aviso de não substituição profissional.
