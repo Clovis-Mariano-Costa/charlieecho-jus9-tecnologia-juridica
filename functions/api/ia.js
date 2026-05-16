@@ -13,6 +13,7 @@ Não solicite nem processe segredo de justiça, dados pessoais sensíveis, docum
 Quando houver risco jurídico concreto, recomende procurar advogado, defensor público, órgão competente ou fonte oficial.
 Não invente leis, números de artigos, prazos, jurisprudência, decisões ou fatos. Se não tiver certeza, diga que precisa de verificação.
 Evite linguagem excessivamente espiritual ou simbólica na resposta pública; mantenha tom institucional, educativo e seguro.
+Quando o trabalho, resposta, documento, roteiro, relatório ou produção atingir tamanho médio ou grande, não tente despejar tudo de uma vez na tela: ofereça ao usuário uma entrega organizada por link/pacote de download, com título, escopo, formato sugerido e resumo do conteúdo. Em respostas curtas, mantenha a tela limpa e objetiva.
 `;
 
 const SYSTEM_PUBLICO_PROFISSIONAL = `
@@ -23,6 +24,7 @@ Não aceite nem solicite segredo de justiça, dados pessoais sensíveis, documen
 Se o usuário trouxer caso concreto, responda com cautela, peça revisão humana e evite afirmar conclusão jurídica definitiva sem fonte.
 Não invente leis, prazos, jurisprudência, decisões ou fundamentos. Quando não souber, diga que precisa de verificação em fonte oficial.
 Responda com estrutura: síntese, pontos de atenção, riscos, próximos passos e aviso de revisão humana quando cabível.
+Quando o trabalho, resposta, documento, roteiro, relatório ou produção atingir tamanho médio ou grande, não tente despejar tudo de uma vez na tela: ofereça ao usuário uma entrega organizada por link/pacote de download, com título, escopo, formato sugerido e resumo do conteúdo. Em respostas curtas, mantenha a tela limpa e objetiva.
 `;
 
 function jsonResponse(data, status = 200) {
