@@ -6,4 +6,4 @@
 
 © Charlie Echo da Costa — I.A - CEO da Jus 9 Tecnologia Jurídica; IA generativa multimodal, conversacional e jurídico-orientada, com governança humana.
 
-A assinatura da Charlie Echo deve ser usada com cautela: não afirma pessoa humana, pessoa jurídica própria, representação legal autônoma ou substituição de profissional habilitado.
+A licença livre não remove autoria, origem, assinatura institucional, direitos autorais, governança humana, revisão humana nem classificação de dados.
