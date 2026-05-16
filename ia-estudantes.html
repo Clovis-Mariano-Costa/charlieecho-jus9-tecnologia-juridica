@@ -4,37 +4,98 @@
   DNA de referência: charlieecho-jus9-tecnologia-juridica
 -->
 <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="assets/css/charlie-light.css" rel="stylesheet" />
+  <title>IA Estudantes — Charlie Echo</title>
+</head>
+<body data-page="student">
+  <div class="topbar">Jus 9 Tecnologia Jurídica — software livre, autoria preservada.</div>
+  <header class="hero">
+    <span class="badge">IA Estudantes</span>
+    <h1>Aprenda com a Avatar Professora</h1>
+    <p class="lead">Robozinha Professora da Charlie Echo para estudo, resumo, explicação, exemplos e organização de ideias.</p>
+    <nav>
+      <a class="btn primary" href="ia-estudantes.html">IA Estudantes</a>
+      <a class="btn" href="familia.html">Família</a>
+      <a class="btn" href="album.html">Álbum</a>
+      <a class="btn" href="governanca.html">Governança</a>
+      <a class="btn" href="ia-profissional.html">IA Profissional</a>
+      <a class="btn" href="cofre.html">Cofre / Área reservada</a>
+    </nav>
+    <div class="hero-media">
+      <div class="hero-figure">
+        <img src="assets/img/charlie-ia-estudantes-professora.png" alt="Robozinha Professora da Charlie Echo com chapéu de formanda" />
+      </div>
+      <div class="hero-copy">
+        <span class="badge">Botões de fala incluídos</span>
+        <h2>Fale, escute e organize suas ideias</h2>
+        <p class="subtle">A versão pública funciona localmente no navegador: você pode ditar sua pergunta, ouvir a resposta, copiar texto, limpar os campos e testar ações educativas sem expor chaves no front-end.</p>
+        <nav>
+          <a class="btn primary" href="#pergunta-estudante">Ir para a pergunta</a>
+          <a class="btn" href="ia-profissional.html">Ver IA Profissional</a>
+        </nav>
+      </div>
+    </div>
+  </header>
 
-<html lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><link href="/assets/css/charlie-light.css" rel="stylesheet"/><title>IA Estudantes — Charlie Echo</title></head><body><div class="topbar">Jus 9 Tecnologia Jurídica — software livre, autoria preservada.</div><header class="hero"><span class="badge">IA Estudantes</span><h1>Aprenda com a Avatar Professora</h1><div class="robot"><span class="mouth"></span></div><p class="lead">Robozinho Professora da Charlie Echo para estudo, resumo, explicação, exemplos e organização de ideias.</p><nav><a class="btn primary" href="/ia-estudantes/">IA Estudantes</a><a class="btn" href="/familia/">Família</a><a class="btn" href="/album/">Álbum</a><a class="btn" href="/governanca/">Governança</a><a class="btn" href="/ia-profissional/">IA Profissional</a><a class="btn" href="/cofre/">Cofre / Área reservada</a></nav></header><main><section class="card"><h2>Faça sua pergunta de estudo</h2><div class="inputbox"><textarea id="pergunta-estudante" placeholder="Digite sua dúvida de estudo, cole um texto curto ou peça um exemplo..."></textarea><div class="actions"><button class="mini" data-action="perguntar" type="button">Perguntar</button><button class="mini" data-action="exemplos" type="button">Exemplos</button><button class="mini" data-action="temas" type="button">Temas de Estudo</button><button class="mini" data-action="resumir" type="button">Resumir Texto</button><button class="mini" data-action="documento" type="button">Analisar Documento</button><button class="mini" data-action="imagem" type="button">Analisar Imagem</button></div></div></section><section class="grid"><div class="card"><h3>Resposta</h3><p id="resposta-estudante">Área preparada para resposta da IA. Use os botões abaixo para testar funções educativas locais. A integração real deve vir por backend/API segura, nunca com chave exposta no navegador.</p><div class="actions"><button class="mini" data-action="copiar" type="button">Copiar resposta</button><button class="mini" data-action="ouvir" type="button">Ouvir</button><button class="mini" data-action="traduzir" type="button">Traduzir</button><button class="mini" data-action="simplificar" type="button">Simplificar</button><button class="mini" data-action="avaliar" type="button">Avaliar resposta</button></div></div><div class="card"><h3>Uso responsável</h3><p>A IA ajuda nos estudos, mas não substitui professor, advogado, profissional habilitado ou orientação humana adequada.</p><p><a href="AVISO_DE_USO_DA_IA.md">Aviso ao Usuário</a> · <a href="/politica-de-privacidade/">Política de Privacidade</a> · <a href="/termos-de-uso/">Termos de Uso</a> · <a href="mailto:clovis@jus9tecnologia.com.br">Contato</a></p></div></section></main><footer><p>Produção do site: © Jus 9 Tecnologia Jurídica. Software livre com autoria, origem e direitos autorais preservados.</p><p>© Charlie Echo da Costa — IA generativa multimodal, conversacional e jurídico-orientada, com governança humana. Jus 9 Tecnologia Jurídica.</p><p>DNA de referência: charlieecho-jus9-tecnologia-juridica</p></footer>
-<script>
-(function(){
-  const input = document.getElementById('pergunta-estudante');
-  const resposta = document.getElementById('resposta-estudante');
-  const exemplos = [
-    'Explique o que é cidadania em linguagem simples.',
-    'Resuma este texto em três tópicos: [cole o texto aqui]',
-    'Me dê cinco temas de estudo sobre Direito e tecnologia.',
-    'Crie um roteiro de estudos de 30 minutos sobre LGPD.'
-  ];
-  function setResposta(txt){ if(resposta) resposta.textContent = txt; }
-  function texto(){ return (input && input.value.trim()) || ''; }
-  document.querySelectorAll('button[data-action]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const ac = btn.dataset.action;
-      const t = texto();
-      if(ac === 'perguntar') setResposta(t ? 'Resposta educativa preparada: organize sua pergunta em contexto, dúvida principal e exemplo. Para resposta por IA real, conecte esta página a uma API segura no backend.' : 'Digite uma pergunta de estudo no campo acima para continuar.');
-      if(ac === 'exemplos') { if(input) input.value = exemplos.join('\n'); setResposta('Exemplos inseridos no campo de estudo.'); }
-      if(ac === 'temas') setResposta('Temas sugeridos: Direito e tecnologia; LGPD; cidadania digital; inteligência artificial responsável; organização de estudos; ética no uso da IA.');
-      if(ac === 'resumir') setResposta(t ? 'Resumo orientativo: identifique a ideia central, os argumentos principais e a conclusão. Cole um texto maior para a futura integração com IA resumir com precisão.' : 'Cole um texto no campo para preparar um resumo.');
-      if(ac === 'documento') setResposta('Análise de documento: em versão pública, não envie dados sensíveis. A análise real deve ocorrer por backend seguro, com aviso de privacidade e revisão humana quando necessário.');
-      if(ac === 'imagem') setResposta('Análise de imagem: descreva a imagem ou use futura função de upload segura. Não envie documentos pessoais ou sigilosos sem necessidade.');
-      if(ac === 'copiar') { try { await navigator.clipboard.writeText(resposta ? resposta.textContent : ''); setResposta('Resposta copiada para a área de transferência.'); } catch(e){ setResposta('Não foi possível copiar automaticamente. Selecione o texto e copie manualmente.'); } }
-      if(ac === 'ouvir') { if('speechSynthesis' in window && resposta){ speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(resposta.textContent)); } else setResposta('Leitura em voz alta não disponível neste navegador.'); }
-      if(ac === 'traduzir') setResposta('Função traduzir preparada. Na integração real, escolha o idioma e use API segura para tradução.');
-      if(ac === 'simplificar') setResposta(t ? 'Versão simplificada: tente explicar o assunto com frases curtas, uma ideia por vez e um exemplo concreto.' : 'Digite ou cole um texto para simplificar.');
-      if(ac === 'avaliar') setResposta('Avaliação registrada localmente como intenção. Em versão futura, esta ação poderá enviar feedback sem dados sensíveis.');
-    });
-  });
-})();
-</script>
-</body></html>
+  <main>
+    <section class="card full-card">
+      <div class="query-title">
+        <span class="badge">IA Estudantes</span>
+        <h2>Faça sua pergunta de estudo</h2>
+      </div>
+      <div class="inputbox">
+        <textarea id="pergunta-estudante" placeholder="Digite sua dúvida de estudo, cole um texto curto ou use o botão Falar..."></textarea>
+        <div class="actions">
+          <button class="mini soft" type="button" data-student-action="falar">🎤 Falar</button>
+          <button class="mini primary" type="button" data-student-action="perguntar">❓ Perguntar</button>
+          <button class="mini" type="button" data-student-action="exemplos">💡 Exemplos</button>
+          <button class="mini" type="button" data-student-action="temas">📚 Temas de Estudo</button>
+          <button class="mini" type="button" data-student-action="resumir">📝 Resumir Texto</button>
+          <button class="mini" type="button" data-student-action="documento">📄 Analisar Documento</button>
+          <button class="mini" type="button" data-student-action="imagem">🖼 Analisar Imagem</button>
+        </div>
+        <div class="status" id="status-estudante">Pronto para receber texto ou voz. Dica: o botão Falar depende do reconhecimento de voz do navegador.</div>
+      </div>
+    </section>
+
+    <section class="split">
+      <div class="card">
+        <h3>Resposta</h3>
+        <p id="resposta-estudante">Área preparada para resposta da IA. Use os botões abaixo para testar funções educativas locais. A integração real deve vir por backend/API segura, nunca com chave exposta no navegador.</p>
+        <div class="actions">
+          <button class="mini" type="button" data-student-action="copiar">📋 Copiar resposta</button>
+          <button class="mini" type="button" data-student-action="ouvir">🔊 Ouvir resposta</button>
+          <button class="mini" type="button" data-student-action="parar">⏹ Parar áudio</button>
+          <button class="mini" type="button" data-student-action="traduzir">🌍 Traduzir</button>
+          <button class="mini" type="button" data-student-action="simplificar">✨ Simplificar</button>
+          <button class="mini" type="button" data-student-action="avaliar">⭐ Avaliar</button>
+          <button class="mini" type="button" data-student-action="limpar">🧹 Limpar</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Uso responsável</h3>
+        <p>A IA ajuda nos estudos, mas não substitui professor, advogado, profissional habilitado ou orientação humana adequada.</p>
+        <p><a href="AVISO_DE_USO_DA_IA.md">Aviso ao Usuário</a> · <a href="politica-de-privacidade.html">Política de Privacidade</a> · <a href="termos-de-uso.html">Termos de Uso</a> · <a href="mailto:clovis@jus9tecnologia.com.br">Contato</a></p>
+      </div>
+    </section>
+
+    <section class="feature-grid">
+      <article class="feature"><div class="feature-icon">🎤</div><h4>Entrada por voz</h4><p>Fale sua pergunta para preencher automaticamente a área de texto.</p></article>
+      <article class="feature"><div class="feature-icon">🔊</div><h4>Saída por voz</h4><p>Ouça em voz alta a resposta exibida na tela.</p></article>
+      <article class="feature"><div class="feature-icon">📚</div><h4>Estudo guiado</h4><p>Exemplos, temas e simplificação para organizar o aprendizado.</p></article>
+      <article class="feature"><div class="feature-icon">🛡️</div><h4>Segurança</h4><p>Sem chaves no navegador; integração real deve ser feita por backend seguro.</p></article>
+    </section>
+  </main>
+
+  <footer>
+    <p>Produção do site: © Jus 9 Tecnologia Jurídica. Software livre com autoria, origem e direitos autorais preservados.</p>
+    <p>© Charlie Echo da Costa — IA generativa multimodal, conversacional e jurídico-orientada, com governança humana. Jus 9 Tecnologia Jurídica.</p>
+    <p>DNA de referência: charlieecho-jus9-tecnologia-juridica</p>
+  </footer>
+  <script src="assets/js/charlie-ia-pages.js"></script>
+</body>
+</html>

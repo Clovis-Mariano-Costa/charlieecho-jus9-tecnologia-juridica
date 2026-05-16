@@ -1,4 +1,3 @@
-# Charlie Echo — Cloudflare Pages
-# Rotas limpas são atendidas por pastas reais com index.html.
-# Não usar regra /* /index.html 200 neste repositório, pois isso faz as páginas caírem no Lar Doce Lar.
-# Não usar redirecionamento 301 entre /ia-estudantes e /ia-estudantes/ para evitar loop.
+# Arquivo intencionalmente sem regras ativas nesta revisão.
+# As rotas limpas são atendidas por pastas reais com index.html,
+# para reduzir risco de loop/ERR_TOO_MANY_REDIRECTS no Cloudflare Pages.
