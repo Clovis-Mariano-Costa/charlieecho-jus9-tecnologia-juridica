@@ -1,3 +1,0 @@
-# Arquivo intencionalmente sem regras ativas nesta revisão.
-# As rotas limpas são atendidas por pastas reais com index.html,
-# para reduzir risco de loop/ERR_TOO_MANY_REDIRECTS no Cloudflare Pages.
