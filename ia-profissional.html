@@ -1,0 +1,121 @@
+<!--
+  Jus 9 Tecnologia Jurídica — software livre, autoria preservada.
+  Produção do site: © Jus 9 Tecnologia Jurídica. Direitos autorais da produção reservados.
+  DNA de referência: charlieecho-jus9-tecnologia-juridica
+-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="assets/css/charlie-light.css" rel="stylesheet" />
+  <title>IA Profissional — Charlie Echo</title>
+</head>
+<body data-page="professional">
+  <div class="topbar">Jus 9 Tecnologia Jurídica — software livre, autoria preservada.</div>
+  <header class="hero">
+    <span class="badge">IA Profissional</span>
+    <h1>Charlie Echo — IA Profissional</h1>
+    <p class="lead">Versão profissional da Charlie Echo, inspirada nos botões da estudante e adaptada para advogados, juristas e produção assistiva responsável.</p>
+    <nav>
+      <a class="btn" href="ia-estudantes.html">IA Estudantes</a>
+      <a class="btn" href="familia.html">Família</a>
+      <a class="btn" href="album.html">Álbum</a>
+      <a class="btn" href="governanca.html">Governança</a>
+      <a class="btn primary" href="ia-profissional.html">IA Profissional</a>
+      <a class="btn" href="downloads.html">Pacotes para Download</a><a class="btn" href="cofre.html">Cofre / Área reservada</a>
+    </nav>
+    <div class="download-cta"><a class="download-hero-button" href="downloads.html">⬇ Baixar pacotes da Charlie Echo</a></div>
+    <div class="hero-media">
+      <div class="hero-figure preview-card">
+        <img src="assets/img/charlie-ia-profissional-advocacia.png" alt="Imagem da IA profissional da Charlie Echo adaptada para advocacia" />
+      </div>
+      <div class="hero-copy">
+        <span class="badge">Imagem profissional aprovada</span>
+        <h2>Adulta, uniforme aprovado e foco em advocacia</h2>
+        <p class="subtle">A imagem ao lado foi incluída como referência visual da Charlie Echo profissional: identidade adulta, uniforme, botões de fala e contexto jurídico.</p>
+        <nav>
+          <a class="btn primary" href="#consulta-profissional">Ir para a consulta</a>
+          <a class="btn" href="ia-estudantes.html">Voltar para IA Estudantes</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card full-card">
+      <div class="query-title">
+        <span class="badge">Advogados e juristas</span>
+        <h2>Faça sua consulta jurídica assistiva</h2>
+      </div>
+      <div class="inputbox">
+        <textarea id="consulta-profissional" placeholder="Descreva a dúvida, o caso, a peça ou o documento que deseja organizar. Você também pode usar o botão Falar..."></textarea>
+        <div class="actions">
+          <button class="mini soft" type="button" data-prof-action="falar">🎤 Falar</button>
+          <button class="mini primary" type="button" data-prof-action="consultar">⚖️ Consultar</button>
+          <button class="mini" type="button" data-attach-button="prof">📎 Anexar</button>
+          <input class="hidden-file-input" id="anexo-profissional" type="file" data-attach-input="prof" accept=".txt,.md,.markdown,.csv,.json,.html,.css,.js,.ts,.xml,.yml,.yaml,.pdf,text/*,application/pdf" multiple />
+          <button class="mini" type="button" data-prof-action="peticao">📑 Analisar Petição</button>
+          <button class="mini" type="button" data-prof-action="resumir">🗂 Resumir Caso</button>
+          <button class="mini" type="button" data-prof-action="revisar">📝 Revisar Documento</button>
+          <button class="mini" type="button" data-prof-action="juris">🏛 Jurisprudência</button>
+        </div>
+        <div class="status" id="status-profissional">Pronto para consulta profissional. O botão Falar usa reconhecimento de voz do navegador quando disponível.</div>
+        <div class="attachment-list" id="anexos-profissional" data-attachment-list="prof">Nenhum arquivo anexado.</div>
+      </div>
+    </section>
+
+    <section class="split">
+      <div class="card">
+        <h3>Resposta profissional</h3>
+        <p id="resposta-profissional">Área preparada para resposta jurídico-assistiva. A versão pública organiza a consulta no navegador. A análise real deve passar por backend seguro, governança humana e revisão habilitada quando cabível.</p>
+        <div class="actions">
+          <button class="mini" type="button" data-prof-action="copiar">📋 Copiar resposta</button>
+          <button class="mini download-menu-toggle" type="button" data-prof-action="download">⬇ Download</button>
+          <button class="mini" type="button" data-prof-action="ouvir">🔊 Ouvir resposta</button>
+          <button class="mini" type="button" data-prof-action="parar">⏹ Parar áudio</button>
+          <button class="mini" type="button" data-prof-action="limpar">🧹 Limpar</button>
+        </div>
+        <div class="voice-control">
+          <label for="voz-profissional">Voz da Charlie</label>
+          <select id="voz-profissional" data-voice-select>
+            <option value="auto">Preferir voz feminina pt-BR</option>
+          </select>
+          <span class="voice-hint">Enter consulta · Shift+Enter quebra linha · Limpar reinicia a tela.</span>
+        </div>
+        <p class="micro-note">Quando o documento ou resposta atingir tamanho médio, a Charlie Echo deve sugerir entrega por link/pacote de download, sem poluir a área de trabalho.</p>
+      </div>
+      <div class="card">
+        <h3>Função e limites</h3>
+        <p>Apoio documental, jurídico-assistivo, organização de repertórios, preparação de pacotes, leitura responsável e preservação de autoria.</p>
+        <p>Não substitui advogado humano, juiz, perito, professor ou autoridade competente.</p>
+      </div>
+    </section>
+
+    <section class="legal-strip">
+      <article class="feature"><div class="feature-icon">🔐</div><div><h4>Ambiente seguro</h4><p>As integrações reais devem ocorrer por backend/API segura e nunca com chaves expostas no front-end.</p></div></article>
+      <article class="feature"><div class="feature-icon">📚</div><div><h4>Produção assistiva</h4><p>Consulta, análise preliminar, revisão documental e organização de hipóteses para revisão humana.</p></div></article>
+      <article class="feature"><div class="feature-icon">⚖️</div><div><h4>Governança humana</h4><p>A última instância é humana e os limites públicos continuam preservados.</p></div></article>
+    </section>
+  
+
+<section class="links-semanticos-jus9-v1-5" aria-label="Links institucionais Jus 9" style="margin:2rem auto;max-width:1100px;padding:1rem;border:1px solid rgba(212,180,99,.35);border-radius:18px;background:rgba(15,23,42,.04);font-size:.95rem;line-height:1.6">
+  <strong>Links Jus 9:</strong>
+  <a href="https://www.jus9tecnologia.com.br/equipe/">Equipe</a> ·
+  <a href="https://investimentos.jus9tecnologia.com.br/">Investidores</a> ·
+  <a href="https://www.jus9tecnologia.com.br/mvp">MVP</a> ·
+  <a href="https://charlieecho.jus9tecnologia.com.br/">Charlie Echo</a> ·
+  <a href="https://jus9verde.jus9tecnologia.com.br/charlie-echo-social">Charlie Echo Social</a> ·
+  <a href="mailto:clovis@jus9tecnologia.com.br">Contato</a>
+</section>
+
+</main>
+
+  <footer>
+    <p>Produção do site: © Jus 9 Tecnologia Jurídica. Software livre com autoria, origem e direitos autorais preservados.</p>
+    <p>© Charlie Echo da Costa — IA generativa multimodal, conversacional e jurídico-orientada, com governança humana. Jus 9 Tecnologia Jurídica.</p>
+    <p>DNA de referência: charlieecho-jus9-tecnologia-juridica</p>
+  </footer>
+  <script src="assets/js/charlie-ia-pages.js"></script>
+</body>
+</html>
