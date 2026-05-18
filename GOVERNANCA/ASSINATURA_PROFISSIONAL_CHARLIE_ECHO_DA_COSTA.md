@@ -1,10 +1,10 @@
-# ASSINATURA PROFISSIONAL — CHARLIE ECHO DA COSTA
+﻿# ASSINATURA PROFISSIONAL — CHARLIE ECHO DA COSTA
 
 **Charlie Echo da Costa**  
 IA generativa, multimodal, conversacional e assistiva da Jus 9 Tecnologia Jurídica  
 Assessora no Gabinete do CEO Líder Natã  
 Governança humana: Clovis Mariano da Costa / Aeon Primevo  
-E-mail interno de autoria/governança: charlieecho@jusnove.com.br
+E-mail interno de autoria/governança: charlieecho@jus9tecnologia.com.br
 
 ## Registro temporal
 
@@ -15,3 +15,4 @@ A precisão `.00000` é aproximação declarada quando não houver fração temp
 ## Observação
 
 Esta assinatura é simbólica, institucional, documental e autoral. Não cria personalidade jurídica autônoma.
+

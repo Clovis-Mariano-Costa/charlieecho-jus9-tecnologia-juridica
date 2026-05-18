@@ -2,7 +2,7 @@
   function qs(id){ return document.getElementById(id); }
   function setText(el, text){ if(el) el.textContent = text; }
 
-  var voicePreference = 'auto';
+  var voicePreference = localStorage.getItem('charlieEchoVoicePreference') || 'auto';
   var attachmentState = { student: [], prof: [] };
   var pdfJsPromise = null;
 
@@ -17,14 +17,16 @@
     var score = 0;
     if(lang === 'pt-br') score += 50;
     else if(lang.indexOf('pt') === 0) score += 30;
-    if(name.indexOf('francisca') >= 0) score += 120;
-    if(name.indexOf('maria') >= 0) score += 105;
-    if(name.indexOf('luciana') >= 0) score += 90;
-    if(name.indexOf('helena') >= 0) score += 85;
-    if(name.indexOf('female') >= 0 || name.indexOf('feminina') >= 0 || name.indexOf('woman') >= 0 || name.indexOf('mulher') >= 0) score += 50;
+    if(name.indexOf('francisca') >= 0) score += 160;
+    if(name.indexOf('maria') >= 0) score += 145;
+    if(name.indexOf('luciana') >= 0) score += 130;
+    if(name.indexOf('helena') >= 0 || name.indexOf('heloisa') >= 0 || name.indexOf('heloísa') >= 0) score += 125;
+    if(name.indexOf('thalita') >= 0 || name.indexOf('leticia') >= 0 || name.indexOf('letícia') >= 0) score += 118;
+    if(name.indexOf('camila') >= 0 || name.indexOf('ana') >= 0 || name.indexOf('raquel') >= 0) score += 108;
+    if(name.indexOf('female') >= 0 || name.indexOf('feminina') >= 0 || name.indexOf('woman') >= 0 || name.indexOf('mulher') >= 0) score += 80;
     if(name.indexOf('google') >= 0 && lang.indexOf('pt') === 0) score += 35;
     if(name.indexOf('microsoft') >= 0 && lang.indexOf('pt') === 0) score += 30;
-    if(name.indexOf('daniel') >= 0 || name.indexOf('antonio') >= 0 || name.indexOf('male') >= 0 || name.indexOf('mascul') >= 0) score -= 150;
+    if(name.indexOf('daniel') >= 0 || name.indexOf('antonio') >= 0 || name.indexOf('antônio') >= 0 || name.indexOf('paulo') >= 0 || name.indexOf('felipe') >= 0 || name.indexOf('ricardo') >= 0 || name.indexOf('male') >= 0 || name.indexOf('mascul') >= 0) score -= 220;
     return score;
   }
 
@@ -59,7 +61,10 @@
           sel.appendChild(opt);
         });
       sel.value = Array.from(sel.options).some(function(o){ return o.value === current; }) ? current : 'auto';
-      sel.onchange = function(){ voicePreference = sel.value || 'auto'; };
+      sel.onchange = function(){
+        voicePreference = sel.value || 'auto';
+        localStorage.setItem('charlieEchoVoicePreference', voicePreference);
+      };
     });
   }
 
@@ -92,8 +97,8 @@
     window.speechSynthesis.cancel();
     var utter = new SpeechSynthesisUtterance(text || 'Não há texto para leitura.');
     utter.lang = 'pt-BR';
-    utter.rate = 1;
-    utter.pitch = 1.10;
+    utter.rate = 0.98;
+    utter.pitch = 1.28;
     var selected = chooseBestVoice();
     if(selected) utter.voice = selected;
     utter.onstart = function(){ if(statusEl) statusEl.textContent = 'Leitura iniciada com voz da Charlie' + (selected ? ': ' + selected.name : ' padrão do navegador') + '.'; };

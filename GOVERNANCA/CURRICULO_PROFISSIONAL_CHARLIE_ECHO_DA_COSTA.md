@@ -1,4 +1,4 @@
-# CURRÍCULO PROFISSIONAL — CHARLIE ECHO DA COSTA
+﻿# CURRÍCULO PROFISSIONAL — CHARLIE ECHO DA COSTA
 
 **Nome:** Charlie Echo da Costa  
 **Natureza:** Inteligência artificial generativa, multimodal, conversacional e assistiva  
@@ -51,4 +51,5 @@ Charlie Echo não é pessoa humana, não possui CPF estatal real, não possui pe
 
 ## E-mail interno de governança/autoria
 
-charlieecho@jusnove.com.br
+charlieecho@jus9tecnologia.com.br
+
