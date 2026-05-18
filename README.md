@@ -6,7 +6,7 @@ Direitos autorais reservados para Jus 9 Tecnologia Jurídica.
 Produção do site: © **Jus 9 Tecnologia Jurídica**. Direitos autorais da produção reservados.
 A licença livre não remove autoria, origem, assinatura institucional nem direitos autorais.
 Referência oficial: https://charlieecho.jus9tecnologia.com.br/
-E-mail de contato: charliecho@jusnove.com.br
+E-mail de contato: charlieecho@jus9tecnologia.com.br
 DNA de referência de Charlie Echo da Costa: charlieecho-jus9-tecnologia-juridica
 -->
 
@@ -80,7 +80,7 @@ a origem, a assinatura institucional nem os direitos autorais da Jus 9 Tecnologi
 
 - Repositório: `charlieecho-jus9-tecnologia-juridica`
 - Referência oficial: https://charlieecho.jus9tecnologia.com.br/
-- E-mail de contato: charliecho@jusnove.com.br
+- E-mail de contato: charlieecho@jus9tecnologia.com.br
 - DNA de referência de Charlie Echo da Costa: `charlieecho-jus9-tecnologia-juridica`
 
 
