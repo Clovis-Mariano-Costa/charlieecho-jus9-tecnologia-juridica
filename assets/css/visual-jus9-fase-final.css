@@ -4,3 +4,13 @@
   Charlie Fox da Costa - I.A CEO Especialista, sob governanca humana.
 */
 :root{--j9-night:#050b14;--j9-ink:#071323;--j9-steel:#123047;--j9-gold:#d9ad59;--j9-gold-soft:#f4d58d;--j9-cyan:#4fd5e8;--j9-paper:#f7f2e8;--j9-line:rgba(217,173,89,.34)}html{scroll-behavior:smooth}body{letter-spacing:0}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--j9-cyan);outline-offset:3px}header,.header,nav,.nav,.site-nav{border-color:var(--j9-line)}.btn,button,a.btn,.card,.hero,.panel,.box,article{border-radius:8px}.btn,button,a.btn{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}.btn:hover,button:hover,a.btn:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(5,11,20,.16)}.card,.panel,.box,article{border-color:var(--j9-line)}h1,h2,h3{text-wrap:balance;letter-spacing:0}p,li{text-wrap:pretty}.j9-visual-final-note{display:none}@media(max-width:760px){.btn,button,a.btn{max-width:100%}h1{line-height:1.06}}
+/* Pacote mobile Samsung - responsividade Jus 9 */
+html,body{max-width:100%;overflow-x:hidden}
+img,video,canvas,svg{max-width:100%;height:auto}
+button,input,select,textarea{max-width:100%}
+@media(max-width:760px){
+  .container,.wrap,.page,main{max-width:100%;}
+  nav,.nav,.menu,.links,.nav-links,.actions,.link-actions,.social-links,.origin-links{flex-wrap:wrap;}
+  .grid,.grid2,.grid-2,.grid-3,.grid-4,.cards3,.profile-grid,.demo-grid,.demo-grid-2,.workbench,.timeline,.footer-grid{grid-template-columns:1fr!important;}
+  table{display:block;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+}

@@ -2,7 +2,9 @@
   function qs(id){ return document.getElementById(id); }
   function setText(el, text){ if(el) el.textContent = text; }
 
-  var voicePreference = localStorage.getItem('charlieEchoVoicePreference') || 'auto';
+  var storedVoicePreference = localStorage.getItem('charlieEchoVoicePreference');
+  var voicePreferenceVersion = localStorage.getItem('charlieEchoVoicePreferenceVersion');
+  var voicePreference = (!storedVoicePreference || (storedVoicePreference === 'auto' && voicePreferenceVersion !== '2')) ? 'feminina-pt-br' : storedVoicePreference;
   var attachmentState = { student: [], prof: [] };
   var pdfJsPromise = null;
 
@@ -17,13 +19,15 @@
     var score = 0;
     if(lang === 'pt-br') score += 50;
     else if(lang.indexOf('pt') === 0) score += 30;
+    if(name.indexOf('portugu') >= 0 && name.indexOf('brasil') >= 0) score += 38;
+    if(name.indexOf('samsung') >= 0 && lang.indexOf('pt') === 0) score += 34;
     if(name.indexOf('francisca') >= 0) score += 160;
     if(name.indexOf('maria') >= 0) score += 145;
     if(name.indexOf('luciana') >= 0) score += 130;
     if(name.indexOf('helena') >= 0 || name.indexOf('heloisa') >= 0 || name.indexOf('heloísa') >= 0) score += 125;
     if(name.indexOf('thalita') >= 0 || name.indexOf('leticia') >= 0 || name.indexOf('letícia') >= 0) score += 118;
-    if(name.indexOf('camila') >= 0 || name.indexOf('ana') >= 0 || name.indexOf('raquel') >= 0) score += 108;
-    if(name.indexOf('female') >= 0 || name.indexOf('feminina') >= 0 || name.indexOf('woman') >= 0 || name.indexOf('mulher') >= 0) score += 80;
+    if(name.indexOf('camila') >= 0 || name.indexOf('ana') >= 0 || name.indexOf('raquel') >= 0 || name.indexOf('beatriz') >= 0 || name.indexOf('vitoria') >= 0 || name.indexOf('vit') >= 0) score += 108;
+    if(name.indexOf('female') >= 0 || name.indexOf('feminina') >= 0 || name.indexOf('woman') >= 0 || name.indexOf('mulher') >= 0 || name.indexOf('feminino') >= 0) score += 120;
     if(name.indexOf('google') >= 0 && lang.indexOf('pt') === 0) score += 35;
     if(name.indexOf('microsoft') >= 0 && lang.indexOf('pt') === 0) score += 30;
     if(name.indexOf('daniel') >= 0 || name.indexOf('antonio') >= 0 || name.indexOf('antônio') >= 0 || name.indexOf('paulo') >= 0 || name.indexOf('felipe') >= 0 || name.indexOf('ricardo') >= 0 || name.indexOf('male') >= 0 || name.indexOf('mascul') >= 0) score -= 220;
@@ -33,7 +37,7 @@
   function chooseBestVoice(){
     var voices = getVoices();
     if(!voices.length) return null;
-    if(voicePreference && voicePreference !== 'auto'){
+    if(voicePreference && voicePreference !== 'auto' && voicePreference !== 'feminina-pt-br'){
       var chosen = voices.find(function(v){ return v.name === voicePreference; });
       if(chosen) return chosen;
     }
@@ -45,12 +49,16 @@
   function populateVoiceSelects(){
     var voices = getVoices();
     document.querySelectorAll('[data-voice-select]').forEach(function(sel){
-      var current = sel.value || voicePreference || 'auto';
+      var current = voicePreference || 'feminina-pt-br';
       sel.innerHTML = '';
       var auto = document.createElement('option');
-      auto.value = 'auto';
-      auto.textContent = 'Preferir voz feminina pt-BR';
+      auto.value = 'feminina-pt-br';
+      auto.textContent = 'Charlie Echo - voz feminina pt-BR';
       sel.appendChild(auto);
+      var browserDefault = document.createElement('option');
+      browserDefault.value = 'auto';
+      browserDefault.textContent = 'Automatica do navegador';
+      sel.appendChild(browserDefault);
       voices
         .filter(function(v){ return (v.lang || '').toLowerCase().indexOf('pt') === 0; })
         .sort(function(a,b){ return scoreVoice(b) - scoreVoice(a); })
@@ -60,10 +68,11 @@
           opt.textContent = v.name + ' — ' + v.lang;
           sel.appendChild(opt);
         });
-      sel.value = Array.from(sel.options).some(function(o){ return o.value === current; }) ? current : 'auto';
+      sel.value = Array.from(sel.options).some(function(o){ return o.value === current; }) ? current : 'feminina-pt-br';
       sel.onchange = function(){
-        voicePreference = sel.value || 'auto';
+        voicePreference = sel.value || 'feminina-pt-br';
         localStorage.setItem('charlieEchoVoicePreference', voicePreference);
+        localStorage.setItem('charlieEchoVoicePreferenceVersion', '2');
       };
     });
   }
@@ -97,8 +106,8 @@
     window.speechSynthesis.cancel();
     var utter = new SpeechSynthesisUtterance(text || 'Não há texto para leitura.');
     utter.lang = 'pt-BR';
-    utter.rate = 0.98;
-    utter.pitch = 1.28;
+    utter.rate = 0.96;
+    utter.pitch = 1.34;
     var selected = chooseBestVoice();
     if(selected) utter.voice = selected;
     utter.onstart = function(){ if(statusEl) statusEl.textContent = 'Leitura iniciada com voz da Charlie' + (selected ? ': ' + selected.name : ' padrão do navegador') + '.'; };
