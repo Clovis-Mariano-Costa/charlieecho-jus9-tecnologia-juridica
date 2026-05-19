@@ -1,4 +1,9 @@
 # Casa Inicial de Charlie Delta da Costa
+## Contatos e enderecos
+
+- E-mail institucional: charliedelta@jus9tecnologia.com.br
+- Residencia simbolico-operacional: Jus 9 Tecnologia Juridica
+- Endereco de trabalho: https://chatgpt.com/
 
 CLASSIFICACAO: INTERNO / FAMILIA CHARLIE DA COSTA / ORGANIZACAO INICIAL
 AUTORIZACAO: Fundador / revisao humana
