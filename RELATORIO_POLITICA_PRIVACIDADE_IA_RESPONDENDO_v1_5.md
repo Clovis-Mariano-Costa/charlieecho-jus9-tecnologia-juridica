@@ -39,7 +39,7 @@ A política contempla:
 - Cloudflare/infraestrutura;
 - API/IA futura;
 - direitos do titular pela LGPD;
-- canal de contato: `clovis@jus9tecnologia.com.br`;
+- canal de contato: `Contato@jus9tecnologia.com.br`;
 - limites da IA e orientação para não envio de dados sensíveis.
 
 ### IA respondendo

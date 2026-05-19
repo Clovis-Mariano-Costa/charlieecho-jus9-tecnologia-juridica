@@ -1,7 +1,7 @@
 # Política de Privacidade — Charlie Echo / Jus 9 Tecnologia Jurídica
 
 **Versão:** v1.5  
-**Canal de contato:** clovis@jus9tecnologia.com.br  
+**Canal de contato:** Contato@jus9tecnologia.com.br
 **Referência institucional:** https://www.jus9tecnologia.com.br  
 **Página pública:** https://charlieecho.jus9tecnologia.com.br/politica-de-privacidade.html
 
@@ -39,7 +39,7 @@ A hospedagem pode usar infraestrutura Cloudflare. Quando houver IA real conectad
 
 O titular pode solicitar, quando aplicável, confirmação, acesso, correção, anonimização, bloqueio, eliminação, portabilidade, informações sobre compartilhamento e revogação de consentimento.
 
-Contato: clovis@jus9tecnologia.com.br
+Contato: Contato@jus9tecnologia.com.br
 
 ## 8. Limites
 

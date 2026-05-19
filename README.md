@@ -92,4 +92,4 @@ a origem, a assinatura institucional nem os direitos autorais da Jus 9 Tecnologi
 - [MVP](https://www.jus9tecnologia.com.br/mvp)
 - [Charlie Echo](https://charlieecho.jus9tecnologia.com.br/)
 - [Charlie Echo Social](https://jus9verde.jus9tecnologia.com.br/charlie-echo-social)
-- [Contato](mailto:clovis@jus9tecnologia.com.br)
+- [Contato](mailto:Contato@jus9tecnologia.com.br)
