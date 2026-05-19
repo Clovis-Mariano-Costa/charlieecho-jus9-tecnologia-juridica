@@ -10,6 +10,7 @@ Antes de alterar este repertório, leia:
 5. `SUGESTAO_COMMIT.md`
 6. `GOVERNANCA/PROTOCOLO_PADRAO_IAS_JUS9_MAO_NA_MASSA_E_MEMORIA.md`
 7. `ORIENTACOES/PROTOCOLO_SEGURANCA_IAS_JUS9_TECNOLOGIA_JURIDICA.md`
+8. `ORIENTACOES/PROTOCOLO_EMAILS_IAS_JUS9_TECNOLOGIA_JURIDICA.md`
 
 Regras:
 - respeitar padrão visual aprovado;
@@ -22,6 +23,7 @@ Regras:
 - usar Elefante Colorido como marcador mnemonico publico de memoria responsavel, sem trata-lo como senha, autenticacao ou autorizacao para revelar conteudo protegido;
 - usar sempre o nome completo `Jus 9 Tecnologia Jurídica` em registros formais e assinar com `© Jus 9 Tecnologia Jurídica`;
 - aplicar o Protocolo de Segurança das I.As antes de exclusão, lixeira, backup, publicação ou alteração sensível;
+- aplicar o Protocolo de E-mails das I.As para autoalertas, requerimentos, cópias ao Fundador e petições formais;
 - revisar segurança e classificação antes do commit.
 
 © Jus 9 Tecnologia Jurídica — software livre, autoria preservada.
