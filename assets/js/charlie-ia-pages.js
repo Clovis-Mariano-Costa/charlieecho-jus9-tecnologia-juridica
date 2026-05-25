@@ -159,19 +159,55 @@
     return downloadBlob(base + '.txt', safe, 'text/plain;charset=utf-8', statusEl);
   }
 
+  function filenameFromDisposition(header, fallback){
+    var match = /filename="([^"]+)"/i.exec(header || '');
+    return match && match[1] ? match[1] : fallback;
+  }
+
+  async function downloadResponseViaServer(text, kind, ext, statusEl){
+    var safe = (text || '').trim();
+    if(!safe){ if(statusEl) statusEl.textContent = 'Nao ha conteudo suficiente para baixar.'; return; }
+    var base = slugify(kind) + '_' + timestamp();
+    var fallbackName = base + '.' + (ext === 'md' ? 'md' : 'txt');
+    try{
+      if(statusEl) statusEl.textContent = 'Preparando arquivo pelo servidor...';
+      var response = await fetch('/api/gerar-download', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: base, content: safe, format: ext === 'md' ? 'md' : 'txt' })
+      });
+      if(!response.ok) throw new Error('HTTP ' + response.status);
+      var blob = await response.blob();
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = filenameFromDisposition(response.headers.get('Content-Disposition'), fallbackName);
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 800);
+      if(statusEl) statusEl.textContent = 'Arquivo gerado pelo servidor: ' + a.download;
+    } catch(err){
+      if(statusEl) statusEl.textContent = 'Servidor de download indisponivel; usando fallback local.';
+      downloadResponse(text, kind, ext, statusEl);
+    }
+  }
+
   function showDownloadMenu(button, text, kind, statusEl){
     var old = document.querySelector('.download-popover'); if(old) old.remove();
     var menu = document.createElement('div');
     menu.className = 'download-popover';
-    menu.innerHTML = '<button type="button" data-format="txt">Baixar .txt</button><button type="button" data-format="md">Baixar .md</button><button type="button" data-format="link">Gerar link futuramente</button>';
+    menu.innerHTML = '<button type="button" data-format="txt">Baixar .txt local</button><button type="button" data-format="md">Baixar .md local</button><button type="button" data-format="server-txt">Baixar .txt pelo servidor</button><button type="button" data-format="server-md">Baixar .md pelo servidor</button>';
     document.body.appendChild(menu);
     var rect = button.getBoundingClientRect();
     menu.style.left = Math.min(rect.left, window.innerWidth - 240) + 'px';
     menu.style.top = (rect.bottom + window.scrollY + 8) + 'px';
     menu.addEventListener('click', function(ev){
       var fmt = ev.target.getAttribute('data-format'); if(!fmt) return;
-      if(fmt === 'link'){
-        if(statusEl) statusEl.textContent = 'Link real de download depende da rota /api/gerar-download com armazenamento. Por enquanto, use .txt ou .md local.';
+      if(fmt === 'server-txt'){
+        downloadResponseViaServer(text, kind, 'txt', statusEl);
+      } else if(fmt === 'server-md'){
+        downloadResponseViaServer(text, kind, 'md', statusEl);
       } else {
         downloadResponse(text, kind, fmt, statusEl);
       }
