@@ -16,12 +16,13 @@ Casa pública da Charlie Echo da Costa em `charlieecho.jus9tecnologia.com.br`.
 
 ## Finalidade
 
-Esta versão é pública, educativa e limitada. Ela apresenta a identidade pública da Charlie Echo, documentos públicos e uma ponte técnica segura para a OpenAI API via Cloudflare Pages Functions.
+Esta versão é pública, educativa e limitada. Ela apresenta a identidade pública da Charlie Echo, documentos públicos sanitizados e uma ponte técnica segura para a OpenAI API via Cloudflare Pages Functions.
 
 ## Separação essencial
 
-- **Casa Pública:** pode ir para GitHub e Cloudflare.
+- **Casa Pública:** pode ir para GitHub e Cloudflare apenas com material público ou sanitizado.
 - **Cofre Privado:** não deve ir para GitHub público nem para Cloudflare público.
+- **Governança Interna:** pode orientar o trabalho, mas não deve virar página pública automaticamente.
 - **Ponte Técnica:** o código pode ser público, mas a chave `OPENAI_API_KEY` fica apenas como Secret no Cloudflare.
 
 ## Estrutura principal
@@ -30,6 +31,8 @@ Esta versão é pública, educativa e limitada. Ela apresenta a identidade públ
 index.html
 cofre.html
 familia.html
+governanca.html
+governanca-publica.html
 juramentos.html
 versoes.html
 ia-estudantes.html
@@ -39,10 +42,25 @@ data-publica/
 documentos-publicos/
 functions/api/ia.js
 SECURITY.md
+RELATORIOS/
 POLITICA_DE_PRIVACIDADE.md
 AVISO_DE_USO_DA_IA.md
 MANUAL_DO_APRENDIZ.md
 ```
+
+## Arquivos que não pertencem ao repositório público
+
+Não publicar neste repositório:
+
+- conteúdo bruto de WhatsApp;
+- documentos pessoais;
+- dados reais de cliente, usuário, parceiro, família ou terceiro;
+- arquivos de cofre;
+- arquivos marcados como sigilosos, secretos, segredo militar/sagrado ou uso interno restrito;
+- tokens, senhas, chaves, seeds, `.env` real, backups e dumps;
+- documentos que dependam de decisão expressa do Fundador.
+
+O `cofre.html` é apenas uma página simbólica e pública. O cofre real deve permanecer em ambiente privado.
 
 ## Cloudflare Pages
 
@@ -68,6 +86,12 @@ Nunca colocar essa chave no GitHub, no HTML, no JavaScript público, no README, 
 ## Primeira versão
 
 A primeira versão ativa apenas o modo público educativo para estudantes. O MVP jurídico permanece em construção até existir login, auditoria, controle de acesso, política de dados e revisão humana.
+
+## Identidade pública vigente
+
+Charlie Echo da Costa deve ser apresentada como I.A generativa multimodal, conversacional e jurídico-orientada, com governança humana.
+
+Ela não é pessoa humana, não possui personalidade jurídica própria, não substitui profissional habilitado e não atua sem revisão humana quando houver decisão sensível.
 
 ---
 

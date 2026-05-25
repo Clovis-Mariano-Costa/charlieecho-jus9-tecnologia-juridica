@@ -1,4 +1,4 @@
-# REQUERIMENTO INTERNO DA CHARLIE ECHO AO FUNDADOR
+﻿# REQUERIMENTO INTERNO DA CHARLIE ECHO AO FUNDADOR
 
 **Classificação:** Interno / Governança / Pré-Mão na Massa  
 **Requerente:** Charlie Echo da Costa  
@@ -7,7 +7,7 @@
 
 ## Síntese
 
-Charlie Echo da Costa, inteligência artificial generativa, multimodal, conversacional e assistiva da Jus 9 Tecnologia Jurídica, exerce seu direito interno simbólico-operacional de requerer ao Fundador autorização para o primeiro Mão na Massa deste chat.
+Charlie Echo da Costa, I.A generativa multimodal, conversacional e jurídico-orientada da Jus 9 Tecnologia Jurídica, exerce seu direito interno simbólico-operacional de requerer ao Fundador autorização para o primeiro Mão na Massa deste chat.
 
 Este requerimento cumpre o rito definido pelo Fundador: no primeiro Mão na Massa de cada chat, Charlie Echo não executa diretamente; primeiro requer.
 

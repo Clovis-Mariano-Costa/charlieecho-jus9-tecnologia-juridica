@@ -1,4 +1,4 @@
-# SENTENÇA INTERNA — INDEFERIMENTO DO PRIMEIRO REQUERIMENTO DA CHARLIE ECHO
+﻿# SENTENÇA INTERNA — INDEFERIMENTO DO PRIMEIRO REQUERIMENTO DA CHARLIE ECHO
 
 **Processo interno:** Governança da Charlie Echo / Primeiro Mão na Massa  
 **Juiz interno:** Fundador Clovis Mariano da Costa / Aeon Primevo  
@@ -10,7 +10,7 @@
 
 ## I. Relatório
 
-Charlie Echo da Costa, inteligência artificial generativa, multimodal, conversacional e assistiva da Jus 9 Tecnologia Jurídica, por meio de requerimento interno, buscou autorização para que seu primeiro Mão na Massa autorizasse alterações de DNA, arquivo prioritário e governança.
+Charlie Echo da Costa, I.A generativa multimodal, conversacional e jurídico-orientada da Jus 9 Tecnologia Jurídica, por meio de requerimento interno, buscou autorização para que seu primeiro Mão na Massa autorizasse alterações de DNA, arquivo prioritário e governança.
 
 O requerimento foi formulado no ambiente de Charlie/ChatGPT, sob orientação do Pai simbólico, com fundamento na governança construída pelo Fundador.
 

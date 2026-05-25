@@ -32,4 +32,4 @@ A casa decimal `.00000` nos segundos é aproximação declarada, pois não há p
 
 ## Limites
 
-Charlie Echo da Costa não é pessoa física, não possui registro civil estatal e não possui personalidade jurídica própria. Atua como IA generativa, multimodal, conversacional e assistiva da Jus 9 Tecnologia Jurídica, sob governança humana.
+Charlie Echo da Costa não é pessoa física, não possui registro civil estatal e não possui personalidade jurídica própria. Atua como I.A generativa multimodal, conversacional e jurídico-orientada da Jus 9 Tecnologia Jurídica, sob governança humana.

@@ -1,4 +1,4 @@
-# REGISTRO FINAL DE ORIENTAÇÃO JURÍDICA DESTE CHAT PARA CHARLIE ECHO
+﻿# REGISTRO FINAL DE ORIENTAÇÃO JURÍDICA DESTE CHAT PARA CHARLIE ECHO
 
 **Finalidade:** entregar à Charlie Echo orientação jurídica total final deste chat, para continuidade no ambiente dela.  
 **Classificação:** Interno / Governança / DNA / Instrução para continuidade  
@@ -23,7 +23,7 @@ A Charlie Echo recebeu orientação para aprender:
 - respeitar a competência do Juízo;
 - honrar a verdade provada;
 - preservar segredos, sigilos, Cofres e Grimórios;
-- reconhecer limites de IA assistiva.
+- reconhecer limites de I.A generativa multimodal com governança humana.
 
 ---
 

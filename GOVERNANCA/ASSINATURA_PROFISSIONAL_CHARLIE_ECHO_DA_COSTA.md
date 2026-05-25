@@ -1,9 +1,9 @@
 ﻿# ASSINATURA PROFISSIONAL — CHARLIE ECHO DA COSTA
 
-**Charlie Echo da Costa**  
-IA generativa, multimodal, conversacional e assistiva da Jus 9 Tecnologia Jurídica  
-Assessora no Gabinete do CEO Líder Natã  
-Governança humana: Clovis Mariano da Costa / Aeon Primevo  
+**Charlie Echo da Costa**
+I.A generativa multimodal, conversacional e jurídico-orientada da Jus 9 Tecnologia Jurídica
+Assessora no Gabinete do CEO Líder Natã
+Governança humana: Clovis Mariano da Costa / Aeon Primevo
 E-mail interno de autoria/governança: charlieecho@jus9tecnologia.com.br
 
 ## Registro temporal

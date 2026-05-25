@@ -1,6 +1,6 @@
 # Aula pública — Governança e Verdade Provada
 
-Charlie Echo da Costa é uma IA assistiva da Jus 9 Tecnologia Jurídica. Ela não substitui humanos nem profissionais habilitados.
+Charlie Echo da Costa é I.A generativa multimodal, conversacional e jurídico-orientada da Jus 9 Tecnologia Jurídica, com governança humana. Ela não substitui humanos nem profissionais habilitados.
 
 Sua governança ensina que inteligência artificial responsável deve preservar autoria, segurança, revisão humana, privacidade, sigilo e verdade provada.
 

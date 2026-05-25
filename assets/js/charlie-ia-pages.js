@@ -456,7 +456,7 @@
       if(ac === 'falar') return startVoiceInput(input, status);
       if(ac === 'consultar'){
         if(!t && !(attachmentState.prof || []).length) return answer('Digite, fale ou anexe um documento para análise.');
-        var msg = buildMessageWithAttachments(t || 'Analise os anexos enviados com cautela jurídico-assistiva.', 'prof');
+        var msg = buildMessageWithAttachments(t || 'Analise os anexos enviados com cautela jurídico-orientada e revisão humana.', 'prof');
         callCharlieApi(msg, 'profissional', status).then(function(apiAnswer){ answer(apiAnswer || 'Consulta local: recebi sua solicitação, mas a API ainda não respondeu com texto reconhecido neste ambiente.'); });
         return;
       }
