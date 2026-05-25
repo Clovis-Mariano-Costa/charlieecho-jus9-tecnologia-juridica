@@ -168,7 +168,7 @@
     var safe = (text || '').trim();
     if(!safe){ if(statusEl) statusEl.textContent = 'Nao ha conteudo suficiente para baixar.'; return; }
     var base = slugify(kind) + '_' + timestamp();
-    var serverExt = ext === 'pdf' ? 'pdf' : (ext === 'md' ? 'md' : 'txt');
+    var serverExt = (ext || 'txt').replace(/[^a-z0-9]/gi, '').toLowerCase() || 'txt';
     var fallbackName = base + '.' + serverExt;
     try{
       if(statusEl) statusEl.textContent = 'Preparando arquivo pelo servidor...';
@@ -190,7 +190,7 @@
       if(statusEl) statusEl.textContent = 'Arquivo gerado pelo servidor: ' + a.download;
     } catch(err){
       if(statusEl) statusEl.textContent = 'Servidor de download indisponivel; usando fallback local.';
-      downloadResponse(text, kind, ext === 'pdf' ? 'md' : ext, statusEl);
+      downloadResponse(text, kind, serverExt === 'txt' ? 'txt' : 'md', statusEl);
     }
   }
 
@@ -198,19 +198,17 @@
     var old = document.querySelector('.download-popover'); if(old) old.remove();
     var menu = document.createElement('div');
     menu.className = 'download-popover';
-    menu.innerHTML = '<button type="button" data-format="txt">Baixar .txt local</button><button type="button" data-format="md">Baixar .md local</button><button type="button" data-format="server-txt">Baixar .txt pelo servidor</button><button type="button" data-format="server-md">Baixar .md pelo servidor</button><button type="button" data-format="server-pdf">Baixar .pdf pelo servidor</button>';
+    var serverFormats = ['txt','md','pdf','html','docx','xlsx','pptx','zip','json','csv','ics','vcf','xml','rtf','log','yaml','sql','js','css','svg','tex'];
+    menu.innerHTML = '<button type="button" data-format="txt">Baixar .txt local</button><button type="button" data-format="md">Baixar .md local</button>' +
+      serverFormats.map(function(fmt){ return '<button type="button" data-format="server-' + fmt + '">Baixar .' + fmt + ' pelo servidor</button>'; }).join('');
     document.body.appendChild(menu);
     var rect = button.getBoundingClientRect();
     menu.style.left = Math.min(rect.left, window.innerWidth - 240) + 'px';
     menu.style.top = (rect.bottom + window.scrollY + 8) + 'px';
     menu.addEventListener('click', function(ev){
       var fmt = ev.target.getAttribute('data-format'); if(!fmt) return;
-      if(fmt === 'server-txt'){
-        downloadResponseViaServer(text, kind, 'txt', statusEl);
-      } else if(fmt === 'server-md'){
-        downloadResponseViaServer(text, kind, 'md', statusEl);
-      } else if(fmt === 'server-pdf'){
-        downloadResponseViaServer(text, kind, 'pdf', statusEl);
+      if(fmt.indexOf('server-') === 0){
+        downloadResponseViaServer(text, kind, fmt.replace('server-', ''), statusEl);
       } else {
         downloadResponse(text, kind, fmt, statusEl);
       }
