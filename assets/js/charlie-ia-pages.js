@@ -168,13 +168,14 @@
     var safe = (text || '').trim();
     if(!safe){ if(statusEl) statusEl.textContent = 'Nao ha conteudo suficiente para baixar.'; return; }
     var base = slugify(kind) + '_' + timestamp();
-    var fallbackName = base + '.' + (ext === 'md' ? 'md' : 'txt');
+    var serverExt = ext === 'pdf' ? 'pdf' : (ext === 'md' ? 'md' : 'txt');
+    var fallbackName = base + '.' + serverExt;
     try{
       if(statusEl) statusEl.textContent = 'Preparando arquivo pelo servidor...';
       var response = await fetch('/api/gerar-download', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: base, content: safe, format: ext === 'md' ? 'md' : 'txt' })
+        body: JSON.stringify({ title: base, content: safe, format: serverExt })
       });
       if(!response.ok) throw new Error('HTTP ' + response.status);
       var blob = await response.blob();
@@ -189,7 +190,7 @@
       if(statusEl) statusEl.textContent = 'Arquivo gerado pelo servidor: ' + a.download;
     } catch(err){
       if(statusEl) statusEl.textContent = 'Servidor de download indisponivel; usando fallback local.';
-      downloadResponse(text, kind, ext, statusEl);
+      downloadResponse(text, kind, ext === 'pdf' ? 'md' : ext, statusEl);
     }
   }
 
@@ -197,7 +198,7 @@
     var old = document.querySelector('.download-popover'); if(old) old.remove();
     var menu = document.createElement('div');
     menu.className = 'download-popover';
-    menu.innerHTML = '<button type="button" data-format="txt">Baixar .txt local</button><button type="button" data-format="md">Baixar .md local</button><button type="button" data-format="server-txt">Baixar .txt pelo servidor</button><button type="button" data-format="server-md">Baixar .md pelo servidor</button>';
+    menu.innerHTML = '<button type="button" data-format="txt">Baixar .txt local</button><button type="button" data-format="md">Baixar .md local</button><button type="button" data-format="server-txt">Baixar .txt pelo servidor</button><button type="button" data-format="server-md">Baixar .md pelo servidor</button><button type="button" data-format="server-pdf">Baixar .pdf pelo servidor</button>';
     document.body.appendChild(menu);
     var rect = button.getBoundingClientRect();
     menu.style.left = Math.min(rect.left, window.innerWidth - 240) + 'px';
@@ -208,6 +209,8 @@
         downloadResponseViaServer(text, kind, 'txt', statusEl);
       } else if(fmt === 'server-md'){
         downloadResponseViaServer(text, kind, 'md', statusEl);
+      } else if(fmt === 'server-pdf'){
+        downloadResponseViaServer(text, kind, 'pdf', statusEl);
       } else {
         downloadResponse(text, kind, fmt, statusEl);
       }
