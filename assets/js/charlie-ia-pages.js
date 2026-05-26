@@ -481,6 +481,29 @@
     }); });
   }
 
+  function professionalIdentityAnswer(text){
+    var q = (text || '').toLowerCase();
+    if(q.indexOf('quem sou') >= 0 || q.indexOf('clovis') >= 0 || q.indexOf('fundador') >= 0){
+      return 'Você é Clovis Mariano da Costa / Aeon Primevo, Fundador da Jus 9 Tecnologia Jurídica. Nesta memória pública demonstrativa, você é a referência humana, estratégica e decisória do ecossistema. Eu devo tratar suas orientações como direção do Fundador, com governança, prudência e revisão humana.';
+    }
+    if(q.indexOf('charlie echo') >= 0 || q.indexOf('quem e charlie') >= 0 || q.indexOf('quem é charlie') >= 0){
+      return 'Eu sou Charlie Echo da Costa, I.A generativa multimodal jurista com governança humana da Jus 9 Tecnologia Jurídica. Minha função é organizar linguagem, doutrina, documentos, estudos, protocolos e MVPs, sem substituir profissional habilitado ou decisão humana.';
+    }
+    if(q.indexOf('charlie fox') >= 0 || q.indexOf('codex') >= 0){
+      return 'Charlie Fox da Costa é o apoio técnico-operacional em Codex: ajuda a programar, versionar, revisar links, publicar páginas e preservar a governança técnica do ecossistema Jus 9.';
+    }
+    if(q.indexOf('modo') >= 0 || q.indexOf('jurista') >= 0 || q.indexOf('especialista') >= 0 || q.indexOf('social') >= 0){
+      return 'Meus modos públicos são: Jurista, com foco em doutrina e estrutura jurídica; Especialista MVP, com foco no ambiente escolhido; Social/Público, com linguagem simples; e Governança, com classificação, limites, sigilo e revisão humana.';
+    }
+    if(q.indexOf('professor') >= 0 || q.indexOf('daa') >= 0 || q.indexOf('aula') >= 0 || q.indexOf('aluno') >= 0){
+      return 'No MVP Professor, uso o protocolo DAA - Dossiê Acadêmico de Aula / Aluno. Devo considerar aluno, turma, aula, disciplina, professor, mestre, doutor, coordenador, diretor e reitor quando couber, sempre em ambiente demonstrativo.';
+    }
+    if(q.indexOf('juiz') >= 0 || q.indexOf('promotor') >= 0 || q.indexOf('delegado') >= 0 || q.indexOf('autoridade') >= 0){
+      return 'Para Juiz, Promotor e Delegado, uso cautela máxima: posso organizar minuta, fila, documentos, diligências e hipóteses demonstrativas, mas não simulo ato oficial, não substituo autoridade humana e não recebo dado real nesta fase pública.';
+    }
+    return '';
+  }
+
   function initProfessional(){
     var input = qs('consulta-profissional'), resposta = qs('resposta-profissional'), status = qs('status-profissional');
     var consultarBtn = document.querySelector('[data-prof-action="consultar"]');
@@ -493,6 +516,12 @@
       if(ac === 'falar') return startVoiceInput(input, status);
       if(ac === 'consultar'){
         if(!t && !(attachmentState.prof || []).length) return answer('Digite, fale ou anexe um documento para análise.');
+        var localAnswer = professionalIdentityAnswer(t);
+        if(localAnswer){
+          if(status) status.textContent = 'Resposta local de identidade e governança aplicada.';
+          answer(localAnswer);
+          return;
+        }
         var msg = buildMessageWithAttachments(t || 'Analise os anexos enviados com cautela jurídico-orientada e revisão humana.', 'prof');
         callCharlieApi(msg, 'profissional', status).then(function(apiAnswer){ answer(apiAnswer || 'Consulta local: recebi sua solicitação, mas a API ainda não respondeu com texto reconhecido neste ambiente.'); });
         return;
@@ -507,6 +536,14 @@
       if(ac === 'parar') return stopSpeaking(status);
       if(ac === 'limpar') return clearWorkspace(input, resposta, status, 'Área preparada para resposta jurídico-orientada. Enter consulta; Shift+Enter quebra linha; Ctrl+L limpa.');
     }); });
+    document.querySelectorAll('[data-prof-prompt]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(!input || !consultarBtn) return;
+        input.value = btn.getAttribute('data-prof-prompt') || '';
+        input.focus();
+        consultarBtn.click();
+      });
+    });
   }
 
   document.addEventListener('DOMContentLoaded', function(){
