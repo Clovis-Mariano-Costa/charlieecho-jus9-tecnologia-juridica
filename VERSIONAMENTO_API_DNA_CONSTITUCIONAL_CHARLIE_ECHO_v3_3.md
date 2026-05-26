@@ -17,6 +17,7 @@ Levar para a API segura da Charlie Echo a camada minima operacional do novo paco
 - Registrada a frase: "A Infodigitronica nasce sagrada para inteligencia artificial".
 - Incluida sintese operacional das Tres Leis da Robotica de Isaac Asimov como referencia etica interna.
 - Ampliados protocolos MVP com DAA academico completo, investidor e orgao publico.
+- Reforcada a proibicao de usar "assistencia juridica", "IA assistiva" ou "juridico-assistiva" como identidade principal.
 
 ## Limites
 
