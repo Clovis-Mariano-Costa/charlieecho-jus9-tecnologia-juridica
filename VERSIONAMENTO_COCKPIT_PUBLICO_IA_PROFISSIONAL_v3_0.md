@@ -14,7 +14,7 @@ Melhorar a pagina publica `ia-profissional.html` e a rota `/ia-profissional` par
 - Adicionadas respostas locais de identidade e governanca em `assets/js/charlie-ia-pages.js`.
 - Registrados modos: Jurista, Especialista MVP, Social/Publico e Governanca.
 - Registrados protocolos publicos por MVP: DAJ, DAA, DEJ, DPJ, DMG/DMP/DAP.
-- Ajustada a rota limpa `/ia-profissional` em `_redirects` e em `ia-profissional/index.html`.
+- Ajustada a rota limpa `/ia-profissional` com pagina completa em `ia-profissional/index.html`, sem loop de redirecionamento.
 
 ## Governanca
 

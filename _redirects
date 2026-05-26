@@ -1,8 +1,6 @@
 # Rotas publicas seguras.
 # As rotas limpas seguem por pastas reais com index.html quando existirem.
 
-/ia-profissional /ia-profissional.html 200
-/ia-profissional/ /ia-profissional.html 200
 /COFRE/* /cofre.html 302
 /GOVERNANCA/PETICOES/* /cofre.html 302
 /GOVERNANCA/RECURSOS/* /cofre.html 302

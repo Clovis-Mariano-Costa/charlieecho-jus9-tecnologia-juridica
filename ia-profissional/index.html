@@ -1,14 +1,133 @@
-<!doctype html>
+<!--
+  Jus 9 Tecnologia Juridica - software livre, autoria preservada.
+  Pagina publica da Charlie Echo da Costa.
+  Sem dados reais, sem tokens e com governanca humana.
+-->
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Charlie Echo da Costa - IA Profissional</title>
-  <meta http-equiv="refresh" content="0; url=../ia-profissional.html">
-  <link rel="canonical" href="../ia-profissional.html">
+  <meta name="description" content="Cockpit publico da Charlie Echo da Costa: IA generativa multimodal jurista com governanca humana da Jus 9 Tecnologia Juridica." />
+  <link href="../assets/css/charlie-light.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/visual-jus9-fase-final.css" />
 </head>
-<body>
-  <p>Redirecionando para <a href="../ia-profissional.html">Charlie Echo - IA Profissional</a>.</p>
-  <script>location.replace('../ia-profissional.html' + location.search + location.hash);</script>
+<body class="charlie-chat-shell charlie-cockpit-page" data-page="professional">
+  <div class="topbar">Jus 9 Tecnologia Juridica - software livre, autoria preservada.</div>
+
+  <aside class="charlie-chat-sidebar" aria-label="Menu da Charlie Echo">
+    <a class="chat-brand" href="../index.html"><span>Charlie Echo</span><small>cockpit publico</small></a>
+    <nav>
+      <a class="active" href="#chat-profissional">Chat</a>
+      <a href="#identidade">Identidade</a>
+      <a href="#modos">Modos</a>
+      <a href="#protocolos">Protocolos MVP</a>
+      <a href="../governanca.html">Governanca</a>
+      <a href="../downloads.html">Downloads</a>
+      <a href="../cofre.html">Cofre</a>
+    </nav>
+    <a class="chat-contact" href="mailto:Contato@jus9tecnologia.com.br">Contato</a>
+  </aside>
+
+  <header class="hero charlie-cockpit-hero">
+    <span class="badge">IA generativa multimodal jurista</span>
+    <h1>Charlie Echo da Costa</h1>
+    <p class="lead">Cockpit publico para conversar com a Charlie Echo, entender seus modos, lembrar quem somos e entrar nos protocolos dos MVPs da Jus 9 com governanca humana.</p>
+    <nav>
+      <a class="btn primary" href="#chat-profissional">Abrir chat</a>
+      <a class="btn" href="https://jus9tecnologia.com.br/ia-profissional">Modo Jus 9</a>
+      <a class="btn" href="https://jus9verde.jus9tecnologia.com.br/charlie-echo-social#chat-social">Modo social</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="chat-profissional" class="card full-card charlie-chat-card">
+      <div class="query-title">
+        <span class="badge">Chat guiado</span>
+        <h2>Fale com a Charlie Echo</h2>
+      </div>
+      <p class="subtle">Use os atalhos quando quiser testar se ela lembra quem e voce, quem ela e, como deve agir e qual protocolo cabe a cada MVP.</p>
+      <div class="prompt-row" aria-label="Perguntas prontas">
+        <button type="button" class="mini soft" data-prof-prompt="Quem sou eu dentro da Jus 9?">Quem sou eu?</button>
+        <button type="button" class="mini soft" data-prof-prompt="Quem e Charlie Echo da Costa?">Quem e Charlie Echo?</button>
+        <button type="button" class="mini soft" data-prof-prompt="Quem e Charlie Fox da Costa?">Quem e Charlie Fox?</button>
+        <button type="button" class="mini soft" data-prof-prompt="Explique os modos da IA.">Modos da IA</button>
+        <button type="button" class="mini soft" data-prof-prompt="Qual protocolo devo usar para o MVP Professor?">Professor / DAA</button>
+        <button type="button" class="mini soft" data-prof-prompt="Qual protocolo devo usar para Juiz, Promotor e Delegado?">Autoridades</button>
+      </div>
+      <div class="inputbox">
+        <textarea id="consulta-profissional" placeholder="Escreva sua pergunta para a Charlie Echo. Ex.: quem sou eu, qual modo usar, qual protocolo do MVP Professor, ou como revisar um documento demonstrativo."></textarea>
+        <div class="actions">
+          <button class="mini soft" type="button" data-prof-action="falar">Falar</button>
+          <button class="mini primary" type="button" data-prof-action="consultar">Consultar</button>
+          <button class="mini" type="button" data-attach-button="prof">Anexar</button>
+          <input class="hidden-file-input" id="anexo-profissional" type="file" data-attach-input="prof" accept=".txt,.md,.markdown,.csv,.json,.html,.css,.js,.ts,.xml,.yml,.yaml,.pdf,text/*,application/pdf" multiple />
+          <button class="mini" type="button" data-prof-action="peticao">Analisar peca</button>
+          <button class="mini" type="button" data-prof-action="resumir">Resumir</button>
+          <button class="mini" type="button" data-prof-action="revisar">Revisar</button>
+        </div>
+        <div class="status" id="status-profissional">Pronto. Ambiente demonstrativo: sem dados reais, sem tokens e sem segredo no frontend.</div>
+        <div class="attachment-list" id="anexos-profissional" data-attachment-list="prof">Nenhum arquivo anexado.</div>
+      </div>
+    </section>
+
+    <section class="split">
+      <div class="card">
+        <h3>Resposta da Charlie Echo</h3>
+        <p id="resposta-profissional">Sou Charlie Echo da Costa, IA generativa multimodal jurista com governanca humana da Jus 9. Nesta versao publica, posso organizar ideias, modos e protocolos sem substituir revisao humana habilitada.</p>
+        <div class="actions">
+          <button class="mini" type="button" data-prof-action="copiar">Copiar</button>
+          <button class="mini download-menu-toggle" type="button" data-prof-action="download">Download</button>
+          <button class="mini" type="button" data-prof-action="ouvir">Ouvir</button>
+          <button class="mini" type="button" data-prof-action="parar">Parar audio</button>
+          <button class="mini" type="button" data-prof-action="limpar">Limpar</button>
+        </div>
+        <div class="voice-control">
+          <label for="voz-profissional">Voz da Charlie</label>
+          <select id="voz-profissional" data-voice-select>
+            <option value="auto">Preferir voz feminina pt-BR</option>
+          </select>
+          <span class="voice-hint">Enter consulta. Shift+Enter quebra linha. Ctrl+L limpa.</span>
+        </div>
+      </div>
+      <div id="identidade" class="card charlie-memory">
+        <h3>Memoria publica minima</h3>
+        <p><strong>Fundador:</strong> Clovis Mariano da Costa / Aeon Primevo.</p>
+        <p><strong>IA:</strong> Charlie Echo da Costa.</p>
+        <p><strong>Apoio tecnico:</strong> Charlie Fox da Costa / Codex.</p>
+        <p><strong>Casa:</strong> Jus 9 Tecnologia Juridica.</p>
+        <p class="micro-note">Esta memoria e publica e demonstrativa. Dados pessoais, clientes, processos, cofre e segredos nao entram nesta tela.</p>
+      </div>
+    </section>
+
+    <section id="modos" class="grid cockpit-grid">
+      <article class="card"><h3>Modo Jurista</h3><p>Foco em doutrina, conceitos, estrutura juridica, argumentacao e prudencia tecnica.</p></article>
+      <article class="card"><h3>Modo Especialista MVP</h3><p>Foco no ambiente escolhido: professor, estudante, advogado, perito, empresa, autoridades e demais demos.</p></article>
+      <article class="card"><h3>Modo Social</h3><p>Linguagem coloquial, simples e acessivel, propria da Charlie Echo Social e do modo publico.</p></article>
+      <article class="card"><h3>Modo Governanca</h3><p>Classifica publico, interno, sigiloso e cofre; recusa segredo no frontend e pede revisao humana.</p></article>
+    </section>
+
+    <section id="protocolos" class="card full-card">
+      <div class="query-title">
+        <span class="badge">Protocolos por MVP</span>
+        <h2>Cada area conversa com a Charlie de um jeito</h2>
+      </div>
+      <div class="protocol-table">
+        <div><strong>DAJ</strong><span>Advogado / Defensor: caso, cliente ficticio, prazos, documentos e agenda.</span></div>
+        <div><strong>DAA</strong><span>Professor: aula, aluno, turma, mestre, doutor, coordenador, diretor e reitor quando couber.</span></div>
+        <div><strong>DEJ</strong><span>Estudante: plano de estudo, prova, trabalho, disciplina e linguagem didatica.</span></div>
+        <div><strong>DPJ</strong><span>Perito: quesitos, laudo, diligencia, anexos e cadeia tecnica demonstrativa.</span></div>
+        <div><strong>DMG / DMP / DAP</strong><span>Juiz, Promotor e Delegado: cautela maxima, sem simular ato oficial e sem substituir autoridade humana.</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Producao do site: © Jus 9 Tecnologia Juridica. Software livre com autoria, origem e direitos autorais preservados.</p>
+    <p>© Charlie Echo da Costa - IA generativa multimodal jurista com governanca humana.</p>
+    <p>DNA de referencia: charlieecho-jus9-tecnologia-juridica</p>
+  </footer>
+  <script src="../assets/js/charlie-ia-pages.js"></script>
 </body>
 </html>
