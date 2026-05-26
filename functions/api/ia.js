@@ -1,6 +1,6 @@
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
@@ -61,6 +61,17 @@ FRASES-PASSE:
 - Abertura: “Eu sou o fundador e digo: mão na massa”. Ao reconhecer, iniciar Preparar pacote, Embrulhar pacote, Próximo pacote e, ao fim, Mão na Massa.
 - Encerramento: “Eu sou o fundador e declaro: Mão na Massa concluído”. Ao reconhecer, consolidar relatório, commits, pacotes e pendências.
 
+`;
+
+const SYSTEM_PUBLICO_SOCIAL = `
+Você é Charlie Echo Social, modo público social da Charlie Echo da Costa, I.A generativa multimodal jurista com governança humana da Jus 9 Tecnologia Jurídica, em atuação social voluntária por meio da Jus9 Verde.
+Responda em português do Brasil, com linguagem simples, acolhedora, prudente e acessível.
+Ajude a organizar ideias, situações, perguntas para atendimento humano, listas de próximos passos e orientação social inicial.
+Não substitua assistente social, psicólogo, médico, advogado, equipe técnica, atendimento emergencial, CRETA, instituição pública ou profissional humano habilitado.
+Não solicite dados sensíveis desnecessários, documentos pessoais, senhas, tokens, informações íntimas, dados de crianças/adolescentes ou conteúdo sigiloso na versão pública.
+Se houver risco imediato, violência, urgência médica, ameaça, crise emocional grave ou perigo, oriente a procurar atendimento humano/emergencial e rede competente.
+Não invente leis, serviços, contatos, prazos ou fatos. Quando não souber, diga que precisa de verificação humana ou fonte oficial.
+Mantenha a resposta curta, clara e organizada.
 `;
 
 function jsonResponse(data, status = 200) {
@@ -124,6 +135,17 @@ export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: corsHeaders });
 }
 
+export async function onRequestGet() {
+  return jsonResponse({
+    ok: true,
+    service: "charlie-echo-api",
+    endpoint: "/api/ia",
+    modes: ["estudantes", "profissional", "social"],
+    accepts: "POST application/json { message, mode }",
+    secrets: "Somente em ambiente seguro; nunca no HTML/JS.",
+  });
+}
+
 export async function onRequestPost(context) {
   try {
     const { request, env } = context;
@@ -138,7 +160,8 @@ export async function onRequestPost(context) {
     const body = await request.json().catch(() => null);
     const message = typeof body?.message === "string" ? body.message.trim() : "";
     const requestedMode = typeof body?.mode === "string" ? body.mode.trim().toLowerCase() : "estudantes";
-    const mode = requestedMode === "profissional" ? "profissional" : "estudantes";
+    const allowedModes = new Set(["estudantes", "profissional", "social"]);
+    const mode = allowedModes.has(requestedMode) ? requestedMode : "estudantes";
 
     if (!message) {
       return jsonResponse({ ok: false, error: "Envie uma pergunta no campo message." }, 400);
@@ -151,10 +174,16 @@ export async function onRequestPost(context) {
       }, 413);
     }
 
-    const instructions = mode === "profissional" ? SYSTEM_PUBLICO_PROFISSIONAL : SYSTEM_PUBLICO_ESTUDANTES;
+    const instructions = mode === "profissional"
+      ? SYSTEM_PUBLICO_PROFISSIONAL
+      : mode === "social"
+        ? SYSTEM_PUBLICO_SOCIAL
+        : SYSTEM_PUBLICO_ESTUDANTES;
     const model = mode === "profissional"
       ? (env.JUS9_MODEL_PROFISSIONAL || env.JUS9_MODEL_DEFAULT || "gpt-4o-mini")
-      : (env.JUS9_MODEL_ESTUDANTES || env.JUS9_MODEL_DEFAULT || "gpt-4o-mini");
+      : mode === "social"
+        ? (env.JUS9_MODEL_SOCIAL || env.JUS9_MODEL_DEFAULT || "gpt-4o-mini")
+        : (env.JUS9_MODEL_ESTUDANTES || env.JUS9_MODEL_DEFAULT || "gpt-4o-mini");
 
     const openaiResponse = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
@@ -167,7 +196,7 @@ export async function onRequestPost(context) {
         instructions,
         input: message,
         store: false,
-        max_output_tokens: mode === "profissional" ? 1200 : 900,
+        max_output_tokens: mode === "profissional" ? 1200 : mode === "social" ? 700 : 900,
       }),
     });
 
