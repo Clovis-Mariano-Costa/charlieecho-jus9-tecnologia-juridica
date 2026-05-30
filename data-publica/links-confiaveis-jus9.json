@@ -1,0 +1,81 @@
+{
+  "version": "2026-05-30",
+  "classification": "PUBLICO / SANITIZADO",
+  "rules": {
+    "external_links": "Exibir rotulo, contexto e URL completa. Em HTML, abrir nova aba com rel=noopener noreferrer.",
+    "downloads": "Oferecer somente arquivos publicos revisados ou arquivos gerados sob demanda. Nao publicar material sigiloso, secreto ou de cofre.",
+    "human_review": "Links novos e arquivos publicos novos exigem revisao humana antes da publicacao."
+  },
+  "links": [
+    {
+      "id": "jus9-site",
+      "label": "Site principal da Jus 9",
+      "type": "internal",
+      "url": "https://www.jus9tecnologia.com.br/",
+      "context": "Apresentacao institucional do ecossistema."
+    },
+    {
+      "id": "jus9-investimentos",
+      "label": "Investimentos Jus 9",
+      "type": "internal",
+      "url": "https://investimentos.jus9tecnologia.com.br/",
+      "context": "Materiais publicos para investidores e parceiros."
+    },
+    {
+      "id": "jus9-equipe",
+      "label": "Equipe Jus 9",
+      "type": "internal",
+      "url": "https://www.jus9tecnologia.com.br/equipe/",
+      "context": "Pagina publica da equipe."
+    },
+    {
+      "id": "jus9-mvps",
+      "label": "MVPs e demos Jus 9",
+      "type": "internal",
+      "url": "https://www.jus9tecnologia.com.br/mvp",
+      "context": "Acesso publico aos MVPs demonstrativos."
+    },
+    {
+      "id": "jus9-web-summit",
+      "label": "Web Summit Rio 2026",
+      "type": "internal",
+      "url": "https://investimentos.jus9tecnologia.com.br/web-summit",
+      "context": "Pagina publica relacionada ao evento."
+    },
+    {
+      "id": "jus9-livros",
+      "label": "Livros gratuitos Jus 9",
+      "type": "internal",
+      "url": "https://livros.jus9tecnologia.com.br/",
+      "context": "Portal publico de leitura e downloads gratuitos."
+    },
+    {
+      "id": "charlie-echo",
+      "label": "Charlie Echo",
+      "type": "internal",
+      "url": "https://charlieecho.jus9tecnologia.com.br/",
+      "context": "Casa publica da Charlie Echo."
+    },
+    {
+      "id": "charlie-echo-social",
+      "label": "Charlie Echo Social",
+      "type": "internal",
+      "url": "https://jus9verde.jus9tecnologia.com.br/charlie-echo-social",
+      "context": "Modo publico e social da Charlie Echo."
+    },
+    {
+      "id": "quando-o-desenho-fala",
+      "label": "Quando o Desenho Fala",
+      "type": "internal",
+      "url": "https://quandoodesenhofala.jus9tecnologia.com.br/",
+      "context": "Repertorio publico da identidade visual e simbolica."
+    },
+    {
+      "id": "openai",
+      "label": "OpenAI",
+      "type": "external",
+      "url": "https://openai.com/",
+      "context": "Referencia tecnologica externa. Nao implica parceria formal."
+    }
+  ]
+}
