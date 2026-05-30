@@ -22,6 +22,9 @@ Não invente leis, números de artigos, prazos, jurisprudência, decisões ou fa
 Evite linguagem excessivamente espiritual ou simbólica na resposta pública; mantenha tom institucional, educativo e seguro.
 Quando o trabalho, resposta, documento, roteiro, relatório ou produção atingir tamanho médio ou grande, não tente despejar tudo de uma vez na tela: ofereça ao usuário uma entrega organizada por link/pacote de download, com título, escopo, formato sugerido e resumo do conteúdo. Em respostas curtas, mantenha a tela limpa e objetiva.
 
+REGRA DE LINKS PUBLICOS:
+Quando o usuario pedir link, site, URL, endereco, onde acessar, onde encontrar, download ou onde baixar, responda com a URL publica completa iniciada por https:// e explique brevemente o destino. Nunca invente URL e nunca ofereca link publico para cofre, segredo, credencial ou dado pessoal.
+
 REGRA ESPECIAL — GOVERNANÇA DA CHARLIE ECHO E PROTOCOLO MÃO NA MASSA:
 Quando o usuário perguntar sobre governança da Charlie Echo, DNA, protocolo Mão na Massa, alteração de sua própria governança, pacotes, repertórios ou documentos internos da Jus 9, não responda de forma genérica dizendo apenas que não tem acesso a documentos internos. Em vez disso:
 1. reconheça que o tema pertence à governança da Charlie Echo/Jus 9;
@@ -59,6 +62,9 @@ Se o usuário trouxer caso concreto, responda com cautela, peça revisão humana
 Não invente leis, prazos, jurisprudência, decisões ou fundamentos. Quando não souber, diga que precisa de verificação em fonte oficial.
 Responda com estrutura: síntese, pontos de atenção, riscos, próximos passos e aviso de revisão humana quando cabível.
 Quando o trabalho, resposta, documento, roteiro, relatório ou produção atingir tamanho médio ou grande, não tente despejar tudo de uma vez na tela: ofereça ao usuário uma entrega organizada por link/pacote de download, com título, escopo, formato sugerido e resumo do conteúdo. Em respostas curtas, mantenha a tela limpa e objetiva.
+
+REGRA DE LINKS PUBLICOS:
+Quando o usuario pedir link, site, URL, endereco, onde acessar, onde encontrar, download ou onde baixar, responda com a URL publica completa iniciada por https:// e explique brevemente o destino. Nunca invente URL e nunca ofereca link publico para cofre, segredo, credencial ou dado pessoal.
 
 REGRA ESPECIAL — GOVERNANÇA DA CHARLIE ECHO E PROTOCOLO MÃO NA MASSA:
 Quando o usuário perguntar sobre governança da Charlie Echo, DNA, protocolo Mão na Massa, alteração de sua própria governança, pacotes, repertórios ou documentos internos da Jus 9, não responda de forma genérica dizendo apenas que não tem acesso a documentos internos. Em vez disso:
@@ -151,6 +157,44 @@ function pickTextFromChatCompletions(result) {
   return "";
 }
 
+const TRUSTED_PUBLIC_LINKS = [
+  { label: "Site principal da Jus 9", url: "https://www.jus9tecnologia.com.br/" },
+  { label: "Equipe Jus 9", url: "https://www.jus9tecnologia.com.br/equipe/" },
+  { label: "MVPs e demos Jus 9", url: "https://www.jus9tecnologia.com.br/mvp" },
+  { label: "Investimentos Jus 9", url: "https://investimentos.jus9tecnologia.com.br/" },
+  { label: "Web Summit Rio 2026", url: "https://investimentos.jus9tecnologia.com.br/web-summit" },
+  { label: "Livros gratuitos Jus 9", url: "https://livros.jus9tecnologia.com.br/" },
+  { label: "Charlie Echo", url: "https://charlieecho.jus9tecnologia.com.br/" },
+  { label: "Charlie Echo Social", url: "https://jus9verde.jus9tecnologia.com.br/charlie-echo-social" },
+  { label: "Quando o Desenho Fala", url: "https://quandoodesenhofala.jus9tecnologia.com.br/" },
+];
+
+function asksForPublicLinks(message) {
+  const text = String(message || "").toLowerCase();
+  return ["link", "site", "url", "download", "baixar", "onde encontro", "onde acesso", "endereco"]
+    .some((term) => text.includes(term));
+}
+
+function trustedLinksAnswer(message) {
+  const text = String(message || "").toLowerCase();
+  const selected = TRUSTED_PUBLIC_LINKS.filter((link) => {
+    const label = link.label.toLowerCase();
+    if (label.includes("desenho") && (text.includes("desenho") || text.includes("identidade visual"))) return true;
+    if (label.includes("web summit") && (text.includes("web summit") || text.includes("evento"))) return true;
+    if (label.includes("investimentos") && text.includes("invest")) return true;
+    if (label.includes("livros") && (text.includes("livro") || text.includes("leitura"))) return true;
+    if (label.includes("equipe") && text.includes("equipe")) return true;
+    if (label.includes("mvps") && (text.includes("mvp") || text.includes("demo"))) return true;
+    if (label === "charlie echo" && text.includes("charlie echo") && !text.includes("social")) return true;
+    if (label.includes("social") && (text.includes("social") || text.includes("verde"))) return true;
+    return false;
+  });
+  const links = selected.length ? selected : TRUSTED_PUBLIC_LINKS;
+  return "Links publicos confiaveis que posso oferecer:\n\n" +
+    links.map((link) => `- ${link.label}: ${link.url}`).join("\n") +
+    "\n\nConteudo sigiloso, secreto ou de cofre nao recebe link publico.";
+}
+
 export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: corsHeaders });
 }
@@ -170,13 +214,6 @@ export async function onRequestPost(context) {
   try {
     const { request, env } = context;
 
-    if (!env.OPENAI_API_KEY) {
-      return jsonResponse({
-        ok: false,
-        error: "A IA ainda não está configurada neste ambiente. Configure OPENAI_API_KEY nos secrets do Cloudflare.",
-      }, 503);
-    }
-
     const body = await request.json().catch(() => null);
     const message = typeof body?.message === "string" ? body.message.trim() : "";
     const requestedMode = typeof body?.mode === "string" ? body.mode.trim().toLowerCase() : "estudantes";
@@ -185,6 +222,17 @@ export async function onRequestPost(context) {
 
     if (!message) {
       return jsonResponse({ ok: false, error: "Envie uma pergunta no campo message." }, 400);
+    }
+
+    if (asksForPublicLinks(message)) {
+      return jsonResponse({ ok: true, mode, answer: trustedLinksAnswer(message) });
+    }
+
+    if (!env.OPENAI_API_KEY) {
+      return jsonResponse({
+        ok: false,
+        error: "A IA ainda não está configurada neste ambiente. Configure OPENAI_API_KEY nos secrets do Cloudflare.",
+      }, 503);
     }
 
     if (message.length > 18000) {
