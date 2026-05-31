@@ -83,6 +83,14 @@ OPENAI_API_KEY
 
 Nunca colocar essa chave no GitHub, no HTML, no JavaScript público, no README, em prints ou em mensagens.
 
+## Regressão pública
+
+Execute a bateria da Charlie Echo contra o domínio publicado:
+
+```bash
+node tests/charlie-echo-public-regression.mjs
+```
+
 ## Primeira versão
 
 A primeira versão ativa apenas o modo público educativo para estudantes. O MVP jurídico permanece em construção até existir login, auditoria, controle de acesso, política de dados e revisão humana.
