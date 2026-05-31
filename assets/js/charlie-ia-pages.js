@@ -539,13 +539,15 @@
       if(ac === 'consultar'){
         if(!t && !(attachmentState.prof || []).length) return answer('Digite, fale ou anexe um documento para análise.');
         var localAnswer = professionalIdentityAnswer(t);
-        if(localAnswer){
-          if(status) status.textContent = 'Resposta local de identidade e governança aplicada.';
-          answer(localAnswer);
-          return;
-        }
         var msg = buildMessageWithAttachments(t || 'Analise os anexos enviados com cautela jurídico-orientada e revisão humana.', 'prof');
-        callCharlieApi(msg, 'profissional', status).then(function(apiAnswer){ answer(apiAnswer || 'Consulta local: recebi sua solicitação, mas a API ainda não respondeu com texto reconhecido neste ambiente.'); });
+        callCharlieApi(msg, 'profissional', status).then(function(apiAnswer){
+          if(apiAnswer) return answer(apiAnswer);
+          if(localAnswer){
+            if(status) status.textContent = 'API indisponível. Apliquei resposta local segura de identidade e governança.';
+            return answer(localAnswer);
+          }
+          answer('Consulta local: recebi sua solicitação, mas a API ainda não respondeu com texto reconhecido neste ambiente.');
+        });
         return;
       }
       if(ac === 'peticao') return answer('Análise de petição: anexe o texto/PDF pesquisável da peça ou cole o conteúdo. A leitura local não substitui revisão humana habilitada.');
