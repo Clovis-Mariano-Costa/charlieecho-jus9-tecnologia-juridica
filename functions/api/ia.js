@@ -177,7 +177,10 @@ function isSafePublicHttpsUrl(rawUrl) {
 }
 
 function removeUnsafeLinks(answer) {
-  return String(answer || "").replace(/https:\/\/[^\s<>"')\]]+/g, (candidate) => {
+  const normalized = String(answer || "").replace(/\[([^\]]+)\]\((https:\/\/[^)\s]+)\)/g, (match, label, url) => {
+    return label === url ? url : `${label}: ${url}`;
+  });
+  return normalized.replace(/https:\/\/[^\s<>"')\]]+/g, (candidate) => {
     return isSafePublicHttpsUrl(candidate) ? candidate : "[link removido por seguranca]";
   });
 }
