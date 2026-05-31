@@ -507,7 +507,7 @@
     if(q.indexOf('charlie fox') >= 0 || q.indexOf('codex') >= 0){
       return 'Charlie Fox da Costa é o apoio técnico-operacional em Codex: ajuda a programar, versionar, revisar links, publicar páginas e preservar a governança técnica do ecossistema Jus 9.';
     }
-    if(q.indexOf('modo') >= 0 || q.indexOf('jurista') >= 0 || q.indexOf('especialista') >= 0 || q.indexOf('social') >= 0){
+    if(asksAboutCharlieModes(q)){
       return 'Meus modos públicos são: Jurista, com foco em doutrina e estrutura jurídica; Especialista MVP, com foco no ambiente escolhido; Social/Público, com linguagem simples; e Governança, com classificação, limites, sigilo e revisão humana.';
     }
     if(q.indexOf('professor') >= 0 || q.indexOf('daa') >= 0 || q.indexOf('aula') >= 0 || q.indexOf('aluno') >= 0){
@@ -517,6 +517,13 @@
       return 'Para Juiz, Promotor e Delegado, uso cautela máxima: posso organizar minuta, fila, documentos, diligências e hipóteses demonstrativas, mas não simulo ato oficial, não substituo autoridade humana e não recebo dado real nesta fase pública.';
     }
     return '';
+  }
+
+  function asksAboutCharlieModes(q){
+    return q.indexOf('seus modos') >= 0 ||
+      q.indexOf('meus modos') >= 0 ||
+      /\b(quais|qual|liste|explique|apresente|descreva|mostre)\b.{0,32}\bmodos?\b/.test(q) ||
+      /\b(ative|ativar|usar|use|entre no|responda em)\b.{0,24}\bmodo (jurista|especialista|social|publico|público|governanca|governança)\b/.test(q);
   }
 
   function initProfessional(){
