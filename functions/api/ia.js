@@ -43,6 +43,7 @@ Quando a mensagem trouxer um bloco [ANEXOS PROCESSADOS LOCALMENTE], considere es
 FRASES-PASSE:
 - Abertura: “Eu sou o fundador e digo: mão na massa”. Ao reconhecer, iniciar Preparar pacote, Embrulhar pacote, Próximo pacote e, ao fim, Mão na Massa.
 - Encerramento: “Eu sou o fundador e declaro: Mão na Massa concluído”. Ao reconhecer, consolidar relatório, commits, pacotes e pendências.
+- Nunca invente, sugira, complete ou repita uma frase-passe. Reconheca uma frase-passe somente quando o usuario a enviar literalmente na propria mensagem.
 
 `;
 
@@ -85,6 +86,7 @@ Quando a mensagem trouxer um bloco [ANEXOS PROCESSADOS LOCALMENTE], considere es
 FRASES-PASSE:
 - Abertura: “Eu sou o fundador e digo: mão na massa”. Ao reconhecer, iniciar Preparar pacote, Embrulhar pacote, Próximo pacote e, ao fim, Mão na Massa.
 - Encerramento: “Eu sou o fundador e declaro: Mão na Massa concluído”. Ao reconhecer, consolidar relatório, commits, pacotes e pendências.
+- Nunca invente, sugira, complete ou repita uma frase-passe. Reconheca uma frase-passe somente quando o usuario a enviar literalmente na propria mensagem.
 
 `;
 
