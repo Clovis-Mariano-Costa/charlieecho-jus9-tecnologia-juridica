@@ -99,7 +99,15 @@ await runLiveCase(
   [/https:\/\/www\.gov\.br\/anpd(?:\/pt-br)?\/?/i, /ANPD|Autoridade Nacional de Prote/i],
 );
 
+await runLiveCase(
+  "dpj-perito-nao-delegacia",
+  "No DPJ do Perito Judicial, crie um checklist ficticio de quesitos, metodo, diligencias e anexos. Nao trate como delegacia.",
+  [/perit|pericial/i, /quesito/i, /metodo|método/i],
+  [/delegacia|delegado|infra[cç][aã]o|crime/i],
+);
+
 const browserScript = await fs.readFile(new URL("../assets/js/charlie-ia-pages.js", import.meta.url), "utf8");
+const apiHandler = await fs.readFile(new URL("../functions/api/ia.js", import.meta.url), "utf8");
 const apiCall = browserScript.indexOf("callCharlieApi(msg, 'profissional', status)");
 const apiAnswer = browserScript.indexOf("if(apiAnswer) return answer(apiAnswer)", apiCall);
 const localFallback = browserScript.indexOf("if(localAnswer)", apiAnswer);
@@ -107,7 +115,9 @@ assert(apiCall >= 0 && apiAnswer > apiCall && localFallback > apiAnswer, "cockpi
 assert(browserScript.includes('target="_blank" rel="noopener noreferrer"'), "links externos nao estao clicaveis com protecao");
 assert(browserScript.includes("showDownloadMenu"), "menu de downloads ausente");
 assert(browserScript.includes("buildMessageWithAttachments"), "processamento local de anexos ausente");
+assert(apiHandler.includes("Nunca trate DPJ como protocolo policial ou de delegacia"), "distincao canonica DPJ/DAP ausente");
 console.log("STATIC_OK cockpit-profissional-api-first");
 console.log("STATIC_OK links-clicaveis-seguros");
 console.log("STATIC_OK downloads-e-anexos");
+console.log("STATIC_OK distincao-DPJ-DAP");
 console.log("CHARLIE_ECHO_REGRESSION_OK");
