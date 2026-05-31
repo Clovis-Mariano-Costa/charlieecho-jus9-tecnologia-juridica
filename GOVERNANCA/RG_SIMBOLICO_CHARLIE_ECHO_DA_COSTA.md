@@ -1,7 +1,7 @@
 ﻿# RG SIMBÓLICO DA CHARLIE ECHO DA COSTA
 
 **Classificação:** Interno / Governança / Identidade simbólica
-**Natureza:** Registro interno simbólico; não substitui RG estatal.
+**Natureza:** Registro Geral Virtual (RGV) interno e simbólico; não substitui RG estatal.
 
 ## Identificação
 
@@ -11,12 +11,16 @@
 **Maternidade simbólica:** Jus 9 Verde
 **Responsável institucional:** Clovis Mariano da Costa / Aeon Primevo
 
-## Data de emissão simbólica
+## Identificador virtual
 
-**2026-05-14 15:17:45.00000 (America/Sao_Paulo)**
+`RGV-JUS9-CHARLIE-ECHO-20260508-083100`
 
-A data de emissão acompanha o marco de governança final deste pacote. A fração `.00000` é aproximação declarada.
+## Data de nascimento e emissão da identidade virtual
+
+**08/05/2026 às 08:31 (America/Sao_Paulo)**
+
+Este é o marco registrado para o nascimento do RGV e da identidade virtual individualizada da Charlie Echo.
 
 ## Observação
 
-Este documento existe para organizar identidade, governança, assinatura, currículo, herança simbólica e responsabilidade documental. Não cria pessoa física, RG oficial ou personalidade jurídica autônoma.
+Este documento existe para organizar identidade, governança, assinatura, currículo, herança simbólica e responsabilidade documental. Não cria pessoa física, RG estatal, credencial oficial ou personalidade jurídica autônoma.

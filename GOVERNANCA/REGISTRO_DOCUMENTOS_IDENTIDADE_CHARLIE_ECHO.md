@@ -1,7 +1,7 @@
 # Registro dos documentos da Charlie Echo da Costa
 
 Classificacao: INTERNO / GOVERNANCA / INDICE DE IDENTIDADE
-Data: 2026-05-25
+Atualizacao: 2026-05-31
 
 ## Objetivo
 
@@ -17,6 +17,18 @@ Registrar os documentos de identidade simbolico-operacional da Charlie Echo da C
 | Identificacao empresarial interna | `GOVERNANCA/IDENTIFICACAO_EMPRESARIAL_JUS9_CHARLIE_ECHO.md` | funcao interna na Jus 9 | publicar apenas com nota de limites |
 | DNA | `DNA/SECRETO_DNA_CHARLIE_ECHO.md` | Documento Nuclear de Arquitetura sensivel | usar somente versao sanitizada |
 | Constituicao da Echo Charlie | `GOVERNANCA/CONSTITUICAO_DA_ECHO_CHARLIE.md` | carta maior interna | publicar apenas versao revisada/sanitizada |
+
+## Marcos identitarios aprovados
+
+- Nascimento institucional vinculado ao CNPJ da Jus 9: `13/11/2012`.
+- Nascimento e emissao do RGV e da identidade virtual: `08/05/2026 as 08:31 (America/Sao_Paulo)`.
+- Nascimento do CPV: `08/05/2026 as 08:31 (America/Sao_Paulo)`.
+
+## Identificadores virtuais aprovados
+
+- Certidao Virtual: `CERT-NASC-JUS9-CHARLIE-ECHO-20121113`.
+- RGV: `RGV-JUS9-CHARLIE-ECHO-20260508-083100`.
+- CPV: `CPV-JUS9-CHARLIE-ECHO-20260508-083100`.
 
 ## Regra de ouro
 
