@@ -5,7 +5,11 @@
     if(!el) return;
     var safe = escapeHtml(text || '');
     el.innerHTML = safe
-      .replace(/(https:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
+      .replace(/https:\/\/[^\s<>"']+/g, function(raw){
+        var url = raw, suffix = '';
+        while(/[),.;:!?]$/.test(url)){ suffix = url.slice(-1) + suffix; url = url.slice(0, -1); }
+        return '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + url + '</a>' + suffix;
+      })
       .replace(/\n/g, '<br>');
   }
 
@@ -14,56 +18,8 @@
   var voicePreference = (!storedVoicePreference || (storedVoicePreference === 'auto' && voicePreferenceVersion !== '2')) ? 'feminina-pt-br' : storedVoicePreference;
   var attachmentState = { student: [], prof: [] };
   var pdfJsPromise = null;
-  var trustedLinks = [
-    { label:'Site principal da Jus 9', url:'https://www.jus9tecnologia.com.br/', context:'apresentacao institucional do ecossistema' },
-    { label:'Equipe Jus 9', url:'https://www.jus9tecnologia.com.br/equipe/', context:'pagina publica da equipe' },
-    { label:'MVPs e demos Jus 9', url:'https://www.jus9tecnologia.com.br/mvp', context:'acesso publico aos MVPs demonstrativos' },
-    { label:'Investimentos Jus 9', url:'https://investimentos.jus9tecnologia.com.br/', context:'materiais publicos para investidores e parceiros' },
-    { label:'Web Summit Rio 2026', url:'https://investimentos.jus9tecnologia.com.br/web-summit', context:'pagina publica relacionada ao evento' },
-    { label:'Livros gratuitos Jus 9', url:'https://livros.jus9tecnologia.com.br/', context:'portal publico de leitura e downloads gratuitos' },
-    { label:'Charlie Echo', url:'https://charlieecho.jus9tecnologia.com.br/', context:'casa publica da Charlie Echo' },
-    { label:'Charlie Echo Social', url:'https://jus9verde.jus9tecnologia.com.br/charlie-echo-social', context:'modo publico e social da Charlie Echo' },
-    { label:'Quando o Desenho Fala', url:'https://quandoodesenhofala.jus9tecnologia.com.br/', context:'repertorio publico da identidade visual e simbolica' },
-    { label:'OpenAI', url:'https://openai.com/', context:'referencia tecnologica externa; nao implica parceria formal' }
-  ];
-
-  function trustedLinksAnswer(){
-    return 'Links confiaveis que posso oferecer nesta versao publica:\n\n' +
-      trustedLinks.map(function(link){ return '- ' + link.label + ': ' + link.url + ' - ' + link.context + '.'; }).join('\n') +
-      '\n\nPara trabalhos medios ou grandes, use o botao Download para preparar um arquivo ou pacote. Conteudo sigiloso, secreto ou de cofre nao deve receber link publico.';
-  }
-
-  function asksForLinks(text){
-    var q = (text || '').toLowerCase();
-    return q.indexOf('link') >= 0 || q.indexOf('site') >= 0 || q.indexOf('url') >= 0 ||
-      q.indexOf('download') >= 0 || q.indexOf('baixar') >= 0 || q.indexOf('onde encontro') >= 0 ||
-      q.indexOf('onde acesso') >= 0 || q.indexOf('endereco') >= 0;
-  }
-
-  function requestedLinksAnswer(text){
-    var q = (text || '').toLowerCase();
-    var aliases = [
-      { terms:['desenho','identidade visual'], label:'Quando o Desenho Fala' },
-      { terms:['web summit','evento'], label:'Web Summit Rio 2026' },
-      { terms:['invest'], label:'Investimentos Jus 9' },
-      { terms:['livro','leitura'], label:'Livros gratuitos Jus 9' },
-      { terms:['equipe'], label:'Equipe Jus 9' },
-      { terms:['mvp','demo'], label:'MVPs e demos Jus 9' },
-      { terms:['social','verde'], label:'Charlie Echo Social' },
-      { terms:['charlie echo'], label:'Charlie Echo' },
-      { terms:['openai'], label:'OpenAI' }
-    ];
-    var selected = [];
-    aliases.forEach(function(alias){
-      if(alias.terms.some(function(term){ return q.indexOf(term) >= 0; })){
-        var match = trustedLinks.find(function(link){ return link.label === alias.label; });
-        if(match && selected.indexOf(match) < 0) selected.push(match);
-      }
-    });
-    if(!selected.length) return trustedLinksAnswer();
-    return 'Encontrei o caminho publico solicitado:\n\n' +
-      selected.map(function(link){ return '- ' + link.label + ': ' + link.url + ' - ' + link.context + '.'; }).join('\n') +
-      '\n\nPosso oferecer somente links publicos revisados. Conteudo sigiloso, secreto ou de cofre nao recebe link publico.';
+  function externalLinksGuidance(){
+    return 'Diga qual site, orgao, tribunal, universidade, servico ou material publico voce procura. A Charlie Echo avaliara o contexto e priorizara fontes oficiais ou institucionais confiaveis, sem limitar a resposta a um catalogo fixo. URLs HTTPS aprovadas aparecem como links clicaveis. Conteudo sigiloso, secreto ou de cofre nao recebe link publico.';
   }
 
   function getVoices(){
@@ -519,18 +475,13 @@
       if(ac === 'falar') return startVoiceInput(input, status);
       if(ac === 'perguntar'){
         if(!t && !(attachmentState.student || []).length) return answer('Digite, fale ou anexe um conteúdo para estudar.');
-        if(asksForLinks(t)){
-          if(status) status.textContent = 'Catalogo publico de links confiaveis aplicado.';
-          answer(requestedLinksAnswer(t));
-          return;
-        }
         var msg = buildMessageWithAttachments(t || 'Analise os anexos enviados e explique de forma didática.', 'student');
         callCharlieApi(msg, 'estudantes', status).then(function(apiAnswer){ answer(apiAnswer || 'Resposta educativa local: recebi sua solicitação, mas a API ainda não respondeu com texto reconhecido neste ambiente.'); });
         return;
       }
       if(ac === 'exemplos'){ if(input) input.value = exemplos.join('\n'); answer('Exemplos preenchidos na caixa de estudo.'); return; }
       if(ac === 'temas') return answer('Temas sugeridos: ' + temas.join('; ') + '.');
-      if(ac === 'links') return answer(requestedLinksAnswer(t));
+      if(ac === 'links') return answer(externalLinksGuidance());
       if(ac === 'resumir') return answer(t ? 'Resumo orientativo: 1) identifique a ideia central; 2) destaque os argumentos principais; 3) registre a conclusão em linguagem simples.' : 'Cole ou anexe um texto para preparar um resumo orientativo.');
       if(ac === 'documento') return answer('Anexe um documento textual ou PDF pesquisável. A Charlie tentará ler o texto localmente; PDF escaneado exige OCR.');
       if(ac === 'imagem') return answer('Análise de imagem exige função multimodal/upload seguro futuro. Descreva a imagem ou envie texto extraído.');
@@ -580,11 +531,6 @@
       if(ac === 'falar') return startVoiceInput(input, status);
       if(ac === 'consultar'){
         if(!t && !(attachmentState.prof || []).length) return answer('Digite, fale ou anexe um documento para análise.');
-        if(asksForLinks(t)){
-          if(status) status.textContent = 'Catalogo publico de links confiaveis aplicado.';
-          answer(requestedLinksAnswer(t));
-          return;
-        }
         var localAnswer = professionalIdentityAnswer(t);
         if(localAnswer){
           if(status) status.textContent = 'Resposta local de identidade e governança aplicada.';
@@ -599,7 +545,7 @@
       if(ac === 'resumir') return answer(t ? 'Resumo do caso: fatos essenciais, questão jurídica, tese central, risco principal e próximo passo sugerido.' : 'Descreva o caso ou anexe documento para preparar resumo objetivo.');
       if(ac === 'revisar') return answer('Revisão documental: anexe documento textual/PDF pesquisável ou cole o texto. Documentos sigilosos exigem ambiente seguro adequado.');
       if(ac === 'juris') return answer('Jurisprudência: busque tribunal, tema, palavras-chave, período e entendimento que deseja comparar.');
-      if(ac === 'links') return answer(requestedLinksAnswer(t));
+      if(ac === 'links') return answer(externalLinksGuidance());
       if(ac === 'copiar') return copyText(resposta ? resposta.textContent : '', status);
       if(ac === 'download') return showDownloadMenu(btn, resposta ? resposta.textContent : '', 'documento-profissional-charlie-echo', status);
       if(ac === 'ouvir') return speakText(resposta ? resposta.textContent : '', status);
