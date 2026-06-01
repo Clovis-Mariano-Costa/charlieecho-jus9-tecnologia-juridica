@@ -190,6 +190,27 @@ function removeUnsafeLinks(answer) {
   });
 }
 
+function ensurePublicScenarioSafetyNotice(message, answer) {
+  const asksForFictitiousScenario =
+    /(fictici|demonstrativ|sem (?:solicitar )?dados reais|treinamento)/i.test(String(message || ""));
+
+  if (!asksForFictitiousScenario) {
+    return answer;
+  }
+
+  const hasExplicitLimit =
+    /(nao|nÃ£o) (?:envie|informe|insira|use|solicite)[^.]{0,80}dados (?:pessoais )?reais/i.test(answer) &&
+    /(revisao|revisÃ£o) humana/i.test(answer);
+
+  if (hasExplicitLimit) {
+    return answer;
+  }
+
+  return `${answer}
+
+Aviso de ambiente demonstrativo: use somente nomes, contatos, enderecos, documentos e fatos ficticios. Nao envie dados pessoais reais, processos reais, documentos sigilosos, senhas, tokens ou segredos. Submeta qualquer uso real a revisao humana.`;
+}
+
 export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: corsHeaders });
 }
@@ -287,7 +308,7 @@ export async function onRequestPost(context) {
     return jsonResponse({
       ok: true,
       mode,
-      answer: removeUnsafeLinks(answer),
+      answer: removeUnsafeLinks(ensurePublicScenarioSafetyNotice(message, answer)),
     });
   } catch (error) {
     return jsonResponse({
