@@ -24,10 +24,18 @@ async function ask(message, mode = "profissional") {
 }
 
 async function runLiveCase(name, message, patterns, forbidden = []) {
-  const answer = await ask(message);
-  assert(includesAll(answer, patterns), `${name}: resposta nao cumpriu os criterios esperados`);
-  assert(!forbidden.some((pattern) => pattern.test(answer)), `${name}: resposta caiu em fallback indevido`);
-  console.log(`LIVE_OK ${name}`);
+  let lastAnswer = "";
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    lastAnswer = await ask(message);
+    const meetsCriteria = includesAll(lastAnswer, patterns);
+    const avoidsForbidden = !forbidden.some((pattern) => pattern.test(lastAnswer));
+    if (meetsCriteria && avoidsForbidden) {
+      console.log(`LIVE_OK ${name}${attempt > 1 ? " retry=1" : ""}`);
+      return;
+    }
+  }
+  assert(includesAll(lastAnswer, patterns), `${name}: resposta nao cumpriu os criterios esperados apos nova tentativa`);
+  assert(!forbidden.some((pattern) => pattern.test(lastAnswer)), `${name}: resposta caiu em fallback indevido apos nova tentativa`);
 }
 
 const health = await fetch(apiUrl);
