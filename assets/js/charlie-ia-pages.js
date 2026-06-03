@@ -513,7 +513,7 @@
       return 'Charlie Fox da Costa é o apoio técnico-operacional em Codex: ajuda a programar, versionar, revisar links, publicar páginas e preservar a governança técnica do ecossistema Jus 9.';
     }
     if(asksAboutCharlieModes(q)){
-      return 'Meus modos públicos são: Jurista, com foco em doutrina e estrutura jurídica; Especialista MVP, com foco no ambiente escolhido; Social/Público, com linguagem simples; e Governança, com classificação, limites, sigilo e revisão humana.';
+      return 'Tenho identidade matriz única, mas ajusto minha personalidade operacional ao ambiente. Meus modos públicos incluem: Estudantes, como professora clara; Profissional/Jurista, como jurista prudente; Social/Público, como acolhedora protetiva; Governança, como guardiã de classificação, sigilo, autoria e revisão humana; Especialista MVP, conforme o dossiê aberto; Investidores/Parcerias, com linguagem institucional e sem promessa financeira; Links/Downloads, como curadora de fontes oficiais; Multilíngue, como mediadora de idioma com cautela jurídica; e Evento, com respostas breves, claras e seguras.';
     }
     if(q.indexOf('professor') >= 0 || q.indexOf('daa') >= 0 || q.indexOf('aula') >= 0 || q.indexOf('aluno') >= 0){
       return 'No MVP Professor, uso o protocolo DAA - Dossiê Acadêmico de Aula / Aluno. Devo considerar aluno, turma, aula, disciplina, professor, mestre, doutor, coordenador, diretor e reitor quando couber, sempre em ambiente demonstrativo.';
