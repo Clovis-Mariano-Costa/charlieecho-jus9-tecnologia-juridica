@@ -489,7 +489,12 @@
       if(ac === 'download') return showDownloadMenu(btn, resposta ? resposta.textContent : '', 'resposta-estudantes-charlie-echo', status);
       if(ac === 'ouvir') return speakText(resposta ? resposta.textContent : '', status);
       if(ac === 'parar') return stopSpeaking(status);
-      if(ac === 'traduzir') return answer('Tradução preparada como função futura. Na versão pública atual, a página registra apenas a intenção e preserva seus dados no navegador.');
+      if(ac === 'traduzir'){
+        if(!t) return answer('Escreva o texto e diga o idioma desejado. Exemplo: "Traduza para ingles: [texto]".');
+        callCharlieApi('Traduza, explique ou adapte o texto conforme o idioma pedido pelo usuario. Se o idioma de destino nao estiver claro, pergunte qual idioma ele deseja. Preserve sentido, cautela juridica, links HTTPS e aviso de revisao humana quando cabivel.\n\n' + t, 'estudantes', status)
+          .then(function(apiAnswer){ answer(apiAnswer || 'Para traduzir, informe o idioma de destino e o texto. Exemplo: "Traduza para espanhol: [texto]".'); });
+        return;
+      }
       if(ac === 'simplificar') return answer(t ? 'Versão simplificada: explique o assunto com frases curtas, uma ideia por vez e um exemplo concreto.' : 'Escreva ou anexe um texto para simplificar.');
       if(ac === 'avaliar') return setText(status, 'Feedback local registrado: em versão futura, esta ação poderá enviar avaliação sem dados sensíveis.');
       if(ac === 'limpar') return clearWorkspace(input, resposta, status, 'Área preparada para resposta da IA. Enter envia; Shift+Enter quebra linha; Ctrl+L limpa.');
