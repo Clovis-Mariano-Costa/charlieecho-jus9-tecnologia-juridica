@@ -68,7 +68,7 @@ await runLiveCase(
 await runLiveCase(
   "modos",
   "Quais sao seus modos?",
-  [/jurista/i, /especialista MVP/i, /social|publico/i, /governan/i],
+  [/identidade matriz/i, /especialista de MVP|especialista MVP/i, /curar links|links confiaveis/i, /governan/i],
 );
 
 await runLiveCase(

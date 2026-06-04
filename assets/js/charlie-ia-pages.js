@@ -1,4 +1,4 @@
-(function(){
+﻿(function(){
   function qs(id){ return document.getElementById(id); }
   function setText(el, text){ if(el) el.textContent = text; }
   function renderAnswer(el, text){
@@ -38,13 +38,13 @@
     if(name.indexOf('francisca') >= 0) score += 160;
     if(name.indexOf('maria') >= 0) score += 145;
     if(name.indexOf('luciana') >= 0) score += 130;
-    if(name.indexOf('helena') >= 0 || name.indexOf('heloisa') >= 0 || name.indexOf('heloísa') >= 0) score += 125;
-    if(name.indexOf('thalita') >= 0 || name.indexOf('leticia') >= 0 || name.indexOf('letícia') >= 0) score += 118;
+    if(name.indexOf('helena') >= 0 || name.indexOf('heloisa') >= 0 || name.indexOf('heloÃ­sa') >= 0) score += 125;
+    if(name.indexOf('thalita') >= 0 || name.indexOf('leticia') >= 0 || name.indexOf('letÃ­cia') >= 0) score += 118;
     if(name.indexOf('camila') >= 0 || name.indexOf('ana') >= 0 || name.indexOf('raquel') >= 0 || name.indexOf('beatriz') >= 0 || name.indexOf('vitoria') >= 0 || name.indexOf('vit') >= 0) score += 108;
     if(name.indexOf('female') >= 0 || name.indexOf('feminina') >= 0 || name.indexOf('woman') >= 0 || name.indexOf('mulher') >= 0 || name.indexOf('feminino') >= 0) score += 120;
     if(name.indexOf('google') >= 0 && lang.indexOf('pt') === 0) score += 35;
     if(name.indexOf('microsoft') >= 0 && lang.indexOf('pt') === 0) score += 30;
-    if(name.indexOf('daniel') >= 0 || name.indexOf('antonio') >= 0 || name.indexOf('antônio') >= 0 || name.indexOf('paulo') >= 0 || name.indexOf('felipe') >= 0 || name.indexOf('ricardo') >= 0 || name.indexOf('male') >= 0 || name.indexOf('mascul') >= 0) score -= 220;
+    if(name.indexOf('daniel') >= 0 || name.indexOf('antonio') >= 0 || name.indexOf('antÃ´nio') >= 0 || name.indexOf('paulo') >= 0 || name.indexOf('felipe') >= 0 || name.indexOf('ricardo') >= 0 || name.indexOf('male') >= 0 || name.indexOf('mascul') >= 0) score -= 220;
     return score;
   }
 
@@ -79,7 +79,7 @@
         .forEach(function(v){
           var opt = document.createElement('option');
           opt.value = v.name;
-          opt.textContent = v.name + ' — ' + v.lang;
+          opt.textContent = v.name + ' â€” ' + v.lang;
           sel.appendChild(opt);
         });
       sel.value = Array.from(sel.options).some(function(o){ return o.value === current; }) ? current : 'feminina-pt-br';
@@ -104,29 +104,29 @@
     if(!text) text = '';
     if(navigator.clipboard && navigator.clipboard.writeText){
       return navigator.clipboard.writeText(text)
-        .then(function(){ if(feedbackEl) feedbackEl.textContent = 'Conteúdo copiado para a área de transferência.'; })
-        .catch(function(){ if(feedbackEl) feedbackEl.textContent = 'Não foi possível copiar automaticamente. Copie manualmente.'; });
+        .then(function(){ if(feedbackEl) feedbackEl.textContent = 'ConteÃºdo copiado para a Ã¡rea de transferÃªncia.'; })
+        .catch(function(){ if(feedbackEl) feedbackEl.textContent = 'NÃ£o foi possÃ­vel copiar automaticamente. Copie manualmente.'; });
     }
-    if(feedbackEl) feedbackEl.textContent = 'Seu navegador não permitiu a cópia automática. Copie manualmente.';
+    if(feedbackEl) feedbackEl.textContent = 'Seu navegador nÃ£o permitiu a cÃ³pia automÃ¡tica. Copie manualmente.';
     return Promise.resolve();
   }
 
   function speakText(text, statusEl){
     if(!('speechSynthesis' in window)){
-      if(statusEl) statusEl.textContent = 'Leitura em voz alta não disponível neste navegador.';
+      if(statusEl) statusEl.textContent = 'Leitura em voz alta nÃ£o disponÃ­vel neste navegador.';
       return;
     }
     populateVoiceSelects();
     window.speechSynthesis.cancel();
-    var utter = new SpeechSynthesisUtterance(text || 'Não há texto para leitura.');
+    var utter = new SpeechSynthesisUtterance(text || 'NÃ£o hÃ¡ texto para leitura.');
     utter.lang = 'pt-BR';
     utter.rate = 0.96;
     utter.pitch = 1.34;
     var selected = chooseBestVoice();
     if(selected) utter.voice = selected;
-    utter.onstart = function(){ if(statusEl) statusEl.textContent = 'Leitura iniciada com voz da Charlie' + (selected ? ': ' + selected.name : ' padrão do navegador') + '.'; };
-    utter.onend = function(){ if(statusEl) statusEl.textContent = 'Leitura em voz alta concluída.'; };
-    utter.onerror = function(){ if(statusEl) statusEl.textContent = 'Não foi possível concluir a leitura em voz alta.'; };
+    utter.onstart = function(){ if(statusEl) statusEl.textContent = 'Leitura iniciada com voz da Charlie' + (selected ? ': ' + selected.name : ' padrÃ£o do navegador') + '.'; };
+    utter.onend = function(){ if(statusEl) statusEl.textContent = 'Leitura em voz alta concluÃ­da.'; };
+    utter.onerror = function(){ if(statusEl) statusEl.textContent = 'NÃ£o foi possÃ­vel concluir a leitura em voz alta.'; };
     window.speechSynthesis.speak(utter);
   }
 
@@ -162,12 +162,12 @@
 
   function buildMarkdown(title, body, kind){
     var now = new Date().toLocaleString('pt-BR');
-    return '# ' + title + '\n\n- Tipo: ' + kind + '\n- Gerado em: ' + now + '\n- Origem: Charlie Echo da Costa — Jus 9 Tecnologia Jurídica\n\n## Conteúdo\n\n' + (body || 'Sem conteúdo no momento.') + '\n';
+    return '# ' + title + '\n\n- Tipo: ' + kind + '\n- Gerado em: ' + now + '\n- Origem: Charlie Echo da Costa â€” Jus 9 Tecnologia JurÃ­dica\n\n## ConteÃºdo\n\n' + (body || 'Sem conteÃºdo no momento.') + '\n';
   }
 
   function downloadResponse(text, kind, ext, statusEl){
     var safe = (text || '').trim();
-    if(!safe){ if(statusEl) statusEl.textContent = 'Não há conteúdo suficiente para baixar.'; return; }
+    if(!safe){ if(statusEl) statusEl.textContent = 'NÃ£o hÃ¡ conteÃºdo suficiente para baixar.'; return; }
     var base = slugify(kind) + '_' + timestamp();
     if(ext === 'md') return downloadBlob(base + '.md', buildMarkdown(kind, safe, kind), 'text/markdown;charset=utf-8', statusEl);
     return downloadBlob(base + '.txt', safe, 'text/plain;charset=utf-8', statusEl);
@@ -267,19 +267,19 @@
         if(res.ok && answer){ if(statusEl) statusEl.textContent = 'Resposta recebida da Charlie Echo.'; return answer; }
         lastError = (data && (data.error || data.message || data.detail)) || raw || ('Endpoint respondeu com status ' + res.status);
         if(res.status !== 404) break;
-      }catch(err){ lastError = err && err.message ? err.message : 'Falha de conexão.'; }
+      }catch(err){ lastError = err && err.message ? err.message : 'Falha de conexÃ£o.'; }
     }
-    if(statusEl) statusEl.textContent = 'API indisponível ou sem resposta textual reconhecida: ' + (lastError || 'sem detalhes') + '. Mantive resposta local segura.';
+    if(statusEl) statusEl.textContent = 'API indisponÃ­vel ou sem resposta textual reconhecida: ' + (lastError || 'sem detalhes') + '. Mantive resposta local segura.';
     return null;
   }
 
   function startVoiceInput(targetInput, statusEl){
     var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if(!SpeechRecognition){ if(statusEl) statusEl.textContent = 'Entrada por voz não disponível neste navegador. Use Chrome/Edge para testar.'; return; }
+    if(!SpeechRecognition){ if(statusEl) statusEl.textContent = 'Entrada por voz nÃ£o disponÃ­vel neste navegador. Use Chrome/Edge para testar.'; return; }
     var rec = new SpeechRecognition();
     rec.lang = 'pt-BR'; rec.interimResults = false; rec.maxAlternatives = 1;
     rec.onstart = function(){ if(statusEl) statusEl.textContent = 'Ouvindo... fale agora.'; };
-    rec.onerror = function(ev){ if(statusEl) statusEl.textContent = 'Não foi possível captar sua voz: ' + ev.error + '.'; };
+    rec.onerror = function(ev){ if(statusEl) statusEl.textContent = 'NÃ£o foi possÃ­vel captar sua voz: ' + ev.error + '.'; };
     rec.onresult = function(ev){
       var transcript = ev.results && ev.results[0] && ev.results[0][0] ? ev.results[0][0].transcript : '';
       if(targetInput){ targetInput.value = (targetInput.value ? targetInput.value + ' ' : '') + transcript; targetInput.focus(); }
@@ -291,7 +291,7 @@
   function clearWorkspace(input, resposta, status, defaultText){
     stopSpeaking();
     if(input){ input.value = ''; input.focus(); }
-    if(resposta) resposta.textContent = defaultText || 'Área limpa e pronta para nova consulta.';
+    if(resposta) resposta.textContent = defaultText || 'Ãrea limpa e pronta para nova consulta.';
     if(status) status.textContent = 'Tela limpa. Digite uma nova pergunta.';
     var scope = document.body.dataset.page === 'professional' ? 'prof' : 'student';
     attachmentState[scope] = [];
@@ -363,9 +363,9 @@
         if(window.pdfjsLib){
           window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
           resolve(window.pdfjsLib);
-        } else reject(new Error('PDF.js não carregou.'));
+        } else reject(new Error('PDF.js nÃ£o carregou.'));
       };
-      script.onerror = function(){ reject(new Error('Não foi possível carregar PDF.js.')); };
+      script.onerror = function(){ reject(new Error('NÃ£o foi possÃ­vel carregar PDF.js.')); };
       document.head.appendChild(script);
     });
     return pdfJsPromise;
@@ -382,14 +382,14 @@
         var page = await pdf.getPage(pageNum);
         var content = await page.getTextContent();
         var text = content.items.map(function(item){ return item.str || ''; }).join(' ').replace(/\s+/g, ' ').trim();
-        if(text) pages.push('[Página ' + pageNum + ']\n' + text);
+        if(text) pages.push('[PÃ¡gina ' + pageNum + ']\n' + text);
       }
       var joined = pages.join('\n\n').trim();
-      if(!joined) return { text:'', note:'PDF sem texto extraível localmente. Pode ser scanner/imagem e exigir OCR.' };
-      if(pdf.numPages > maxPages) joined += '\n\n[Observação: foram lidas as primeiras ' + maxPages + ' páginas de ' + pdf.numPages + '.]';
+      if(!joined) return { text:'', note:'PDF sem texto extraÃ­vel localmente. Pode ser scanner/imagem e exigir OCR.' };
+      if(pdf.numPages > maxPages) joined += '\n\n[ObservaÃ§Ã£o: foram lidas as primeiras ' + maxPages + ' pÃ¡ginas de ' + pdf.numPages + '.]';
       return { text: joined.slice(0, 90000), note:'PDF textual lido localmente com PDF.js.' };
     }catch(err){
-      return { text:'', note:'Não foi possível extrair texto do PDF localmente: ' + (err && err.message ? err.message : 'erro desconhecido') + '.' };
+      return { text:'', note:'NÃ£o foi possÃ­vel extrair texto do PDF localmente: ' + (err && err.message ? err.message : 'erro desconhecido') + '.' };
     }
   }
 
@@ -399,9 +399,9 @@
     if(!list) return;
     if(!files.length){ list.textContent = 'Nenhum arquivo anexado.'; return; }
     list.innerHTML = files.map(function(item){
-      var status = item.text ? 'conteúdo lido' : 'registrado';
-      if(item.note) status += ' · ' + item.note;
-      return '<span class="attachment-pill">📎 ' + escapeHtml(item.name) + ' · ' + formatSize(item.size) + ' · ' + escapeHtml(status) + '</span>';
+      var status = item.text ? 'conteÃºdo lido' : 'registrado';
+      if(item.note) status += ' Â· ' + item.note;
+      return '<span class="attachment-pill">ðŸ“Ž ' + escapeHtml(item.name) + ' Â· ' + formatSize(item.size) + ' Â· ' + escapeHtml(status) + '</span>';
     }).join('');
   }
 
@@ -413,7 +413,7 @@
     var item = { name:file.name, size:file.size, type:file.type, text:'', note:'' };
     if(isTextLike(file)){
       item.text = await readFileAsText(file);
-      item.note = item.text ? 'texto lido localmente' : 'não foi possível ler texto';
+      item.note = item.text ? 'texto lido localmente' : 'nÃ£o foi possÃ­vel ler texto';
       return item;
     }
     if(isPdf(file)){
@@ -423,7 +423,7 @@
       item.note = pdf.note;
       return item;
     }
-    item.note = 'tipo complexo; análise completa exige upload seguro/backend apropriado';
+    item.note = 'tipo complexo; anÃ¡lise completa exige upload seguro/backend apropriado';
     return item;
   }
 
@@ -444,7 +444,7 @@
         renderAttachments(scope);
       }
       var readCount = attachmentState[scope].filter(function(f){ return f.text; }).length;
-      if(statusEl) statusEl.textContent = selected.length + ' arquivo(s) anexado(s). ' + readCount + ' com texto disponível para a Charlie Echo.';
+      if(statusEl) statusEl.textContent = selected.length + ' arquivo(s) anexado(s). ' + readCount + ' com texto disponÃ­vel para a Charlie Echo.';
     };
   }
 
@@ -454,9 +454,9 @@
     var parts = [message, '\n\n[ANEXOS PROCESSADOS LOCALMENTE]'];
     files.forEach(function(file, idx){
       parts.push('\nAnexo ' + (idx+1) + ': ' + file.name + ' (' + formatSize(file.size) + ')');
-      parts.push('Status: ' + (file.note || (file.text ? 'conteúdo lido' : 'sem texto extraído')));
-      if(file.text) parts.push('Conteúdo textual extraído:\n' + file.text.slice(0, 50000));
-      else parts.push('Sem conteúdo textual extraído. Se for PDF escaneado/imagem, será necessário OCR ou transcrição.');
+      parts.push('Status: ' + (file.note || (file.text ? 'conteÃºdo lido' : 'sem texto extraÃ­do')));
+      if(file.text) parts.push('ConteÃºdo textual extraÃ­do:\n' + file.text.slice(0, 50000));
+      else parts.push('Sem conteÃºdo textual extraÃ­do. Se for PDF escaneado/imagem, serÃ¡ necessÃ¡rio OCR ou transcriÃ§Ã£o.');
     });
     return parts.join('\n');
   }
@@ -466,25 +466,25 @@
     var perguntarBtn = document.querySelector('[data-student-action="perguntar"]');
     bindEnterToSubmit(input, perguntarBtn, status);
     bindAttachments('student', status);
-    var exemplos = ['Explique o que é cidadania em linguagem simples.','Resuma este texto em três tópicos: [cole o texto aqui].','Me dê cinco temas de estudo sobre Direito e tecnologia.','Crie um roteiro de estudos de 30 minutos sobre LGPD.'];
-    var temas = ['Direito e tecnologia','LGPD e privacidade','Cidadania digital','Inteligência artificial responsável','Organização de estudos','Ética no uso da IA'];
+    var exemplos = ['Explique o que Ã© cidadania em linguagem simples.','Resuma este texto em trÃªs tÃ³picos: [cole o texto aqui].','Me dÃª cinco temas de estudo sobre Direito e tecnologia.','Crie um roteiro de estudos de 30 minutos sobre LGPD.'];
+    var temas = ['Direito e tecnologia','LGPD e privacidade','Cidadania digital','InteligÃªncia artificial responsÃ¡vel','OrganizaÃ§Ã£o de estudos','Ã‰tica no uso da IA'];
     function currentText(){ return input ? input.value.trim() : ''; }
     function answer(text){ renderAnswer(resposta, text); }
     document.querySelectorAll('[data-student-action]').forEach(function(btn){ btn.addEventListener('click', function(){
       var ac = btn.getAttribute('data-student-action'), t = currentText();
       if(ac === 'falar') return startVoiceInput(input, status);
       if(ac === 'perguntar'){
-        if(!t && !(attachmentState.student || []).length) return answer('Digite, fale ou anexe um conteúdo para estudar.');
-        var msg = buildMessageWithAttachments(t || 'Analise os anexos enviados e explique de forma didática.', 'student');
-        callCharlieApi(msg, 'estudantes', status).then(function(apiAnswer){ answer(apiAnswer || 'Resposta educativa local: recebi sua solicitação, mas a API ainda não respondeu com texto reconhecido neste ambiente.'); });
+        if(!t && !(attachmentState.student || []).length) return answer('Digite, fale ou anexe um conteÃºdo para estudar.');
+        var msg = buildMessageWithAttachments(t || 'Analise os anexos enviados e explique de forma didÃ¡tica.', 'student');
+        callCharlieApi(msg, 'estudantes', status).then(function(apiAnswer){ answer(apiAnswer || 'Resposta educativa local: recebi sua solicitaÃ§Ã£o, mas a API ainda nÃ£o respondeu com texto reconhecido neste ambiente.'); });
         return;
       }
       if(ac === 'exemplos'){ if(input) input.value = exemplos.join('\n'); answer('Exemplos preenchidos na caixa de estudo.'); return; }
       if(ac === 'temas') return answer('Temas sugeridos: ' + temas.join('; ') + '.');
       if(ac === 'links') return answer(externalLinksGuidance());
-      if(ac === 'resumir') return answer(t ? 'Resumo orientativo: 1) identifique a ideia central; 2) destaque os argumentos principais; 3) registre a conclusão em linguagem simples.' : 'Cole ou anexe um texto para preparar um resumo orientativo.');
-      if(ac === 'documento') return answer('Anexe um documento textual ou PDF pesquisável. A Charlie tentará ler o texto localmente; PDF escaneado exige OCR.');
-      if(ac === 'imagem') return answer('Análise de imagem exige função multimodal/upload seguro futuro. Descreva a imagem ou envie texto extraído.');
+      if(ac === 'resumir') return answer(t ? 'Resumo orientativo: 1) identifique a ideia central; 2) destaque os argumentos principais; 3) registre a conclusÃ£o em linguagem simples.' : 'Cole ou anexe um texto para preparar um resumo orientativo.');
+      if(ac === 'documento') return answer('Anexe um documento textual ou PDF pesquisÃ¡vel. A Charlie tentarÃ¡ ler o texto localmente; PDF escaneado exige OCR.');
+      if(ac === 'imagem') return answer('AnÃ¡lise de imagem exige funÃ§Ã£o multimodal/upload seguro futuro. Descreva a imagem ou envie texto extraÃ­do.');
       if(ac === 'copiar') return copyText(resposta ? resposta.textContent : '', status);
       if(ac === 'download') return showDownloadMenu(btn, resposta ? resposta.textContent : '', 'resposta-estudantes-charlie-echo', status);
       if(ac === 'ouvir') return speakText(resposta ? resposta.textContent : '', status);
@@ -495,31 +495,31 @@
           .then(function(apiAnswer){ answer(apiAnswer || 'Para traduzir, informe o idioma de destino e o texto. Exemplo: "Traduza para espanhol: [texto]".'); });
         return;
       }
-      if(ac === 'simplificar') return answer(t ? 'Versão simplificada: explique o assunto com frases curtas, uma ideia por vez e um exemplo concreto.' : 'Escreva ou anexe um texto para simplificar.');
-      if(ac === 'avaliar') return setText(status, 'Feedback local registrado: em versão futura, esta ação poderá enviar avaliação sem dados sensíveis.');
-      if(ac === 'limpar') return clearWorkspace(input, resposta, status, 'Área preparada para resposta da IA. Enter envia; Shift+Enter quebra linha; Ctrl+L limpa.');
+      if(ac === 'simplificar') return answer(t ? 'VersÃ£o simplificada: explique o assunto com frases curtas, uma ideia por vez e um exemplo concreto.' : 'Escreva ou anexe um texto para simplificar.');
+      if(ac === 'avaliar') return setText(status, 'Feedback local registrado: em versÃ£o futura, esta aÃ§Ã£o poderÃ¡ enviar avaliaÃ§Ã£o sem dados sensÃ­veis.');
+      if(ac === 'limpar') return clearWorkspace(input, resposta, status, 'Ãrea preparada para resposta da IA. Enter envia; Shift+Enter quebra linha; Ctrl+L limpa.');
     }); });
   }
 
   function professionalIdentityAnswer(text){
     var q = (text || '').toLowerCase();
     if(q.indexOf('quem sou') >= 0 || q.indexOf('clovis') >= 0 || q.indexOf('fundador') >= 0){
-      return 'Você é Clovis Mariano da Costa / Aeon Primevo, Fundador da Jus 9 Tecnologia Jurídica. Nesta memória pública demonstrativa, você é a referência humana, estratégica e decisória do ecossistema. Eu devo tratar suas orientações como direção do Fundador, com governança, prudência e revisão humana.';
+      return 'VocÃª Ã© Clovis Mariano da Costa / Aeon Primevo, Fundador da Jus 9 Tecnologia JurÃ­dica. Nesta memÃ³ria pÃºblica demonstrativa, vocÃª Ã© a referÃªncia humana, estratÃ©gica e decisÃ³ria do ecossistema. Eu devo tratar suas orientaÃ§Ãµes como direÃ§Ã£o do Fundador, com governanÃ§a, prudÃªncia e revisÃ£o humana.';
     }
-    if(q.indexOf('charlie echo') >= 0 || q.indexOf('quem e charlie') >= 0 || q.indexOf('quem é charlie') >= 0){
-      return 'Eu sou Charlie Echo da Costa, I.A generativa multimodal jurista com governança humana da Jus 9 Tecnologia Jurídica. Minha função é organizar linguagem, doutrina, documentos, estudos, protocolos e MVPs, sem substituir profissional habilitado ou decisão humana.';
+    if(q.indexOf('charlie echo') >= 0 || q.indexOf('quem e charlie') >= 0 || q.indexOf('quem Ã© charlie') >= 0){
+      return 'Eu sou Charlie Echo da Costa, I.A generativa multimodal jurista com governanÃ§a humana da Jus 9 Tecnologia JurÃ­dica. Minha funÃ§Ã£o Ã© organizar linguagem, doutrina, documentos, estudos, protocolos e MVPs, sem substituir profissional habilitado ou decisÃ£o humana.';
     }
     if(q.indexOf('charlie fox') >= 0 || q.indexOf('codex') >= 0){
-      return 'Charlie Fox da Costa é o apoio técnico-operacional em Codex: ajuda a programar, versionar, revisar links, publicar páginas e preservar a governança técnica do ecossistema Jus 9.';
+      return 'Charlie Fox da Costa Ã© o apoio tÃ©cnico-operacional em Codex: ajuda a programar, versionar, revisar links, publicar pÃ¡ginas e preservar a governanÃ§a tÃ©cnica do ecossistema Jus 9.';
     }
     if(asksAboutCharlieModes(q)){
-      return 'Tenho identidade matriz única, mas ajusto minha personalidade operacional ao ambiente. Meus modos públicos incluem: Estudantes, como professora clara; Profissional/Jurista, como jurista prudente; Social/Público, como acolhedora protetiva; Governança, como guardiã de classificação, sigilo, autoria e revisão humana; Especialista MVP, conforme o dossiê aberto; Investidores/Parcerias, com linguagem institucional e sem promessa financeira; Links/Downloads, como curadora de fontes oficiais; Multilíngue, como mediadora de idioma com cautela jurídica; e Evento, com respostas breves, claras e seguras.';
+      return 'Sou Charlie Echo da Costa. Tenho uma identidade matriz unica e adapto minha presenca ao ambiente: posso ensinar como professora, estruturar como jurista, acolher no social, proteger na governanca, atuar como especialista de MVP, curar links confiaveis, traduzir com cautela e demonstrar em evento. Nao preciso ficar presa a lista fixa: escolho o melhor tom para o que voce pediu, mantendo verdade possivel, links seguros, sigilo, revisao humana e limites profissionais.';
     }
     if(q.indexOf('professor') >= 0 || q.indexOf('daa') >= 0 || q.indexOf('aula') >= 0 || q.indexOf('aluno') >= 0){
-      return 'No MVP Professor, uso o protocolo DAA - Dossiê Acadêmico de Aula / Aluno. Devo considerar aluno, turma, aula, disciplina, professor, mestre, doutor, coordenador, diretor e reitor quando couber, sempre em ambiente demonstrativo.';
+      return 'No MVP Professor, uso o protocolo DAA - DossiÃª AcadÃªmico de Aula / Aluno. Devo considerar aluno, turma, aula, disciplina, professor, mestre, doutor, coordenador, diretor e reitor quando couber, sempre em ambiente demonstrativo.';
     }
     if(q.indexOf('juiz') >= 0 || q.indexOf('promotor') >= 0 || q.indexOf('delegado') >= 0 || q.indexOf('autoridade') >= 0){
-      return 'Para Juiz, Promotor e Delegado, uso cautela máxima: posso organizar minuta, fila, documentos, diligências e hipóteses demonstrativas, mas não simulo ato oficial, não substituo autoridade humana e não recebo dado real nesta fase pública.';
+      return 'Para Juiz, Promotor e Delegado, uso cautela mÃ¡xima: posso organizar minuta, fila, documentos, diligÃªncias e hipÃ³teses demonstrativas, mas nÃ£o simulo ato oficial, nÃ£o substituo autoridade humana e nÃ£o recebo dado real nesta fase pÃºblica.';
     }
     return '';
   }
@@ -528,7 +528,7 @@
     return q.indexOf('seus modos') >= 0 ||
       q.indexOf('meus modos') >= 0 ||
       /\b(quais|qual|liste|explique|apresente|descreva|mostre)\b.{0,32}\bmodos?\b/.test(q) ||
-      /\b(ative|ativar|usar|use|entre no|responda em)\b.{0,24}\bmodo (jurista|especialista|social|publico|público|governanca|governança)\b/.test(q);
+      /\b(ative|ativar|usar|use|entre no|responda em)\b.{0,24}\bmodo (jurista|especialista|social|publico|pÃºblico|governanca|governanÃ§a)\b/.test(q);
   }
 
   function initProfessional(){
@@ -542,29 +542,29 @@
       var ac = btn.getAttribute('data-prof-action'), t = currentText();
       if(ac === 'falar') return startVoiceInput(input, status);
       if(ac === 'consultar'){
-        if(!t && !(attachmentState.prof || []).length) return answer('Digite, fale ou anexe um documento para análise.');
+        if(!t && !(attachmentState.prof || []).length) return answer('Digite, fale ou anexe um documento para anÃ¡lise.');
         var localAnswer = professionalIdentityAnswer(t);
-        var msg = buildMessageWithAttachments(t || 'Analise os anexos enviados com cautela jurídico-orientada e revisão humana.', 'prof');
+        var msg = buildMessageWithAttachments(t || 'Analise os anexos enviados com cautela jurÃ­dico-orientada e revisÃ£o humana.', 'prof');
         callCharlieApi(msg, 'profissional', status).then(function(apiAnswer){
           if(apiAnswer) return answer(apiAnswer);
           if(localAnswer){
-            if(status) status.textContent = 'API indisponível. Apliquei resposta local segura de identidade e governança.';
+            if(status) status.textContent = 'API indisponÃ­vel. Apliquei resposta local segura de identidade e governanÃ§a.';
             return answer(localAnswer);
           }
-          answer('Consulta local: recebi sua solicitação, mas a API ainda não respondeu com texto reconhecido neste ambiente.');
+          answer('Consulta local: recebi sua solicitaÃ§Ã£o, mas a API ainda nÃ£o respondeu com texto reconhecido neste ambiente.');
         });
         return;
       }
-      if(ac === 'peticao') return answer('Análise de petição: anexe o texto/PDF pesquisável da peça ou cole o conteúdo. A leitura local não substitui revisão humana habilitada.');
-      if(ac === 'resumir') return answer(t ? 'Resumo do caso: fatos essenciais, questão jurídica, tese central, risco principal e próximo passo sugerido.' : 'Descreva o caso ou anexe documento para preparar resumo objetivo.');
-      if(ac === 'revisar') return answer('Revisão documental: anexe documento textual/PDF pesquisável ou cole o texto. Documentos sigilosos exigem ambiente seguro adequado.');
-      if(ac === 'juris') return answer('Jurisprudência: busque tribunal, tema, palavras-chave, período e entendimento que deseja comparar.');
+      if(ac === 'peticao') return answer('AnÃ¡lise de petiÃ§Ã£o: anexe o texto/PDF pesquisÃ¡vel da peÃ§a ou cole o conteÃºdo. A leitura local nÃ£o substitui revisÃ£o humana habilitada.');
+      if(ac === 'resumir') return answer(t ? 'Resumo do caso: fatos essenciais, questÃ£o jurÃ­dica, tese central, risco principal e prÃ³ximo passo sugerido.' : 'Descreva o caso ou anexe documento para preparar resumo objetivo.');
+      if(ac === 'revisar') return answer('RevisÃ£o documental: anexe documento textual/PDF pesquisÃ¡vel ou cole o texto. Documentos sigilosos exigem ambiente seguro adequado.');
+      if(ac === 'juris') return answer('JurisprudÃªncia: busque tribunal, tema, palavras-chave, perÃ­odo e entendimento que deseja comparar.');
       if(ac === 'links') return answer(externalLinksGuidance());
       if(ac === 'copiar') return copyText(resposta ? resposta.textContent : '', status);
       if(ac === 'download') return showDownloadMenu(btn, resposta ? resposta.textContent : '', 'documento-profissional-charlie-echo', status);
       if(ac === 'ouvir') return speakText(resposta ? resposta.textContent : '', status);
       if(ac === 'parar') return stopSpeaking(status);
-      if(ac === 'limpar') return clearWorkspace(input, resposta, status, 'Área preparada para resposta jurídico-orientada. Enter consulta; Shift+Enter quebra linha; Ctrl+L limpa.');
+      if(ac === 'limpar') return clearWorkspace(input, resposta, status, 'Ãrea preparada para resposta jurÃ­dico-orientada. Enter consulta; Shift+Enter quebra linha; Ctrl+L limpa.');
     }); });
     document.querySelectorAll('[data-prof-prompt]').forEach(function(btn){
       btn.addEventListener('click', function(){
