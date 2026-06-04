@@ -52,6 +52,18 @@
         <h2>Fale com a Charlie Echo</h2>
       </div>
       <p class="subtle">Use os atalhos quando quiser testar se ela lembra quem e voce, quem ela e, como deve agir e qual protocolo cabe a cada MVP.</p>
+      <div class="chat-room-panel" data-room-panel="prof">
+        <div>
+          <strong>Salas profissionais</strong>
+          <p>Separe conversas por documento, dossie, pesquisa, aula, cliente ficticio ou MVP. A memoria curta fica dentro da sala ativa.</p>
+        </div>
+        <div class="chat-room-actions">
+          <button class="mini primary" type="button" data-room-new="prof">Nova sala</button>
+          <button class="mini" type="button" data-room-rename="prof">Renomear</button>
+          <button class="mini" type="button" data-room-clear="prof">Limpar sala</button>
+        </div>
+        <div class="chat-room-list" data-room-list="prof"></div>
+      </div>
       <div class="prompt-row" aria-label="Perguntas prontas">
         <button type="button" class="mini soft" data-prof-prompt="Quem sou eu dentro da Jus 9?">Quem sou eu?</button>
         <button type="button" class="mini soft" data-prof-prompt="Quem e Charlie Echo da Costa?">Quem e Charlie Echo?</button>
@@ -66,7 +78,7 @@
           <button class="mini soft" type="button" data-prof-action="falar">Falar</button>
           <button class="mini primary" type="button" data-prof-action="consultar">Consultar</button>
           <button class="mini" type="button" data-attach-button="prof">Anexar</button>
-          <input class="hidden-file-input" id="anexo-profissional" type="file" data-attach-input="prof" accept=".txt,.md,.markdown,.csv,.json,.html,.css,.js,.ts,.xml,.yml,.yaml,.pdf,text/*,application/pdf" multiple />
+          <input class="hidden-file-input" id="anexo-profissional" type="file" data-attach-input="prof" accept=".txt,.md,.markdown,.csv,.json,.html,.css,.js,.ts,.xml,.yml,.yaml,.pdf,.docx,.xlsx,.png,.jpg,.jpeg,.webp,text/*,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/png,image/jpeg,image/webp" multiple />
           <button class="mini" type="button" data-prof-action="peticao">Analisar peca</button>
           <button class="mini" type="button" data-prof-action="resumir">Resumir</button>
           <button class="mini" type="button" data-prof-action="revisar">Revisar</button>

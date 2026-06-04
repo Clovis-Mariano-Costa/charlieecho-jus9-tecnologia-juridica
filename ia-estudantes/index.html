@@ -52,13 +52,25 @@
         <span class="badge">IA Estudantes</span>
         <h2>Faça sua pergunta de estudo</h2>
       </div>
+      <div class="chat-room-panel" data-room-panel="student">
+        <div>
+          <strong>Salas de estudo</strong>
+          <p>Crie conversas separadas para cada aula, texto, imagem ou duvida. A Charlie usa a memoria curta da sala atual.</p>
+        </div>
+        <div class="chat-room-actions">
+          <button class="mini primary" type="button" data-room-new="student">Nova sala</button>
+          <button class="mini" type="button" data-room-rename="student">Renomear</button>
+          <button class="mini" type="button" data-room-clear="student">Limpar sala</button>
+        </div>
+        <div class="chat-room-list" data-room-list="student"></div>
+      </div>
       <div class="inputbox">
         <textarea id="pergunta-estudante" placeholder="Digite sua dúvida de estudo, cole um texto curto ou use o botão Falar..."></textarea>
         <div class="actions">
           <button class="mini soft" type="button" data-student-action="falar">Falar</button>
           <button class="mini primary" type="button" data-student-action="perguntar">Perguntar</button>
           <button class="mini" type="button" data-attach-button="student">Anexar</button>
-          <input class="hidden-file-input" id="anexo-estudante" type="file" data-attach-input="student" accept=".txt,.md,.markdown,.csv,.json,.html,.css,.js,.ts,.xml,.yml,.yaml,.pdf,text/*,application/pdf" multiple />
+          <input class="hidden-file-input" id="anexo-estudante" type="file" data-attach-input="student" accept=".txt,.md,.markdown,.csv,.json,.html,.css,.js,.ts,.xml,.yml,.yaml,.pdf,.docx,.xlsx,.png,.jpg,.jpeg,.webp,text/*,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/png,image/jpeg,image/webp" multiple />
           <button class="mini" type="button" data-student-action="exemplos">Exemplos</button>
           <button class="mini" type="button" data-student-action="temas">Temas de Estudo</button>
           <button class="mini" type="button" data-student-action="links">Links confiaveis</button>
@@ -109,12 +121,12 @@
 
 <section class="links-semanticos-jus9-v1-5" aria-label="Links institucionais Jus 9" style="margin:2rem auto;max-width:1100px;padding:1rem;border:1px solid rgba(212,180,99,.35);border-radius:18px;background:rgba(15,23,42,.04);font-size:.95rem;line-height:1.6">
   <strong>Links Jus 9:</strong>
-  <a href="https://jus9tecnologia.com.br/">Jus 9</a> ?
-  <a href="https://equipe.jus9tecnologia.com.br/">Equipe</a> ?
-  <a href="https://livros.jus9tecnologia.com.br/">Livros e Doutrina</a> ?
-  <a href="https://universidadedofuturo.jus9tecnologia.com.br/">Universidade do Futuro</a> ?
-  <a href="https://charlieecho.jus9tecnologia.com.br/ia-profissional">Charlie Echo</a> ?
-  <a href="https://jus9verde.jus9tecnologia.com.br/charlie-echo-social">Charlie Echo Social</a> ?
+  <a href="https://jus9tecnologia.com.br/">Jus 9</a> |
+  <a href="https://equipe.jus9tecnologia.com.br/">Equipe</a> |
+  <a href="https://livros.jus9tecnologia.com.br/">Livros e Doutrina</a> |
+  <a href="https://universidadedofuturo.jus9tecnologia.com.br/">Universidade do Futuro</a> |
+  <a href="https://charlieecho.jus9tecnologia.com.br/ia-profissional">Charlie Echo</a> |
+  <a href="https://jus9verde.jus9tecnologia.com.br/charlie-echo-social">Charlie Echo Social</a> |
   <a href="mailto:Contato@jus9tecnologia.com.br">Contato</a>
 </section>
 
