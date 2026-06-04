@@ -387,6 +387,12 @@
   function continuationFallback(scope, userText, defaultText){
     var room = getActiveRoom(scope);
     var q = (userText || '').toLowerCase();
+    var intent = intentFallback(scope, userText);
+    if(intent){
+      return room.summary
+        ? intent + '\n\nContinuando pela memoria curta desta sala: ' + room.summary
+        : intent;
+    }
     var looksContinuation = /\b(agora|continue|continuar|sobre isso|sobre o anterior|liste|riscos|checklist|resuma|explique melhor|proximo|próximo)\b/.test(q);
     if(looksContinuation && room.summary){
       return 'Vou continuar pela memoria curta da sala ativa.\n\n' +
@@ -395,6 +401,30 @@
         'Resposta local provisoria: consigo manter o assunto anterior nesta sala. Para uma analise completa, a API segura deve responder usando este mesmo contexto.';
     }
     return defaultText;
+  }
+
+  function intentFallback(scope, userText){
+    var q = (userText || '').toLowerCase();
+    if(!q) return '';
+    if(q.indexOf('responsabilidade social') >= 0 && (q.indexOf('empresa') >= 0 || q.indexOf('empresarial') >= 0)){
+      return 'Responsabilidade social empresarial e o compromisso de uma empresa com os efeitos que ela causa nas pessoas, na comunidade, nos trabalhadores, nos consumidores, nos fornecedores e no meio ambiente.\n\nNa pratica, isso aparece em acoes como trabalho digno, diversidade, acessibilidade, protecao de dados, compras eticas, reducao de impacto ambiental, transparencia, apoio comunitario e prestacao de contas. O ponto principal e que responsabilidade social nao pode ser so propaganda: precisa ter meta, pratica verificavel e coerencia com a atividade da empresa.\n\nUm bom proximo passo e montar uma matriz simples: impacto causado, publico afetado, risco, acao concreta, indicador e responsavel humano pela revisao.';
+    }
+    if(/\b(resuma|resumo|sintetize|sintese)\b/.test(q)){
+      return 'Resumo local: posso condensar o tema em ideia central, pontos essenciais, riscos e proximo passo. Cole o texto ou indique qual parte da conversa devo resumir.';
+    }
+    if(/\b(compare|comparar|diferen[cç]a|versus| vs )\b/.test(q)){
+      return 'Comparacao local: vou separar conceito, finalidade, quando usar, riscos e exemplo pratico. Se envolver Direito, a comparacao precisa de fonte oficial ou revisao humana.';
+    }
+    if(/\b(minuta|modelo|documento|peti[cç][aã]o|contrato|oficio|ofício)\b/.test(q)){
+      return 'Posso estruturar uma minuta demonstrativa com titulo, partes, objetivo, campos a preencher, clausulas ou topicos e aviso de revisao humana. Nao use dados reais neste ambiente publico.';
+    }
+    if(/\b(link|site|url|onde acessar|onde encontro|download|baixar)\b/.test(q)){
+      return externalLinksGuidance();
+    }
+    if(scope === 'student' && /\b(explique|aula|ensine|exemplo|exercicio|exercício)\b/.test(q)){
+      return 'Resposta educativa local: vou explicar por conceito, exemplo pratico, risco, exercicio guiado e proximo passo. Para aprofundar com fontes e contexto maior, a API segura deve responder usando esta mesma sala.';
+    }
+    return '';
   }
 
   function downloadBlob(filename, content, type, statusEl){
