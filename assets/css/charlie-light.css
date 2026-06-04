@@ -124,6 +124,11 @@ button,input,select,textarea{max-width:100%}
   background:#6f4bb2;
   color:#fff;
 }
+.chat-room-pill.archived{
+  opacity:.68;
+  background:#f3eef5;
+  border-style:dashed;
+}
 .chat-room-memory{
   border-left:4px solid #6f4bb2;
   margin:.8rem 0 0;

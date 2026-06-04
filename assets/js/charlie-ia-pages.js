@@ -159,6 +159,7 @@
       title: title || (scope === 'prof' ? 'Sala profissional' : 'Sala de estudo'),
       createdAt: now,
       updatedAt: now,
+      status: 'active',
       summary: '',
       lastUserIntent: '',
       currentTopic: '',
@@ -172,7 +173,10 @@
     try{
       var raw = sessionStorage.getItem(roomStorageKey(scope));
       var parsed = raw ? JSON.parse(raw) : null;
-      if(parsed && parsed.activeId && Array.isArray(parsed.rooms) && parsed.rooms.length) return parsed;
+      if(parsed && parsed.activeId && Array.isArray(parsed.rooms) && parsed.rooms.length) {
+        parsed.rooms.forEach(function(room){ if(!room.status) room.status = 'active'; });
+        return parsed;
+      }
     }catch(err){}
     var first = createRoom(scope, scope === 'prof' ? 'Atendimento profissional' : 'Estudo inicial');
     return { activeId:first.id, rooms:[first] };
@@ -190,8 +194,11 @@
   function getActiveRoom(scope){
     var data = getRoomData(scope);
     var room = data.rooms.find(function(item){ return item.id === data.activeId; });
-    if(!room){
-      room = data.rooms[0] || createRoom(scope);
+    if(!room || room.status === 'deleted'){
+      room = data.rooms.find(function(item){ return item.status !== 'deleted' && item.status !== 'archived'; }) ||
+        data.rooms.find(function(item){ return item.status !== 'deleted'; }) ||
+        createRoom(scope);
+      if(data.rooms.indexOf(room) < 0) data.rooms.unshift(room);
       data.activeId = room.id;
       saveRooms(scope, data);
     }
@@ -208,11 +215,15 @@
     var topic = guessRoomTitle(userText || room.currentTopic || room.title, room.title);
     room.currentTopic = topic;
     room.lastUserIntent = (userText || '').slice(0, 220);
+    var recent = (room.messages || []).slice(-10).map(function(msg){
+      return (msg.role === 'user' ? 'Usuario: ' : 'Charlie: ') + String(msg.content || '').replace(/\s+/g, ' ').slice(0, 180);
+    }).join(' | ');
     var base = 'Assunto ativo: ' + topic + '.';
     if(userText) base += ' Ultima pergunta: ' + userText.slice(0, 220) + '.';
     if(answerText) base += ' Ultima resposta: ' + answerText.slice(0, 220) + '.';
+    if(recent) base += ' Historico recente: ' + recent + '.';
     if((attachmentState[room.scope || ''] || []).length) base += ' Ha anexos ativos nesta sala.';
-    room.summary = base.slice(0, 900);
+    room.summary = base.slice(0, 1800);
     room.updatedAt = new Date().toISOString();
   }
 
@@ -220,8 +231,10 @@
     var list = document.querySelector('[data-room-list="' + scope + '"]');
     if(!list) return;
     var data = getRoomData(scope);
-    list.innerHTML = data.rooms.map(function(room){
-      return '<button class="chat-room-pill' + (room.id === data.activeId ? ' active' : '') + '" type="button" data-room-id="' + room.id + '">' + escapeHtml(room.title) + '</button>';
+    var visibleRooms = data.rooms.filter(function(room){ return room.status !== 'deleted'; });
+    list.innerHTML = visibleRooms.map(function(room){
+      var label = room.status === 'archived' ? room.title + ' (arquivada)' : room.title;
+      return '<button class="chat-room-pill' + (room.id === data.activeId ? ' active' : '') + (room.status === 'archived' ? ' archived' : '') + '" type="button" data-room-id="' + room.id + '">' + escapeHtml(label) + '</button>';
     }).join('');
     list.querySelectorAll('[data-room-id]').forEach(function(btn){
       btn.addEventListener('click', function(){
@@ -268,6 +281,8 @@
     restoreActiveRoom(scope);
     var newBtn = document.querySelector('[data-room-new="' + scope + '"]');
     var renameBtn = document.querySelector('[data-room-rename="' + scope + '"]');
+    var archiveBtn = document.querySelector('[data-room-archive="' + scope + '"]');
+    var deleteBtn = document.querySelector('[data-room-delete="' + scope + '"]');
     var clearBtn = document.querySelector('[data-room-clear="' + scope + '"]');
     if(newBtn) newBtn.addEventListener('click', function(){
       var data = getRoomData(scope);
@@ -287,6 +302,38 @@
       room.title = title.slice(0, 80);
       room.updatedAt = new Date().toISOString();
       saveRooms(scope, getRoomData(scope));
+      renderRooms(scope);
+      restoreActiveRoom(scope);
+    });
+    if(archiveBtn) archiveBtn.addEventListener('click', function(){
+      var data = getRoomData(scope);
+      var room = getActiveRoom(scope);
+      room.status = room.status === 'archived' ? 'active' : 'archived';
+      room.updatedAt = new Date().toISOString();
+      if(room.status === 'archived'){
+        var next = data.rooms.find(function(item){ return item.id !== room.id && item.status !== 'deleted' && item.status !== 'archived'; });
+        if(next) data.activeId = next.id;
+      } else {
+        data.activeId = room.id;
+      }
+      saveRooms(scope, data);
+      renderRooms(scope);
+      restoreActiveRoom(scope);
+    });
+    if(deleteBtn) deleteBtn.addEventListener('click', function(){
+      var data = getRoomData(scope);
+      var room = getActiveRoom(scope);
+      if(!window.confirm('Excluir esta sala localmente? Esta acao remove a conversa desta sessao.')) return;
+      room.status = 'deleted';
+      room.updatedAt = new Date().toISOString();
+      var next = data.rooms.find(function(item){ return item.status !== 'deleted' && item.status !== 'archived'; }) ||
+        data.rooms.find(function(item){ return item.status !== 'deleted'; });
+      if(!next){
+        next = createRoom(scope, scope === 'prof' ? 'Atendimento profissional' : 'Estudo inicial');
+        data.rooms.unshift(next);
+      }
+      data.activeId = next.id;
+      saveRooms(scope, data);
       renderRooms(scope);
       restoreActiveRoom(scope);
     });
@@ -312,6 +359,13 @@
       parts.push(room.summary);
       parts.push('Se a pergunta atual for continuacao, use este contexto. Se ficar ambiguo, pergunte confirmacao curta.');
     }
+    var recent = (room.messages || []).slice(-16);
+    if(recent.length){
+      parts.push('[HISTORICO RECENTE DA SALA]');
+      parts.push(recent.map(function(msg){
+        return (msg.role === 'user' ? 'Usuario: ' : 'Charlie: ') + String(msg.content || '').slice(0, 700);
+      }).join('\n'));
+    }
     parts.push(message);
     return parts.join('\n\n');
   }
@@ -322,7 +376,7 @@
     room.messages = room.messages || [];
     if(userText) room.messages.push({ role:'user', content:userText, createdAt:new Date().toISOString() });
     if(answerText) room.messages.push({ role:'assistant', content:answerText, createdAt:new Date().toISOString() });
-    room.messages = room.messages.slice(-12);
+    room.messages = room.messages.slice(-24);
     room.attachments = attachmentState[scope] || [];
     summarizeForMemory(room, userText, answerText);
     saveRooms(scope, getRoomData(scope));
@@ -466,7 +520,7 @@
               summary: roomContext.summary || '',
               currentTopic: roomContext.currentTopic || '',
               lastUserIntent: roomContext.lastUserIntent || '',
-              messages: (roomContext.messages || []).slice(-6)
+              messages: (roomContext.messages || []).slice(-16)
             } : null
           })
         });

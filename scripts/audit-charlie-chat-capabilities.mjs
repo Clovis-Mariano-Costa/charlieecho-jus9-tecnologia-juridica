@@ -26,6 +26,9 @@ for (const file of htmlFiles) {
   if (/ia-(estudantes|profissional)/.test(file)) {
     if (!html.includes('chat-room-panel')) failures.push(`${file}: painel de salas ausente.`);
     if (!html.includes('charlie-ia-pages.js?v=3.7')) failures.push(`${file}: script sem versao v3.7 para evitar cache.`);
+    if (!html.includes('data-room-archive') || !html.includes('data-room-delete')) {
+      failures.push(`${file}: botoes arquivar/excluir ausentes.`);
+    }
     if (!html.includes('.png') || !html.includes('.docx') || !html.includes('.xlsx')) {
       failures.push(`${file}: tipos de anexo ampliados ausentes.`);
     }
@@ -42,6 +45,12 @@ if (js.includes("window.prompt('Nome da nova sala:'")) {
 }
 if (!js.includes('continuationFallback')) {
   failures.push('charlie-ia-pages.js: fallback de continuidade ausente.');
+}
+if (!js.includes("room.messages.slice(-24)") || !js.includes("slice(-16)")) {
+  failures.push('charlie-ia-pages.js: memoria ampliada de sala ausente.');
+}
+if (!js.includes("data-room-archive") || !js.includes("data-room-delete") || !js.includes("room.status = 'deleted'")) {
+  failures.push('charlie-ia-pages.js: arquivar/excluir sala ausente.');
 }
 
 const cssPath = path.join(root, 'assets/css/charlie-light.css');

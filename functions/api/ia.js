@@ -287,12 +287,21 @@ export async function onRequestPost(context) {
       }, 503);
     }
 
+    const recentMessages = Array.isArray(room?.messages)
+      ? room.messages.slice(-16).map((msg) => {
+          const role = msg?.role === "assistant" ? "Charlie" : "Usuario";
+          const content = typeof msg?.content === "string" ? msg.content.replace(/\s+/g, " ").slice(0, 700) : "";
+          return content ? `${role}: ${content}` : "";
+        }).filter(Boolean).join("\n")
+      : "";
+
     const roomContext = room ? [
       "[MEMORIA CURTA DA SALA]",
       room.title ? `Sala: ${String(room.title).slice(0, 120)}` : "",
       room.summary ? `Resumo: ${String(room.summary).slice(0, 1200)}` : "",
       room.currentTopic ? `Assunto ativo: ${String(room.currentTopic).slice(0, 240)}` : "",
       room.lastUserIntent ? `Ultima intencao: ${String(room.lastUserIntent).slice(0, 240)}` : "",
+      recentMessages ? `[HISTORICO RECENTE]\n${recentMessages}` : "",
       "Use esta memoria apenas para continuar a conversa atual. Se a pergunta atual for ambigua, pergunte confirmacao curta."
     ].filter(Boolean).join("\n") : "";
 
