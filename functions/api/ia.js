@@ -271,6 +271,7 @@ export async function onRequestPost(context) {
 
     const body = await request.json().catch(() => null);
     const message = typeof body?.message === "string" ? body.message.trim() : "";
+    const room = body?.room && typeof body.room === "object" ? body.room : null;
     const requestedMode = typeof body?.mode === "string" ? body.mode.trim().toLowerCase() : "estudantes";
     const allowedModes = new Set(["estudantes", "profissional", "social"]);
     const mode = allowedModes.has(requestedMode) ? requestedMode : "estudantes";
@@ -286,7 +287,18 @@ export async function onRequestPost(context) {
       }, 503);
     }
 
-    if (message.length > 18000) {
+    const roomContext = room ? [
+      "[MEMORIA CURTA DA SALA]",
+      room.title ? `Sala: ${String(room.title).slice(0, 120)}` : "",
+      room.summary ? `Resumo: ${String(room.summary).slice(0, 1200)}` : "",
+      room.currentTopic ? `Assunto ativo: ${String(room.currentTopic).slice(0, 240)}` : "",
+      room.lastUserIntent ? `Ultima intencao: ${String(room.lastUserIntent).slice(0, 240)}` : "",
+      "Use esta memoria apenas para continuar a conversa atual. Se a pergunta atual for ambigua, pergunte confirmacao curta."
+    ].filter(Boolean).join("\n") : "";
+
+    const inputMessage = roomContext ? `${roomContext}\n\n[PERGUNTA ATUAL]\n${message}` : message;
+
+    if (inputMessage.length > 18000) {
       return jsonResponse({
         ok: false,
         error: "A pergunta/anexo textual está muito longo para a versão pública inicial. Reduza o texto, envie trecho menor ou solicite pacote por etapas.",
@@ -313,7 +325,7 @@ export async function onRequestPost(context) {
       body: JSON.stringify({
         model,
         instructions,
-        input: message,
+        input: inputMessage,
         store: false,
         max_output_tokens: mode === "profissional" ? 1200 : mode === "social" ? 700 : 900,
       }),
@@ -347,7 +359,7 @@ export async function onRequestPost(context) {
     return jsonResponse({
       ok: true,
       mode,
-      answer: removeUnsafeLinks(ensurePublicScenarioSafetyNotice(message, answer)),
+      answer: removeUnsafeLinks(ensurePublicScenarioSafetyNotice(inputMessage, answer)),
     });
   } catch (error) {
     return jsonResponse({

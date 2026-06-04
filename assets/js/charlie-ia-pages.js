@@ -271,13 +271,14 @@
     var clearBtn = document.querySelector('[data-room-clear="' + scope + '"]');
     if(newBtn) newBtn.addEventListener('click', function(){
       var data = getRoomData(scope);
-      var title = window.prompt('Nome da nova sala:', scope === 'prof' ? 'Novo dossie demonstrativo' : 'Nova aula ou duvida');
-      var room = createRoom(scope, title || undefined);
+      var index = data.rooms.length + 1;
+      var room = createRoom(scope, scope === 'prof' ? 'Sala profissional ' + index : 'Sala de estudo ' + index);
       data.rooms.unshift(room);
       data.activeId = room.id;
       saveRooms(scope, data);
       renderRooms(scope);
       restoreActiveRoom(scope);
+      renderRoomMemory(scope);
     });
     if(renameBtn) renameBtn.addEventListener('click', function(){
       var room = getActiveRoom(scope);
@@ -327,6 +328,19 @@
     saveRooms(scope, getRoomData(scope));
     renderRooms(scope);
     renderRoomMemory(scope);
+  }
+
+  function continuationFallback(scope, userText, defaultText){
+    var room = getActiveRoom(scope);
+    var q = (userText || '').toLowerCase();
+    var looksContinuation = /\b(agora|continue|continuar|sobre isso|sobre o anterior|liste|riscos|checklist|resuma|explique melhor|proximo|próximo)\b/.test(q);
+    if(looksContinuation && room.summary){
+      return 'Vou continuar pela memoria curta da sala ativa.\n\n' +
+        room.summary + '\n\n' +
+        'Com base nisso, sua nova pergunta foi: ' + (userText || '(sem texto novo)') + '\n\n' +
+        'Resposta local provisoria: consigo manter o assunto anterior nesta sala. Para uma analise completa, a API segura deve responder usando este mesmo contexto.';
+    }
+    return defaultText;
   }
 
   function downloadBlob(filename, content, type, statusEl){
@@ -434,14 +448,28 @@
     return '';
   }
 
-  async function callCharlieApi(message, mode, statusEl){
+  async function callCharlieApi(message, mode, statusEl, roomContext){
     var endpoints = ['/api/ia', '/work/api/ia', '/api/work/ia'];
     var lastError = null;
     for(var i=0;i<endpoints.length;i++){
       var endpoint = endpoints[i];
       try{
         if(statusEl) statusEl.textContent = 'Conectando Charlie Echo em ' + endpoint + '...';
-        var res = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ message: message, mode: mode }) });
+        var res = await fetch(endpoint, {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({
+            message: message,
+            mode: mode,
+            room: roomContext ? {
+              title: roomContext.title || '',
+              summary: roomContext.summary || '',
+              currentTopic: roomContext.currentTopic || '',
+              lastUserIntent: roomContext.lastUserIntent || '',
+              messages: (roomContext.messages || []).slice(-6)
+            } : null
+          })
+        });
         var raw = await res.text();
         var data = null;
         try { data = raw ? JSON.parse(raw) : null; } catch(e) { data = { answer: raw }; }
@@ -797,7 +825,7 @@
       if(ac === 'perguntar'){
         if(!t && !(attachmentState.student || []).length) return answer('Digite, fale ou anexe um conteudo para estudar.');
         var msg = buildMessageWithAttachments(t || 'Analise os anexos enviados e explique de forma didatica.', 'student');
-        callCharlieApi(msg, 'estudantes', status).then(function(apiAnswer){ answer(apiAnswer || 'Resposta educativa local: recebi sua solicitacao, mas a API ainda nao respondeu com texto reconhecido neste ambiente.'); });
+        callCharlieApi(msg, 'estudantes', status, getActiveRoom('student')).then(function(apiAnswer){ answer(apiAnswer || continuationFallback('student', t, 'Resposta educativa local: recebi sua solicitacao, mas a API ainda nao respondeu com texto reconhecido neste ambiente.')); });
         return;
       }
       if(ac === 'exemplos'){ if(input) input.value = exemplos.join('\n'); answer('Exemplos preenchidos na caixa de estudo.'); return; }
@@ -867,13 +895,13 @@
         if(!t && !(attachmentState.prof || []).length) return answer('Digite, fale ou anexe um documento para analise.');
         var localAnswer = professionalIdentityAnswer(t);
         var msg = buildMessageWithAttachments(t || 'Analise os anexos enviados com cautela juridico-orientada e revisao humana.', 'prof');
-        callCharlieApi(msg, 'profissional', status).then(function(apiAnswer){
+        callCharlieApi(msg, 'profissional', status, getActiveRoom('prof')).then(function(apiAnswer){
           if(apiAnswer) return answer(apiAnswer);
           if(localAnswer){
             if(status) status.textContent = 'API indisponivel. Apliquei resposta local segura de identidade e governanca.';
             return answer(localAnswer);
           }
-          answer('Consulta local: recebi sua solicitacao, mas a API ainda nao respondeu com texto reconhecido neste ambiente.');
+          answer(continuationFallback('prof', t, 'Consulta local: recebi sua solicitacao, mas a API ainda nao respondeu com texto reconhecido neste ambiente.'));
         });
         return;
       }
