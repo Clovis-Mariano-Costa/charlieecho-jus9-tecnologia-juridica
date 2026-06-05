@@ -139,10 +139,14 @@ assert(browserScript.includes("buildMessageWithAttachments"), "processamento loc
 assert(apiHandler.includes("Nunca trate DPJ como protocolo policial ou de delegacia"), "distincao canonica DPJ/DAP ausente");
 assert(apiHandler.includes("Nunca invente, sugira, complete ou repita uma frase-passe"), "protecao contra invencao de frase-passe ausente");
 assert(apiHandler.includes("ensurePublicScenarioSafetyNotice"), "aviso obrigatorio para cenarios ficticios ausente");
+assert(apiHandler.includes("PROTOCOLO CENTELHA CRIATIVA 5.4"), "protocolo de criatividade governada ausente");
+assert(apiHandler.includes("applyCreativeSurface"), "superficie criativa pos-resposta ausente");
+assert(apiHandler.includes("Leitura do pedido"), "estrutura de raciocinio aparente ausente");
 console.log("STATIC_OK cockpit-profissional-api-first");
 console.log("STATIC_OK links-clicaveis-seguros");
 console.log("STATIC_OK downloads-e-anexos");
 console.log("STATIC_OK distincao-DPJ-DAP");
 console.log("STATIC_OK frases-passe-somente-literais");
 console.log("STATIC_OK cenarios-ficticios-sem-dados-reais");
+console.log("STATIC_OK centelha-criativa-governada");
 console.log("CHARLIE_ECHO_REGRESSION_OK");

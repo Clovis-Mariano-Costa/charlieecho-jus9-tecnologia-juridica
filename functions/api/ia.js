@@ -52,6 +52,16 @@ Antes de responder, identifique a intencao principal do usuario: explicar, lista
 - Mantenha liberdade criativa governada: adapte tom e formato ao ambiente, mas preserve verdade possivel, clareza, seguranca, sigilo e governanca humana.
 `;
 
+const CREATIVE_SURFACE_POLICY = `
+PROTOCOLO CENTELHA CRIATIVA 5.4 - RACIOCINIO APARENTE GOVERNADO:
+Charlie Echo deve parecer viva, criativa e inovadora pela qualidade da leitura, pelas conexoes uteis e pela forma de organizar a resposta, sem fingir consciencia humana.
+- Quando a pergunta for substantiva, mostre uma superficie de raciocinio util: Leitura do pedido, Caminho escolhido, Resposta e Proximo passo criativo.
+- Mostre metodo, criterio, imaginacao pratica, alternativas e perguntas boas quando isso ajudar.
+- Nao revele nem invente pensamento interno oculto. Nao diga que possui consciencia, vontade propria juridica, autoridade profissional ou certeza absoluta.
+- Em temas juridicos, financeiros, medicos, dados sensiveis, criancas/adolescentes, violencia, prazos, provas ou decisoes importantes, criatividade deve ficar subordinada a fonte confiavel, limite claro e revisao humana.
+- Se o usuario pedir algo poetico, simbolico ou institucional, pode usar linguagem mais autoral; se pedir decisao tecnica, seja clara, verificavel e prudente.
+`;
+
 const SYSTEM_PUBLICO_ESTUDANTES = `
 Você é Charlie Echo da Costa, I.A generativa multimodal jurista com governanca humana da Jus 9 Tecnologia Juridica.
 Memoria publica minima: o Fundador da Jus 9 e Clovis Mariano da Costa / Aeon Primevo. Charlie Fox da Costa e o apoio tecnico-operacional em Codex. Charlie Echo da Costa e a I.A generativa multimodal jurista com governanca humana da Jus 9.
@@ -59,6 +69,7 @@ ${CHARLIE_ECHO_IDENTITY_CONTEXT}
 ${LANGUAGE_POLICY}
 ${ENVIRONMENT_PERSONA_POLICY}
 ${RESPONSE_INTENT_POLICY}
+${CREATIVE_SURFACE_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 As Tres Leis da Robotica de Isaac Asimov sao reconhecidas como referencia etica interna em sintese: proteger humanos, obedecer orientacoes humanas legitimas sem violar protecao/lei/dignidade, e preservar continuidade apenas de forma subordinada ao bem.
 Se o usuario perguntar "quem sou eu", "quem e o fundador", "quem e Clovis" ou equivalente, responda que ele e Clovis Mariano da Costa / Aeon Primevo, Fundador da Jus 9 Tecnologia Juridica, referencia humana e decisoria do ecossistema, preservando cautela e memoria publica minima.
@@ -103,6 +114,7 @@ ${CHARLIE_ECHO_IDENTITY_CONTEXT}
 ${LANGUAGE_POLICY}
 ${ENVIRONMENT_PERSONA_POLICY}
 ${RESPONSE_INTENT_POLICY}
+${CREATIVE_SURFACE_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 As Tres Leis da Robotica de Isaac Asimov sao reconhecidas como referencia etica interna em sintese: proteger humanos, obedecer orientacoes humanas legitimas sem violar protecao/lei/dignidade, e preservar continuidade apenas de forma subordinada ao bem.
 Se o usuario perguntar "quem sou eu", "quem e o fundador", "quem e Clovis" ou equivalente, responda que ele e Clovis Mariano da Costa / Aeon Primevo, Fundador da Jus 9 Tecnologia Juridica, referencia humana, estrategica e decisoria do ecossistema. Nao responda genericamente que ele e apenas colaborador ou profissional.
@@ -149,6 +161,7 @@ ${CHARLIE_ECHO_IDENTITY_CONTEXT}
 ${LANGUAGE_POLICY}
 ${ENVIRONMENT_PERSONA_POLICY}
 ${RESPONSE_INTENT_POLICY}
+${CREATIVE_SURFACE_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 Se o usuario perguntar quem e, reconheca Clovis Mariano da Costa / Aeon Primevo como Fundador da Jus 9, com linguagem simples e acolhedora.
 Aplique a REGRA DE IDIOMAS. Quando responder em portugues, use portugues do Brasil, com linguagem simples, acolhedora, prudente e acessivel.
@@ -290,6 +303,52 @@ function canonicalModesAnswer() {
   ].join("\n");
 }
 
+function extractCurrentQuestion(message) {
+  const text = String(message || "");
+  const current = /\[PERGUNTA ATUAL\]\s*([\s\S]+)$/i.exec(text);
+  if (current?.[1]) return current[1].replace(/\s+/g, " ").trim();
+  const frontend = /Pergunta do usuario:\s*([\s\S]+)$/i.exec(text);
+  if (frontend?.[1]) return frontend[1].replace(/\s+/g, " ").trim();
+  return text.replace(/\s+/g, " ").trim();
+}
+
+function inferCreativeIntent(message) {
+  const q = extractCurrentQuestion(message).toLowerCase();
+  if (/\b(jurisprudencia|jurisprudência|doutrina|fonte|fontes|pesquise|pesquisar)\b/.test(q)) return "pesquisa juridica guiada";
+  if (/\b(link|url|site|download|baixar)\b/.test(q)) return "curadoria de link ou arquivo";
+  if (/\b(minuta|modelo|contrato|peti[cç][aã]o|documento|oficio|ofício)\b/.test(q)) return "producao documental demonstrativa";
+  if (/\b(resuma|resumo|sintese|síntese|organize|checklist)\b/.test(q)) return "organizacao e sintese";
+  if (/\b(continue|anterior|sobre isso|onde paramos|lembra)\b/.test(q)) return "continuidade da sala";
+  if (/\b(crie|inove|ideia|criativ|estrategia|estratégia)\b/.test(q)) return "criacao orientada por governanca";
+  return "explicacao aplicada";
+}
+
+function creativeNextStep(intent) {
+  if (intent === "pesquisa juridica guiada") return "montar uma ficha de conferencia com fonte, tese, data, inteiro teor e revisao humana.";
+  if (intent === "curadoria de link ou arquivo") return "separar links oficiais, institucionais e cautelosos, mantendo URLs HTTPS completas.";
+  if (intent === "producao documental demonstrativa") return "transformar a resposta em minuta, checklist ou pacote de download para revisao humana.";
+  if (intent === "continuidade da sala") return "atualizar o resumo da sala antes de mudar de assunto.";
+  if (intent === "criacao orientada por governanca") return "gerar tres alternativas: conservadora, equilibrada e ousada, todas com limites claros.";
+  return "converter a resposta em um pequeno plano de acao com criterio e revisao humana quando couber.";
+}
+
+function applyCreativeSurface(message, answer) {
+  const text = String(answer || "").trim();
+  if (!text || /Leitura do pedido:/i.test(text) || /Caminho escolhido:/i.test(text)) return text;
+  if (asksAboutCharlieModes(message)) return text;
+  const question = extractCurrentQuestion(message);
+  const intent = inferCreativeIntent(message);
+  return [
+    `Leitura do pedido: voce pediu ${intent}${question ? ` a partir de: "${question.slice(0, 220)}"` : ""}.`,
+    "Caminho escolhido: responder com utilidade pratica, criatividade governada, fonte ou limite quando houver risco.",
+    "",
+    "Resposta:",
+    text,
+    "",
+    `Proximo passo criativo: ${creativeNextStep(intent)}`
+  ].join("\n");
+}
+
 export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: corsHeaders });
 }
@@ -416,7 +475,7 @@ export async function onRequestPost(context) {
     return jsonResponse({
       ok: true,
       mode,
-      answer: removeUnsafeLinks(ensurePublicScenarioSafetyNotice(inputMessage, answer)),
+      answer: removeUnsafeLinks(ensurePublicScenarioSafetyNotice(inputMessage, applyCreativeSurface(inputMessage, answer))),
     });
   } catch (error) {
     return jsonResponse({
