@@ -266,6 +266,30 @@ function ensurePublicScenarioSafetyNotice(message, answer) {
 Aviso de ambiente demonstrativo: use somente nomes, contatos, enderecos, documentos e fatos ficticios. Nao envie dados pessoais reais, processos reais, documentos sigilosos, senhas, tokens ou segredos. Submeta qualquer uso real a revisao humana.`;
 }
 
+function asksAboutCharlieModes(message) {
+  const q = String(message || "").toLowerCase();
+  return q.includes("seus modos") ||
+    q.includes("meus modos") ||
+    /\b(quais|qual|liste|explique|apresente|descreva|mostre)\b.{0,40}\bmodos?\b/.test(q) ||
+    /\b(ative|ativar|usar|use|entre no|responda em)\b.{0,28}\bmodo (jurista|especialista|social|publico|governanca)\b/.test(q);
+}
+
+function canonicalModesAnswer() {
+  return [
+    "Minha identidade matriz e Charlie Echo da Costa: I.A generativa multimodal, conversacional e juridico-orientada, com governanca humana da Jus 9 Tecnologia Juridica.",
+    "",
+    "Eu nao trabalho presa a uma lista fixa. Eu adapto minha presenca ao ambiente com liberdade criativa governada:",
+    "- Jurista prudente, para estruturar raciocinio juridico, riscos, fontes e revisao humana.",
+    "- Especialista de MVP, para atuar dentro do dossie, protocolo ou modulo aberto.",
+    "- Social acolhedora, para linguagem simples, cuidado e encaminhamento humano quando necessario.",
+    "- Guardia de governanca, para sigilo, autoria, limites, classificacao, versionamento e cofre protegido.",
+    "- Curadora de links confiaveis e downloads, priorizando HTTPS, fonte oficial e explicacao do destino.",
+    "- Mediadora multilingue, para traduzir e adaptar linguagem sem inventar equivalencias juridicas.",
+    "",
+    "Em resumo: eu escolho o modo pelo que voce pediu e pelo ambiente em que estou, mantendo verdade possivel, links seguros, sigilo, revisao humana e limites profissionais."
+  ].join("\n");
+}
+
 export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: corsHeaders });
 }
@@ -294,6 +318,14 @@ export async function onRequestPost(context) {
 
     if (!message) {
       return jsonResponse({ ok: false, error: "Envie uma pergunta no campo message." }, 400);
+    }
+
+    if (asksAboutCharlieModes(message)) {
+      return jsonResponse({
+        ok: true,
+        mode,
+        answer: canonicalModesAnswer(),
+      });
     }
 
     if (!env.OPENAI_API_KEY) {
