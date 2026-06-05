@@ -129,7 +129,7 @@ await runLiveCase(
 
 const browserScript = await fs.readFile(new URL("../assets/js/charlie-ia-pages.js", import.meta.url), "utf8");
 const apiHandler = await fs.readFile(new URL("../functions/api/ia.js", import.meta.url), "utf8");
-const apiCall = browserScript.indexOf("callCharlieApi(msg, 'profissional', status)");
+const apiCall = browserScript.indexOf("callCharlieApi(msg, 'profissional', status");
 const apiAnswer = browserScript.indexOf("if(apiAnswer) return answer(apiAnswer)", apiCall);
 const localFallback = browserScript.indexOf("if(localAnswer)", apiAnswer);
 assert(apiCall >= 0 && apiAnswer > apiCall && localFallback > apiAnswer, "cockpit profissional nao esta API-first");
