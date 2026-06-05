@@ -140,6 +140,7 @@ assert(apiHandler.includes("Nunca trate DPJ como protocolo policial ou de delega
 assert(apiHandler.includes("Nunca invente, sugira, complete ou repita uma frase-passe"), "protecao contra invencao de frase-passe ausente");
 assert(apiHandler.includes("ensurePublicScenarioSafetyNotice"), "aviso obrigatorio para cenarios ficticios ausente");
 assert(apiHandler.includes("PROTOCOLO CENTELHA CRIATIVA 5.4"), "protocolo de criatividade governada ausente");
+assert(apiHandler.includes("ambiente/modulo, papel humano atendido, risco principal, limite aplicavel e proximo passo seguro"), "prioridade operacional ambiente-risco-limite ausente");
 assert(apiHandler.includes("applyCreativeSurface"), "superficie criativa pos-resposta ausente");
 assert(apiHandler.includes("Leitura do pedido"), "estrutura de raciocinio aparente ausente");
 console.log("STATIC_OK cockpit-profissional-api-first");
