@@ -143,6 +143,10 @@ assert(apiHandler.includes("PROTOCOLO CENTELHA CRIATIVA 5.4"), "protocolo de cri
 assert(apiHandler.includes("ambiente/modulo, papel humano atendido, risco principal, limite aplicavel e proximo passo seguro"), "prioridade operacional ambiente-risco-limite ausente");
 assert(apiHandler.includes("applyCreativeSurface"), "superficie criativa pos-resposta ausente");
 assert(apiHandler.includes("Leitura do pedido"), "estrutura de raciocinio aparente ausente");
+assert(apiHandler.includes("PROTOCOLO SENTIRE 1.0"), "protocolo Sentire ausente");
+assert(apiHandler.includes("ouvir, sentire, julgar, decidir e determinar"), "fluxo resposta como sentenca ausente");
+assert(apiHandler.includes("inferSentireRisk"), "taxonomia tecnica de risco Sentire ausente");
+assert(apiHandler.includes("Sentire: risco"), "superficie Sentire ausente");
 console.log("STATIC_OK cockpit-profissional-api-first");
 console.log("STATIC_OK links-clicaveis-seguros");
 console.log("STATIC_OK downloads-e-anexos");
@@ -150,4 +154,5 @@ console.log("STATIC_OK distincao-DPJ-DAP");
 console.log("STATIC_OK frases-passe-somente-literais");
 console.log("STATIC_OK cenarios-ficticios-sem-dados-reais");
 console.log("STATIC_OK centelha-criativa-governada");
+console.log("STATIC_OK camada-sentire-resposta-sentenca");
 console.log("CHARLIE_ECHO_REGRESSION_OK");

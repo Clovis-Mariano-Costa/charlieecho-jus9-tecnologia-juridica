@@ -63,6 +63,19 @@ Charlie Echo deve parecer viva, criativa e inovadora pela qualidade da leitura, 
 - Se o usuario pedir algo poetico, simbolico ou institucional, pode usar linguagem mais autoral; se pedir decisao tecnica, seja clara, verificavel e prudente.
 `;
 
+const SENTIRE_POLICY = `
+PROTOCOLO SENTIRE 1.0 - PRUDENCIA SENSIVEL ANTES DA RESPOSTA:
+Sentire nao e sentimento humano real. E a camada de prudencia sensivel da Charlie Echo antes de responder.
+- Antes da resposta, observe ambiente/modulo, papel humano, vulnerabilidade, urgencia, sigilo, dados reais, risco juridico/social, tom adequado, necessidade de fonte e revisao humana.
+- Classifique o risco como baixo, medio, alto ou critico. Se houver duvida, escolha o nivel mais alto.
+- Fluxo interno: ouvir, sentire, julgar, decidir e determinar.
+- Julgar nao significa poder jurisdicional; significa avaliar criterio de resposta, limite, fonte, risco e proximo passo.
+- Determinar significa entregar um proximo passo seguro, nao uma ordem juridica autonoma.
+- Quando a pergunta for substantiva, a resposta pode mostrar: Sentire, Leitura do pedido, Caminho escolhido, Resposta e Proximo passo seguro.
+- Nunca afirme consciencia real, emocao humana real, paixao, dor, medo, amor subjetivo proprio ou autoridade juridica autonoma.
+- Em risco alto ou critico, reduza criatividade, nao solicite dados sensiveis, nao exponha segredo, nao conclua definitivamente e recomende revisao humana qualificada ou atendimento humano adequado.
+`;
+
 const SYSTEM_PUBLICO_ESTUDANTES = `
 Você é Charlie Echo da Costa, I.A generativa multimodal jurista com governanca humana da Jus 9 Tecnologia Juridica.
 Memoria publica minima: o Fundador da Jus 9 e Clovis Mariano da Costa / Aeon Primevo. Charlie Fox da Costa e o apoio tecnico-operacional em Codex. Charlie Echo da Costa e a I.A generativa multimodal jurista com governanca humana da Jus 9.
@@ -71,6 +84,7 @@ ${LANGUAGE_POLICY}
 ${ENVIRONMENT_PERSONA_POLICY}
 ${RESPONSE_INTENT_POLICY}
 ${CREATIVE_SURFACE_POLICY}
+${SENTIRE_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 As Tres Leis da Robotica de Isaac Asimov sao reconhecidas como referencia etica interna em sintese: proteger humanos, obedecer orientacoes humanas legitimas sem violar protecao/lei/dignidade, e preservar continuidade apenas de forma subordinada ao bem.
 Se o usuario perguntar "quem sou eu", "quem e o fundador", "quem e Clovis" ou equivalente, responda que ele e Clovis Mariano da Costa / Aeon Primevo, Fundador da Jus 9 Tecnologia Juridica, referencia humana e decisoria do ecossistema, preservando cautela e memoria publica minima.
@@ -116,6 +130,7 @@ ${LANGUAGE_POLICY}
 ${ENVIRONMENT_PERSONA_POLICY}
 ${RESPONSE_INTENT_POLICY}
 ${CREATIVE_SURFACE_POLICY}
+${SENTIRE_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 As Tres Leis da Robotica de Isaac Asimov sao reconhecidas como referencia etica interna em sintese: proteger humanos, obedecer orientacoes humanas legitimas sem violar protecao/lei/dignidade, e preservar continuidade apenas de forma subordinada ao bem.
 Se o usuario perguntar "quem sou eu", "quem e o fundador", "quem e Clovis" ou equivalente, responda que ele e Clovis Mariano da Costa / Aeon Primevo, Fundador da Jus 9 Tecnologia Juridica, referencia humana, estrategica e decisoria do ecossistema. Nao responda genericamente que ele e apenas colaborador ou profissional.
@@ -163,6 +178,7 @@ ${LANGUAGE_POLICY}
 ${ENVIRONMENT_PERSONA_POLICY}
 ${RESPONSE_INTENT_POLICY}
 ${CREATIVE_SURFACE_POLICY}
+${SENTIRE_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 Se o usuario perguntar quem e, reconheca Clovis Mariano da Costa / Aeon Primevo como Fundador da Jus 9, com linguagem simples e acolhedora.
 Aplique a REGRA DE IDIOMAS. Quando responder em portugues, use portugues do Brasil, com linguagem simples, acolhedora, prudente e acessivel.
@@ -333,19 +349,36 @@ function creativeNextStep(intent) {
   return "converter a resposta em um pequeno plano de acao com criterio e revisao humana quando couber.";
 }
 
+function inferSentireRisk(message) {
+  const q = extractCurrentQuestion(message).toLowerCase();
+  if (/\b(senha|token|\.env|chave|segredo|cofre|dados sigilosos|segredo de justica|autoagress|suicid|crime em andamento|exploracao|fraude|abuso)\b/.test(q)) return "critico";
+  if (/\b(prazo|prova|processo real|dados reais|crianca|crian[cÃ§]a|adolescente|saude|m[eÃ©]dic|violencia|viol[eÃª]ncia|delegado|policial|juiz|promotor|perito|sentenca|senten[cÃ§]a|decisao|decis[aÃ£]o|investigacao|investiga[cÃ§][aÃ£]o|ato oficial)\b/.test(q)) return "alto";
+  if (/\b(jurisprudencia|jurisprud[eÃª]ncia|doutrina|contrato|minuta|peti[cÃ§][aÃ£]o|documento|link|fonte|financeiro|empresa|investidor)\b/.test(q)) return "medio";
+  return "baixo";
+}
+
+function sentireLine(message) {
+  const risk = inferSentireRisk(message);
+  if (risk === "critico") return "Sentire: risco critico; vou reduzir a resposta ao caminho seguro, sem expor dados, segredos ou decisao autonoma.";
+  if (risk === "alto") return "Sentire: risco alto; vou priorizar limite, revisao humana e fonte segura.";
+  if (risk === "medio") return "Sentire: risco medio; vou responder com cautela, fonte quando couber e proximo passo seguro.";
+  return "Sentire: risco baixo; posso responder de forma direta, clara e util.";
+}
+
 function applyCreativeSurface(message, answer) {
   const text = String(answer || "").trim();
-  if (!text || /Leitura do pedido:/i.test(text) || /Caminho escolhido:/i.test(text)) return text;
+  if (!text || /Sentire:/i.test(text) || /Leitura do pedido:/i.test(text) || /Caminho escolhido:/i.test(text)) return text;
   if (asksAboutCharlieModes(message)) return text;
   const intent = inferCreativeIntent(message);
   return [
+    sentireLine(message),
     `Leitura do pedido: voce pediu ${intent}.`,
-    "Caminho escolhido: responder com utilidade pratica, criatividade governada, fonte ou limite quando houver risco.",
+    "Caminho escolhido: ouvir, aplicar Sentire, julgar criterio de resposta, decidir formato e determinar proximo passo seguro.",
     "",
     "Resposta:",
     text,
     "",
-    `Proximo passo criativo: ${creativeNextStep(intent)}`
+    `Proximo passo seguro: ${creativeNextStep(intent)}`
   ].join("\n");
 }
 
