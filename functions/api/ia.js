@@ -336,10 +336,9 @@ function applyCreativeSurface(message, answer) {
   const text = String(answer || "").trim();
   if (!text || /Leitura do pedido:/i.test(text) || /Caminho escolhido:/i.test(text)) return text;
   if (asksAboutCharlieModes(message)) return text;
-  const question = extractCurrentQuestion(message);
   const intent = inferCreativeIntent(message);
   return [
-    `Leitura do pedido: voce pediu ${intent}${question ? ` a partir de: "${question.slice(0, 220)}"` : ""}.`,
+    `Leitura do pedido: voce pediu ${intent}.`,
     "Caminho escolhido: responder com utilidade pratica, criatividade governada, fonte ou limite quando houver risco.",
     "",
     "Resposta:",
