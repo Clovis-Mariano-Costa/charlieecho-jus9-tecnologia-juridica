@@ -187,12 +187,38 @@ function slug(text) {
   return toAscii(text).replace(/[^a-z0-9_-]+/gi, '-').replace(/^-+|-+$/g, '').toLowerCase().slice(0, 80) || 'charlie-echo-download';
 }
 
-function escapePdfText(text) {
-  return toAscii(text).replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+function pdfSafeText(text) {
+  return toAscii(text)
+    .replace(/[\u2013\u2014]/g, '-')
+    .replace(/[\u201c\u201d]/g, '"')
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u2022\u00b7]/g, '-')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function pdfLiteral(text) {
+  return `(${pdfSafeText(text).replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)')})`;
+}
+
+function pdfColor(hex) {
+  const value = String(hex || '#000000').replace('#', '');
+  const r = Number.parseInt(value.slice(0, 2), 16) / 255;
+  const g = Number.parseInt(value.slice(2, 4), 16) / 255;
+  const b = Number.parseInt(value.slice(4, 6), 16) / 255;
+  return [r, g, b].map((n) => (Number.isFinite(n) ? n.toFixed(3) : '0')).join(' ');
+}
+
+function pdfText(text, x, y, size = 11, font = 'F1', color = '#0b1728') {
+  return `BT\n${pdfColor(color)} rg\n/${font} ${size} Tf\n1 0 0 1 ${x} ${y} Tm\n${pdfLiteral(text)} Tj\nET\n`;
+}
+
+function pdfRect(x, y, width, height, color) {
+  return `q\n${pdfColor(color)} rg\n${x} ${y} ${width} ${height} re f\nQ\n`;
 }
 
 function wrapLine(line, max) {
-  const words = toAscii(line).replace(/\s+/g, ' ').trim().split(' ').filter(Boolean);
+  const words = pdfSafeText(line).replace(/\s+/g, ' ').trim().split(' ').filter(Boolean);
   const out = [];
   let current = '';
   for (const word of words) {
@@ -208,41 +234,119 @@ function wrapLine(line, max) {
   return out.length ? out : [''];
 }
 
-function buildLines(title, content, now) {
-  const raw = [title, '', `Gerado em: ${now}`, 'Origem: Charlie Echo da Costa - Jus 9 Tecnologia Juridica', 'Classificacao inicial: documento gerado sob governanca humana', '', 'Conteudo', '', content].join('\n');
-  const lines = [];
-  for (const paragraph of raw.split(/\r?\n/)) {
-    if (!paragraph.trim()) lines.push('');
-    else lines.push(...wrapLine(paragraph, 88));
-  }
-  return lines;
+function splitPdfContent(content) {
+  const paragraphs = String(content || '')
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  return paragraphs.length ? paragraphs : ['Sem conteudo no momento.'];
 }
 
 function buildSimplePdf(title, content, now) {
-  const lines = buildLines(title, content, now);
-  const perPage = 46;
-  const pages = [];
-  for (let i = 0; i < lines.length; i += perPage) pages.push(lines.slice(i, i + perPage));
+  const pages = [[]];
+  const pageWidth = 595;
+  const pageHeight = 842;
+  const margin = 48;
+  const contentWidth = pageWidth - margin * 2;
+  let y = 0;
+
+  function current() {
+    return pages[pages.length - 1];
+  }
+
+  function startPage() {
+    pages.push([]);
+    y = 782;
+    current().push(pdfRect(0, 0, pageWidth, pageHeight, '#fbfaf7'));
+    current().push(pdfText('Charlie Echo da Costa - Documento', margin, 806, 10, 'F2', '#8a5a12'));
+    current().push(pdfRect(margin, 790, contentWidth, 1, '#e7c36c'));
+  }
+
+  function ensure(space) {
+    if (y - space < 74) startPage();
+  }
+
+  function addWrapped(text, opts = {}) {
+    const size = opts.size || 11;
+    const lineHeight = opts.lineHeight || Math.round(size * 1.45);
+    const width = opts.width || contentWidth;
+    const limit = Math.max(24, Math.floor(width / (size * 0.5)));
+    for (const line of wrapLine(text, limit)) {
+      ensure(lineHeight + 2);
+      current().push(pdfText(line, opts.x || margin, y, size, opts.font || 'F1', opts.color || '#24344a'));
+      y -= lineHeight;
+    }
+  }
+
+  function addSection(label) {
+    ensure(44);
+    y -= 10;
+    current().push(pdfRect(margin, y - 7, 4, 22, '#c58b2f'));
+    current().push(pdfText(label, margin + 12, y, 15, 'F2', '#0b1728'));
+    y -= 26;
+  }
+
+  function addMetaCard() {
+    const metaLines = [
+      `Gerado em: ${now}`,
+      'Origem: Charlie Echo da Costa - Jus 9 Tecnologia Juridica',
+      'Classificacao inicial: documento gerado sob governanca humana',
+      'Uso: apoio demonstrativo, com revisao humana quando houver risco.'
+    ];
+    const wrapped = metaLines.flatMap((line) => wrapLine(line, 74));
+    const cardHeight = 42 + wrapped.length * 15;
+    ensure(cardHeight + 20);
+    current().push(pdfRect(margin, y - cardHeight, contentWidth, cardHeight + 10, '#fff7e2'));
+    current().push(pdfRect(margin, y - cardHeight, 5, cardHeight + 10, '#c58b2f'));
+    current().push(pdfText('Informacoes do documento', margin + 18, y - 12, 13, 'F2', '#5b3b09'));
+    let metaY = y - 34;
+    for (const line of wrapped) {
+      current().push(pdfText(line, margin + 18, metaY, 10.5, 'F1', '#24344a'));
+      metaY -= 15;
+    }
+    y -= cardHeight + 24;
+  }
+
+  current().push(pdfRect(0, 0, pageWidth, pageHeight, '#fbfaf7'));
+  current().push(pdfRect(0, 760, pageWidth, 82, '#07111f'));
+  current().push(pdfText('Jus 9 Tecnologia Juridica', margin, 810, 11, 'F2', '#e7c36c'));
+  current().push(pdfText('Documento da Charlie Echo', margin, 790, 18, 'F2', '#ffffff'));
+  current().push(pdfText('Gerado pelo servidor da Charlie Echo, com padrao visual profissional.', margin, 770, 10.5, 'F1', '#dbe5f3'));
+  y = 718;
+  addWrapped(title || 'Documento Charlie Echo', { size: 22, lineHeight: 28, font: 'F2', color: '#0b1728' });
+  addWrapped('Conteudo organizado para leitura, compartilhamento e revisao humana responsavel.', { size: 11.5, lineHeight: 17, color: '#51627a' });
+  y -= 8;
+  addMetaCard();
+  addSection('Conteudo');
+  for (const paragraph of splitPdfContent(content)) {
+    addWrapped(paragraph, { size: 11, lineHeight: 16, color: '#24344a' });
+    y -= 5;
+  }
+
+  pages.forEach((commands, index) => {
+    commands.push(pdfRect(margin, 52, contentWidth, 1, '#eadfca'));
+    commands.push(pdfText('Charlie Echo da Costa - Jus 9 Tecnologia Juridica', margin, 34, 9, 'F1', '#51627a'));
+    commands.push(pdfText(`Pagina ${index + 1} de ${pages.length}`, pageWidth - margin - 70, 34, 9, 'F1', '#51627a'));
+  });
+
   const objects = [];
   const add = (value) => {
     objects.push(value);
     return objects.length;
   };
-
-  add('<< /Type /Catalog /Pages 2 0 R >>');
-  add('');
-  add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
-
+  const catalogId = add('');
+  const pagesId = add('');
+  const fontId = add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
+  const boldFontId = add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>');
   const pageIds = [];
-  for (const pageLines of pages) {
-    const textOps = pageLines.map((line) => `(${escapePdfText(line)}) Tj T*`).join('\n');
-    const stream = `BT\n/F1 11 Tf\n50 790 Td\n14 TL\n${textOps}\nET`;
-    const contentId = add(`<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`);
-    const pageId = add(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 842] /Resources << /Font << /F1 3 0 R >> >> /Contents ${contentId} 0 R >>`);
+  for (const commands of pages) {
+    const stream = commands.join('');
+    const contentId = add(`<< /Length ${stream.length} >>\nstream\n${stream}endstream`);
+    const pageId = add(`<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 ${fontId} 0 R /F2 ${boldFontId} 0 R >> >> /Contents ${contentId} 0 R >>`);
     pageIds.push(pageId);
   }
-
-  objects[1] = `<< /Type /Pages /Kids [${pageIds.map((id) => `${id} 0 R`).join(' ')}] /Count ${pageIds.length} >>`;
+  objects[catalogId - 1] = `<< /Type /Catalog /Pages ${pagesId} 0 R >>`;
+  objects[pagesId - 1] = `<< /Type /Pages /Kids [${pageIds.map((id) => `${id} 0 R`).join(' ')}] /Count ${pageIds.length} >>`;
   return pdfFromObjects(objects);
 }
 

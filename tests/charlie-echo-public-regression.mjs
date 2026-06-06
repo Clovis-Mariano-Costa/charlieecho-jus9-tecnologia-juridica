@@ -129,6 +129,7 @@ await runLiveCase(
 
 const browserScript = await fs.readFile(new URL("../assets/js/charlie-ia-pages.js", import.meta.url), "utf8");
 const apiHandler = await fs.readFile(new URL("../functions/api/ia.js", import.meta.url), "utf8");
+const downloadHandler = await fs.readFile(new URL("../functions/api/gerar-download.js", import.meta.url), "utf8");
 const apiCall = browserScript.indexOf("callCharlieApi(msg, 'profissional', status");
 const apiAnswer = browserScript.indexOf("if(apiAnswer) return answer(apiAnswer)", apiCall);
 const localFallback = browserScript.indexOf("if(localAnswer)", apiAnswer);
@@ -141,6 +142,10 @@ assert(browserScript.includes("Baixar PPTX"), "opcao PPTX ausente no menu de dow
 assert(browserScript.includes("Baixar ZIP"), "opcao ZIP ausente no menu de downloads");
 assert(!browserScript.includes("Baixar .txt local"), "menu de downloads voltou a exibir TXT local");
 assert(!browserScript.includes("Baixar .xlsx pelo servidor"), "menu de downloads voltou a exibir XLSX");
+assert(downloadHandler.includes("Helvetica-Bold"), "PDF profissional sem fonte bold");
+assert(downloadHandler.includes("pdfRect(0, 760"), "PDF profissional sem cabecalho escuro");
+assert(downloadHandler.includes("Informacoes do documento"), "PDF profissional sem cartao de informacoes");
+assert(downloadHandler.includes("Pagina ${index + 1} de ${pages.length}"), "PDF profissional sem paginacao");
 assert(browserScript.includes("buildMessageWithAttachments"), "processamento local de anexos ausente");
 assert(apiHandler.includes("Nunca trate DPJ como protocolo policial ou de delegacia"), "distincao canonica DPJ/DAP ausente");
 assert(apiHandler.includes("Nunca invente, sugira, complete ou repita uma frase-passe"), "protecao contra invencao de frase-passe ausente");
@@ -156,6 +161,7 @@ assert(apiHandler.includes("Sentire: risco"), "superficie Sentire ausente");
 console.log("STATIC_OK cockpit-profissional-api-first");
 console.log("STATIC_OK links-clicaveis-seguros");
 console.log("STATIC_OK downloads-enxutos-e-anexos");
+console.log("STATIC_OK pdf-profissional-charlie-echo");
 console.log("STATIC_OK distincao-DPJ-DAP");
 console.log("STATIC_OK frases-passe-somente-literais");
 console.log("STATIC_OK cenarios-ficticios-sem-dados-reais");
