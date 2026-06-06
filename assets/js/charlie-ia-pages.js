@@ -492,9 +492,15 @@
     var old = document.querySelector('.download-popover'); if(old) old.remove();
     var menu = document.createElement('div');
     menu.className = 'download-popover';
-    var serverFormats = ['txt','md','pdf','html','docx','xlsx','pptx','zip','json','csv','ics','vcf','xml','rtf','log','yaml','sql','js','css','svg','tex'];
-    menu.innerHTML = '<button type="button" data-format="txt">Baixar .txt local</button><button type="button" data-format="md">Baixar .md local</button>' +
-      serverFormats.map(function(fmt){ return '<button type="button" data-format="server-' + fmt + '">Baixar .' + fmt + ' pelo servidor</button>'; }).join('');
+    var serverFormats = [
+      { ext: 'pdf', label: 'Baixar PDF' },
+      { ext: 'docx', label: 'Baixar DOCX' },
+      { ext: 'pptx', label: 'Baixar PPTX' },
+      { ext: 'zip', label: 'Baixar ZIP' }
+    ];
+    menu.innerHTML = serverFormats.map(function(format){
+      return '<button type="button" data-format="server-' + format.ext + '">' + format.label + '</button>';
+    }).join('');
     document.body.appendChild(menu);
     var rect = button.getBoundingClientRect();
     menu.style.left = Math.min(rect.left, window.innerWidth - 240) + 'px';

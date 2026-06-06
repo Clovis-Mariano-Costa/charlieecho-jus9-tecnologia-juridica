@@ -81,11 +81,11 @@ function buildOutput(format, title, content, now) {
 }
 
 function buildMarkdown(title, content, now) {
-  return `# ${title}\n\n- Gerado em: ${now}\n- Origem: Charlie Echo da Costa - Jus 9 Tecnologia Juridica\n- Classificacao inicial: documento gerado sob governanca humana\n\n## Conteudo\n\n${content}\n`;
+  return `# ${title}\n\n- Cabecalho: Jus 9 Tecnologia Juridica\n- Assistente: Charlie Echo da Costa\n- Gerado em: ${now}\n- Origem: Charlie Echo da Costa - Jus 9 Tecnologia Juridica\n- Classificacao inicial: documento gerado sob governanca humana\n\n## Conteudo\n\n${content}\n`;
 }
 
 function buildHtml(title, content, now) {
-  return `<!doctype html>\n<html lang="pt-BR">\n<head><meta charset="utf-8"><title>${xml(title)}</title><style>body{font-family:Arial,sans-serif;line-height:1.6;max-width:860px;margin:40px auto;padding:0 20px;color:#172033}pre{white-space:pre-wrap;background:#f7f4ee;padding:16px;border-radius:8px}</style></head>\n<body><h1>${xml(title)}</h1><p><strong>Gerado em:</strong> ${xml(now)}</p><p><strong>Origem:</strong> Charlie Echo da Costa - Jus 9 Tecnologia Juridica</p><pre>${xml(content)}</pre></body>\n</html>\n`;
+  return `<!doctype html>\n<html lang="pt-BR">\n<head><meta charset="utf-8"><title>${xml(title)}</title><style>body{font-family:Arial,sans-serif;line-height:1.6;max-width:860px;margin:40px auto;padding:0 20px;color:#172033;background:#fffaf0}.header{border:1px solid #d9b45c;border-radius:18px;padding:20px;background:linear-gradient(135deg,#071426,#10233a);color:#fff}.brand{letter-spacing:.08em;text-transform:uppercase;color:#f2c66d;font-weight:800}.meta{color:#536078}.content{white-space:pre-wrap;background:#fff;border:1px solid #ead9b6;padding:18px;border-radius:14px}</style></head>\n<body><section class="header"><div class="brand">Jus 9 Tecnologia Juridica</div><h1>${xml(title)}</h1><p>Charlie Echo da Costa</p></section><p class="meta"><strong>Gerado em:</strong> ${xml(now)}<br><strong>Classificacao inicial:</strong> documento gerado sob governanca humana</p><section class="content">${xml(content)}</section></body>\n</html>\n`;
 }
 
 function buildIcs(title, content, now) {
@@ -108,10 +108,11 @@ function buildTex(title, content, now) {
 }
 
 function buildDocx(title, content, now) {
+  const paragraphs = buildDocumentParagraphs(title, content, now);
   return zipFiles({
     '[Content_Types].xml': '<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>',
     '_rels/.rels': '<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>',
-    'word/document.xml': `<?xml version="1.0" encoding="UTF-8"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${docxPara(title, true)}${docxPara(`Gerado em: ${now}`)}${docxPara('Origem: Charlie Echo da Costa - Jus 9 Tecnologia Juridica')}${content.split(/\r?\n/).map((line) => docxPara(line)).join('')}<w:sectPr/></w:body></w:document>`
+    'word/document.xml': `<?xml version="1.0" encoding="UTF-8"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${paragraphs.map((line, index) => docxPara(line, index <= 2)).join('')}<w:sectPr/></w:body></w:document>`
   });
 }
 
@@ -139,7 +140,7 @@ function buildXlsx(title, content, now) {
 }
 
 function buildPptx(title, content, now) {
-  const text = xml(`${content.slice(0, 900)}\n\nGerado em: ${now}`);
+  const text = xml(buildDocumentParagraphs(title, content, now).slice(3).join('\n').slice(0, 1200));
   return zipFiles({
     '[Content_Types].xml': '<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/ppt/presentation.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml"/><Override PartName="/ppt/slides/slide1.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slide+xml"/></Types>',
     '_rels/.rels': '<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="ppt/presentation.xml"/></Relationships>',
@@ -152,10 +153,27 @@ function buildPptx(title, content, now) {
 function buildPackageZip(title, content, now) {
   return zipFiles({
     'README.md': buildMarkdown(title, content, now),
-    'documento.txt': content,
-    'documento.html': buildHtml(title, content, now),
+    'documento.pdf': buildSimplePdf(title, content, now),
+    'documento.docx': buildDocx(title, content, now),
+    'apresentacao.pptx': buildPptx(title, content, now),
     'metadata.json': JSON.stringify({ title, generatedAt: now, origin: 'Charlie Echo da Costa - Jus 9 Tecnologia Juridica' }, null, 2)
   });
+}
+
+function buildDocumentParagraphs(title, content, now) {
+  return [
+    'JUS 9 TECNOLOGIA JURIDICA',
+    'Charlie Echo da Costa',
+    title,
+    '',
+    `Gerado em: ${now}`,
+    'Origem: Charlie Echo da Costa - Jus 9 Tecnologia Juridica',
+    'Classificacao inicial: documento gerado sob governanca humana',
+    '',
+    'Conteudo',
+    '',
+    ...String(content || '').split(/\r?\n/)
+  ];
 }
 
 function toAscii(text) {
