@@ -146,6 +146,11 @@ assert(downloadHandler.includes("Helvetica-Bold"), "PDF profissional sem fonte b
 assert(downloadHandler.includes("pdfRect(0, 760"), "PDF profissional sem cabecalho escuro");
 assert(downloadHandler.includes("Informacoes do documento"), "PDF profissional sem cartao de informacoes");
 assert(downloadHandler.includes("Pagina ${index + 1} de ${pages.length}"), "PDF profissional sem paginacao");
+assert(downloadHandler.includes("word/styles.xml"), "DOCX sem estilos internos");
+assert(downloadHandler.includes("ppt/slideMasters/slideMaster1.xml"), "PPTX sem slide master");
+assert(downloadHandler.includes("ppt/slideLayouts/slideLayout1.xml"), "PPTX sem slide layout");
+assert(downloadHandler.includes("ppt/theme/theme1.xml"), "PPTX sem tema");
+assert(downloadHandler.includes("ppt/slides/_rels/slide1.xml.rels"), "PPTX sem relacionamento do slide");
 assert(browserScript.includes("buildMessageWithAttachments"), "processamento local de anexos ausente");
 assert(apiHandler.includes("Nunca trate DPJ como protocolo policial ou de delegacia"), "distincao canonica DPJ/DAP ausente");
 assert(apiHandler.includes("Nunca invente, sugira, complete ou repita uma frase-passe"), "protecao contra invencao de frase-passe ausente");
