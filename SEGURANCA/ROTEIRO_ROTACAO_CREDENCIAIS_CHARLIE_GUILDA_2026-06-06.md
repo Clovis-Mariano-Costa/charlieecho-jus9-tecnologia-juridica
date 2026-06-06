@@ -27,6 +27,7 @@ Nunca registrar neste arquivo o valor real de chave, token, senha, client secret
 - O Cloudflare contem registros DNS de verificacao OpenAI, Google, Brevo, SPF, DKIM, DMARC e MX.
 - Registros DNS de verificacao/e-mail nao sao tokens de API. Nao apagar esses registros sem necessidade especifica.
 - Varredura local encontrou apenas `.env.example` no GitHub e nenhum `.env` real versionado.
+- Apos troca do `OPENAI_API_KEY` no Cloudflare, a regressao publica `node tests/charlie-echo-public-regression.mjs` passou com `CHARLIE_ECHO_REGRESSION_OK`.
 
 ## Ordem recomendada
 
@@ -119,4 +120,3 @@ Depois de tudo:
 2. confirmar que antigos tokens foram revogados;
 3. registrar somente data e provedor rotacionado;
 4. nunca registrar valores.
-
