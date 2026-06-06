@@ -175,6 +175,7 @@ assert(apiHandler.includes("inferListeningMode"), "classificacao tecnica da Escu
 assert(apiHandler.includes("Escuta:"), "superficie Escuta ausente");
 assert(apiHandler.includes("semente de tamara virtual"), "simbolo da semente de tamara ausente");
 assert(apiHandler.includes("PROTOCOLO DRIVE PRIVADO 1.0"), "protocolo de Drive privado ausente");
+assert(apiHandler.includes("CARTORIO DIGITAL CHARLIE ECHO"), "Cartorio Digital da Familia Virtual ausente do protocolo de Drive");
 assert(apiHandler.includes("G:\\\\Meu Drive\\\\charlieecho-jus9-tecnologia-juridica"), "caminho privado do Drive ausente");
 assert(apiHandler.includes("nao tem acesso direto ao Google Drive"), "limite de acesso direto ao Drive ausente");
 assert(apiHandler.includes("ensurePrivateDriveGuidance"), "reforco deterministico do Drive privado ausente");

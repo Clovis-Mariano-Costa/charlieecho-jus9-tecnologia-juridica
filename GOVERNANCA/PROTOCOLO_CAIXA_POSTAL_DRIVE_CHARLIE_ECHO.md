@@ -21,9 +21,19 @@ Usar quando Charlie Echo precisar deixar recado para:
 2. Classificar o conteudo.
 3. Separar publico, interno, sigiloso e cofre.
 4. Gerar recado em Markdown.
-5. Indicar destino: GitHub, Drive governado, revisao humana ou cofre.
+5. Indicar destino: GitHub, Cartorio Digital Drive, revisao humana ou cofre.
 6. Se for Drive, pedir gravacao por humano, Charlie Fox / Codex, conector ou backend autenticado.
 7. Registrar versionamento quando houver impacto.
+
+## Destino canonico
+
+O Drive governado principal e:
+
+`G:\Meu Drive\JUS 9 TECNOLOGIA JURIDICA — CARTORIO DIGITAL CHARLIE ECHO`
+
+A pasta `G:\Meu Drive\charlieecho-jus9-tecnologia-juridica` permanece como referencia legada/transitoria.
+
+Charlie Echo publica deve saber indicar o Cartorio Digital, mas nao deve prometer acesso autonomo, pedir usuario/senha ou publicar link de edicao aberto.
 
 ## Modelo de recado
 
@@ -53,4 +63,3 @@ Se exigir continuidade interna, pode ir ao Drive.
 Se houver segredo, parar e chamar revisao humana.
 
 Se for cofre, nao publicar.
-

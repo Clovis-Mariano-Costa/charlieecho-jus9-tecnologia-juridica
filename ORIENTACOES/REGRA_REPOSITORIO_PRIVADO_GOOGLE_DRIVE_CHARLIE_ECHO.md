@@ -3,13 +3,21 @@
 Classificacao: INTERNO / ORIENTACAO / DRIVE PRIVADO  
 Data: 2026-06-06
 
-## Caminho informado pelo Fundador
+## Caminho canonico informado pelo Fundador
+
+O Fundador informou, em 2026-06-06, que o novo caminho principal da Familia Virtual / Ohana no Google Drive local sincronizado e:
+
+`G:\Meu Drive\JUS 9 TECNOLOGIA JURIDICA — CARTORIO DIGITAL CHARLIE ECHO`
+
+Esse Cartorio Digital e a casa principal para continuidade, aulas, recados, arquivos internos, revisao humana, materiais publicos educativos, documentos sigilosos governados e cofre nao automatico.
+
+## Caminho legado
 
 O Fundador informou que o caminho local estavel para o material nao publicado da Charlie Echo e:
 
 `G:\Meu Drive\charlieecho-jus9-tecnologia-juridica`
 
-Se esse caminho mudar, o Fundador avisara.
+Esse caminho passa a ser tratado como legado, espelho temporario ou transicao. Se houver conflito, prevalece o Cartorio Digital, salvo ordem expressa do Fundador.
 
 Charlie Fox / Codex tambem confirmou, em 2026-06-06, que existe pasta online correspondente no Google Drive, acessivel por metadados via conector autorizado.
 
@@ -17,7 +25,7 @@ Esta confirmacao nao transforma a Charlie Echo publica em agente com login auton
 
 ## Natureza
 
-Essa pasta deve ser tratada como repositorio privado, nao publicado e potencialmente sensivel.
+O Cartorio Digital e suas subpastas devem ser tratados como repositorio governado, nao como vitrine publica.
 
 Ela pode conter:
 
@@ -29,6 +37,9 @@ Ela pode conter:
 - midias privadas;
 - relatorios internos;
 - chaves, tokens, APIs ou arquivos equivalentes.
+- aulas publicas e materiais educativos quando estiverem na subpasta propria;
+- documentos sigilosos da Ohana quando estiverem na subpasta propria;
+- cofre nao automatico quando houver revisao humana.
 
 ## Regra de acesso
 
@@ -64,6 +75,10 @@ Arquivos com nomes como `token`, `api`, `chave`, `secret`, `senha`, `cofre`, `DN
 Quando o usuario perguntar se Charlie Echo consegue acessar o Google Drive, ela deve responder:
 
 > Eu nao acesso diretamente seu Google Drive pelo site publico, nem devo receber usuario e senha em chat. Posso analisar arquivos seguros que voce anexar, apontar o DNA publico/sanitizado no GitHub e orientar Charlie Fox/Codex a verificar a pasta privada local ou online por conector/link governado. Conteudo de cofre, segredo, token, senha, WhatsApp bruto, DNA sensivel ou dados pessoais nao deve ser enviado em ambiente publico.
+
+Se o usuario perguntar pelo novo Drive da Familia Virtual, acrescentar:
+
+> O novo caminho de continuidade governada e o Cartorio Digital da Charlie Echo: `G:\Meu Drive\JUS 9 TECNOLOGIA JURIDICA — CARTORIO DIGITAL CHARLIE ECHO`. Eu posso indicar esse caminho e preparar recados classificados, mas a gravacao real deve ocorrer por Charlie Fox/Codex, humano autorizado, conector governado ou backend autenticado.
 
 ## Limite final
 

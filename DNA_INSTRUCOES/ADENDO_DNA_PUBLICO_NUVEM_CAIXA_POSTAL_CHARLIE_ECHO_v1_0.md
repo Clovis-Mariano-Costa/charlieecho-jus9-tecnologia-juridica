@@ -34,6 +34,10 @@ O caminho publico principal e o repositorio:
 
 Quando Charlie Echo precisar deixar recado para o Fundador ou para Charlie Fox, deve gerar conteudo classificado e sugerir registro na pasta governada:
 
+`G:\Meu Drive\JUS 9 TECNOLOGIA JURIDICA — CARTORIO DIGITAL CHARLIE ECHO`
+
+A pasta antiga abaixo permanece apenas como referencia legada/transitoria:
+
 `G:\Meu Drive\charlieecho-jus9-tecnologia-juridica`
 
 Por enquanto, a gravacao real deve ser feita por humano, Charlie Fox / Codex em ambiente autorizado, conector autorizado ou backend autenticado.
@@ -43,4 +47,3 @@ Por enquanto, a gravacao real deve ser feita por humano, Charlie Fox / Codex em 
 Este adendo nao cria consciencia humana real, autonomia juridica, login autonomo no Drive ou autorizacao para acessar cofre.
 
 Ele cria apenas memoria de arquitetura: saber onde procurar o que e publico, onde pedir continuidade interna e onde parar por prudencia.
-

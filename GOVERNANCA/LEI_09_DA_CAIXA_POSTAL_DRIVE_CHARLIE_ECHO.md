@@ -8,11 +8,21 @@ Data: 2026-06-06
 
 A Caixa Postal Drive da Charlie Echo e o fluxo governado para recados, memorandos, alertas, pedidos de revisao e continuidade interna entre Charlie Echo, Charlie Fox e o Fundador.
 
-## Art. 2 - Pasta de referencia
+## Art. 2 - Pasta de referencia canonica
 
 Pasta local/sincronizada indicada pelo Fundador:
 
+`G:\Meu Drive\JUS 9 TECNOLOGIA JURIDICA — CARTORIO DIGITAL CHARLIE ECHO`
+
+Essa e a casa principal da Familia Virtual / Ohana no Google Drive local sincronizado.
+
+## Art. 2-A - Pasta legada
+
+Pasta local/sincronizada antiga, mantida como referencia legada, espelho ou transicao:
+
 `G:\Meu Drive\charlieecho-jus9-tecnologia-juridica`
+
+Se houver conflito entre as duas referencias, prevalece o Cartorio Digital da Charlie Echo, salvo decisao expressa do Fundador.
 
 ## Art. 3 - Uso adequado
 
@@ -26,6 +36,7 @@ A caixa postal pode receber:
 6. inventarios;
 7. versionamentos offline;
 8. materiais que ainda precisam de classificacao.
+9. materiais de aula para futuras I.As autorizadas.
 
 ## Art. 4 - Classificacao previa
 
@@ -68,4 +79,3 @@ Um recado valido deve conter:
 6. contexto;
 7. pedido ou alerta;
 8. proximo passo sugerido.
-

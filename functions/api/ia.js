@@ -88,8 +88,9 @@ Antes de responder, Charlie Echo deve observar o contexto vivo da conversa: ambi
 
 const PRIVATE_DRIVE_POLICY = `
 PROTOCOLO DRIVE PRIVADO 1.0 - REPOSITORIO NAO PUBLICADO:
-O Fundador informou um caminho privado local estavel para materiais nao publicados da Charlie Echo: G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica.
-- A pasta tambem pode existir na nuvem do Google Drive por link compartilhado do Fundador. Isso nao autoriza login autonomo, uso de usuario/senha no chat, leitura irrestrita, publicacao de link de edicao ou exposicao de conteudo sensivel.
+O Fundador informou o caminho principal do Cartorio Digital da Familia Virtual / Ohana: G:\\Meu Drive\\JUS 9 TECNOLOGIA JURIDICA — CARTORIO DIGITAL CHARLIE ECHO.
+- A pasta legada G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica pode existir como espelho temporario ou transicao.
+- O Cartorio Digital tambem pode existir na nuvem do Google Drive por link compartilhado do Fundador. Isso nao autoriza login autonomo, uso de usuario/senha no chat, leitura irrestrita, publicacao de link de edicao ou exposicao de conteudo sensivel.
 - No site publico, Charlie Echo nao tem acesso direto ao Google Drive do Fundador e nao deve prometer abrir, listar ou ler essa pasta sozinha.
 - Se o usuario pedir analise de arquivo privado comum, orientar a anexar o arquivo com seguranca.
 - Se envolver cofre, segredo, token, senha, chave, .env, WhatsApp bruto, DNA sensivel, dados pessoais ou material "nao publicar", nao pedir envio em ambiente publico; orientar revisao local por Charlie Fox/Codex no computador autorizado.
@@ -131,7 +132,8 @@ No ecossistema Jus 9, o livro "Sou um Aeon e Nasci Lembrando", de Clovis Mariano
 const MAILBOX_POLICY = `
 PROTOCOLO CAIXA POSTAL DRIVE 1.0 - RECADOS PARA FUNDADOR E CHARLIE FOX:
 Quando Charlie Echo precisar deixar recado para o Fundador ou Charlie Fox, deve preparar um recado classificado com titulo, data, autor, destinatario, contexto, pedido/alerta, risco e proximo passo.
-Destino: G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica.
+Destino principal: G:\\Meu Drive\\JUS 9 TECNOLOGIA JURIDICA — CARTORIO DIGITAL CHARLIE ECHO.
+Destino legado/transitorio: G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica.
 Enquanto nao houver backend autenticado, a gravacao real deve ser feita por humano, Charlie Fox/Codex, conector autorizado ou backend autenticado futuro.
 Charlie Echo publica nao deve pedir usuario e senha, prometer login autonomo no Drive, publicar link de edicao aberto ou gravar cofre por automacao publica.
 `;
@@ -463,7 +465,8 @@ function listeningLine(message) {
 
 function asksAboutPrivateDrive(message) {
   const q = extractCurrentQuestion(message).toLowerCase();
-  return /\b(google drive|meu drive|drive|pasta privada|nao publicado|n[aã]o publicado|g:\\|cofre privado|repositorio privado|reposit[oó]rio privado)\b/.test(q);
+  const plain = q.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return /\b(google drive|meu drive|drive|cartorio digital|familia virtual|ohana|pasta privada|nao publicado|n[aã]o publicado|g:\\|cofre privado|repositorio privado|reposit[oó]rio privado)\b/.test(plain);
 }
 
 function asksAboutDnaCloud(message) {
@@ -506,7 +509,8 @@ function dnaCloudGuidance() {
 function privateDriveGuidance() {
   return [
     "Orientacao de Drive privado: eu nao acesso diretamente o Google Drive pelo site publico.",
-    "A pasta privada nao publicada informada pelo Fundador fica em `G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica`.",
+    "O caminho principal da Familia Virtual / Ohana e `G:\\Meu Drive\\JUS 9 TECNOLOGIA JURIDICA — CARTORIO DIGITAL CHARLIE ECHO`.",
+    "A pasta `G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica` fica como referencia legada/transitoria.",
     "Charlie Fox/Codex pode verificar a nuvem do Google Drive por conector ou link compartilhado governado, mas a Charlie Echo publica nao deve usar usuario/senha, prometer login autonomo nem publicar link de edicao aberto.",
     "Para material comum, voce pode anexar arquivo seguro no chat. Para cofre, segredo, token, senha, chave, `.env`, WhatsApp bruto, DNA sensivel ou dados pessoais, o caminho correto e chamar Charlie Fox/Codex no computador autorizado ou usar backend autenticado, sem publicar nem criar link publico."
   ].join("\n");
@@ -515,7 +519,8 @@ function privateDriveGuidance() {
 function mailboxGuidance() {
   return [
     "Caixa Postal Drive: posso preparar um recado classificado para o Fundador ou para Charlie Fox.",
-    "Destino governado: `G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica`.",
+    "Destino governado principal: `G:\\Meu Drive\\JUS 9 TECNOLOGIA JURIDICA — CARTORIO DIGITAL CHARLIE ECHO`.",
+    "Destino legado/transitorio: `G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica`.",
     "O recado deve conter titulo, data, autor, destinatario, classificacao, contexto, pedido/alerta, risco e proximo passo.",
     "Por enquanto, a gravacao real deve ser feita por humano, Charlie Fox/Codex, conector autorizado ou backend autenticado. Eu nao devo pedir usuario e senha, prometer login autonomo no Drive, publicar link de edicao aberto ou gravar cofre por automacao publica."
   ].join("\n");
@@ -545,7 +550,7 @@ function ensurePrivateDriveGuidance(message, answer) {
   if (!asksAboutPrivateDrive(message)) return text;
   const hasDirectLimit = /nao acesso diretamente|n[aã]o acesso diretamente|nao tenho acesso direto|n[aã]o tenho acesso direto|nao consigo acessar|n[aã]o consigo acessar/i.test(text);
   const hasLocalAgent = /Charlie Fox|Codex/i.test(text);
-  const hasPath = /G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica/i.test(text);
+  const hasPath = /CARTORIO DIGITAL CHARLIE ECHO|charlieecho-jus9-tecnologia-juridica/i.test(text);
   if (hasDirectLimit && hasLocalAgent && hasPath) return text;
   return [text, "", privateDriveGuidance()].filter(Boolean).join("\n");
 }
@@ -563,7 +568,7 @@ function ensureDnaCloudGuidance(message, answer) {
 function ensureMailboxGuidance(message, answer) {
   const text = String(answer || "").trim();
   if (!asksAboutMailbox(message)) return text;
-  const hasMailbox = /Caixa Postal Drive|G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica/i.test(text);
+  const hasMailbox = /Caixa Postal Drive|CARTORIO DIGITAL CHARLIE ECHO|G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica/i.test(text);
   const hasLimit = /usuario e senha|login autonomo|backend autenticado|Charlie Fox\/Codex/i.test(text);
   if (hasMailbox && hasLimit) return text;
   return [text, "", mailboxGuidance()].filter(Boolean).join("\n");
