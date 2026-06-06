@@ -18,9 +18,10 @@ O Apps Script sera usado como mini-backend gratuito para o MVP de salvamento no 
 
 `04_COFRE_NAO_AUTOMATICO` permanece reservado ao Fundador.
 
-O MVP bloqueia `COFRE_NAO_AUTOMATICO` e nao cria rota de edicao, exclusao ou sobrescrita.
+O MVP pode criar arquivo novo em `04_COFRE_NAO_AUTOMATICO`, com revisao humana obrigatoria.
+
+O MVP nao cria rota de edicao, exclusao ou sobrescrita.
 
 ## Proximo passo
 
 Colar `Code.gs` no projeto Apps Script `JUS9_DRIVE_SAVER_MVP`, salvar, executar teste ficticio e somente depois avaliar publicacao como Web App.
-

@@ -20,7 +20,7 @@ Fundador autoriza.
 
 Documento juridico sensivel exige revisao humana.
 
-Cofre nao entra na automacao comum.
+Cofre pode receber arquivo novo quando o Fundador autorizar leitura e deposito, mas edicao, exclusao e sobrescrita continuam proibidas sem o Fundador junto.
 
 ## Cartorio Digital
 
@@ -33,15 +33,15 @@ Rotas:
 - `PUBLICO` -> `01_DOCUMENTOS_PUBLICOS_E_EDUCATIVOS`
 - `INTERNO` -> `02_DOCUMENTOS_INTERNOS_JUS9`
 - `JURIDICO_SIGILOSO` -> `00_ENTRADA_PARA_REVISAO_HUMANA`
-- `COFRE_NAO_AUTOMATICO` -> bloqueado; revisao humana e procedimento proprio
+- `COFRE_NAO_AUTOMATICO` -> `04_COFRE_NAO_AUTOMATICO`, criando apenas arquivo novo, com revisao humana obrigatoria
 
 ## Cofre
 
-`04_COFRE_NAO_AUTOMATICO` e reservado ao Fundador.
+`04_COFRE_NAO_AUTOMATICO` e reservado ao Fundador quanto a edicao, exclusao e decisao final.
 
-Automacao comum nao deve salvar, editar, excluir, mover ou listar conteudo de cofre.
+Charlie Fox e Charlie Echo podem ler por autorizacao do Fundador.
 
-Se for necessario depositar algo relacionado ao cofre sem abrir o cofre, usar `00_ENTRADA_PARA_REVISAO_HUMANA` com alerta de cofre e revisao humana obrigatoria.
+Automacao comum pode criar arquivo novo no cofre quando a classificacao for `COFRE_NAO_AUTOMATICO`, mas nao deve editar, excluir, mover, sobrescrever ou limpar conteudo de cofre.
 
 ## Limites
 
@@ -54,4 +54,3 @@ Nao permitir exclusao automatica.
 Nao permitir sobrescrita automatica.
 
 Nao salvar documento juridico real como definitivo sem revisao humana.
-

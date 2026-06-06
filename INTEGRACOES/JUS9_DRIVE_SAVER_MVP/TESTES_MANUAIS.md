@@ -58,8 +58,8 @@ Data: 2026-06-06
 ```json
 {
   "chaveInterna": "VALOR_DA_SUA_CHAVE",
-  "titulo": "Teste cofre bloqueado",
-  "conteudo": "Teste ficticio. Deve ser bloqueado.",
+  "titulo": "Teste cofre arquivo novo",
+  "conteudo": "Teste ficticio. Deve criar arquivo novo no cofre, sem editar nem excluir arquivo existente.",
   "classificacao": "COFRE_NAO_AUTOMATICO",
   "tipoDocumento": "TESTE",
   "origem": "Teste manual Apps Script",
@@ -67,5 +67,4 @@ Data: 2026-06-06
 }
 ```
 
-Resultado esperado: nao criar arquivo em `04_COFRE_NAO_AUTOMATICO`.
-
+Resultado esperado: criar arquivo novo em `04_COFRE_NAO_AUTOMATICO`, com revisao humana obrigatoria. Nao deve editar, excluir ou sobrescrever arquivo existente.

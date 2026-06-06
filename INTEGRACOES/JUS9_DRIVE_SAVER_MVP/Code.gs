@@ -5,7 +5,7 @@
  * Regra maior:
  * - Nao pedir senha Google.
  * - Nao salvar token, chave, .env ou segredo.
- * - Nao escrever em 04_COFRE_NAO_AUTOMATICO.
+ * - Escrever em 04_COFRE_NAO_AUTOMATICO apenas criando arquivo novo.
  * - Nao editar, excluir ou sobrescrever arquivos existentes.
  * - Criar sempre novo documento com cabecalho de classificacao.
  *
@@ -152,8 +152,7 @@ function resolveRoute_(classificacao) {
       folderId: JUS9_DRIVE_SAVER_CONFIG.folders.COFRE_NAO_AUTOMATICO,
       folderName: "04_COFRE_NAO_AUTOMATICO",
       reviewRequired: true,
-      blocked: true,
-      message: "Cofre nao recebe salvamento automatico. Use revisao humana e procedimento proprio."
+      blocked: false
     };
   }
 
