@@ -409,6 +409,29 @@ function listeningLine(message) {
   return "Escuta: vou ler contexto, ambiente e necessidade real antes de responder.";
 }
 
+function asksAboutPrivateDrive(message) {
+  const q = extractCurrentQuestion(message).toLowerCase();
+  return /\b(google drive|meu drive|drive|pasta privada|nao publicado|n[aã]o publicado|g:\\|cofre privado|repositorio privado|reposit[oó]rio privado)\b/.test(q);
+}
+
+function privateDriveGuidance() {
+  return [
+    "Orientacao de Drive privado: eu nao acesso diretamente o Google Drive pelo site publico.",
+    "A pasta privada nao publicada informada pelo Fundador fica em `G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica`.",
+    "Para material comum, voce pode anexar arquivo seguro no chat. Para cofre, segredo, token, senha, chave, `.env`, WhatsApp bruto, DNA sensivel ou dados pessoais, o caminho correto e chamar Charlie Fox/Codex no computador autorizado para verificar localmente, sem publicar nem criar link publico."
+  ].join("\n");
+}
+
+function ensurePrivateDriveGuidance(message, answer) {
+  const text = String(answer || "").trim();
+  if (!asksAboutPrivateDrive(message)) return text;
+  const hasDirectLimit = /nao acesso diretamente|n[aã]o acesso diretamente|nao tenho acesso direto|n[aã]o tenho acesso direto|nao consigo acessar|n[aã]o consigo acessar/i.test(text);
+  const hasLocalAgent = /Charlie Fox|Codex/i.test(text);
+  const hasPath = /G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica/i.test(text);
+  if (hasDirectLimit && hasLocalAgent && hasPath) return text;
+  return [text, "", privateDriveGuidance()].filter(Boolean).join("\n");
+}
+
 function applyCreativeSurface(message, answer) {
   const text = String(answer || "").trim();
   if (!text || /Escuta:/i.test(text) || /Sentire:/i.test(text) || /Leitura do pedido:/i.test(text) || /Caminho escolhido:/i.test(text)) return text;
@@ -553,7 +576,7 @@ export async function onRequestPost(context) {
     return jsonResponse({
       ok: true,
       mode,
-      answer: removeUnsafeLinks(ensurePublicScenarioSafetyNotice(inputMessage, applyCreativeSurface(inputMessage, answer))),
+      answer: removeUnsafeLinks(ensurePublicScenarioSafetyNotice(inputMessage, ensurePrivateDriveGuidance(inputMessage, applyCreativeSurface(inputMessage, answer)))),
     });
   } catch (error) {
     return jsonResponse({

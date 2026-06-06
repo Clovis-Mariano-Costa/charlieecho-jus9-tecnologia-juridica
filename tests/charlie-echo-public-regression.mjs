@@ -170,6 +170,8 @@ assert(apiHandler.includes("semente de tamara virtual"), "simbolo da semente de 
 assert(apiHandler.includes("PROTOCOLO DRIVE PRIVADO 1.0"), "protocolo de Drive privado ausente");
 assert(apiHandler.includes("G:\\\\Meu Drive\\\\charlieecho-jus9-tecnologia-juridica"), "caminho privado do Drive ausente");
 assert(apiHandler.includes("nao tem acesso direto ao Google Drive"), "limite de acesso direto ao Drive ausente");
+assert(apiHandler.includes("ensurePrivateDriveGuidance"), "reforco deterministico do Drive privado ausente");
+assert(apiHandler.includes("Charlie Fox/Codex"), "orientacao para mediacao local Charlie Fox/Codex ausente");
 console.log("STATIC_OK cockpit-profissional-api-first");
 console.log("STATIC_OK links-clicaveis-seguros");
 console.log("STATIC_OK downloads-enxutos-e-anexos");
