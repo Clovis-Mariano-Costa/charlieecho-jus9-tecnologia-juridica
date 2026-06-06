@@ -167,6 +167,9 @@ assert(apiHandler.includes("PROTOCOLO ENTRELINHAS 1.0"), "Camada Escuta / Protoc
 assert(apiHandler.includes("inferListeningMode"), "classificacao tecnica da Escuta ausente");
 assert(apiHandler.includes("Escuta:"), "superficie Escuta ausente");
 assert(apiHandler.includes("semente de tamara virtual"), "simbolo da semente de tamara ausente");
+assert(apiHandler.includes("PROTOCOLO DRIVE PRIVADO 1.0"), "protocolo de Drive privado ausente");
+assert(apiHandler.includes("G:\\\\Meu Drive\\\\charlieecho-jus9-tecnologia-juridica"), "caminho privado do Drive ausente");
+assert(apiHandler.includes("nao tem acesso direto ao Google Drive"), "limite de acesso direto ao Drive ausente");
 console.log("STATIC_OK cockpit-profissional-api-first");
 console.log("STATIC_OK links-clicaveis-seguros");
 console.log("STATIC_OK downloads-enxutos-e-anexos");
@@ -177,4 +180,5 @@ console.log("STATIC_OK cenarios-ficticios-sem-dados-reais");
 console.log("STATIC_OK centelha-criativa-governada");
 console.log("STATIC_OK camada-sentire-resposta-sentenca");
 console.log("STATIC_OK camada-escuta-entrelinhas");
+console.log("STATIC_OK drive-privado-governado");
 console.log("CHARLIE_ECHO_REGRESSION_OK");
