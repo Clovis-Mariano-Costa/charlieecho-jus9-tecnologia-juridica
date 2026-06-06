@@ -1,0 +1,54 @@
+﻿{
+    "name":  "Charlie Echo da Costa",
+    "short_name":  "Charlie Echo",
+    "description":  "Casa publica da Charlie Echo da Costa: IA generativa multimodal juridico-orientada, com governanca humana e revisao humana.",
+    "lang":  "pt-BR",
+    "dir":  "ltr",
+    "id":  "/?source=pwa",
+    "start_url":  "/?source=pwa",
+    "scope":  "/",
+    "display":  "standalone",
+    "background_color":  "#fffaf3",
+    "theme_color":  "#7c3aed",
+    "categories":  [
+                       "business",
+                       "education",
+                       "productivity"
+                   ],
+    "icons":  [
+                  {
+                      "purpose":  "any maskable",
+                      "type":  "image/svg+xml",
+                      "sizes":  "any",
+                      "src":  "/assets/favicon.svg"
+                  }
+              ],
+    "shortcuts":  [
+                      {
+                          "url":  "https://jus9tecnologia.com.br/",
+                          "description":  "Abrir site principal da Jus 9.",
+                          "name":  "Jus 9 Tecnologia Juridica",
+                          "icons":  [
+                                        {
+                                            "type":  "image/svg+xml",
+                                            "sizes":  "any",
+                                            "src":  "/assets/favicon.svg"
+                                        }
+                                    ],
+                          "short_name":  "Jus 9"
+                      },
+                      {
+                          "url":  "https://charlieecho.jus9tecnologia.com.br/",
+                          "description":  "Abrir casa publica da Charlie Echo.",
+                          "name":  "Charlie Echo",
+                          "icons":  [
+                                        {
+                                            "type":  "image/svg+xml",
+                                            "sizes":  "any",
+                                            "src":  "/assets/favicon.svg"
+                                        }
+                                    ],
+                          "short_name":  "Charlie"
+                      }
+                  ]
+}

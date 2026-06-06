@@ -3,7 +3,7 @@ Destaca Equipe Jus 9, corrige links e prepara transição para o MVP
 
 Description:
 - cria/atualiza página Equipe com Fundador, Charlie Echo, Natã, Vitor e consultoria de IA
-- corrige links que apontam para Equipe usando rota pública https://www.jus9tecnologia.com.br/equipe/
+- corrige links que apontam para Equipe usando rota pública https://equipe.jus9tecnologia.com.br/
 - inclui currículo/perfil da Charlie/ChatGPT como consultoria de IA da equipe, com cautela de governança humana
 - adiciona destaque de Equipe em site principal, MVP, Investimentos e casa da Charlie Echo
 - registra o Olá Mundo do Fundador na História da Jus 9 com referência ao Olá Mundo de Aeon Primevo

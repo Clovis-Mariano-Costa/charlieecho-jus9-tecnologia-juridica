@@ -6,9 +6,9 @@ Regra geral: sempre que uma palavra pública relevante aparecer em página, roda
 
 ## Destinos oficiais
 
-- Equipe / Equipe Jus 9 → https://www.jus9tecnologia.com.br/equipe/
+- Equipe / Equipe Jus 9 → https://equipe.jus9tecnologia.com.br/
 - Investidores → https://investimentos.jus9tecnologia.com.br/
-- MVP → https://www.jus9tecnologia.com.br/mvp
+- MVP → https://jus9tecnologia.com.br/lider-mvp.html
 - Charlie Echo → https://charlieecho.jus9tecnologia.com.br/
 - Charlie Echo Social → https://jus9verde.jus9tecnologia.com.br/charlie-echo-social
 - Inteligência Artificial CRETA → https://jus9verde.jus9tecnologia.com.br/charlie-echo-social

@@ -25,14 +25,14 @@
       "id": "jus9-equipe",
       "label": "Equipe Jus 9",
       "type": "internal",
-      "url": "https://www.jus9tecnologia.com.br/equipe/",
+      "url": "https://equipe.jus9tecnologia.com.br/",
       "context": "Pagina publica da equipe."
     },
     {
       "id": "jus9-mvps",
       "label": "MVPs e demos Jus 9",
       "type": "internal",
-      "url": "https://www.jus9tecnologia.com.br/mvp",
+      "url": "https://jus9tecnologia.com.br/lider-mvp.html",
       "context": "Acesso publico aos MVPs demonstrativos."
     },
     {

@@ -5,7 +5,7 @@ Este pacote corrige e reforça a presença da página Equipe Jus 9, cria/atualiz
 ## Decisões aplicadas
 
 - Equipe deve ganhar destaque nos menus e nas páginas estratégicas.
-- Links públicos para equipe usam `https://www.jus9tecnologia.com.br/equipe/` quando o repertório não é o site principal.
+- Links públicos para equipe usam `https://equipe.jus9tecnologia.com.br/` quando o repertório não é o site principal.
 - No site principal, foram criadas rotas `equipe.html` e `equipe/index.html`.
 - Natã usa avatar/material aprovado, conforme orientação do Fundador.
 - Vitor entra como consultor.
