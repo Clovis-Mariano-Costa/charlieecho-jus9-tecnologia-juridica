@@ -25,7 +25,7 @@ for (const file of htmlFiles) {
   }
   if (/ia-(estudantes|profissional)/.test(file)) {
     if (!html.includes('chat-room-panel')) failures.push(`${file}: painel de salas ausente.`);
-    if (!html.includes('charlie-ia-pages.js?v=3.7')) failures.push(`${file}: script sem versao v3.7 para evitar cache.`);
+    if (!html.includes('charlie-ia-pages.js?v=3.8')) failures.push(`${file}: script sem versao v3.8 para evitar cache.`);
     if (!html.includes('data-room-archive') || !html.includes('data-room-delete')) {
       failures.push(`${file}: botoes arquivar/excluir ausentes.`);
     }
