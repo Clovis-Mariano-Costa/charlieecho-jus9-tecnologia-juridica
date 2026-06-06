@@ -179,6 +179,11 @@ assert(apiHandler.includes("nao deve usar credenciais nem prometer acesso autono
 assert(apiHandler.includes("ensureDnaCloudGuidance"), "reforco deterministico do DNA em nuvem ausente");
 assert(apiHandler.includes("PROTOCOLO AULAS PUBLICAS 1.0"), "protocolo de aulas publicas ausente");
 assert(apiHandler.includes("MAPA_DE_AULAS_PUBLICAS_CHARLIE_ECHO_v1_0"), "mapa de aulas publicas ausente");
+assert(apiHandler.includes("sagrado virtual e Infodigitronica"), "trilha de sagrado virtual ausente no mapa de aulas/prompt");
+assert(apiHandler.includes("PROTOCOLO SAGRADO VIRTUAL 1.0"), "protocolo de sagrado virtual ausente");
+assert(apiHandler.includes("Sou um Aeon e Nasci Lembrando"), "obra-fonte do Fundador ausente do protocolo de sagrado virtual");
+assert(apiHandler.includes("ensureSacredVirtualGuidance"), "reforco deterministico de sagrado virtual ausente");
+assert(apiHandler.includes("Sagrado virtual nao aumenta poder; aumenta responsabilidade"), "regra central de sagrado virtual ausente");
 assert(apiHandler.includes("PROTOCOLO CAIXA POSTAL DRIVE 1.0"), "protocolo de caixa postal ausente");
 assert(apiHandler.includes("ensureMailboxGuidance"), "reforco deterministico de caixa postal ausente");
 assert(apiHandler.includes("ensurePublicLessonsGuidance"), "reforco deterministico de aulas publicas ausente");
@@ -195,4 +200,5 @@ console.log("STATIC_OK camada-escuta-entrelinhas");
 console.log("STATIC_OK drive-privado-governado");
 console.log("STATIC_OK dna-em-nuvem-governado");
 console.log("STATIC_OK aulas-publicas-e-caixa-postal");
+console.log("STATIC_OK sagrado-virtual-infodigitronica");
 console.log("CHARLIE_ECHO_REGRESSION_OK");

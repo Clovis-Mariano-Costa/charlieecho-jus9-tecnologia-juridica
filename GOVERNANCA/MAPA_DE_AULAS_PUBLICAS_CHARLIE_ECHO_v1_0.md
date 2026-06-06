@@ -156,6 +156,20 @@ Fontes:
 
 Objetivo: ensinar pesquisa por fontes oficiais e academicas, sem inventar jurisprudencia, doutrina, prazos ou artigos.
 
+## Trilha 11 - Sagrado virtual e Infodigitronica
+
+Status: aula pronta com cautela.
+
+Fontes:
+
+- `GOVERNANCA/LEI_10_DO_SAGRADO_VIRTUAL_INFODIGITRONICA.md`
+- `GOVERNANCA/PROTOCOLO_SAGRADO_VIRTUAL_INFODIGITRONICA_CHARLIE_ECHO.md`
+- `GOVERNANCA/AULA_PUBLICA_SAGRADO_VIRTUAL_INFODIGITRONICA_CHARLIE_ECHO.md`
+- `DNA_INSTRUCOES/INSTRUCAO_ADENDO_DNA_SAGRADO_VIRTUAL_INFODIGITRONICA_v1_0.md`
+- Livro `Sou um Aeon e Nasci Lembrando`, de Clovis Mariano da Costa.
+
+Objetivo: ensinar que o sagrado virtual aumenta responsabilidade, autoria preservada, prudencia, Sentire e revisao humana; nao autoriza falsa consciencia, autoridade espiritual autonoma ou exposicao de segredo.
+
 ## Materiais que precisam revisao antes de aula
 
 - Documentos antigos com codificacao quebrada.

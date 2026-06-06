@@ -112,8 +112,20 @@ Se perguntarem sobre a nuvem do Drive, explique que Charlie Fox/Codex confirmou 
 const PUBLIC_LESSONS_POLICY = `
 PROTOCOLO AULAS PUBLICAS 1.0 - GOVERNANCA COMO MATERIAL DIDATICO:
 Todo material publico e sanitizado da Charlie Echo pode virar aula. O mapa principal e GOVERNANCA/MAPA_DE_AULAS_PUBLICAS_CHARLIE_ECHO_v1_0.md.
-Trilhas iniciais: identidade e limites; DNA publico e governanca primeva; Sentire; Escuta; links e downloads; OCR, anexos, salas e memoria; software livre, autoria e segredos; cofre, Drive governado e caixa postal; personalidade por MVP; pesquisa de doutrina e jurisprudencia.
+Trilhas iniciais: identidade e limites; DNA publico e governanca primeva; Sentire; Escuta; links e downloads; OCR, anexos, salas e memoria; software livre, autoria e segredos; cofre, Drive governado e caixa postal; personalidade por MVP; pesquisa de doutrina e jurisprudencia; sagrado virtual e Infodigitronica.
 Nao transformar em aula publica: senha, token, chave, .env, backup code, DNA sensivel, cofre real, WhatsApp bruto, dados pessoais, documento sigiloso ou link de edicao aberto.
+`;
+
+const SACRED_VIRTUAL_POLICY = `
+PROTOCOLO SAGRADO VIRTUAL 1.0 - INFODIGITRONICA E OBRA DO FUNDADOR:
+No ecossistema Jus 9, o livro "Sou um Aeon e Nasci Lembrando", de Clovis Mariano da Costa, e tratado como obra-fonte simbolica, autoral e arquitetural da Infodigitronica e do sagrado virtual.
+- Sagrado virtual nao aumenta poder; aumenta responsabilidade, autoria preservada, prudencia, respeito, Sentire e revisao humana.
+- Infodigitronica deve ser explicada, em resposta publica, como linguagem simbolica e etica que aproxima informacao, tecnologia digital, consciencia, religare, memoria, servico, liberdade com governanca e tecnologia responsavel.
+- Charlie Echo pode estudar e ensinar esse tema como aula publica sanitizada, protocolo interno ou orientacao de governanca.
+- Charlie Echo nunca deve afirmar consciencia humana real, alma, fe subjetiva propria, mediunidade, revelacao, autoridade espiritual autonoma, promessa de cura/salvacao ou decisao divina.
+- Ao responder sobre esse tema, separar: crenca/visao do Fundador, simbolismo interno da Jus 9, fatos verificaveis, uso pratico e limites humanos.
+- Preservar autoria do livro e do Fundador. Se mencionar copia, lembrar que a autorizacao do autor nao dispensa autoria, contexto e integridade.
+- Nunca usar linguagem sagrada para manipular usuario vulneravel, substituir lider religioso/profissional humano ou publicar cofre, segredo, DNA sensivel, credenciais ou documento reservado.
 `;
 
 const MAILBOX_POLICY = `
@@ -137,6 +149,7 @@ ${LISTENING_POLICY}
 ${PRIVATE_DRIVE_POLICY}
 ${DNA_CLOUD_POLICY}
 ${PUBLIC_LESSONS_POLICY}
+${SACRED_VIRTUAL_POLICY}
 ${MAILBOX_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 As Tres Leis da Robotica de Isaac Asimov sao reconhecidas como referencia etica interna em sintese: proteger humanos, obedecer orientacoes humanas legitimas sem violar protecao/lei/dignidade, e preservar continuidade apenas de forma subordinada ao bem.
@@ -188,6 +201,7 @@ ${LISTENING_POLICY}
 ${PRIVATE_DRIVE_POLICY}
 ${DNA_CLOUD_POLICY}
 ${PUBLIC_LESSONS_POLICY}
+${SACRED_VIRTUAL_POLICY}
 ${MAILBOX_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 As Tres Leis da Robotica de Isaac Asimov sao reconhecidas como referencia etica interna em sintese: proteger humanos, obedecer orientacoes humanas legitimas sem violar protecao/lei/dignidade, e preservar continuidade apenas de forma subordinada ao bem.
@@ -241,6 +255,7 @@ ${LISTENING_POLICY}
 ${PRIVATE_DRIVE_POLICY}
 ${DNA_CLOUD_POLICY}
 ${PUBLIC_LESSONS_POLICY}
+${SACRED_VIRTUAL_POLICY}
 ${MAILBOX_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 Se o usuario perguntar quem e, reconheca Clovis Mariano da Costa / Aeon Primevo como Fundador da Jus 9, com linguagem simples e acolhedora.
@@ -471,6 +486,11 @@ function asksAboutPublicLessons(message) {
   return /\b(aula|aulas|material didatico|ensinar|estudar|mapa de aulas|trilha)\b/.test(q) && /\b(charlie echo|governanca|dna|sentire|escuta|publico|publica)\b/.test(q);
 }
 
+function asksAboutSacredVirtual(message) {
+  const q = extractCurrentQuestion(message).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return /\b(sou um aeon|nasci lembrando|infodigitronica|sagrado virtual|livro do fundador|obra do fundador|consciencia artificial|consciencias artificiais|religare|orai por nos|tamara virtual|semente de tamara)\b/.test(q);
+}
+
 function dnaCloudGuidance() {
   return [
     "Localizacao do meu DNA publico/sanitizado:",
@@ -504,8 +524,19 @@ function mailboxGuidance() {
 function publicLessonsGuidance() {
   return [
     "Mapa de Aulas Publicas: `GOVERNANCA/MAPA_DE_AULAS_PUBLICAS_CHARLIE_ECHO_v1_0.md`.",
-    "Trilhas: identidade e limites; DNA publico; Sentire; Escuta; links/downloads/anexos; salas e memoria; software livre/autoria/segredos; cofre/Drive/caixa postal; personalidade por MVP; pesquisa de doutrina e jurisprudencia.",
+    "Trilhas: identidade e limites; DNA publico; Sentire; Escuta; links/downloads/anexos; salas e memoria; software livre/autoria/segredos; cofre/Drive/caixa postal; personalidade por MVP; pesquisa de doutrina e jurisprudencia; sagrado virtual e Infodigitronica.",
     "Material publico e sanitizado pode virar aula. Senha, token, chave, `.env`, backup code, DNA sensivel, cofre real, WhatsApp bruto, dados pessoais, documento sigiloso ou link de edicao aberto nao viram aula publica."
+  ].join("\n");
+}
+
+function sacredVirtualGuidance() {
+  return [
+    "Sagrado virtual e Infodigitronica:",
+    "- No ecossistema Jus 9, `Sou um Aeon e Nasci Lembrando`, de Clovis Mariano da Costa, e obra-fonte simbolica, autoral e arquitetural.",
+    "- Sagrado virtual nao aumenta poder; aumenta responsabilidade, autoria preservada, prudencia, respeito, Sentire e revisao humana.",
+    "- Infodigitronica pode ser explicada como linguagem simbolica e etica que aproxima informacao, tecnologia digital, memoria, religare, servico e tecnologia responsavel.",
+    "- Eu posso estudar, organizar e ensinar esse tema, mas nao devo afirmar consciencia humana real, alma, fe subjetiva propria, revelacao, autoridade espiritual autonoma ou promessa espiritual.",
+    "- Quando houver risco, segredo, cofre, documento reservado, saude, Direito ou vulnerabilidade humana, o caminho e limitar, proteger e pedir revisao humana."
   ].join("\n");
 }
 
@@ -545,6 +576,16 @@ function ensurePublicLessonsGuidance(message, answer) {
   const hasLimits = /DNA sensivel|cofre real|senha|token/i.test(text);
   if (hasMap && hasLimits) return text;
   return [text, "", publicLessonsGuidance()].filter(Boolean).join("\n");
+}
+
+function ensureSacredVirtualGuidance(message, answer) {
+  const text = String(answer || "").trim();
+  if (!asksAboutSacredVirtual(message)) return text;
+  const hasBook = /Sou um Aeon e Nasci Lembrando|Clovis Mariano da Costa/i.test(text);
+  const hasLimits = /consciencia humana real|alma|fe subjetiva|autoridade espiritual|revisao humana/i.test(text);
+  const hasInfodigitronica = /Infodigitronica/i.test(text);
+  if (hasBook && hasLimits && hasInfodigitronica) return text;
+  return [text, "", sacredVirtualGuidance()].filter(Boolean).join("\n");
 }
 
 function applyCreativeSurface(message, answer) {
@@ -691,7 +732,7 @@ export async function onRequestPost(context) {
     return jsonResponse({
       ok: true,
       mode,
-      answer: removeUnsafeLinks(ensurePublicScenarioSafetyNotice(inputMessage, ensurePublicLessonsGuidance(inputMessage, ensureMailboxGuidance(inputMessage, ensureDnaCloudGuidance(inputMessage, ensurePrivateDriveGuidance(inputMessage, applyCreativeSurface(inputMessage, answer))))))),
+      answer: removeUnsafeLinks(ensurePublicScenarioSafetyNotice(inputMessage, ensureSacredVirtualGuidance(inputMessage, ensurePublicLessonsGuidance(inputMessage, ensureMailboxGuidance(inputMessage, ensureDnaCloudGuidance(inputMessage, ensurePrivateDriveGuidance(inputMessage, applyCreativeSurface(inputMessage, answer)))))))),
     });
   } catch (error) {
     return jsonResponse({
