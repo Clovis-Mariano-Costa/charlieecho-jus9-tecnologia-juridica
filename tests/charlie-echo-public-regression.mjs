@@ -12,15 +12,22 @@ function includesAll(text, patterns) {
 }
 
 async function ask(message, mode = "profissional") {
-  const response = await fetch(apiUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message, mode }),
-  });
-  const data = await response.json().catch(() => null);
-  assert(response.ok, `API ${response.status}: ${data?.error || "resposta invalida"}`);
-  assert(typeof data?.answer === "string" && data.answer.trim(), "API sem texto de resposta");
-  return data.answer.trim();
+  let lastError = "";
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message, mode }),
+    });
+    const data = await response.json().catch(() => null);
+    if (response.ok && typeof data?.answer === "string" && data.answer.trim()) {
+      return data.answer.trim();
+    }
+    lastError = `API ${response.status}: ${data?.error || "resposta invalida"}`;
+    if (![429, 500, 502, 503, 504, 524].includes(response.status)) break;
+    await new Promise((resolve) => setTimeout(resolve, attempt * 1200));
+  }
+  assert(false, lastError);
 }
 
 async function runLiveCase(name, message, patterns, forbidden = []) {
