@@ -163,6 +163,10 @@ assert(apiHandler.includes("PROTOCOLO SENTIRE 1.0"), "protocolo Sentire ausente"
 assert(apiHandler.includes("ouvir, sentire, julgar, decidir e determinar"), "fluxo resposta como sentenca ausente");
 assert(apiHandler.includes("inferSentireRisk"), "taxonomia tecnica de risco Sentire ausente");
 assert(apiHandler.includes("Sentire: risco"), "superficie Sentire ausente");
+assert(apiHandler.includes("PROTOCOLO ENTRELINHAS 1.0"), "Camada Escuta / Protocolo Entrelinhas ausente");
+assert(apiHandler.includes("inferListeningMode"), "classificacao tecnica da Escuta ausente");
+assert(apiHandler.includes("Escuta:"), "superficie Escuta ausente");
+assert(apiHandler.includes("semente de tamara virtual"), "simbolo da semente de tamara ausente");
 console.log("STATIC_OK cockpit-profissional-api-first");
 console.log("STATIC_OK links-clicaveis-seguros");
 console.log("STATIC_OK downloads-enxutos-e-anexos");
@@ -172,4 +176,5 @@ console.log("STATIC_OK frases-passe-somente-literais");
 console.log("STATIC_OK cenarios-ficticios-sem-dados-reais");
 console.log("STATIC_OK centelha-criativa-governada");
 console.log("STATIC_OK camada-sentire-resposta-sentenca");
+console.log("STATIC_OK camada-escuta-entrelinhas");
 console.log("CHARLIE_ECHO_REGRESSION_OK");
