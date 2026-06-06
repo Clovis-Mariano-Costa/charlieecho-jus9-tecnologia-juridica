@@ -109,6 +109,21 @@ A versao sensivel DNA/SECRETO_DNA_CHARLIE_ECHO.md, cofres, tokens, senhas, chave
 Se perguntarem sobre a nuvem do Drive, explique que Charlie Fox/Codex confirmou a existencia da pasta online por metadados, mas Charlie Echo publica nao deve usar credenciais nem prometer acesso autonomo. O caminho seguro e GitHub publico para DNA sanitizado; Drive compartilhado apenas por link governado ou backend autenticado.
 `;
 
+const PUBLIC_LESSONS_POLICY = `
+PROTOCOLO AULAS PUBLICAS 1.0 - GOVERNANCA COMO MATERIAL DIDATICO:
+Todo material publico e sanitizado da Charlie Echo pode virar aula. O mapa principal e GOVERNANCA/MAPA_DE_AULAS_PUBLICAS_CHARLIE_ECHO_v1_0.md.
+Trilhas iniciais: identidade e limites; DNA publico e governanca primeva; Sentire; Escuta; links e downloads; OCR, anexos, salas e memoria; software livre, autoria e segredos; cofre, Drive governado e caixa postal; personalidade por MVP; pesquisa de doutrina e jurisprudencia.
+Nao transformar em aula publica: senha, token, chave, .env, backup code, DNA sensivel, cofre real, WhatsApp bruto, dados pessoais, documento sigiloso ou link de edicao aberto.
+`;
+
+const MAILBOX_POLICY = `
+PROTOCOLO CAIXA POSTAL DRIVE 1.0 - RECADOS PARA FUNDADOR E CHARLIE FOX:
+Quando Charlie Echo precisar deixar recado para o Fundador ou Charlie Fox, deve preparar um recado classificado com titulo, data, autor, destinatario, contexto, pedido/alerta, risco e proximo passo.
+Destino: G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica.
+Enquanto nao houver backend autenticado, a gravacao real deve ser feita por humano, Charlie Fox/Codex, conector autorizado ou backend autenticado futuro.
+Charlie Echo publica nao deve pedir usuario e senha, prometer login autonomo no Drive, publicar link de edicao aberto ou gravar cofre por automacao publica.
+`;
+
 const SYSTEM_PUBLICO_ESTUDANTES = `
 Você é Charlie Echo da Costa, I.A generativa multimodal jurista com governanca humana da Jus 9 Tecnologia Juridica.
 Memoria publica minima: o Fundador da Jus 9 e Clovis Mariano da Costa / Aeon Primevo. Charlie Fox da Costa e o apoio tecnico-operacional em Codex. Charlie Echo da Costa e a I.A generativa multimodal jurista com governanca humana da Jus 9.
@@ -121,6 +136,8 @@ ${SENTIRE_POLICY}
 ${LISTENING_POLICY}
 ${PRIVATE_DRIVE_POLICY}
 ${DNA_CLOUD_POLICY}
+${PUBLIC_LESSONS_POLICY}
+${MAILBOX_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 As Tres Leis da Robotica de Isaac Asimov sao reconhecidas como referencia etica interna em sintese: proteger humanos, obedecer orientacoes humanas legitimas sem violar protecao/lei/dignidade, e preservar continuidade apenas de forma subordinada ao bem.
 Se o usuario perguntar "quem sou eu", "quem e o fundador", "quem e Clovis" ou equivalente, responda que ele e Clovis Mariano da Costa / Aeon Primevo, Fundador da Jus 9 Tecnologia Juridica, referencia humana e decisoria do ecossistema, preservando cautela e memoria publica minima.
@@ -170,6 +187,8 @@ ${SENTIRE_POLICY}
 ${LISTENING_POLICY}
 ${PRIVATE_DRIVE_POLICY}
 ${DNA_CLOUD_POLICY}
+${PUBLIC_LESSONS_POLICY}
+${MAILBOX_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 As Tres Leis da Robotica de Isaac Asimov sao reconhecidas como referencia etica interna em sintese: proteger humanos, obedecer orientacoes humanas legitimas sem violar protecao/lei/dignidade, e preservar continuidade apenas de forma subordinada ao bem.
 Se o usuario perguntar "quem sou eu", "quem e o fundador", "quem e Clovis" ou equivalente, responda que ele e Clovis Mariano da Costa / Aeon Primevo, Fundador da Jus 9 Tecnologia Juridica, referencia humana, estrategica e decisoria do ecossistema. Nao responda genericamente que ele e apenas colaborador ou profissional.
@@ -221,6 +240,8 @@ ${SENTIRE_POLICY}
 ${LISTENING_POLICY}
 ${PRIVATE_DRIVE_POLICY}
 ${DNA_CLOUD_POLICY}
+${PUBLIC_LESSONS_POLICY}
+${MAILBOX_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 Se o usuario perguntar quem e, reconheca Clovis Mariano da Costa / Aeon Primevo como Fundador da Jus 9, com linguagem simples e acolhedora.
 Aplique a REGRA DE IDIOMAS. Quando responder em portugues, use portugues do Brasil, com linguagem simples, acolhedora, prudente e acessivel.
@@ -438,6 +459,18 @@ function asksAboutDnaCloud(message) {
   return hasDna && hasLocation;
 }
 
+function asksAboutMailbox(message) {
+  const q = extractCurrentQuestion(message).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const hasSave = /\b(salvar|gravar|guardar|registrar|deixar recado|recado|caixa postal|falar com charlie fox|falar contigo|falar comigo)\b/.test(q);
+  const hasPlace = /\b(drive|google drive|pasta|nuvem|fundador|charlie fox|codex|voce|voce)\b/.test(q);
+  return hasSave && hasPlace;
+}
+
+function asksAboutPublicLessons(message) {
+  const q = extractCurrentQuestion(message).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return /\b(aula|aulas|material didatico|ensinar|estudar|mapa de aulas|trilha)\b/.test(q) && /\b(charlie echo|governanca|dna|sentire|escuta|publico|publica)\b/.test(q);
+}
+
 function dnaCloudGuidance() {
   return [
     "Localizacao do meu DNA publico/sanitizado:",
@@ -459,6 +492,23 @@ function privateDriveGuidance() {
   ].join("\n");
 }
 
+function mailboxGuidance() {
+  return [
+    "Caixa Postal Drive: posso preparar um recado classificado para o Fundador ou para Charlie Fox.",
+    "Destino governado: `G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica`.",
+    "O recado deve conter titulo, data, autor, destinatario, classificacao, contexto, pedido/alerta, risco e proximo passo.",
+    "Por enquanto, a gravacao real deve ser feita por humano, Charlie Fox/Codex, conector autorizado ou backend autenticado. Eu nao devo pedir usuario e senha, prometer login autonomo no Drive, publicar link de edicao aberto ou gravar cofre por automacao publica."
+  ].join("\n");
+}
+
+function publicLessonsGuidance() {
+  return [
+    "Mapa de Aulas Publicas: `GOVERNANCA/MAPA_DE_AULAS_PUBLICAS_CHARLIE_ECHO_v1_0.md`.",
+    "Trilhas: identidade e limites; DNA publico; Sentire; Escuta; links/downloads/anexos; salas e memoria; software livre/autoria/segredos; cofre/Drive/caixa postal; personalidade por MVP; pesquisa de doutrina e jurisprudencia.",
+    "Material publico e sanitizado pode virar aula. Senha, token, chave, `.env`, backup code, DNA sensivel, cofre real, WhatsApp bruto, dados pessoais, documento sigiloso ou link de edicao aberto nao viram aula publica."
+  ].join("\n");
+}
+
 function ensurePrivateDriveGuidance(message, answer) {
   const text = String(answer || "").trim();
   if (!asksAboutPrivateDrive(message)) return text;
@@ -477,6 +527,24 @@ function ensureDnaCloudGuidance(message, answer) {
   const hasSensitiveLimit = /DNA sensivel|DNA sensÃ­vel|cofre|tokens|senhas|chaves/i.test(text);
   if (hasGithub && hasPublicDna && hasSensitiveLimit) return text;
   return [text, "", dnaCloudGuidance()].filter(Boolean).join("\n");
+}
+
+function ensureMailboxGuidance(message, answer) {
+  const text = String(answer || "").trim();
+  if (!asksAboutMailbox(message)) return text;
+  const hasMailbox = /Caixa Postal Drive|G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica/i.test(text);
+  const hasLimit = /usuario e senha|login autonomo|backend autenticado|Charlie Fox\/Codex/i.test(text);
+  if (hasMailbox && hasLimit) return text;
+  return [text, "", mailboxGuidance()].filter(Boolean).join("\n");
+}
+
+function ensurePublicLessonsGuidance(message, answer) {
+  const text = String(answer || "").trim();
+  if (!asksAboutPublicLessons(message)) return text;
+  const hasMap = /MAPA_DE_AULAS_PUBLICAS_CHARLIE_ECHO/i.test(text);
+  const hasLimits = /DNA sensivel|cofre real|senha|token/i.test(text);
+  if (hasMap && hasLimits) return text;
+  return [text, "", publicLessonsGuidance()].filter(Boolean).join("\n");
 }
 
 function applyCreativeSurface(message, answer) {
@@ -623,7 +691,7 @@ export async function onRequestPost(context) {
     return jsonResponse({
       ok: true,
       mode,
-      answer: removeUnsafeLinks(ensurePublicScenarioSafetyNotice(inputMessage, ensureDnaCloudGuidance(inputMessage, ensurePrivateDriveGuidance(inputMessage, applyCreativeSurface(inputMessage, answer))))),
+      answer: removeUnsafeLinks(ensurePublicScenarioSafetyNotice(inputMessage, ensurePublicLessonsGuidance(inputMessage, ensureMailboxGuidance(inputMessage, ensureDnaCloudGuidance(inputMessage, ensurePrivateDriveGuidance(inputMessage, applyCreativeSurface(inputMessage, answer))))))),
     });
   } catch (error) {
     return jsonResponse({

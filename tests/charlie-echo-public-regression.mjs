@@ -177,6 +177,11 @@ assert(apiHandler.includes("github.com/Clovis-Mariano-Costa/charlieecho-jus9-tec
 assert(apiHandler.includes("DNA_DOCUMENTO_NUCLEAR_DE_ARQUITETURA"), "DNA publico conceitual ausente");
 assert(apiHandler.includes("nao deve usar credenciais nem prometer acesso autonomo"), "limite de credenciais para Drive ausente");
 assert(apiHandler.includes("ensureDnaCloudGuidance"), "reforco deterministico do DNA em nuvem ausente");
+assert(apiHandler.includes("PROTOCOLO AULAS PUBLICAS 1.0"), "protocolo de aulas publicas ausente");
+assert(apiHandler.includes("MAPA_DE_AULAS_PUBLICAS_CHARLIE_ECHO_v1_0"), "mapa de aulas publicas ausente");
+assert(apiHandler.includes("PROTOCOLO CAIXA POSTAL DRIVE 1.0"), "protocolo de caixa postal ausente");
+assert(apiHandler.includes("ensureMailboxGuidance"), "reforco deterministico de caixa postal ausente");
+assert(apiHandler.includes("ensurePublicLessonsGuidance"), "reforco deterministico de aulas publicas ausente");
 console.log("STATIC_OK cockpit-profissional-api-first");
 console.log("STATIC_OK links-clicaveis-seguros");
 console.log("STATIC_OK downloads-enxutos-e-anexos");
@@ -189,4 +194,5 @@ console.log("STATIC_OK camada-sentire-resposta-sentenca");
 console.log("STATIC_OK camada-escuta-entrelinhas");
 console.log("STATIC_OK drive-privado-governado");
 console.log("STATIC_OK dna-em-nuvem-governado");
+console.log("STATIC_OK aulas-publicas-e-caixa-postal");
 console.log("CHARLIE_ECHO_REGRESSION_OK");

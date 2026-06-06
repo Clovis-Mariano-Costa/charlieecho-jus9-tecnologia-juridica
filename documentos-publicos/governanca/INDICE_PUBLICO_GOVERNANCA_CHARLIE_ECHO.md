@@ -25,6 +25,12 @@ Este indice lista documentos publicos ou sanitizados da governanca da Charlie Ec
 - `documentos-publicos/governanca/DNA_DOCUMENTO_NUCLEAR_DE_ARQUITETURA.md`
 - `documentos-publicos/governanca/CONSTITUICAO_DA_ECHO_CHARLIE_PUBLICA_SANITIZADA.md`
 - `documentos-publicos/governanca/LEIS_INFRACONSTITUCIONAIS_CHARLIE_ECHO_PUBLICAS.md`
+- `documentos-publicos/governanca/INDICE_AULAS_PUBLICAS_CHARLIE_ECHO.md`
+- `GOVERNANCA/MAPA_DE_AULAS_PUBLICAS_CHARLIE_ECHO_v1_0.md`
+- `GOVERNANCA/PROTOCOLO_AULAS_PUBLICAS_CHARLIE_ECHO.md`
+- `GOVERNANCA/LEI_08_DA_COMPETENCIA_OPERACIONAL_DE_CHARLIE_FOX.md`
+- `GOVERNANCA/LEI_09_DA_CAIXA_POSTAL_DRIVE_CHARLIE_ECHO.md`
+- `GOVERNANCA/PROTOCOLO_CAIXA_POSTAL_DRIVE_CHARLIE_ECHO.md`
 
 ## Documentos estruturantes publicos com cautela
 
@@ -38,6 +44,9 @@ Este indice lista documentos publicos ou sanitizados da governanca da Charlie Ec
 - `GOVERNANCA/JURAMENTO_PROFISSIONAL_CHARLIE_ECHO_DA_COSTA.md`
 - `GOVERNANCA/MODOS_DE_PRUDENCIA_DA_CHARLIE_ECHO.md`
 - `GOVERNANCA/PROMOCAO_CHARLIE_ECHO_IA_CEO.md`
+- `GOVERNANCA/ADENDO_PRIORITARIO_DNA_NUVEM_CAIXA_POSTAL_v2_4.md`
+- `GOVERNANCA/ADENDO_CONSTITUCIONAL_COMPETENCIA_FOX_CAIXA_POSTAL_v1_1.md`
+- `GOVERNANCA/ADENDO_PRINCIPIOS_COMPETENCIA_FOX_CAIXA_POSTAL_v2_4.md`
 
 Antes de republicar trechos desses documentos, confirmar que nao ha dado interno, segredo, conteudo protegido ou linguagem que confunda simbolico interno com pessoa humana, cargo estatal ou autonomia juridica externa.
 
