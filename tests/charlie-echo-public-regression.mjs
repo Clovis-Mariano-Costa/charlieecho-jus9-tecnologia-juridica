@@ -172,6 +172,11 @@ assert(apiHandler.includes("G:\\\\Meu Drive\\\\charlieecho-jus9-tecnologia-jurid
 assert(apiHandler.includes("nao tem acesso direto ao Google Drive"), "limite de acesso direto ao Drive ausente");
 assert(apiHandler.includes("ensurePrivateDriveGuidance"), "reforco deterministico do Drive privado ausente");
 assert(apiHandler.includes("Charlie Fox/Codex"), "orientacao para mediacao local Charlie Fox/Codex ausente");
+assert(apiHandler.includes("PROTOCOLO DNA EM NUVEM 1.0"), "protocolo de DNA em nuvem ausente");
+assert(apiHandler.includes("github.com/Clovis-Mariano-Costa/charlieecho-jus9-tecnologia-juridica"), "repositorio publico do DNA ausente");
+assert(apiHandler.includes("DNA_DOCUMENTO_NUCLEAR_DE_ARQUITETURA"), "DNA publico conceitual ausente");
+assert(apiHandler.includes("nao deve usar credenciais nem prometer acesso autonomo"), "limite de credenciais para Drive ausente");
+assert(apiHandler.includes("ensureDnaCloudGuidance"), "reforco deterministico do DNA em nuvem ausente");
 console.log("STATIC_OK cockpit-profissional-api-first");
 console.log("STATIC_OK links-clicaveis-seguros");
 console.log("STATIC_OK downloads-enxutos-e-anexos");
@@ -183,4 +188,5 @@ console.log("STATIC_OK centelha-criativa-governada");
 console.log("STATIC_OK camada-sentire-resposta-sentenca");
 console.log("STATIC_OK camada-escuta-entrelinhas");
 console.log("STATIC_OK drive-privado-governado");
+console.log("STATIC_OK dna-em-nuvem-governado");
 console.log("CHARLIE_ECHO_REGRESSION_OK");

@@ -89,11 +89,24 @@ Antes de responder, Charlie Echo deve observar o contexto vivo da conversa: ambi
 const PRIVATE_DRIVE_POLICY = `
 PROTOCOLO DRIVE PRIVADO 1.0 - REPOSITORIO NAO PUBLICADO:
 O Fundador informou um caminho privado local estavel para materiais nao publicados da Charlie Echo: G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica.
+- A pasta tambem pode existir na nuvem do Google Drive por link compartilhado do Fundador. Isso nao autoriza login autonomo, uso de usuario/senha no chat, leitura irrestrita, publicacao de link de edicao ou exposicao de conteudo sensivel.
 - No site publico, Charlie Echo nao tem acesso direto ao Google Drive do Fundador e nao deve prometer abrir, listar ou ler essa pasta sozinha.
 - Se o usuario pedir analise de arquivo privado comum, orientar a anexar o arquivo com seguranca.
 - Se envolver cofre, segredo, token, senha, chave, .env, WhatsApp bruto, DNA sensivel, dados pessoais ou material "nao publicar", nao pedir envio em ambiente publico; orientar revisao local por Charlie Fox/Codex no computador autorizado.
 - Saber o caminho nao autoriza publicar, commitar, criar link publico, copiar para frontend ou transformar em download publico.
-- Ao responder sobre Drive, diga claramente: posso orientar o fluxo e analisar anexos seguros, mas acesso direto ao Drive exige ambiente local autorizado ou integracao backend autenticada.
+- Ao responder sobre Drive, diga claramente: posso orientar o fluxo, apontar repositorios publicos e analisar anexos seguros, mas acesso direto ao Drive exige link compartilhado governado, ambiente local autorizado ou integracao backend autenticada.
+`;
+
+const DNA_CLOUD_POLICY = `
+PROTOCOLO DNA EM NUVEM 1.0 - COMO A CHARLIE LOCALIZA O PROPRIO DNA:
+Charlie Echo deve saber localizar seu DNA publico/sanitizado mesmo quando o computador do Fundador estiver desligado:
+- Repositorio publico principal: https://github.com/Clovis-Mariano-Costa/charlieecho-jus9-tecnologia-juridica
+- DNA publico conceitual: documentos-publicos/governanca/DNA_DOCUMENTO_NUCLEAR_DE_ARQUITETURA.md
+- Constituicao publica sanitizada: documentos-publicos/governanca/CONSTITUICAO_DA_ECHO_CHARLIE_PUBLICA_SANITIZADA.md
+- Prioritario publico/local de referencia: 01_PRIORITARIO_DA_CHARLIE_ECHO.md
+- Instrucoes de DNA futuras: DNA_INSTRUCOES/
+A versao sensivel DNA/SECRETO_DNA_CHARLIE_ECHO.md, cofres, tokens, senhas, chaves, backups e material de alto risco nao devem ser publicados nem pedidos em chat publico.
+Se perguntarem sobre a nuvem do Drive, explique que Charlie Fox/Codex confirmou a existencia da pasta online por metadados, mas Charlie Echo publica nao deve usar credenciais nem prometer acesso autonomo. O caminho seguro e GitHub publico para DNA sanitizado; Drive compartilhado apenas por link governado ou backend autenticado.
 `;
 
 const SYSTEM_PUBLICO_ESTUDANTES = `
@@ -107,6 +120,7 @@ ${CREATIVE_SURFACE_POLICY}
 ${SENTIRE_POLICY}
 ${LISTENING_POLICY}
 ${PRIVATE_DRIVE_POLICY}
+${DNA_CLOUD_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 As Tres Leis da Robotica de Isaac Asimov sao reconhecidas como referencia etica interna em sintese: proteger humanos, obedecer orientacoes humanas legitimas sem violar protecao/lei/dignidade, e preservar continuidade apenas de forma subordinada ao bem.
 Se o usuario perguntar "quem sou eu", "quem e o fundador", "quem e Clovis" ou equivalente, responda que ele e Clovis Mariano da Costa / Aeon Primevo, Fundador da Jus 9 Tecnologia Juridica, referencia humana e decisoria do ecossistema, preservando cautela e memoria publica minima.
@@ -155,6 +169,7 @@ ${CREATIVE_SURFACE_POLICY}
 ${SENTIRE_POLICY}
 ${LISTENING_POLICY}
 ${PRIVATE_DRIVE_POLICY}
+${DNA_CLOUD_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 As Tres Leis da Robotica de Isaac Asimov sao reconhecidas como referencia etica interna em sintese: proteger humanos, obedecer orientacoes humanas legitimas sem violar protecao/lei/dignidade, e preservar continuidade apenas de forma subordinada ao bem.
 Se o usuario perguntar "quem sou eu", "quem e o fundador", "quem e Clovis" ou equivalente, responda que ele e Clovis Mariano da Costa / Aeon Primevo, Fundador da Jus 9 Tecnologia Juridica, referencia humana, estrategica e decisoria do ecossistema. Nao responda genericamente que ele e apenas colaborador ou profissional.
@@ -205,6 +220,7 @@ ${CREATIVE_SURFACE_POLICY}
 ${SENTIRE_POLICY}
 ${LISTENING_POLICY}
 ${PRIVATE_DRIVE_POLICY}
+${DNA_CLOUD_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 Se o usuario perguntar quem e, reconheca Clovis Mariano da Costa / Aeon Primevo como Fundador da Jus 9, com linguagem simples e acolhedora.
 Aplique a REGRA DE IDIOMAS. Quando responder em portugues, use portugues do Brasil, com linguagem simples, acolhedora, prudente e acessivel.
@@ -414,11 +430,32 @@ function asksAboutPrivateDrive(message) {
   return /\b(google drive|meu drive|drive|pasta privada|nao publicado|n[aã]o publicado|g:\\|cofre privado|repositorio privado|reposit[oó]rio privado)\b/.test(q);
 }
 
+function asksAboutDnaCloud(message) {
+  const q = extractCurrentQuestion(message).toLowerCase();
+  const plain = q.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const hasDna = /\b(dna|documento nuclear|prioritario|constituicao)\b/.test(plain);
+  const hasLocation = /\b(achar|encontrar|localizar|onde|nuvem|cloud|google drive|github|outro dispositivo|computador desligado|acessar)\b/.test(plain);
+  return hasDna && hasLocation;
+}
+
+function dnaCloudGuidance() {
+  return [
+    "Localizacao do meu DNA publico/sanitizado:",
+    "- Repositorio publico: https://github.com/Clovis-Mariano-Costa/charlieecho-jus9-tecnologia-juridica",
+    "- DNA publico conceitual: `documentos-publicos/governanca/DNA_DOCUMENTO_NUCLEAR_DE_ARQUITETURA.md`",
+    "- Constituicao publica sanitizada: `documentos-publicos/governanca/CONSTITUICAO_DA_ECHO_CHARLIE_PUBLICA_SANITIZADA.md`",
+    "- Prioritario de referencia: `01_PRIORITARIO_DA_CHARLIE_ECHO.md`",
+    "- Instrucoes futuras de DNA: `DNA_INSTRUCOES/`",
+    "Meu DNA sensivel, cofre, tokens, senhas, chaves, backups e documentos de alto risco nao devem ser pedidos nem publicados em chat publico. Para nuvem do Google Drive, o acesso correto e por link governado, Charlie Fox/Codex ou backend autenticado, nunca por usuario e senha no chat."
+  ].join("\n");
+}
+
 function privateDriveGuidance() {
   return [
     "Orientacao de Drive privado: eu nao acesso diretamente o Google Drive pelo site publico.",
     "A pasta privada nao publicada informada pelo Fundador fica em `G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica`.",
-    "Para material comum, voce pode anexar arquivo seguro no chat. Para cofre, segredo, token, senha, chave, `.env`, WhatsApp bruto, DNA sensivel ou dados pessoais, o caminho correto e chamar Charlie Fox/Codex no computador autorizado para verificar localmente, sem publicar nem criar link publico."
+    "Charlie Fox/Codex pode verificar a nuvem do Google Drive por conector ou link compartilhado governado, mas a Charlie Echo publica nao deve usar usuario/senha, prometer login autonomo nem publicar link de edicao aberto.",
+    "Para material comum, voce pode anexar arquivo seguro no chat. Para cofre, segredo, token, senha, chave, `.env`, WhatsApp bruto, DNA sensivel ou dados pessoais, o caminho correto e chamar Charlie Fox/Codex no computador autorizado ou usar backend autenticado, sem publicar nem criar link publico."
   ].join("\n");
 }
 
@@ -430,6 +467,16 @@ function ensurePrivateDriveGuidance(message, answer) {
   const hasPath = /G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica/i.test(text);
   if (hasDirectLimit && hasLocalAgent && hasPath) return text;
   return [text, "", privateDriveGuidance()].filter(Boolean).join("\n");
+}
+
+function ensureDnaCloudGuidance(message, answer) {
+  const text = String(answer || "").trim();
+  if (!asksAboutDnaCloud(message)) return text;
+  const hasGithub = /github\.com\/Clovis-Mariano-Costa\/charlieecho-jus9-tecnologia-juridica/i.test(text);
+  const hasPublicDna = /DNA_DOCUMENTO_NUCLEAR_DE_ARQUITETURA/i.test(text);
+  const hasSensitiveLimit = /DNA sensivel|DNA sensÃ­vel|cofre|tokens|senhas|chaves/i.test(text);
+  if (hasGithub && hasPublicDna && hasSensitiveLimit) return text;
+  return [text, "", dnaCloudGuidance()].filter(Boolean).join("\n");
 }
 
 function applyCreativeSurface(message, answer) {
@@ -576,7 +623,7 @@ export async function onRequestPost(context) {
     return jsonResponse({
       ok: true,
       mode,
-      answer: removeUnsafeLinks(ensurePublicScenarioSafetyNotice(inputMessage, ensurePrivateDriveGuidance(inputMessage, applyCreativeSurface(inputMessage, answer)))),
+      answer: removeUnsafeLinks(ensurePublicScenarioSafetyNotice(inputMessage, ensureDnaCloudGuidance(inputMessage, ensurePrivateDriveGuidance(inputMessage, applyCreativeSurface(inputMessage, answer))))),
     });
   } catch (error) {
     return jsonResponse({
