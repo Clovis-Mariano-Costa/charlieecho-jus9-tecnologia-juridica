@@ -5,22 +5,24 @@
  * Regra maior:
  * - Nao pedir senha Google.
  * - Nao salvar token, chave, .env ou segredo.
- * - Escrever em 04_COFRE_NAO_AUTOMATICO apenas criando arquivo novo.
+ * - Nao escrever em 04_COFRE_NAO_AUTOMATICO.
  * - Nao editar, excluir ou sobrescrever arquivos existentes.
  * - Criar sempre novo documento com cabecalho de classificacao.
  *
  * Script Property obrigatoria:
  * CHAVE_INTERNA = valor definido pelo Fundador nas Propriedades do script.
+ *
+ * Script Properties de destino:
+ * JUS9_FOLDER_ENTRADA_REVISAO
+ * JUS9_FOLDER_PUBLICO
+ * JUS9_FOLDER_INTERNO
  */
 
 const JUS9_DRIVE_SAVER_CONFIG = {
-  rootFolderId: "1rRNzoKWBI5F9WnrMeyQ_4WkloOsuxFCU",
-  folders: {
-    ENTRADA_REVISAO: "18ZQ6wTt7ozq4T5WOYwD1a6qE-Ku8BW7p",
-    PUBLICO: "1kcED48ZFCxfjYGqJ00BeVY4qLLKnu66A",
-    INTERNO: "1ei51Mh86Wi1DUPgC3BFAdlZ_ELWfhYeO",
-    JURIDICO_SIGILOSO: "1LNcAVGomfZTOzjCKfZXve3yoRLoO2Dkw",
-    COFRE_NAO_AUTOMATICO: "1LxmQwo9993s4dXumc5AoHfBTirDCAb9k"
+  folderPropertyKeys: {
+    ENTRADA_REVISAO: "JUS9_FOLDER_ENTRADA_REVISAO",
+    PUBLICO: "JUS9_FOLDER_PUBLICO",
+    INTERNO: "JUS9_FOLDER_INTERNO"
   },
   maxContentLength: 90000
 };
@@ -30,7 +32,13 @@ function doGet() {
     ok: true,
     service: "JUS9_DRIVE_SAVER_MVP",
     message: "Servico ativo. Use POST com chave interna e dados do documento.",
-    cofreAutomatico: false
+    cofreAutomatico: false,
+    requiredScriptProperties: [
+      "CHAVE_INTERNA",
+      "JUS9_FOLDER_ENTRADA_REVISAO",
+      "JUS9_FOLDER_PUBLICO",
+      "JUS9_FOLDER_INTERNO"
+    ]
   });
 }
 
@@ -88,10 +96,7 @@ function parsePayload_(e) {
 }
 
 function validateInternalKey_(providedKey) {
-  const expected = PropertiesService.getScriptProperties().getProperty("CHAVE_INTERNA");
-  if (!expected) {
-    throw new Error("CHAVE_INTERNA nao configurada nas Propriedades do script.");
-  }
+  const expected = getRequiredScriptProperty_("CHAVE_INTERNA");
   if (!providedKey || String(providedKey) !== expected) {
     throw new Error("Chave interna invalida.");
   }
@@ -122,7 +127,7 @@ function normalizeRequest_(payload) {
 function resolveRoute_(classificacao) {
   if (classificacao === "PUBLICO") {
     return {
-      folderId: JUS9_DRIVE_SAVER_CONFIG.folders.PUBLICO,
+      folderId: getRequiredFolderId_("PUBLICO"),
       folderName: "01_DOCUMENTOS_PUBLICOS_E_EDUCATIVOS",
       reviewRequired: false,
       blocked: false
@@ -131,7 +136,7 @@ function resolveRoute_(classificacao) {
 
   if (classificacao === "INTERNO") {
     return {
-      folderId: JUS9_DRIVE_SAVER_CONFIG.folders.INTERNO,
+      folderId: getRequiredFolderId_("INTERNO"),
       folderName: "02_DOCUMENTOS_INTERNOS_JUS9",
       reviewRequired: false,
       blocked: false
@@ -140,7 +145,7 @@ function resolveRoute_(classificacao) {
 
   if (classificacao === "JURIDICO_SIGILOSO") {
     return {
-      folderId: JUS9_DRIVE_SAVER_CONFIG.folders.ENTRADA_REVISAO,
+      folderId: getRequiredFolderId_("ENTRADA_REVISAO"),
       folderName: "00_ENTRADA_PARA_REVISAO_HUMANA",
       reviewRequired: true,
       blocked: false
@@ -149,19 +154,36 @@ function resolveRoute_(classificacao) {
 
   if (classificacao === "COFRE_NAO_AUTOMATICO") {
     return {
-      folderId: JUS9_DRIVE_SAVER_CONFIG.folders.COFRE_NAO_AUTOMATICO,
+      folderId: null,
       folderName: "04_COFRE_NAO_AUTOMATICO",
       reviewRequired: true,
-      blocked: false
+      blocked: true,
+      message: "Cofre nao recebe salvamento automatico. Use revisao humana e procedimento proprio."
     };
   }
 
   return {
-    folderId: JUS9_DRIVE_SAVER_CONFIG.folders.ENTRADA_REVISAO,
+    folderId: getRequiredFolderId_("ENTRADA_REVISAO"),
     folderName: "00_ENTRADA_PARA_REVISAO_HUMANA",
     reviewRequired: true,
     blocked: false
   };
+}
+
+function getRequiredFolderId_(routeKey) {
+  const propertyName = JUS9_DRIVE_SAVER_CONFIG.folderPropertyKeys[routeKey];
+  if (!propertyName) {
+    throw new Error(`Rota de pasta sem propriedade configurada: ${routeKey}`);
+  }
+  return getRequiredScriptProperty_(propertyName);
+}
+
+function getRequiredScriptProperty_(propertyName) {
+  const value = PropertiesService.getScriptProperties().getProperty(propertyName);
+  if (!value) {
+    throw new Error(`Propriedade obrigatoria ausente nas Script Properties: ${propertyName}`);
+  }
+  return String(value).trim();
 }
 
 function createGovernedDocument_(data, route) {
