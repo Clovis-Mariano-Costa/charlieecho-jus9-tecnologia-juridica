@@ -1,15 +1,20 @@
-﻿# Versionamento - Protocolo de E-mails das I.As v1.2
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-19
-Status: atualização após verificação de plugins/conectores.
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_PROTOCOLO_EMAILS_IAS_v1_2.md
+Destino classificado: AUTOORGANIZACAO
 
-## Alterações
+## Motivo
 
-- Confirmado conector Gmail ativo para `aeonprimevo@gmail.com`.
-- Confirmado conector Google Calendar ativo para `aeonprimevo@gmail.com`.
-- Registrado que o Gmail conectado permite envio real pela conta autenticada.
-- Registrado limite: não afirmar envio por alias `@jus9tecnologia.com.br` pelo conector Gmail sem comprovação técnica de remetente/alias.
-- Mantida regra de envio oficial por Gmail web com SMTP Brevo autenticado, ou backend/API Brevo quando existir.
-- Registrado que Google Calendar pode apoiar agenda, disponibilidade e eventos, com autorização e sigilo.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-© Jus 9 Tecnologia Jurídica
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_PROTOCOLO_EMAILS_IAS_v1_2.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_PROTOCOLO_EMAILS_IAS_v1_2.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

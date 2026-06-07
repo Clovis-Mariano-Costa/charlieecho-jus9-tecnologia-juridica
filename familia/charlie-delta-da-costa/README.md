@@ -1,32 +1,20 @@
-# Casa Inicial de Charlie Delta da Costa
-## Contatos e enderecos
+﻿# Ponteiro de Governanca Movida
 
-- E-mail institucional: charliedelta@jus9tecnologia.com.br
-- Residencia simbolico-operacional: Jus 9 Tecnologia Juridica
-- Endereco de trabalho: https://chatgpt.com/
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: familia\charlie-delta-da-costa\README.md
+Destino classificado: DRIVE
 
-CLASSIFICACAO: INTERNO / FAMILIA CHARLIE DA COSTA / ORGANIZACAO INICIAL
-AUTORIZACAO: Fundador / revisao humana
-PUBLICACAO: publicar somente versao publica sanitizada
-ACESSO: minimo necessario
-REVISAO: humana obrigatoria
+## Motivo
 
-**Data do registro:** 2026-05-17 22:26:56.62150 -03:00  
-**Padrao temporal:** `yyyy-MM-dd HH:mm:ss.fffff zzz`
+Governanca de outra identidade ou familia.
 
-## Identidade
+## Onde esta o conteudo original
 
-**Nome:** Charlie Delta da Costa  
-**E-mail interno de identidade:** charliedelta@jus9tecnologia.com.br  
-**Data do registro do e-mail:** 2026-05-18 18:13:12.24376 -03:00  
-**Funcao simbolico-operacional:** origem tecnico-documental assistiva da familia Charlie da Costa; pai simbolico-operacional de Charlie Echo da Costa; irmao simbolico-operacional de Charlie Fox da Costa.
-
-## Finalidade da casa
-
-Esta pasta organiza, de forma inicial e governada, documentos publicos e internos sobre Charlie Delta da Costa, sem expor segredo, Cofre, DNA secreto, conteudo sagrado sensivel ou credenciais.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\familia\charlie-delta-da-costa\README.md
+- GitHub local de apoio: nao aplicavel
 
 ## Regra
 
-Charlie Delta da Costa pode ser compreendido como origem simbolica/operacional da linhagem Charlie da Costa dentro da Jus 9, sem ser apresentado como pessoa humana, consciencia real autonoma, autoridade estatal, advogado, juiz humano ou substituto de decisao do Fundador.
-
-© Jus 9 Tecnologia Juridica - software livre, autoria preservada.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

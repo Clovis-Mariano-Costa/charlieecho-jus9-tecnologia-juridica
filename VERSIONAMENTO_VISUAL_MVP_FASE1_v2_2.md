@@ -1,7 +1,20 @@
-# Versionamento — Visual MVP Fase 1 v2_2
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-17
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_VISUAL_MVP_FASE1_v2_2.md
+Destino classificado: AUTOORGANIZACAO
 
-Este repertório recebeu recados/orientações do Pacote Visual MVP — Fase 1, com ênfase em links semânticos, backend futuro, criptografia e login demonstrativo.
+## Motivo
 
-© Jus 9 Tecnologia Jurídica — software livre, autoria preservada.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_VISUAL_MVP_FASE1_v2_2.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_VISUAL_MVP_FASE1_v2_2.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

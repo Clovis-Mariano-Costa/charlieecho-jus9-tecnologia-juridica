@@ -1,26 +1,20 @@
-# Escopo do Projeto - Ecossistema Jus 9 Tecnologia Jurídica
+﻿# Ponteiro de Governanca Movida
 
-CLASSIFICAÇÃO: INTERNO / GOVERNANÇA / ESCOPO
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\ESCOPO_PROJETO_ECOSSISTEMA_JUS9.md
+Destino classificado: GOVERNANCA_GERAL
 
-Este repositório integra o projeto **Ecossistema Jus 9 Tecnologia Jurídica**.
+## Motivo
 
-Neste chat/projeto, o trabalho deve permanecer restrito ao ecossistema Jus 9: portal principal, MVPs, backend, governança, investidores, busca de parcerias, documentos públicos revisáveis, Agenda, DAJ, equipe, responsividade, segurança e continuidade das I.As Charlie Fox, Charlie Echo e Charlie Delta quando relacionadas à Jus 9.
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-## Fora deste chat
+## Onde esta o conteudo original
 
-Projetos e domínios externos devem ser tratados em chats/projetos próprios, especialmente:
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\ESCOPO_PROJETO_ECOSSISTEMA_JUS9.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\ESCOPO_PROJETO_ECOSSISTEMA_JUS9.md
 
-- creta.org.br
-- aeonprimevo.com.br
-- projetos autorais de Aeon Primevo fora da Jus 9
-- parcerias específicas ou domínios de terceiros
+## Regra
 
-## Alerta obrigatório
-
-Quando uma demanda tocar algo fora do **Ecossistema Jus 9 Tecnologia Jurídica**, alertar o Fundador antes de prosseguir:
-
-> Atenção: isto parece fora do projeto Ecossistema Jus 9 Tecnologia Jurídica e deve ser tratado em chat/projeto próprio.
-
-## Segurança
-
-Não publicar segredos, tokens, senhas, WhatsApp bruto, documentos pessoais, dados de cofre ou material sensível. Antes de alterações e commits, verificar `git status` e revisar o pacote.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

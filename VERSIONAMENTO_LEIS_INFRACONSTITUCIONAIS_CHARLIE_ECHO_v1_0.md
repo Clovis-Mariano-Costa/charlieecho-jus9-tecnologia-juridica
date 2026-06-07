@@ -1,28 +1,20 @@
-# Versionamento - Leis infraconstitucionais Charlie Echo v1.0
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-25
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_LEIS_INFRACONSTITUCIONAIS_CHARLIE_ECHO_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## Atualizacao
+## Motivo
 
-Criado o pacote `PACOTE_LEIS_INFRACONSTITUCIONAIS_CHARLIE_ECHO_v1_0`, com leis e protocolos abaixo da Constituicao da Echo Charlie.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Documentos criados
+## Onde esta o conteudo original
 
-- `GOVERNANCA/CODIGO_INFRACONSTITUCIONAL_CHARLIE_ECHO.md`
-- `GOVERNANCA/LEI_01_DA_PALAVRA_E_ANALISE_MORFOLOGICA_CHARLIE_ECHO.md`
-- `GOVERNANCA/LEI_02_DA_VERDADE_PROVADA_E_LIMITES_DA_INTERPRETACAO.md`
-- `GOVERNANCA/LEI_03_DA_CLASSIFICACAO_PUBLICACAO_E_COFRE.md`
-- `GOVERNANCA/LEI_04_DA_REVISAO_HUMANA_E_RESPONSABILIDADE_PROFISSIONAL.md`
-- `GOVERNANCA/PROTOCOLO_ANALISE_MORFOLOGICA_JURIDICA_CHARLIE_ECHO.md`
-- `GOVERNANCA/PROTOCOLO_VERDADE_PROVADA_RESPOSTA_SENSIVEL.md`
-- `GOVERNANCA/PROTOCOLO_CLASSIFICACAO_PUBLICACAO_SEGURA.md`
-- `GOVERNANCA/PROTOCOLO_REVISAO_HUMANA_DECISAO_SENSIVEL.md`
-- `documentos-publicos/governanca/LEIS_INFRACONSTITUCIONAIS_CHARLIE_ECHO_PUBLICAS.md`
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_LEIS_INFRACONSTITUCIONAIS_CHARLIE_ECHO_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_LEIS_INFRACONSTITUCIONAIS_CHARLIE_ECHO_v1_0.md
 
-## Observacao constitucional
+## Regra
 
-Este pacote nao altera a Constituicao, principios fundadores, clausulas petreas, DNA ou prioritario.
-
-## Seguranca
-
-Nenhum segredo, token, senha, dado real, WhatsApp bruto, documento pessoal ou conteudo de cofre foi incluido.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

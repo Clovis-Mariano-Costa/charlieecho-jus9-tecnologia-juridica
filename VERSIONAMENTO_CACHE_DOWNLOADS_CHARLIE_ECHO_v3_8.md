@@ -1,38 +1,20 @@
-# Versionamento - Cache de Downloads Charlie Echo v3.8
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-06-05
-Classificacao: PUBLICO CONTROLADO / UX / CACHE
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_CACHE_DOWNLOADS_CHARLIE_ECHO_v3_8.md
+Destino classificado: AUTOORGANIZACAO
 
-## Problema observado
+## Motivo
 
-Mesmo apos a publicacao dos downloads enxutos, a pagina `ia-estudantes` podia continuar exibindo o menu antigo no navegador do usuario.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Causa provavel
+## Onde esta o conteudo original
 
-O arquivo `charlie-ia-pages.js?v=3.7` podia permanecer em cache no navegador ou na borda CDN por algumas horas.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_CACHE_DOWNLOADS_CHARLIE_ECHO_v3_8.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_CACHE_DOWNLOADS_CHARLIE_ECHO_v3_8.md
 
-## Correcao
+## Regra
 
-As quatro entradas principais de chat passaram a carregar:
-
-`charlie-ia-pages.js?v=3.8`
-
-Arquivos atualizados:
-
-- `ia-estudantes.html`
-- `ia-estudantes/index.html`
-- `ia-profissional.html`
-- `ia-profissional/index.html`
-
-## Validacao esperada
-
-Ao abrir o menu de Download, devem aparecer somente:
-
-- PDF
-- DOCX
-- PPTX
-- ZIP
-
-## Observacao
-
-Se o navegador ainda exibir a versao antiga, fechar e abrir a aba ou usar recarregamento forte deve resolver. A versao `v=3.8` evita que o usuario dependa do cache antigo `v=3.7`.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

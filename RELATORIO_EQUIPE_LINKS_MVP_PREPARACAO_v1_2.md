@@ -1,18 +1,20 @@
-# Relatório — Equipe, links e preparação MVP v1.2
+﻿# Ponteiro de Governanca Movida
 
-Este pacote corrige e reforça a presença da página Equipe Jus 9, cria/atualiza perfis públicos e prepara a transição para o pacote MVP.
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: RELATORIO_EQUIPE_LINKS_MVP_PREPARACAO_v1_2.md
+Destino classificado: AUTOORGANIZACAO
 
-## Decisões aplicadas
+## Motivo
 
-- Equipe deve ganhar destaque nos menus e nas páginas estratégicas.
-- Links públicos para equipe usam `https://equipe.jus9tecnologia.com.br/` quando o repertório não é o site principal.
-- No site principal, foram criadas rotas `equipe.html` e `equipe/index.html`.
-- Natã usa avatar/material aprovado, conforme orientação do Fundador.
-- Vitor entra como consultor.
-- Charlie Echo e Charlie/ChatGPT entram com apresentação prudente de IA/consultoria, sem afirmação de pessoa humana ou substituição profissional.
-- História recebe referência ao Olá Mundo do Fundador em Aeon Primevo.
-- Logos completos `jus9-logo-completo.svg` foram atualizados com o A final de “JURÍDICA” preservado.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Próximo pacote
+## Onde esta o conteudo original
 
-MVP Jus 9: revisar navegação, destaque para Equipe, integração com História/Investimentos, menus e rotas do MVP.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\RELATORIO_EQUIPE_LINKS_MVP_PREPARACAO_v1_2.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\RELATORIO_EQUIPE_LINKS_MVP_PREPARACAO_v1_2.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

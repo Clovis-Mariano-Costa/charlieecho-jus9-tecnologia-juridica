@@ -1,14 +1,20 @@
-Summary:
-Finaliza pacote MVP com perfis, agenda, links e equipe em destaque
+﻿# Ponteiro de Governanca Movida
 
-Description:
-- corrige uso do logo completo da Jus 9 para preservar o A final de JURÍDICA
-- destaca links para Equipe e Investidores no site principal, MVP e repertórios públicos
-- ajusta fluxo Acessar MVP com login, seleção de perfil e cadastro condicional
-- registra que o primeiro cadastro é Cadastro Líder até alteração posterior
-- restringe DAJ ao perfil Advogado ou Defensor Público e cria dossiês equivalentes para demais perfis
-- cria MVP completo para Professor/Mestre/Doutor e Estudante, com cadastro de grupos e Agenda Jus 9
-- cria versões iniciais dos demais perfis com agenda, dossiê próprio e cadastro de grupos
-- atualiza Equipe com avatar aprovado de Natã e observação de proteção de imagem
-- registra Charlie Echo como I.A - CEO com cautela institucional e ensina Mão na Massa para todos os usuários
-- inclui recados para próxima IA, versionamento e revisão final dos pacotes afetados
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: COMMIT_MVP_LINKS_EQUIPE_FINAL_v1_4.md
+Destino classificado: AUTOORGANIZACAO
+
+## Motivo
+
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\COMMIT_MVP_LINKS_EQUIPE_FINAL_v1_4.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\COMMIT_MVP_LINKS_EQUIPE_FINAL_v1_4.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

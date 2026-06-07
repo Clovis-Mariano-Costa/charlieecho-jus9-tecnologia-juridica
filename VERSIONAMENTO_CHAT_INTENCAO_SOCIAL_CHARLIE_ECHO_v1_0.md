@@ -1,19 +1,20 @@
-# Versionamento - intencao social da Charlie Echo v1.0
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-31
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_CHAT_INTENCAO_SOCIAL_CHARLIE_ECHO_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## Objetivo
+## Motivo
 
-Evitar que perguntas tematicas sobre responsabilidade social empresarial sejam confundidas com pedidos para apresentar ou ativar os modos da Charlie Echo.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Alteracoes
+## Onde esta o conteudo original
 
-- A identificacao de modos passou a aceitar somente pedidos explicitos sobre os modos ou sua ativacao.
-- A palavra isolada `social` deixou de disparar a resposta institucional de modos.
-- A melhoria foi aplicada ao fallback local da casa publica da Charlie Echo.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_CHAT_INTENCAO_SOCIAL_CHARLIE_ECHO_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_CHAT_INTENCAO_SOCIAL_CHARLIE_ECHO_v1_0.md
 
-## Validacao
+## Regra
 
-- `Fale sobre responsabilidade social de uma empresa` nao dispara a apresentacao dos modos.
-- `Quais sao seus modos?` continua apresentando os modos.
-- `Ative modo social` continua ativando o modo solicitado.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

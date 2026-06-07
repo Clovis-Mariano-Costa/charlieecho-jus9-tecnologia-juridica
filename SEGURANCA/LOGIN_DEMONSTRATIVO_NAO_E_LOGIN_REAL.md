@@ -1,18 +1,20 @@
-# Login demonstrativo não é login real
+﻿# Ponteiro de Governanca Movida
 
-CLASSIFICAÇÃO: PÚBLICO / ORIENTAÇÃO TÉCNICA
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: SEGURANCA\LOGIN_DEMONSTRATIVO_NAO_E_LOGIN_REAL.md
+Destino classificado: GOVERNANCA_GERAL
 
-Os logins `demo1`, `demo2`, `demo3`, etc. existem apenas para demonstração visual do MVP. Eles não representam autenticação real, sessão segura, banco de dados, controle de acesso ou proteção criptográfica de produção.
+## Motivo
 
-## Regra obrigatória
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-- Não inserir senha real em GitHub.
-- Não inserir `.env` real.
-- Não inserir token, chave, segredo, seed ou API key.
-- Não inserir dados reais de estudantes, clientes, usuários, parceiros ou processos.
+## Onde esta o conteudo original
 
-## Produção futura
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\SEGURANCA\LOGIN_DEMONSTRATIVO_NAO_E_LOGIN_REAL.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\SEGURANCA\LOGIN_DEMONSTRATIVO_NAO_E_LOGIN_REAL.md
 
-Quando o backend estiver pronto, usar autenticação real, senha com hash forte, sessão segura, autorização por perfil, logs de acesso e armazenamento privado.
+## Regra
 
-© Jus 9 Tecnologia Jurídica — software livre, autoria preservada.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

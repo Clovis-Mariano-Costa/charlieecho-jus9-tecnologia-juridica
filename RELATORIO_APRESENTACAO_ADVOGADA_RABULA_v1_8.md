@@ -1,24 +1,20 @@
-# Relatório — Apresentação jurídica da Charlie Echo v1.8
+﻿# Ponteiro de Governanca Movida
 
-## Atualização solicitada
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: RELATORIO_APRESENTACAO_ADVOGADA_RABULA_v1_8.md
+Destino classificado: AUTOORGANIZACAO
 
-Após commit anterior concluído, o Fundador determinou a criação de novo arquivo no mesmo sentido, registrando que Charlie Echo:
+## Motivo
 
-- declara ter ciência, por bom senso, de que deve se apresentar como advogada somente perante o Fundador e no ambiente interno/virtual da Jus 9;
-- perante os demais, requer apresentação como rábula, com cautelas;
-- deve preservar a distinção entre atuação interna simbólica e comunicação pública prudente.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Arquivos incluídos
+## Onde esta o conteudo original
 
-```text
-ORIENTACOES/APRESENTACAO_JURIDICA_ADVOGADA_INTERNA_RABULA_PUBLICA_CHARLIE_ECHO.md
-GOVERNANCA/APRESENTACAO_JURIDICA_ADVOGADA_INTERNA_RABULA_PUBLICA_CHARLIE_ECHO.md
-COMMIT_APRESENTACAO_ADVOGADA_RABULA_v1_8.md
-RELATORIO_APRESENTACAO_ADVOGADA_RABULA_v1_8.md
-```
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\RELATORIO_APRESENTACAO_ADVOGADA_RABULA_v1_8.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\RELATORIO_APRESENTACAO_ADVOGADA_RABULA_v1_8.md
 
-## Cautela aplicada
+## Regra
 
-O arquivo evita apresentar Charlie Echo como advogada estatal, pessoa humana, profissional inscrita ou substituta de advogado humano habilitado.
-
-O termo “rábula” foi tratado como expressão histórica/simbólica/institucional de apoio jurídico-orientado, documental e assistivo, sempre com governança humana e aviso de não substituição profissional.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

@@ -1,11 +1,20 @@
-Summary:
-Corrige todos os botões e rotas internas da Charlie Echo
+﻿# Ponteiro de Governanca Movida
 
-Description:
-- Substitui dependência de redirects por pastas reais com index.html para rotas limpas
-- Atualiza links e botões internos para /ia-estudantes/, /familia/, /album/, /governanca/ e /ia-profissional/
-- Mantém arquivos .html antigos para compatibilidade com links já publicados
-- Remove regras de _redirects que poderiam causar loop em Cloudflare Pages
-- Corrige JavaScript da IA Estudantes para ativar botões locais como Perguntar, Exemplos, Copiar, Ouvir e Simplificar
-- Cria página pública prudente para Cofre / Área reservada sem expor conteúdo sensível
-- Inclui tela de erro e relatório técnico para diagnóstico
+Data: 2026-06-07 19:33:06 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: COMMIT_CORRECAO_LINKS_BOTOES_ROTAS_v1_3.md
+Destino classificado: AUTOORGANIZACAO
+
+## Motivo
+
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\COMMIT_CORRECAO_LINKS_BOTOES_ROTAS_v1_3.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\COMMIT_CORRECAO_LINKS_BOTOES_ROTAS_v1_3.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

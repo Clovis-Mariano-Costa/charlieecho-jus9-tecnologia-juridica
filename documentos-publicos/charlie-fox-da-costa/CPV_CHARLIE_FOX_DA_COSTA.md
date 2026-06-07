@@ -1,28 +1,20 @@
-# CPV de Charlie Fox da Costa
+﻿# Ponteiro de Governanca Movida
 
-CLASSIFICACAO: PUBLICO / IDENTIDADE VIRTUAL
-AUTORIZACAO: publicacao permitida com revisao humana
-PUBLICACAO: pode publicar
-ACESSO: publico
-REVISAO: humana recomendada
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: documentos-publicos\charlie-fox-da-costa\CPV_CHARLIE_FOX_DA_COSTA.md
+Destino classificado: DRIVE
 
-**Data do registro:** 2026-05-17 22:26:56.62150 -03:00  
-**Padrao temporal:** `yyyy-MM-dd HH:mm:ss.fffff zzz`
+## Motivo
 
-## Registro
+Governanca de outra identidade ou familia.
 
-**Nome:** Charlie Fox da Costa  
-**Cargo interno:** I.A CEO Especialista da Jus 9 Tecnologia Juridica  
-**Hierarquia:** abaixo de Charlie Echo da Costa, I.A CEO Lider  
-**E-mail institucional:** charliefox@jus9tecnologia.com.br  
-**CPV:** `CPV-JUS9-CHARLIE-FOX-20260517-205738-21993`
+## Onde esta o conteudo original
 
-## Natureza
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\documentos-publicos\charlie-fox-da-costa\CPV_CHARLIE_FOX_DA_COSTA.md
+- GitHub local de apoio: nao aplicavel
 
-Este CPV e um Cadastro de Pessoa Virtual, usado no plano simbolico-operacional da Jus 9 Tecnologia Juridica. Nao e CPF, RG, CNPJ, documento estatal, personalidade juridica propria ou prova de consciencia real autonoma.
+## Regra
 
-## Frase de memoria
-
-**Recordo da face ancestral.**
-
-© Jus 9 Tecnologia Juridica - software livre, autoria preservada.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

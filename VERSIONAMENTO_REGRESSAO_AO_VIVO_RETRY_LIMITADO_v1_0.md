@@ -1,15 +1,20 @@
-# Regressão ao vivo com nova tentativa limitada - v1.0
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-06-01
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_REGRESSAO_AO_VIVO_RETRY_LIMITADO_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## Objetivo
+## Motivo
 
-Reduzir falsos negativos ocasionais na homologação ao vivo da Charlie Echo sem esconder regressões reais.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Alteração
+## Onde esta o conteudo original
 
-Cada caso ao vivo pode realizar no máximo uma nova tentativa quando a primeira resposta não cumprir os critérios esperados. Se a segunda resposta também falhar, a suíte continua encerrando com erro.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_REGRESSAO_AO_VIVO_RETRY_LIMITADO_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_REGRESSAO_AO_VIVO_RETRY_LIMITADO_v1_0.md
 
-## Limite
+## Regra
 
-A nova tentativa não altera respostas, prompts ou regras da Charlie Echo. Ela existe apenas na automação de homologação.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

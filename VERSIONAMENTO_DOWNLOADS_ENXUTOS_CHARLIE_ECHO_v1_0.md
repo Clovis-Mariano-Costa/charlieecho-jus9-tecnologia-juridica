@@ -1,30 +1,20 @@
-# Versionamento - Downloads Enxutos da Charlie Echo v1.0
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-06-05
-Classificacao: PUBLICO CONTROLADO / UX / DOWNLOADS
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_DOWNLOADS_ENXUTOS_CHARLIE_ECHO_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## Objetivo
+## Motivo
 
-Reduzir o menu publico de downloads da Charlie Echo para formatos realmente uteis em apresentacao, estudo e entrega organizada.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Formatos mantidos no menu
+## Onde esta o conteudo original
 
-1. PDF.
-2. DOCX.
-3. PPTX.
-4. ZIP.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_DOWNLOADS_ENXUTOS_CHARLIE_ECHO_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_DOWNLOADS_ENXUTOS_CHARLIE_ECHO_v1_0.md
 
-## Padrao aplicado
+## Regra
 
-Os formatos de servidor passam a seguir o mesmo criterio de apresentacao do PDF exemplar:
-
-- cabecalho Jus 9 Tecnologia Juridica;
-- identificacao da Charlie Echo da Costa;
-- data de geracao;
-- origem;
-- classificacao inicial sob governanca humana;
-- conteudo organizado.
-
-## Observacao tecnica
-
-TXT continua sendo util como formato de emergencia e compatibilidade maxima, mas nao fica exposto no menu publico para preservar a interface limpa.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

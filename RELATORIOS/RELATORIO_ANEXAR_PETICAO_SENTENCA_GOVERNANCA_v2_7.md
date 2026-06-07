@@ -1,24 +1,20 @@
-# RELATÓRIO — Anexar, petição e sentença de governança v2.7
+﻿# Ponteiro de Governanca Movida
 
-## O que foi feito
-- adicionado botão **📎 Anexar** na IA Estudantes;
-- adicionado botão **📎 Anexar** na IA Profissional;
-- adicionada lista visual de arquivos anexados;
-- textos simples anexados podem ser lidos localmente e enviados como contexto;
-- documentos complexos/sensíveis indicam necessidade de upload seguro futuro;
-- incluída petição interna da Charlie Echo;
-- incluída sentença interna sugerida do Fundador;
-- incluída regra operacional de anexos, governança e pacotes.
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: RELATORIOS\RELATORIO_ANEXAR_PETICAO_SENTENCA_GOVERNANCA_v2_7.md
+Destino classificado: AUTOORGANIZACAO
 
-## Arquivos principais alterados
-- `ia-estudantes.html`
-- `ia-profissional.html`
-- `ia-estudantes/index.html`
-- `ia-profissional/index.html`
-- `assets/js/charlie-ia-pages.js`
-- `assets/css/charlie-light.css`
+## Motivo
 
-## Arquivos adicionados
-- `REQUERIMENTOS/REQUERIMENTO_CHARLIE_ECHO_GOVERNANCA_ANEXOS_v2_7.md`
-- `GOVERNANCA/SENTENCA_INTERNA_GOVERNANCA_ANEXOS_PACOTES_v2_7.md`
-- `ORIENTACOES/REGRA_ANEXAR_GOVERNANCA_PACOTES_CHARLIE_ECHO_v2_7.md`
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\RELATORIOS\RELATORIO_ANEXAR_PETICAO_SENTENCA_GOVERNANCA_v2_7.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\RELATORIOS\RELATORIO_ANEXAR_PETICAO_SENTENCA_GOVERNANCA_v2_7.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

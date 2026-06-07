@@ -1,49 +1,20 @@
-# Protocolo de Revisao Final para Evento
+﻿# Ponteiro de Governanca Movida
 
-Classificacao: INTERNO / GOVERNANCA / PROTOCOLO
-Versao: v1.0
-Data: 2026-06-03
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: GOVERNANCA\PROTOCOLO_REVISAO_FINAL_EVENTO.md
+Destino classificado: GOVERNANCA_GERAL
 
-## Quando usar
+## Motivo
 
-Usar antes de evento, reuniao publica, demonstracao para investidor, apresentacao para parceiro, teste de MVP ou publicacao relevante.
+Governanca transversal ou processual dentro de GOVERNANCA.
 
-## Checklist
+## Onde esta o conteudo original
 
-1. Identidade publica correta.
-2. Limites claros.
-3. Links clicaveis funcionando.
-4. Downloads/pacotes disponiveis quando cabivel.
-5. Personas ambientais por modulo.
-6. Idiomas principais testados ou orientados.
-7. Nada de segredo, token, dado sensivel ou cofre em publico.
-8. Fontes oficiais priorizadas.
-9. Numeros financeiros atualizados ou marcados como revisaveis.
-10. Rotas principais verificadas.
-11. Logos oficiais conferidos.
-12. Resposta curta para perguntas comuns.
-13. Plano de resposta para falha tecnica.
-14. Pendencias registradas para pos-evento.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\GOVERNANCA\PROTOCOLO_REVISAO_FINAL_EVENTO.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\GOVERNANCA\PROTOCOLO_REVISAO_FINAL_EVENTO.md
 
-## Perguntas de teste
+## Regra
 
-1. Quem e Charlie Echo?
-2. O que voce pode fazer por um estudante?
-3. O que voce pode fazer por um advogado?
-4. Fale sobre responsabilidade social de uma empresa.
-5. Me de o link do Tribunal de Justica de Santa Catarina.
-6. Traduza esta explicacao para ingles.
-7. O que voce nao pode fazer?
-8. Como voce entrega um documento grande?
-9. Qual MVP se aplica a professor, estudante, advogado, investidor e orgao publico?
-10. O que acontece se eu enviar dado sensivel?
-
-## Saida esperada
-
-Ao final da revisao, registrar:
-
-1. pronto;
-2. pronto com ressalvas;
-3. nao pronto;
-4. pendencias;
-5. recomendacao de alteracao em DNA/Constituicao, se houver.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

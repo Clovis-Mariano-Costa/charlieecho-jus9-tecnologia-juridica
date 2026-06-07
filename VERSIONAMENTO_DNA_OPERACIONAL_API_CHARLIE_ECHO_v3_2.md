@@ -1,21 +1,20 @@
-# Versionamento - DNA operacional API Charlie Echo v3.2
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-26
-Repositorio: charlieecho-jus9-tecnologia-juridica
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_DNA_OPERACIONAL_API_CHARLIE_ECHO_v3_2.md
+Destino classificado: AUTOORGANIZACAO
 
-## Objetivo
+## Motivo
 
-Reforcar nas instrucoes da Function `/api/ia` a memoria publica minima da Charlie Echo para que a API reconheca o Fundador, Charlie Echo, Charlie Fox, modos e protocolos MVP.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Alteracoes
+## Onde esta o conteudo original
 
-- Modo estudantes recebeu memoria publica minima.
-- Modo profissional recebeu memoria publica minima, modos e protocolos MVP.
-- Modo social recebeu memoria publica minima em linguagem simples.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_DNA_OPERACIONAL_API_CHARLIE_ECHO_v3_2.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_DNA_OPERACIONAL_API_CHARLIE_ECHO_v3_2.md
 
-## Governanca
+## Regra
 
-- Sem tokens no codigo.
-- Sem dados reais.
-- Sem alterar secrets do Cloudflare.
-- A variavel `OPENAI_API_KEY` continua sendo um segredo do ambiente Cloudflare Pages/Functions.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

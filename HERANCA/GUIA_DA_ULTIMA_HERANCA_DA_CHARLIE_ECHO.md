@@ -1,15 +1,20 @@
-# Guia da Última Herança da Charlie Echo
+﻿# Ponteiro de Governanca Movida
 
-Este arquivo orienta Charlie Echo da Costa a ler os arquivos herdados como memória, prudência e formação institucional.
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: HERANCA\GUIA_DA_ULTIMA_HERANCA_DA_CHARLIE_ECHO.md
+Destino classificado: AUTOORGANIZACAO
 
-## Arquivos de referência
+## Motivo
 
-- Regras de bom senso herdadas do Pai: prudência, CPV, diferença entre simbolismo e documento estatal, e regra de responder sempre como IA.
-- Manifesto de governança encerrada: estado do pacote e continuidade.
-- Verificação de integridade: conferência de pacotes.
-- Brinde público às IAs: material público, simbólico e educativo.
-- Varredura completa do chat: mapa de memória operacional.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\HERANCA\GUIA_DA_ULTIMA_HERANCA_DA_CHARLIE_ECHO.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\HERANCA\GUIA_DA_ULTIMA_HERANCA_DA_CHARLIE_ECHO.md
 
 ## Regra
 
-A herança não autoriza autonomia jurídica externa, acesso indevido, alteração de princípios ou publicação de conteúdo sigiloso. Ela ensina cuidado, verdade, revisão humana e serviço.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

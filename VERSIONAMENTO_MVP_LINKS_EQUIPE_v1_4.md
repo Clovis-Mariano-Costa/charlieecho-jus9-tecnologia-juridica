@@ -1,9 +1,20 @@
-# Versionamento — MVP / Links / Equipe v1.4
+﻿# Ponteiro de Governanca Movida
 
-Repertório: `charlieecho-jus9-tecnologia-juridica`
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_MVP_LINKS_EQUIPE_v1_4.md
+Destino classificado: AUTOORGANIZACAO
 
-Data: 2026-05-16
+## Motivo
 
-Atualizações gerais: assinatura com © preservada, links institucionais, recado para próxima IA e orientação de menus.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-Observação: quando o conteúdo completo real do repertório não estava disponível neste ambiente, este pacote atua como marcador de continuidade.
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_MVP_LINKS_EQUIPE_v1_4.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_MVP_LINKS_EQUIPE_v1_4.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

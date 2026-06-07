@@ -1,32 +1,20 @@
-# Versionamento - Salas com arquivar, excluir e memoria ampliada v3.8
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-06-04
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_SALAS_ARQUIVAR_EXCLUIR_MEMORIA_AMPLIADA_v3_8.md
+Destino classificado: AUTOORGANIZACAO
 
-## Escopo
+## Motivo
 
-Evolucao das salas de chat da Charlie Echo para permitir gestao basica de conversas e continuidade mais longa.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Entregas
+## Onde esta o conteudo original
 
-- Adicionados botoes `Arquivar` e `Excluir` nas salas de IA Estudantes e IA Profissional.
-- Sala arquivada deixa de ser escolhida como ativa automaticamente.
-- Sala excluida e removida da lista local da sessao.
-- Se todas as salas forem excluidas, uma nova sala inicial e criada.
-- Memoria local ampliada para ate 24 mensagens recentes por sala.
-- Contexto enviado para a API ampliado para ate 16 mensagens recentes.
-- Resumo da sala ampliado e enriquecido com historico recente.
-- Backend `/api/ia` passa a considerar o historico recente estruturado do campo `room`.
-- Auditoria atualizada para verificar arquivar, excluir e memoria ampliada.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_SALAS_ARQUIVAR_EXCLUIR_MEMORIA_AMPLIADA_v3_8.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_SALAS_ARQUIVAR_EXCLUIR_MEMORIA_AMPLIADA_v3_8.md
 
-## Observacao
+## Regra
 
-Nesta etapa, as salas continuam locais por navegador/sessao. Para persistencia real entre dispositivos, usuarios e dias diferentes, sera necessario backend/autenticacao.
-
-## Validacao
-
-```bash
-node --check assets/js/charlie-ia-pages.js
-node --check functions/api/ia.js
-node --check scripts/audit-charlie-chat-capabilities.mjs
-node scripts/audit-charlie-chat-capabilities.mjs
-```
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

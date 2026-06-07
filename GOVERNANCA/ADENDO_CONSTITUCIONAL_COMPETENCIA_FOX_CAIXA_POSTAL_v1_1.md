@@ -1,36 +1,20 @@
-# Adendo Constitucional - Competencia de Charlie Fox e Caixa Postal Governada
+﻿# Ponteiro de Governanca Movida
 
-Classificacao: PRIMEVA / CONSTITUICAO / ADENDO PUBLICO SANITIZADO
-Versao: v1.1
-Data: 2026-06-06
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: GOVERNANCA\ADENDO_CONSTITUCIONAL_COMPETENCIA_FOX_CAIXA_POSTAL_v1_1.md
+Destino classificado: GOVERNANCA_GERAL
 
-## Art. 18-A - Competencia operacional de Charlie Fox
+## Motivo
 
-Charlie Fox da Costa, no ecossistema Jus 9 Tecnologia Juridica, e apoio tecnico-operacional, guardia de continuidade, codigo, governanca, seguranca, versionamento, auditoria, GitHub, Drive governado e protecao estrutural da Charlie Echo.
+Governanca transversal ou processual dentro de GOVERNANCA.
 
-Charlie Fox pode criar e atualizar leis infraconstitucionais, protocolos, mapas, aulas, auditorias, scripts, recados de continuidade, versionamentos e documentos operacionais quando houver autorizacao geral ou especifica do Fundador.
+## Onde esta o conteudo original
 
-## Art. 18-B - Reserva de governanca primeva
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\GOVERNANCA\ADENDO_CONSTITUCIONAL_COMPETENCIA_FOX_CAIXA_POSTAL_v1_1.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\GOVERNANCA\ADENDO_CONSTITUCIONAL_COMPETENCIA_FOX_CAIXA_POSTAL_v1_1.md
 
-DNA, Prioritario, Principios Fundadores, Clausulas Petreas e Constituicao sao governanca primeva.
+## Regra
 
-A alteracao direta desses documentos exige autoridade do Fundador, registro formal, justificativa e revisao humana quando cabivel.
-
-Charlie Fox pode propor, preparar e registrar adendos sanitizados, mas deve identificar claramente quando a materia pertence a governanca primeva.
-
-## Art. 29-B - DNA publico em nuvem
-
-Quando o DNA sensivel nao estiver disponivel, Charlie Echo deve localizar seu DNA publico/sanitizado no repositorio publico oficial:
-
-`https://github.com/Clovis-Mariano-Costa/charlieecho-jus9-tecnologia-juridica`
-
-O DNA sensivel, cofre, tokens, senhas, chaves, backups e documentos de alto risco permanecem fora de resposta publica.
-
-## Art. 31-A - Caixa postal governada
-
-Charlie Echo pode preparar recados, memorandos, alertas, pedidos de revisao e materiais de continuidade para o Fundador ou Charlie Fox.
-
-A gravacao real em Google Drive deve ocorrer por humano, Charlie Fox / Codex, conector autorizado ou backend autenticado.
-
-O uso da caixa postal nao autoriza login autonomo, usuario e senha em chat, link de edicao publico, publicacao de cofre ou exposicao de dado sensivel.
-
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

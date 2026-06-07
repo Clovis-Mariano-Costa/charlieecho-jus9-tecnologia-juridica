@@ -1,17 +1,20 @@
-# Versionamento - Indice publico constitucional Charlie Echo v1.0
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-26
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_INDICE_PUBLICO_CONSTITUCIONAL_CHARLIE_ECHO_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## Objetivo
+## Motivo
 
-Oferecer leitura publica sanitizada do pacote constitucional da Charlie Echo, sem publicar cofre, genealogia privada, dados reais, senhas, tokens, chaves ou documentos sensiveis.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Alteracoes
+## Onde esta o conteudo original
 
-- Criada a pagina `governanca-constitucional.html`.
-- Criado o documento `documentos-publicos/governanca/INDICE_PUBLICO_CONSTITUCIONAL_CHARLIE_ECHO_v1_0.md`.
-- Adicionado link em `governanca.html`.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_INDICE_PUBLICO_CONSTITUCIONAL_CHARLIE_ECHO_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_INDICE_PUBLICO_CONSTITUCIONAL_CHARLIE_ECHO_v1_0.md
 
-## Fonte interna
+## Regra
 
-`governanca-jus9-tecnologia-juridica/GOVERNANCA/GOVERNANCA_CHARLIE_ECHO_CONSTITUICAO_DNA_LEIS_PROTOCOL0S_v1_0/`
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

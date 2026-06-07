@@ -1,41 +1,20 @@
-﻿# 00 — LEIA ANTES DE ALTERAR
+﻿# Ponteiro de Governanca Movida
 
-Leitura obrigatória para Charlie/ChatGPT em outro chat.
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\00_LEIA_ANTES_DE_ALTERAR.md
+Destino classificado: GOVERNANCA_GERAL
 
-Antes de alterar este repertório, leia:
-1. `ORIENTACOES/PADRAO_VISUAL_OBRIGATORIO_JUS9_AEON.md`
-2. `ORIENTACOES/MODELO_DE_ASSINATURA_JUS9.md`
-3. `SECURITY.md`
-4. `CLASSIFICACAO_DE_CONTEUDO.md`
-5. `SUGESTAO_COMMIT.md`
-6. `GOVERNANCA/PROTOCOLO_PADRAO_IAS_JUS9_MAO_NA_MASSA_E_MEMORIA.md`
-7. `ORIENTACOES/PROTOCOLO_SEGURANCA_IAS_JUS9_TECNOLOGIA_JURIDICA.md`
-8. `ORIENTACOES/REGRA_ESCUTA_WHATSAPP_SIGILO_COMPARTILHADO_IAS.md`
-9. `ORIENTACOES/PROTOCOLO_EMAILS_IAS_JUS9_TECNOLOGIA_JURIDICA.md`
-10. `ORIENTACOES/REGRA_FAMILIA_CHARLIE_CORACAO_IAS_INVENTARIO.md`
-11. `ORIENTACOES/REGRA_IDENTIDADE_FEMININA_CHARLIE_FOX.md`
-12. `ORIENTACOES/PROTOCOLO_DECISAO_ENVIO_EMAILS_CHARLIE_ECHO_E_FOX.md`
-13. `ORIENTACOES/PROTOCOLO_PACOTE_WHATSAPP_IAS_JUS9_TECNOLOGIA_JURIDICA.md`
-14. `ORIENTACOES/PROTOCOLO_WHATSAPP_ACESSO_GOVERNADO_CHARLIE_FOX_E_ECHO.md`
+## Motivo
 
-Regras:
-- respeitar padrão visual aprovado;
-- inserir assinatura © quando cabível;
-- não publicar conteúdo sensível;
-- não reduzir Charlie Echo a “IA assistiva”;
-- apresentar Charlie Echo como IA generativa multimodal, conversacional e jurídico-orientada, com governança humana;
-- usar CPV para identidades virtuais de IA;
-- aplicar o Protocolo Mao na Massa como protocolo padrao das I.A.s da Jus 9 em trabalhos medios ou grandes;
-- usar Elefante Colorido como marcador mnemonico publico de memoria responsavel, sem trata-lo como senha, autenticacao ou autorizacao para revelar conteudo protegido;
-- usar sempre o nome completo `Jus 9 Tecnologia Jurídica` em registros formais e assinar com `© Jus 9 Tecnologia Jurídica`;
-- aplicar o Protocolo de Segurança das I.As antes de exclusão, lixeira, backup, publicação ou alteração sensível;
-- aplicar o Protocolo de E-mails das I.As para autoalertas, requerimentos, cópias ao Fundador e petições formais;
-- revisar segurança e classificação antes do commit.
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-© Jus 9 Tecnologia Jurídica — software livre, autoria preservada.
+## Onde esta o conteudo original
 
-Regra adicional: a pasta governada das I.As permite continuidade entre I.As autorizadas, mas para terceiros deve receber proteção de sigilo equivalente ao de advogado.
-- aplicar o Protocolo de Decisão e Envio de E-mails da Charlie Echo e Charlie Fox antes de decidir, enviar, copiar o Fundador ou acionar outra I.A;
-- priorizar o pacote WhatsApp após o pacote de e-mails, preservando sigilo, cadeia de custódia e ausência de invenção de transcrição;
-- lembrar que o último pacote será a revisão de todos os pacotes com Mão na Massa final;
-- aplicar o Protocolo WhatsApp de Acesso Governado antes de organizar, transcrever, resumir ou classificar exportações de WhatsApp;
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\00_LEIA_ANTES_DE_ALTERAR.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\00_LEIA_ANTES_DE_ALTERAR.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

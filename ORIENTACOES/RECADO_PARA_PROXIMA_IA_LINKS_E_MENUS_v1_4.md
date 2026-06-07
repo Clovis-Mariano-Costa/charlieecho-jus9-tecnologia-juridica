@@ -1,13 +1,20 @@
-# Recado para próxima IA — charlieecho-jus9-tecnologia-juridica
+﻿# Ponteiro de Governanca Movida
 
-Este repertório recebeu a rodada v1.4 do pacote MVP/Equipe/Links.
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\RECADO_PARA_PROXIMA_IA_LINKS_E_MENUS_v1_4.md
+Destino classificado: GOVERNANCA_GERAL
 
-Links públicos estratégicos:
+## Motivo
 
-- [Jus 9 Tecnologia Jurídica](https://www.jus9tecnologia.com.br/)
-- [Equipe Jus 9](https://www.jus9tecnologia.com.br/equipe/)
-- [Investidores Jus 9](https://investimentos.jus9tecnologia.com.br/)
-- [MVP Jus 9](https://www.jus9tecnologia.com.br/lider-mvp)
-- [Charlie Echo](https://charlieecho.jus9tecnologia.com.br/)
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-Diretriz: transformar URLs públicas, e-mails e referências institucionais em links clicáveis sempre que for útil, sem criar links para conteúdo sigiloso, secreto, cofre ou dados protegidos.
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\RECADO_PARA_PROXIMA_IA_LINKS_E_MENUS_v1_4.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\RECADO_PARA_PROXIMA_IA_LINKS_E_MENUS_v1_4.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

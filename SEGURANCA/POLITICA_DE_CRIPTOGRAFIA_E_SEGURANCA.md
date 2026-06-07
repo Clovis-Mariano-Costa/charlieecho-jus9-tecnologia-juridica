@@ -1,34 +1,20 @@
-# Política de criptografia e segurança — orientação comum
+﻿# Ponteiro de Governanca Movida
 
-CLASSIFICAÇÃO: PÚBLICO / SEGURANÇA / NÃO PUBLICAR SEGREDOS
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: SEGURANCA\POLITICA_DE_CRIPTOGRAFIA_E_SEGURANCA.md
+Destino classificado: GOVERNANCA_GERAL
 
-## Princípio
+## Motivo
 
-Criptografia deve proteger dados reais; aviso visual não substitui segurança técnica.
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-## No GitHub
+## Onde esta o conteudo original
 
-O GitHub deve conter apenas código, documentação, exemplos, `.env.example` e dados fictícios.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\SEGURANCA\POLITICA_DE_CRIPTOGRAFIA_E_SEGURANCA.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\SEGURANCA\POLITICA_DE_CRIPTOGRAFIA_E_SEGURANCA.md
 
-Nunca publicar:
+## Regra
 
-- senhas reais;
-- tokens;
-- chaves privadas;
-- seeds;
-- `.env` real;
-- dados pessoais sensíveis;
-- documentos de clientes/usuários;
-- documentos sigilosos de terceiros.
-
-## Produção futura
-
-- HTTPS obrigatório.
-- Senhas com hash forte.
-- Secrets fora do repositório.
-- Controle de acesso por perfil.
-- Logs de auditoria.
-- Armazenamento privado para anexos.
-- Revisão humana e governança.
-
-© Jus 9 Tecnologia Jurídica — software livre, autoria preservada.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

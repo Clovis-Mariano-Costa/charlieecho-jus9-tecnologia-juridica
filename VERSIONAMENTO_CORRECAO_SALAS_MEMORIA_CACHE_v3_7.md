@@ -1,34 +1,20 @@
-# Versionamento - Correcao salas, memoria e cache v3.7
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-06-04
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_CORRECAO_SALAS_MEMORIA_CACHE_v3_7.md
+Destino classificado: AUTOORGANIZACAO
 
-## Problema observado
+## Motivo
 
-O botao `Nova sala` aparecia na interface, mas podia nao executar no navegador publicado.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-Tambem foi observado que a Charlie Echo ainda parecia nao lembrar da pergunta anterior.
+## Onde esta o conteudo original
 
-## Causas tratadas
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_CORRECAO_SALAS_MEMORIA_CACHE_v3_7.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_CORRECAO_SALAS_MEMORIA_CACHE_v3_7.md
 
-- O navegador podia usar JavaScript antigo em cache.
-- A criacao de sala dependia de `window.prompt()`, que pode ser bloqueado ou parecer sem efeito.
-- A memoria curta estava embutida na mensagem, mas nao era enviada como campo estruturado ao endpoint.
-- O fallback local ainda podia responder como se nao houvesse contexto.
+## Regra
 
-## Correcoes
-
-- Adicionado `?v=3.7` ao script `charlie-ia-pages.js` nas quatro entradas de chat.
-- `Nova sala` agora cria uma sala imediatamente, com nome automatico.
-- A memoria curta da sala tambem e enviada no campo `room` para `/api/ia`.
-- O endpoint `/api/ia` passa a montar contexto de sala antes da pergunta atual.
-- Adicionado `continuationFallback` para respostas locais quando a API nao responder.
-- Auditoria atualizada para impedir regressao de cache e dependencia de prompt.
-
-## Validacao
-
-```bash
-node --check assets/js/charlie-ia-pages.js
-node --check functions/api/ia.js
-node --check scripts/audit-charlie-chat-capabilities.mjs
-node scripts/audit-charlie-chat-capabilities.mjs
-```
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

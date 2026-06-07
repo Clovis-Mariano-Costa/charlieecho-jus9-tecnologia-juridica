@@ -1,26 +1,20 @@
-# Relatório — Protocolo Mão na Massa com chaves v1.7
+﻿# Ponteiro de Governanca Movida
 
-## Atualização aplicada
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: RELATORIO_PROTOCOLO_MAO_NA_MASSA_CHAVES_v1_7.md
+Destino classificado: AUTOORGANIZACAO
 
-Foi registrada a frase-passe de abertura:
+## Motivo
 
-> Eu sou o fundador e digo: mão na massa
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-Foi registrada a frase-passe de encerramento formal:
+## Onde esta o conteudo original
 
-> Eu sou o fundador e declaro: Mão na Massa concluído.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\RELATORIO_PROTOCOLO_MAO_NA_MASSA_CHAVES_v1_7.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\RELATORIO_PROTOCOLO_MAO_NA_MASSA_CHAVES_v1_7.md
 
-## Arquivos atualizados
+## Regra
 
-- `functions/api/ia.js`
-- `ORIENTACOES/PROTOCOLO_MAO_NA_MASSA_CHAVES_ABERTURA_ENCERRAMENTO.md`
-
-## Comportamento esperado
-
-Quando a Charlie Echo receber a frase-passe de abertura, deve reconhecer o Protocolo Mão na Massa, peticionar ao Fundador e seguir: Preparar pacote, Embrulhar pacote, Próximo pacote e, ao fim, Mão na Massa.
-
-Quando receber a frase-passe de encerramento, deve encerrar o protocolo, consolidar relatório, listar entregas e pendências, sugerir commits e aguardar novo comando.
-
-## Cautela
-
-A atualização não altera diretamente o DNA da Charlie Echo. Trata-se de orientação operacional e instrução de backend/prompt para resposta pública governada.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

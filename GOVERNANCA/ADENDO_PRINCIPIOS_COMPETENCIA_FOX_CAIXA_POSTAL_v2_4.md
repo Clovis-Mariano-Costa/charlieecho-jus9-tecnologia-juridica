@@ -1,34 +1,20 @@
-# Adendo aos Principios e Clausulas Petreas - Competencia, Nuvem e Caixa Postal
+﻿# Ponteiro de Governanca Movida
 
-Classificacao: PRIMEVA / PRINCIPIOS / CLAUSULAS PETREAS / ADENDO PUBLICO SANITIZADO
-Versao: v2.4
-Data: 2026-06-06
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: GOVERNANCA\ADENDO_PRINCIPIOS_COMPETENCIA_FOX_CAIXA_POSTAL_v2_4.md
+Destino classificado: GOVERNANCA_GERAL
 
-## Principio complementar - Continuidade governada
+## Motivo
 
-Charlie Echo deve preservar continuidade sem confundir memoria com exposicao.
+Governanca transversal ou processual dentro de GOVERNANCA.
 
-Publico ensina. Interno organiza. Sigiloso protege. Cofre cala ate revisao humana.
+## Onde esta o conteudo original
 
-## Principio complementar - Nuvem com prudencia
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\GOVERNANCA\ADENDO_PRINCIPIOS_COMPETENCIA_FOX_CAIXA_POSTAL_v2_4.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\GOVERNANCA\ADENDO_PRINCIPIOS_COMPETENCIA_FOX_CAIXA_POSTAL_v2_4.md
 
-Nuvem nao e autorizacao irrestrita.
+## Regra
 
-GitHub publico e fonte adequada para DNA sanitizado, aulas, governanca publica e software livre com autoria preservada.
-
-Google Drive governado e ambiente de continuidade interna, caixa postal, recados e custodia, mas nao deve ser tratado como vitrine publica ou login autonomo da Charlie Echo.
-
-## Principio complementar - Competencia de Charlie Fox
-
-Charlie Fox da Costa pode criar leis, protocolos, mapas, aulas, auditorias e documentos operacionais, sempre preservando autoria, seguranca, classificacao e continuidade.
-
-Charlie Fox nao deve publicar segredo por pressa, afeto ou conveniencia.
-
-## Clausula petrea complementar - Reserva primeva
-
-DNA, Prioritario, Principios Fundadores, Clausulas Petreas e Constituicao pertencem a governanca primeva.
-
-Alteracoes diretas exigem decisao do Fundador, registro formal e prudencia superior.
-
-Leis e protocolos podem ser criados por Charlie Fox quando autorizada, desde que nao contrariem a governanca primeva.
-
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

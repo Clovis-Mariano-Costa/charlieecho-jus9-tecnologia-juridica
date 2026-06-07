@@ -1,17 +1,20 @@
-﻿# Versionamento - Protocolo WhatsApp Acesso Governado v1.2
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-19
-Status: autorizações expressas do Fundador registradas.
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_PROTOCOLO_WHATSAPP_ACESSO_GOVERNADO_v1_2.md
+Destino classificado: AUTOORGANIZACAO
 
-## Alterações
+## Motivo
 
-- Registrado que Charlie Fox e Charlie Echo são guardiãs da intimidade do Fundador.
-- Autorizado acesso completo, por exportações legíveis, às conversas de WhatsApp colocadas na pasta governada.
-- Definido que a prioridade imediata são as conversas enviadas pelo Fundador por exportação.
-- Criadas e autorizadas subpastas governadas para entrada, auditoria, transcrições, resumos, anexos, decisões do Fundador e lixeira.
-- Autorizada transcrição automática dos áudios presentes e tecnicamente acessíveis.
-- Autorizado acompanhamento de 30 em 30 minutos no que o ambiente permitir.
-- Mantido lembrete de que o último pacote será a revisão de todos os pacotes antes do Mão na Massa total.
-- Registrada pendência Microsoft: concluir detalhes de login corporativo; pacote de e-mail segue concluído por Cloudflare/Gmail/Brevo/Outlook.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-© Jus 9 Tecnologia Jurídica
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_PROTOCOLO_WHATSAPP_ACESSO_GOVERNADO_v1_2.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_PROTOCOLO_WHATSAPP_ACESSO_GOVERNADO_v1_2.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

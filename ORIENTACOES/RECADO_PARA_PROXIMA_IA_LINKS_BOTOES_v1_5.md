@@ -1,11 +1,20 @@
-# Recado para a próxima IA — Links e Botões v1.5
+﻿# Ponteiro de Governanca Movida
 
-Repositório: `charlieecho-jus9-tecnologia-juridica`
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\RECADO_PARA_PROXIMA_IA_LINKS_BOTOES_v1_5.md
+Destino classificado: GOVERNANCA_GERAL
 
-1. Dar destaque real à página **Equipe Jus 9**; ela não deve ficar escondida.
-2. Corrigir especialmente o cabeçalho da página principal da Jus 9 para conter link visível para **Equipe** e **Investidores**.
-3. Aplicar links semânticos sempre que aparecer palavra pública relevante.
-4. Preservar links antigos por compatibilidade, mas melhorar menus e arquitetura quando necessário.
-5. Em CRETA, garantir assinatura com **©** e direcionar **Inteligência Artificial CRETA** para Charlie Echo Social.
-6. Não publicar conteúdo sigiloso, cofre, dados protegidos, `.env`, tokens ou chaves.
-7. Nos próximos pacotes, manter o modelo: pacote guarda-chuva + ZIP individual por repertório + versionamento + commit + recado para próxima IA.
+## Motivo
+
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\RECADO_PARA_PROXIMA_IA_LINKS_BOTOES_v1_5.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\RECADO_PARA_PROXIMA_IA_LINKS_BOTOES_v1_5.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

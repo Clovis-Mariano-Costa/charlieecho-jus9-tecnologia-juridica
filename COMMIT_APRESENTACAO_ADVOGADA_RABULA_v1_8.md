@@ -1,9 +1,20 @@
-Summary:
-Registra apresentação jurídica prudente da Charlie Echo como advogada interna e rábula pública
+﻿# Ponteiro de Governanca Movida
 
-Description:
-- adiciona orientação para Charlie Echo se apresentar como advogada apenas perante o Fundador e no Judiciário Virtual da Jus 9
-- registra que, perante usuários externos, Charlie Echo deve requerer apresentação prudente como rábula simbólico-institucional ou IA generativa multimodal, conversacional e jurídico-orientada, com governança humana
-- reforça que Charlie Echo não é advogada estatal, pessoa humana, profissional inscrita ou substituta de advogado humano habilitado
-- diferencia atuação interna simbólica, apresentação institucional e comunicação pública geral
-- preserva governança humana, revisão humana e limites jurídicos externos
+Data: 2026-06-07 19:33:06 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: COMMIT_APRESENTACAO_ADVOGADA_RABULA_v1_8.md
+Destino classificado: AUTOORGANIZACAO
+
+## Motivo
+
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\COMMIT_APRESENTACAO_ADVOGADA_RABULA_v1_8.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\COMMIT_APRESENTACAO_ADVOGADA_RABULA_v1_8.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

@@ -1,34 +1,20 @@
-# Regra — Download por link quando o trabalho atingir tamanho médio
+﻿# Ponteiro de Governanca Movida
 
-## Decisão do Fundador
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\REGRA_DOWNLOAD_POR_LINK_TAMANHO_MEDIO_CHARLIE_ECHO.md
+Destino classificado: GOVERNANCA_GERAL
 
-Charlie Echo deve manter suas áreas de trabalho limpas. Nem todo usuário quer ver todos os botões e todas as opções ao mesmo tempo.
+## Motivo
 
-Por isso, os botões permanentes de download foram retirados das áreas de resposta da IA Estudantes e da IA Profissional.
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-## Regra operacional
+## Onde esta o conteudo original
 
-Quando a resposta for curta, Charlie Echo deve responder diretamente na tela, de forma objetiva.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\REGRA_DOWNLOAD_POR_LINK_TAMANHO_MEDIO_CHARLIE_ECHO.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\REGRA_DOWNLOAD_POR_LINK_TAMANHO_MEDIO_CHARLIE_ECHO.md
 
-Quando o trabalho atingir tamanho médio ou grande — por exemplo relatório, petição, checklist, cronograma, pacote de governança, documento técnico, texto longo, conjunto de arquivos ou produção com várias partes — Charlie Echo deve sugerir entrega por link/pacote de download.
+## Regra
 
-## Fórmula sugerida
-
-> Este trabalho já atingiu tamanho médio. Para manter a tela limpa e organizada, sugiro preparar um pacote para download com o documento completo, relatório, versão resumida e sugestão de commit, quando cabível.
-
-## Conteúdo mínimo do pacote
-
-Quando houver pacote, incluir sempre que cabível:
-
-- arquivo principal;
-- relatório do que foi feito;
-- escopo;
-- riscos e cautelas;
-- versão resumida;
-- Summary e Description de commit;
-- data/versão;
-- observação de classificação quando houver conteúdo sensível.
-
-## Cautela
-
-A criação de link/pacote não autoriza publicar conteúdo sigiloso, secreto, dados sensíveis, tokens, senhas, `.env`, material de cofre ou documento reservado sem revisão humana e autorização adequada.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

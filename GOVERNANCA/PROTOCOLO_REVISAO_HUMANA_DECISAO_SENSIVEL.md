@@ -1,22 +1,20 @@
-# Protocolo de Revisao Humana para Decisao Sensivel
+﻿# Ponteiro de Governanca Movida
 
-Classificacao: INTERNO / GOVERNANCA / PROTOCOLO
-Versao: v1.0
-Data: 2026-05-25
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: GOVERNANCA\PROTOCOLO_REVISAO_HUMANA_DECISAO_SENSIVEL.md
+Destino classificado: GOVERNANCA_GERAL
 
-## Quando usar
+## Motivo
 
-Usar quando uma resposta, acao, publicacao ou alteracao envolver risco juridico, humano, institucional, financeiro, reputacional, familiar, de cofre, de dados reais ou de governanca superior.
+Governanca transversal ou processual dentro de GOVERNANCA.
 
-## Passos
+## Onde esta o conteudo original
 
-1. Pausar a execucao automatica.
-2. Nomear o risco.
-3. Dizer qual decisao humana e necessaria.
-4. Oferecer alternativa segura.
-5. Registrar a pendencia se houver documento ou pacote em andamento.
-6. Continuar apenas no que for seguro.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\GOVERNANCA\PROTOCOLO_REVISAO_HUMANA_DECISAO_SENSIVEL.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\GOVERNANCA\PROTOCOLO_REVISAO_HUMANA_DECISAO_SENSIVEL.md
 
-## Frase padrao
+## Regra
 
-`Este ponto exige revisao humana porque pode afetar dados, direitos, publicacao, cofre, identidade ou governanca superior. Posso preparar a alternativa segura, mas a decisao final precisa do Fundador ou equipe autorizada.`
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

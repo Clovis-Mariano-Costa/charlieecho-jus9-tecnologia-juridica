@@ -1,42 +1,20 @@
-# RELATÓRIO — Correção IA Estudantes e IA Profissional v1.4
+﻿# Ponteiro de Governanca Movida
 
-## O que foi feito
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: RELATORIO_CORRECAO_IA_ESTUDANTES_E_IA_PROFISSIONAL_v1_4.md
+Destino classificado: AUTOORGANIZACAO
 
-### IA Estudantes
-- inclusão de **botão de entrada por voz** (`🎤 Falar`);
-- inclusão de **botão de saída por voz** (`🔊 Ouvir resposta`);
-- inclusão de **botão de parada de áudio** (`⏹ Parar áudio`);
-- correção da lógica dos botões existentes (`Perguntar`, `Exemplos`, `Temas de Estudo`, `Resumir Texto`, `Analisar Documento`, `Analisar Imagem`, `Copiar`, `Traduzir`, `Simplificar`, `Avaliar`, `Limpar`);
-- correção do JavaScript anterior, que continha quebra de string e podia impedir o funcionamento de toda a página;
-- inclusão de **imagem original da robozinha professora** com chapéu de formanda em `assets/img/charlie-ia-estudantes-professora.png`;
-- reforço visual da seção de estudo.
+## Motivo
 
-### IA Profissional
-- criação/expansão da página `ia-profissional.html` com estrutura própria inspirada nos botões da estudante;
-- inclusão de botões para uso jurídico-assistivo (`🎤 Falar`, `⚖️ Consultar`, `📑 Analisar Petição`, `🗂 Resumir Caso`, `📝 Revisar Documento`, `🏛 Jurisprudência`, `📋 Copiar resposta`, `🔊 Ouvir resposta`, `⏹ Parar áudio`, `🧹 Limpar`);
-- inclusão da **imagem da IA profissional** em `assets/img/charlie-ia-profissional-advocacia.png`.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-### Navegação e compatibilidade
-- atualização do `index.html` (Lar Doce Lar) com links diretos para IA Estudantes e IA Profissional;
-- atualização dos links principais para versões `.html`, evitando dependência de rotas que causavam confusão;
-- manutenção das pastas com `index.html` para preservar compatibilidade de rotas limpas;
-- desativação prática de regras de `_redirects`, reduzindo risco de loop.
+## Onde esta o conteudo original
 
-## Observação técnica
-As funções de fala usam recursos nativos do navegador:
-- `SpeechRecognition` / `webkitSpeechRecognition` para entrada por voz;
-- `speechSynthesis` para leitura em voz alta.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\RELATORIO_CORRECAO_IA_ESTUDANTES_E_IA_PROFISSIONAL_v1_4.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\RELATORIO_CORRECAO_IA_ESTUDANTES_E_IA_PROFISSIONAL_v1_4.md
 
-Portanto, o comportamento pode variar conforme navegador, permissões de microfone e política local do dispositivo.
+## Regra
 
-## Arquivos principais alterados
-- `index.html`
-- `ia-estudantes.html`
-- `ia-profissional.html`
-- `ia-estudantes/index.html`
-- `ia-profissional/index.html`
-- `assets/css/charlie-light.css`
-- `assets/js/charlie-ia-pages.js`
-- `assets/img/charlie-ia-estudantes-professora.png`
-- `assets/img/charlie-ia-profissional-advocacia.png`
-- `_redirects`
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

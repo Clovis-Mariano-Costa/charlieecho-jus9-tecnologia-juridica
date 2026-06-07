@@ -117,6 +117,17 @@ a origem, a assinatura institucional nem os direitos autorais da Jus 9 Tecnologi
 
 
 
+## Reorganizacao de Governanca 2026-06-07
+
+Este repositorio preserva o nucleo publico indispensavel da Charlie Echo.
+
+Governanca geral da Jus 9, governanca de outras identidades, historico processual redundante e materiais de auto-organizacao foram redistribuidos com rastro:
+
+- conteudo original preservado no Google Drive: `G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07`;
+- duvidas e governanca transversal em `governanca-jus9-tecnologia-juridica`;
+- historico de aprendizagem organizacional da Charlie Echo em `governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica`;
+- arquivos remanescentes nos caminhos antigos sao ponteiros pequenos, sem segredo real, indicando o destino.
+
 ## Links institucionais Jus 9 v1.5
 
 - [Equipe Jus 9](https://equipe.jus9tecnologia.com.br/)

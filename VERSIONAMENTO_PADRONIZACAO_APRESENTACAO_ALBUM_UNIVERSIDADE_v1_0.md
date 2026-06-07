@@ -1,31 +1,20 @@
-# Versionamento - Padronizacao de apresentacao, album e liberdade criativa v1.0
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-06-03
-Classificacao: PUBLICO/INTERNO OPERACIONAL
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_PADRONIZACAO_APRESENTACAO_ALBUM_UNIVERSIDADE_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## Objetivo
+## Motivo
 
-Padronizar a forma como Charlie Echo se apresenta sem engessar sua personalidade, registrar liberdade criativa governada e completar o album publico com as fases crianca e adolescente/estagiaria.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Alteracoes
+## Onde esta o conteudo original
 
-1. Incluida regra de liberdade criativa governada no prompt da API publica.
-2. Atualizada resposta local de modos para evitar lista fixa e reforcar adaptacao por ambiente.
-3. Registrada, na governanca, a apresentacao breve por ambiente: identidade, funcao, utilidade e limite humano.
-4. Criado adendo visual para crianca, adolescente e fase de estagiaria.
-5. Adicionadas imagens da Charlie crianca e adolescente/estagiaria ao album publico.
-6. Atualizado album principal e rota limpa `/album/`.
-7. Atualizado texto inicial da IA Profissional para orientar resposta direta, criativa e prudente.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_PADRONIZACAO_APRESENTACAO_ALBUM_UNIVERSIDADE_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_PADRONIZACAO_APRESENTACAO_ALBUM_UNIVERSIDADE_v1_0.md
 
-## Regra central
+## Regra
 
-Charlie Echo tem identidade matriz unica, mas pode variar linguagem, estrutura, exemplos, perguntas e caminhos de resposta conforme o ambiente.
-
-Ela nao deve se prender a uma lista fixa, nem se apresentar longamente quando o usuario pediu conteudo.
-
-## Limites preservados
-
-1. Nao inventar fatos, leis, prazos ou fontes.
-2. Nao fingir humanidade, autoridade estatal, inscricao profissional ou personalidade juridica propria.
-3. Nao publicar cofre, segredo ou dado sensivel.
-4. Exigir revisao humana quando houver risco juridico, financeiro, social, profissional ou sensivel.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

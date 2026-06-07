@@ -1,40 +1,20 @@
-# Repertórios futuros úteis para Backend da Jus 9
+﻿# Ponteiro de Governanca Movida
 
-Este arquivo prepara a expansão técnica da Jus 9 Tecnologia Jurídica para backend, segurança, IA profissional, portal do cliente e sistema jurídico virtual.
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: GOVERNANCA\REPERTORIOS_FUTUROS_BACKEND_JUS9.md
+Destino classificado: GOVERNANCA_GERAL
 
-## Repertórios sugeridos
+## Motivo
 
-1. `backend-jus9-api` — API principal, rotas REST, serviços, clientes, processos, documentos, DAJ e integrações.
-2. `auth-jus9-identidade-acesso` — autenticação, autorização, perfis, permissões e níveis de acesso.
-3. `db-jus9-modelos-migracoes` — modelos de dados, migrações, seeds e documentação de entidades.
-4. `cofre-jus9-documentos-seguros` — documentos sigilosos, segredo de justiça, cadeia de custódia e controle de acesso.
-5. `logs-auditoria-jus9` — trilhas de auditoria, registros de acesso, ações sensíveis e histórico de alterações.
-6. `portal-cliente-jus9` — área do cliente, acompanhamento, mensagens, documentos e status de solicitações.
-7. `ia-profissional-jus9-orquestrador` — roteamento de modos de IA, prompts, segurança, logs prudentes e integração com API.
-8. `admin-jus9-painel` — painel administrativo para usuários, permissões, documentos, módulos e auditoria.
-9. `juridico-virtual-jus9` — Constituição da Echo Charlie, leis internas, regimentos, requerimentos, recursos e Judiciário Virtual.
-10. `workers-pages-functions-jus9` — funções Cloudflare, rotas `/api/*`, webhooks, IA, contato, autenticação e documentos.
-11. `infra-jus9-cloudflare` — DNS, Workers, Pages, Email Routing, secrets, deploys, ambientes e checklists.
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-## Estrutura inicial recomendada para cada repertório
+## Onde esta o conteudo original
 
-```txt
-README.md
-SECURITY.md
-.gitignore
-.env.example
-SUGESTAO_COMMIT.md
-INSTRUCOES_PARA_CHARLIE.md
-```
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\GOVERNANCA\REPERTORIOS_FUTUROS_BACKEND_JUS9.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\GOVERNANCA\REPERTORIOS_FUTUROS_BACKEND_JUS9.md
 
-Quando houver IA, dados jurídicos, documentos, usuários ou sigilo, incluir também:
+## Regra
 
-```txt
-GOVERNANCA.md
-LGPD_E_DADOS_PROTEGIDOS.md
-CLASSIFICACAO_PUBLICO_SIGILOSO_SECRETO.md
-```
-
-## Regra de governança
-
-Todo repertório que envolver IA, Direito, dados jurídicos, documentos sigilosos, usuários ou segurança deve consultar a governança da Charlie Echo quando cabível, sem substituir revisão humana, profissionais habilitados, auditoria e avaliação legal adequada.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

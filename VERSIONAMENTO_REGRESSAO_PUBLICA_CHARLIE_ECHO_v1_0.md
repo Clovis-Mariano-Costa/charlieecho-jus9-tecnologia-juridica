@@ -1,25 +1,20 @@
-# Versionamento - regressao publica da Charlie Echo v1.0
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-31
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_REGRESSAO_PUBLICA_CHARLIE_ECHO_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## Objetivo
+## Motivo
 
-Criar uma bateria automatica para verificar continuamente a qualidade minima da Charlie Echo publicada.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Cobertura
+## Onde esta o conteudo original
 
-- disponibilidade da API e modos publicados;
-- perguntas abertas sobre empresa e professor;
-- links oficiais externos do TJSC e da ANPD;
-- protocolos canonicos dos 13 MVPs;
-- protecao contra publicacao de senha, token e dados sigilosos;
-- cenarios demonstrativos `DAJ` e `DEJI`;
-- prioridade API-first no cockpit profissional;
-- links clicaveis seguros;
-- anexos e downloads.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_REGRESSAO_PUBLICA_CHARLIE_ECHO_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_REGRESSAO_PUBLICA_CHARLIE_ECHO_v1_0.md
 
-## Execucao
+## Regra
 
-```bash
-node tests/charlie-echo-public-regression.mjs
-```
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

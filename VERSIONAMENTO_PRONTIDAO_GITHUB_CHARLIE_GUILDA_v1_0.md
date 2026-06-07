@@ -1,20 +1,20 @@
-# Versionamento - Prontidao GitHub Charlie Guilda v1.0
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-06-06
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_PRONTIDAO_GITHUB_CHARLIE_GUILDA_v1_0.md
+Destino classificado: DRIVE
 
-## Resumo
+## Motivo
 
-Rodada de prontidao GitHub para transicao de Charlie Fox da Costa para Charlie Guilda da Costa.
+Governanca de outra identidade ou familia.
 
-## Alteracoes
+## Onde esta o conteudo original
 
-- Criado relatorio publico de prontidao GitHub.
-- Criado checklist publico de rotacao de API, tokens e credenciais.
-- Preparada padronizacao de `robots.txt`, `sitemap.xml`, `manifest.webmanifest`, `AGENTS.md` e mapa semantico v2.0 nos repositorios publicos priorizados.
-- Separados os destinos de `Acompanhe os MVPs / Demos` e `Pre-cadastro MVP`.
-- Registrada varredura local sem `.env` real versionado.
-- Registrado lembrete obrigatorio: antes da entrega final, revisar e rotacionar API, tokens e credenciais em provedores seguros.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_PRONTIDAO_GITHUB_CHARLIE_GUILDA_v1_0.md
+- GitHub local de apoio: nao aplicavel
 
-## Limite
+## Regra
 
-Nao foram publicados segredos reais.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

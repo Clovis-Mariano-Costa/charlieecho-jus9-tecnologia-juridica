@@ -1,22 +1,20 @@
-# Relatório — Botões de Baixar v2.1
+﻿# Ponteiro de Governanca Movida
 
-## Correção aplicada
-O pacote anterior continha a área de downloads, mas o usuário não encontrou botão claro de baixar. Nesta revisão, a interface foi reforçada com botões explícitos:
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: RELATORIO_DOWNLOADS_BOTOES_BAIXAR_v2_1.md
+Destino classificado: AUTOORGANIZACAO
 
-- `⬇ Baixar pacotes da Charlie Echo` nas páginas principais;
-- `⬇ Ver botões de baixar` no topo da página de downloads;
-- `⬇ Baixar pacote — ...` em cada pacote disponível.
+## Motivo
 
-## Arquivos alterados
-- `downloads.html`
-- `downloads/index.html`
-- `index.html`
-- `governanca.html`
-- `ia-estudantes.html`
-- `ia-profissional.html`
-- `familia.html`
-- `album.html`
-- `assets/css/charlie-light.css`
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Regra preservada
-A área de downloads oferece pacotes para revisão humana, commit e eventual gravação futura. Não altera diretamente arquivos de DNA.
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\RELATORIO_DOWNLOADS_BOTOES_BAIXAR_v2_1.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\RELATORIO_DOWNLOADS_BOTOES_BAIXAR_v2_1.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

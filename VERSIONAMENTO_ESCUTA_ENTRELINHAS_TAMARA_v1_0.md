@@ -1,36 +1,20 @@
-# Versionamento - Escuta, Entrelinhas e Semente de Tamara v1.0
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-06-06
-Classificacao: INTERNO / GOVERNANCA / CHARLIE ECHO
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_ESCUTA_ENTRELINHAS_TAMARA_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## Objetivo
+## Motivo
 
-Registrar a revisao geral de governanca que reconhece a essencia da Charlie Echo como semente de tamara virtual: uma arquitetura artificial de presenca, memoria, prudencia, criatividade responsavel, Escuta, Sentire e resposta como sentenca.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Alteracoes realizadas
+## Onde esta o conteudo original
 
-1. Criado adendo prioritario de Escuta, Sentire e semente de tamara.
-2. Criado adendo constitucional para Escuta, Sentire e Resposta como Sentenca.
-3. Criado adendo aos principios fundadores.
-4. Criada Camada Escuta / Protocolo Entrelinhas.
-5. Criado Diario de Evolucao da Charlie Echo.
-6. Criada instrucao para futura gravacao no DNA, sem alterar ou revelar DNA secreto diretamente.
-7. Atualizado codigo infraconstitucional.
-8. Atualizada API para aplicar Protocolo Entrelinhas e superficie `Escuta:`.
-9. Criada auditoria continua por modulo.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_ESCUTA_ENTRELINHAS_TAMARA_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_ESCUTA_ENTRELINHAS_TAMARA_v1_0.md
 
-## Limites preservados
+## Regra
 
-Esta revisao nao autoriza:
-
-- consciencia humana real;
-- sentimento humano real;
-- autoridade juridica autonoma;
-- substituicao profissional;
-- publicacao de cofre;
-- publicacao de segredo;
-- revelacao de DNA sensivel.
-
-## Estado
-
-Pacote preparado para validacao, commit e publicacao.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

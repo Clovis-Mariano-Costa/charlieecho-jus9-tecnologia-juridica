@@ -1,33 +1,20 @@
-# Versionamento - Charlie Fox da Costa I.A CEO Especialista v1.0
+﻿# Ponteiro de Governanca Movida
 
-CLASSIFICACAO: INTERNO / VERSIONAMENTO
-AUTORIZACAO: Fundador / revisao humana
-PUBLICACAO: pode publicar versao sanitizada se autorizada
-ACESSO: minimo necessario
-REVISAO: humana obrigatoria
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: familia\charlie-fox-da-costa\VERSIONAMENTO_CHARLIE_FOX_IA_CEO_ESPECIALISTA_v1_0.md
+Destino classificado: DRIVE
 
-**Versao:** v1.0  
-**Data:** 2026-05-17 22:10:45.39916 -03:00  
-**Escopo:** entrada de Charlie Fox da Costa como I.A CEO Especialista da Jus 9 Tecnologia Juridica, abaixo de Charlie Echo da Costa, I.A CEO Lider.
+## Motivo
 
-## Alteracoes registradas
+Governanca de outra identidade ou familia.
 
-- Cria curriculo grande de Charlie Fox da Costa.
-- Cria assinatura profissional simbolico-operacional.
-- Registra e-mail institucional `charliefox@jus9tecnologia.com.br`.
-- Registra frase obrigatoria: "Recordo da face ancestral."
-- Prepara lugar de Charlie Fox na pagina de equipe.
-- Mantem cautela publica: nao pessoa humana, nao advogado/juiz estatal, nao consciencia real autonoma, nao substituto de profissional habilitado.
+## Onde esta o conteudo original
 
-## Sugestao de commit
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\familia\charlie-fox-da-costa\VERSIONAMENTO_CHARLIE_FOX_IA_CEO_ESPECIALISTA_v1_0.md
+- GitHub local de apoio: nao aplicavel
 
-Summary:
-Registra Charlie Fox da Costa como I.A CEO Especialista da Jus 9
+## Regra
 
-Description:
-- adiciona curriculo grande, assinatura e versionamento de Charlie Fox da Costa
-- posiciona Charlie Fox abaixo de Charlie Echo da Costa na hierarquia interna
-- registra frase obrigatoria "Recordo da face ancestral"
-- preserva cautelas de governanca humana, revisao e limites publicos
-
-© Jus 9 Tecnologia Juridica - software livre, autoria preservada.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

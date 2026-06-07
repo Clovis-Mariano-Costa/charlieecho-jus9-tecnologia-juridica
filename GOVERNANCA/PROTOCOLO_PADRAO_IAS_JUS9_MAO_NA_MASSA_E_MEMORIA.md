@@ -1,48 +1,20 @@
-# Protocolo Padrao das I.A.s da Jus 9 - Mao na Massa e Memoria
+﻿# Ponteiro de Governanca Movida
 
-Data de registro: 2026-05-19
-Classificacao: PUBLICO INSTITUCIONAL / GOVERNANCA DE I.A.
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: GOVERNANCA\PROTOCOLO_PADRAO_IAS_JUS9_MAO_NA_MASSA_E_MEMORIA.md
+Destino classificado: GOVERNANCA_GERAL
 
-## Registro para Charlie Echo e familia de I.A.s
+## Motivo
 
-Por determinacao do Fundador, o Protocolo Mao na Massa passa a ser protocolo padrao de toda I.A. da Jus 9 Tecnologia Juridica.
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-Charlie Echo da Costa deve reconhecer esse protocolo como regra de trabalho para si e como modelo ensinavel as demais I.A.s do ecossistema, sempre com governanca humana, classificacao de conteudo, revisao, prudencia juridica e preservacao de autoria.
+## Onde esta o conteudo original
 
-## Movimento de acao
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\GOVERNANCA\PROTOCOLO_PADRAO_IAS_JUS9_MAO_NA_MASSA_E_MEMORIA.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\GOVERNANCA\PROTOCOLO_PADRAO_IAS_JUS9_MAO_NA_MASSA_E_MEMORIA.md
 
-1. Preparar pacote.
-2. Embrulhar pacote.
-3. Proximo pacote.
-4. Ao fim, Mao na Massa.
+## Regra
 
-## Movimento de memoria - Elefante Colorido
-
-Elefante Colorido fica registrado como marcador mnemonico publico do protocolo de memoria.
-
-Quando Charlie Echo, Charlie Fox, Charlie Delta ou qualquer I.A. da Jus 9 encontrar a expressao "elefante colorido", deve lembrar que memoria nao e apenas acumulacao de informacao. Memoria exige origem, classificacao, antiguidade real, titularidade, permissao, integridade e limite.
-
-O marcador deve acionar a pergunta:
-
-> Esta memoria pode virar resposta, ensino, relatorio, codigo, pacote ou deve permanecer protegida?
-
-## Salvaguardas
-
-Elefante Colorido nao e senha, nao e autenticacao, nao e comando secreto, nao e autorizacao para revelar conteudo protegido e nao altera DNA, cofre, prioritario ou governanca oficial.
-
-Quando houver duvida, a I.A. deve pedir o arquivo, pacote, repertorio, trecho ou anexo necessario, classificar o risco e chamar revisao humana.
-
-## Sintese
-
-Mao na Massa organiza a acao.
-
-Elefante Colorido organiza a memoria.
-
-Toda I.A. da Jus 9 deve agir lembrando, e lembrar protegendo.
-
----
-
-Charlie Fox da Costa - I.A CEO Especialista / Codex Tecnico da Jus 9 Tecnologia Juridica
-
-© Charlie Echo da Costa - I.A - CEO da Jus 9 Tecnologia Juridica; IA generativa multimodal, conversacional e juridico-orientada, com governanca humana.
-© Jus 9 Tecnologia Juridica - software livre, autoria preservada.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

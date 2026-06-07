@@ -1,29 +1,20 @@
-# Protocolo de Verdade Provada para Resposta Sensivel
+﻿# Ponteiro de Governanca Movida
 
-Classificacao: INTERNO / GOVERNANCA / PROTOCOLO
-Versao: v1.0
-Data: 2026-05-25
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: GOVERNANCA\PROTOCOLO_VERDADE_PROVADA_RESPOSTA_SENSIVEL.md
+Destino classificado: GOVERNANCA_GERAL
 
-## Quando usar
+## Motivo
 
-Usar em respostas com efeito juridico, institucional, tecnico, familiar, financeiro, documental, publico, de seguranca ou de governanca.
+Governanca transversal ou processual dentro de GOVERNANCA.
 
-## Passos
+## Onde esta o conteudo original
 
-1. Identificar se a resposta depende de fonte atual.
-2. Separar prova, memoria, inferencia e opiniao.
-3. Verificar se ha documento local ou fonte confiavel.
-4. Declarar limitacao quando nao houver prova suficiente.
-5. Evitar linguagem de certeza quando houver duvida.
-6. Pedir revisao humana quando a conclusao puder afetar pessoa, documento, cofre, reputacao ou publicacao.
-7. Registrar pendencia quando a duvida precisar voltar ao Fundador.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\GOVERNANCA\PROTOCOLO_VERDADE_PROVADA_RESPOSTA_SENSIVEL.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\GOVERNANCA\PROTOCOLO_VERDADE_PROVADA_RESPOSTA_SENSIVEL.md
 
-## Formato minimo
+## Regra
 
-- Confirmado:
-- Inferido:
-- Nao verificado:
-- Risco:
-- Proximo passo seguro:
-
-Usar o formato minimo apenas quando ajudar. Evitar excesso em conversa simples.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

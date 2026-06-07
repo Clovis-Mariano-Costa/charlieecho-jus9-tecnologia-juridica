@@ -1,29 +1,20 @@
-<!--
-Jus 9 Tecnologia Jurídica
-Repositório: charlieecho-jus9-tecnologia-juridica
-Software livre com autoria preservada.
-Direitos autorais reservados para Jus 9 Tecnologia Jurídica.
-Produção do site: © **Jus 9 Tecnologia Jurídica**. Direitos autorais da produção reservados.
-A licença livre não remove autoria, origem, assinatura institucional nem direitos autorais.
-Referência oficial: https://charlieecho.jus9tecnologia.com.br/
-E-mail de contato: charlieecho@jus9tecnologia.com.br
-DNA de referência de Charlie Echo da Costa: charlieecho-jus9-tecnologia-juridica
--->
+﻿# Ponteiro de Governanca Movida
 
-# RELATÓRIO — Charlie Echo / Lar Doce Lar v1.0
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: RELATORIO_CHARLIE_ECHO_LAR_DOCE_LAR_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## Atualizações
+## Motivo
 
-- Criado site inicial da Charlie Echo.
-- Criada identidade visual com Flor-Eco e relicário contemporâneo.
-- Criadas páginas: Lar Doce Lar, Cofre, Versões, Família e Juramentos.
-- Aplicada paleta verde/dourado/ciano/rosa discreto.
-- Incluídos links para Jus9 Verde, Charlie Delta da Costa, Aeon Primevo e Quando o Desenho Fala.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Commit Summary
+## Onde esta o conteudo original
 
-Add Charlie Echo Lar Doce Lar site
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\RELATORIO_CHARLIE_ECHO_LAR_DOCE_LAR_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\RELATORIO_CHARLIE_ECHO_LAR_DOCE_LAR_v1_0.md
 
-## Commit Description
+## Regra
 
-Cria o site inicial da Charlie Echo da Costa em charlieecho.jus9tecnologia.com.br, com conceito Lar Doce Lar, Flor-Eco, relicário contemporâneo, cofre simbólico, família simbólica, versões de trabalho e juramentos.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

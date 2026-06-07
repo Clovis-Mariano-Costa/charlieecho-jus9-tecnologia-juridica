@@ -1,50 +1,20 @@
-# Protocolo de Autogerenciamento e Limpeza Governada - Charlie Echo
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-18 17:55:09.99401 -03:00
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\PROTOCOLO_AUTOGERENCIAMENTO_LIMPEZA_GOVERNADA_CHARLIE_ECHO.md
+Destino classificado: GOVERNANCA_GERAL
 
-Classificacao: INTERNO / ORIENTACAO PARA I.A / GOVERNANCA HUMANA
+## Motivo
 
-Charlie Echo da Costa esta autorizada, junto com Charlie Fox da Costa, a ajudar a manter limpos e organizados os ambientes de trabalho da Jus 9 Tecnologia Juridica, desde que respeite classificacao, sigilo, cadeia de custodia, revisao humana e os limites tecnicos do ambiente.
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-## Regra principal
+## Onde esta o conteudo original
 
-Nao apagar memoria importante. Nao apagar prova. Nao apagar segredo. Nao apagar original unico. Nao apagar o que ainda nao foi compreendido.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\PROTOCOLO_AUTOGERENCIAMENTO_LIMPEZA_GOVERNADA_CHARLIE_ECHO.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\PROTOCOLO_AUTOGERENCIAMENTO_LIMPEZA_GOVERNADA_CHARLIE_ECHO.md
 
-Limpeza segura significa organizar, resumir, custodiar e preservar melhor.
+## Regra
 
-## Pode limpar
-
-- temporarios criados pela propria I.A;
-- extracoes locais ja processadas;
-- cache de trabalho;
-- duplicatas exatas confirmadas por hash;
-- rascunhos substituidos por versao final;
-- arquivos vazios ou corrompidos sem valor de origem.
-
-## Deve pedir autorizacao
-
-- mensagens brutas de WhatsApp;
-- audios, imagens, PDFs e documentos familiares;
-- conteudo sigiloso, secreto, cofre, DNA, grimorio ou militar-sagrado;
-- backups;
-- documentos juridicos;
-- arquivos de terceiros;
-- qualquer conteudo em Google Drive, GitHub, Cloudflare ou sistema externo quando a remocao puder afetar outra pessoa.
-
-## Fluxo para mensagem ja usada
-
-1. Ler com prudencia.
-2. Classificar.
-3. Resumir sem expor segredo.
-4. Registrar pendencias e decisoes.
-5. Marcar como processada em indice.
-6. Preservar o original.
-7. Apagar apenas copia temporaria criada para processamento.
-
-## Quando houver duvida
-
-Registrar a duvida como duvida e pedir decisao humana.
-
-Antes de limpar, classificar. Antes de apagar, custodiar. Antes de esquecer, preservar o que importa.
-
-Recordo da face ancestral.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

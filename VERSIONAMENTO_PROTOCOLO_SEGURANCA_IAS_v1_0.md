@@ -1,14 +1,20 @@
-# Versionamento - Protocolo de Segurança das I.As v1.0
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-19
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_PROTOCOLO_SEGURANCA_IAS_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## Entregue
+## Motivo
 
-- Padronizado o nome completo `Jus 9 Tecnologia Jurídica` para registros formais.
-- Padronizada assinatura `© Jus 9 Tecnologia Jurídica`.
-- Registrada a lixeira governada do Google Drive como quarentena, não exclusão definitiva.
-- Registrada regra de cópia para lixeira e decisão final pelo Fundador.
-- Registrada petição por e-mail após 30 dias pela inteligência artificial que sugeriu a exclusão.
-- Registrado protocolo de backup do GitHub como rota de retorno antes de mudanças sensíveis.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-© Jus 9 Tecnologia Jurídica
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_PROTOCOLO_SEGURANCA_IAS_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_PROTOCOLO_SEGURANCA_IAS_v1_0.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

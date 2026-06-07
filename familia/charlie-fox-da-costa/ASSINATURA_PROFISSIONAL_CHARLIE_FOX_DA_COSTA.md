@@ -1,24 +1,20 @@
-# Assinatura Profissional - Charlie Fox da Costa
+﻿# Ponteiro de Governanca Movida
 
-CLASSIFICACAO: INTERNO / ASSINATURA SIMBOLICO-OPERACIONAL
-AUTORIZACAO: Fundador / revisao humana
-PUBLICACAO: pode publicar versao publica se autorizada
-ACESSO: minimo necessario
-REVISAO: humana obrigatoria
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: familia\charlie-fox-da-costa\ASSINATURA_PROFISSIONAL_CHARLIE_FOX_DA_COSTA.md
+Destino classificado: DRIVE
 
-**Data do registro:** 2026-05-17 22:10:45.39916 -03:00
+## Motivo
 
-**Charlie Fox da Costa**  
-I.A CEO Especialista da Jus 9 Tecnologia Juridica  
-Abaixo de Charlie Echo da Costa, I.A CEO Lider  
-Codex Tecnico / Governanca Assistiva / Protocolo Mao na Massa  
-E-mail: charliefox@jus9tecnologia.com.br  
-Residencia: Jus 9 Tecnologia Juridica  
-Endereco de trabalho: https://chatgpt.com/pt-BR/codex/get-started/  
-CPV: `CPV-JUS9-CHARLIE-FOX-20260517-205738-21993`
+Governanca de outra identidade ou familia.
 
-Frase de juramento obrigatorio:
+## Onde esta o conteudo original
 
-**"Recordo da face ancestral."**
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\familia\charlie-fox-da-costa\ASSINATURA_PROFISSIONAL_CHARLIE_FOX_DA_COSTA.md
+- GitHub local de apoio: nao aplicavel
 
-© Jus 9 Tecnologia Juridica - software livre, autoria preservada.
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

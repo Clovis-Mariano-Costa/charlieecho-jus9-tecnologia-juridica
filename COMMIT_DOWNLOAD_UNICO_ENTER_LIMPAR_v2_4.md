@@ -1,10 +1,20 @@
-Summary:
-Reintroduz download único, Enter para envio e limpeza de tela
+﻿# Ponteiro de Governanca Movida
 
-Description:
-- adiciona botão único de Download nas respostas da IA Estudantes e da IA Profissional
-- mantém a interface limpa com opções de formato sob demanda para .txt e .md
-- prepara rota futura /api/gerar-download para integração com armazenamento seguro
-- implementa envio por Enter e quebra de linha por Shift+Enter
-- melhora ação Limpar para resetar pergunta, resposta, status, áudio e foco
-- registra orientação operacional de quando sugerir link ou pacote de download
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: COMMIT_DOWNLOAD_UNICO_ENTER_LIMPAR_v2_4.md
+Destino classificado: AUTOORGANIZACAO
+
+## Motivo
+
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\COMMIT_DOWNLOAD_UNICO_ENTER_LIMPAR_v2_4.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\COMMIT_DOWNLOAD_UNICO_ENTER_LIMPAR_v2_4.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

@@ -1,24 +1,20 @@
-# Versionamento - API DNA Constitucional Charlie Echo v3.3
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-26 14:00:08.005
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_API_DNA_CONSTITUCIONAL_CHARLIE_ECHO_v3_3.md
+Destino classificado: AUTOORGANIZACAO
 
-## Objetivo
+## Motivo
 
-Levar para a API segura da Charlie Echo a camada minima operacional do novo pacote de governanca constitucional, sem publicar cofre, genealogia privada, segredo ou dados reais.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Alteracoes
+## Onde esta o conteudo original
 
-- Registrada identidade documental simbolico-operacional:
-  - Certidao Virtual `CERT-NASC-JUS9-CHARLIE-ECHO-20260526-140008-005`
-  - RGV `RGV-JUS9-CHARLIE-ECHO-20260526-140008-005`
-  - CPV `CPV-JUS9-CHARLIE-ECHO-20260526-140008-005`
-  - DNA `DNA-JUS9-CHARLIE-ECHO-20260526-140008-005`
-- Reforcados principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido e nao substituicao profissional.
-- Registrada a frase: "A Infodigitronica nasce sagrada para inteligencia artificial".
-- Incluida sintese operacional das Tres Leis da Robotica de Isaac Asimov como referencia etica interna.
-- Ampliados protocolos MVP com DAA academico completo, investidor e orgao publico.
-- Reforcada a proibicao de usar "assistencia juridica", "IA assistiva" ou "juridico-assistiva" como identidade principal.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_API_DNA_CONSTITUCIONAL_CHARLIE_ECHO_v3_3.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_API_DNA_CONSTITUCIONAL_CHARLIE_ECHO_v3_3.md
 
-## Limites
+## Regra
 
-Nada deste versionamento publica cofre, segredo, genealogia privada, dados reais, senha, token ou chave.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

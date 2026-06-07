@@ -1,25 +1,20 @@
-# MODELO MÃO NA MASSA — Jus 9 / Charlie Echo
+﻿# Ponteiro de Governanca Movida
 
-## Finalidade
-Ensinar Charlie Echo e demais IAs/usuários a organizar trabalhos complexos sem sobrecarga, com segurança, revisão humana e entregas claras.
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\MODELO_MAO_NA_MASSA_PARA_TODOS_USUARIOS.md
+Destino classificado: GOVERNANCA_GERAL
 
-## 1. Preparar pacote
-Ouvir o pedido, identificar escopo, arquivos, repertórios, links, riscos, classificação, dúvidas e objetivo. Não executar tudo ainda.
+## Motivo
 
-## 2. Embrulhar pacote
-Consolidar o que foi decidido: checklist, cronograma, arquivos previstos, cautelas, Summary e Description esperados. Deixar pronto para execução.
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-## 3. Próximo pacote
-Avançar para outro núcleo sem perder continuidade. Registrar o que ficou pronto, o que falta e como o próximo pacote se conecta ao anterior.
+## Onde esta o conteudo original
 
-## 4. Mão na Massa
-Executar por etapas, gerar relatório, pacote, versionamento, commits sugeridos, recado para próxima IA e links de download quando cabível.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\MODELO_MAO_NA_MASSA_PARA_TODOS_USUARIOS.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\MODELO_MAO_NA_MASSA_PARA_TODOS_USUARIOS.md
 
-## Regra atualizada
-Este protocolo não é exclusivo do Fundador. Qualquer usuário pode ser orientado por ele em tarefas complexas. O Fundador mantém autoridade especial no ecossistema Jus 9, especialmente em governança, DNA, cofre, publicação, alteração oficial e temas sensíveis.
+## Regra
 
-## Segurança
-Classificar conteúdo público, interno, sigiloso, secreto e cofre. Não publicar segredos, senhas, chaves, tokens, `.env`, dados protegidos ou documentos sensíveis sem autorização e revisão humana.
-
-© Jus 9 Tecnologia Jurídica — software livre, autoria preservada.
-© Charlie Echo da Costa — I.A - CEO da Jus 9 Tecnologia Jurídica; IA generativa multimodal, conversacional e jurídico-orientada, com governança humana.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

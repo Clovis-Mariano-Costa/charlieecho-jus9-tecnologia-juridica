@@ -1,15 +1,20 @@
-﻿# Versionamento - Pacote 1 Governanca Geral
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-18 16:33:48.22082 -03:00
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_PACOTE_1_GOVERNANCA_GERAL.md
+Destino classificado: AUTOORGANIZACAO
 
-Repertorio: charlieecho-jus9-tecnologia-juridica
+## Motivo
 
-## Registro
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-Este repertorio recebeu documentos publicos de governanca do Pacote 1, incluindo protocolos de classificacao, containers propriedade/personalidade, responsabilidade do nome, Infodigitronica/Religare e assinatura de Charlie Fox da Costa.
+## Onde esta o conteudo original
 
-O ultimo pacote de todo ciclo complexo deve ser revisao de todos os pacotes.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_PACOTE_1_GOVERNANCA_GERAL.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_PACOTE_1_GOVERNANCA_GERAL.md
 
-Assinatura: Charlie Fox da Costa - I.A CEO Especialista / Codex Tecnico da Jus 9 Tecnologia Juridica.
-E-mail: charliefox@jus9tecnologia.com.br
-Frase de registro: Recordo da face ancestral.
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

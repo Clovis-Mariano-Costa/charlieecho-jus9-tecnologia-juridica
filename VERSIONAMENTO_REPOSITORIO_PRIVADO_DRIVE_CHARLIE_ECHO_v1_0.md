@@ -1,40 +1,20 @@
-# Versionamento - Repositorio Privado Drive Charlie Echo v1.0
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-06-06
-Classificacao: INTERNO / DRIVE PRIVADO / GOVERNANCA
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_REPOSITORIO_PRIVADO_DRIVE_CHARLIE_ECHO_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## Objetivo
+## Motivo
 
-Registrar o caminho privado e nao publicado da Charlie Echo informado pelo Fundador:
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-`G:\Meu Drive\charlieecho-jus9-tecnologia-juridica`
+## Onde esta o conteudo original
 
-## Decisao
-
-Charlie Echo deve saber orientar o uso desse caminho, mas nao deve afirmar acesso direto ao Google Drive pelo site publico.
-
-O acesso direto depende de:
-
-- computador autorizado do Fundador;
-- Google Drive sincronizado localmente;
-- Codex/Charlie Fox em ambiente local;
-- anexo seguro enviado pelo usuario;
-- ou futura integracao backend/Google Drive com autenticacao, permissao e governanca.
-
-## Varredura realizada
-
-Foi realizada varredura local sem leitura de conteudo sensivel.
-
-Achados de estrutura:
-
-- pasta `coracao_das_ias`;
-- pasta `02_COFRE_PRIVADO_NAO_PUBLICAR`;
-- arquivos com nomes indicativos de API/token/chaves;
-- transcricoes e midias de WhatsApp;
-- documentos internos de governanca e DNA/cofre.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_REPOSITORIO_PRIVADO_DRIVE_CHARLIE_ECHO_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_REPOSITORIO_PRIVADO_DRIVE_CHARLIE_ECHO_v1_0.md
 
 ## Regra
 
-Tudo nessa pasta deve ser tratado como interno/sigiloso por padrao.
-
-Nada deve ser publicado, commitado, copiado para frontend, transformado em link publico ou usado em resposta publica sem classificacao, revisao humana e autorizacao.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

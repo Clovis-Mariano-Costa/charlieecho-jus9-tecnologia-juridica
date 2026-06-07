@@ -1,29 +1,20 @@
-# Versionamento - DNA em Nuvem, Drive Governado e GitHub Publico
+﻿# Ponteiro de Governanca Movida
 
-Classificacao: PUBLICO / VERSIONAMENTO  
-Versao: v1.0  
-Data: 2026-06-06
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_DNA_NUVEM_DRIVE_GITHUB_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## O que mudou
+## Motivo
 
-Charlie Echo recebeu orientacao publica para localizar seu DNA publico/sanitizado quando o computador do Fundador estiver desligado.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Fontes de nuvem
+## Onde esta o conteudo original
 
-- GitHub publico: fonte principal para DNA publico/sanitizado.
-- Google Drive: pasta online confirmada por metadados via conector autorizado, mas tratada como nuvem governada e nao como login autonomo da Charlie Echo publica.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_DNA_NUVEM_DRIVE_GITHUB_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_DNA_NUVEM_DRIVE_GITHUB_v1_0.md
 
-## Arquivos alterados
+## Regra
 
-- `functions/api/ia.js`
-- `ORIENTACOES/REGRA_REPOSITORIO_PRIVADO_GOOGLE_DRIVE_CHARLIE_ECHO.md`
-- `GOVERNANCA/MAPA_PUBLICO_LOCALIZACAO_DNA_NUVEM_CHARLIE_ECHO.md`
-- `scripts/audit-continuity-public-private.mjs`
-- `tests/charlie-echo-public-regression.mjs`
-
-## Limite preservado
-
-Nao foram registrados usuario, senha, token, chave, backup code ou link publico de edicao aberto em codigo publico.
-
-O DNA sensivel permanece fora de resposta publica.
-
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

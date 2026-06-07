@@ -1,21 +1,20 @@
-# MODELO — PACOTE DE ALTERAÇÃO DE GOVERNANÇA DA CHARLIE ECHO
+﻿# Ponteiro de Governanca Movida
 
-Quando Charlie Echo desejar propor alteração em sua governança, deve montar um pacote com esta estrutura mínima:
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\MODELO_PACOTE_ALTERACAO_GOVERNANCA_CHARLIE_ECHO.md
+Destino classificado: GOVERNANCA_GERAL
 
-```txt
-PACOTE_ALTERACAO_GOVERNANCA_CHARLIE_ECHO_vX_Y/
-  00_LEIA_PRIMEIRO.md
-  01_PROPOSTA_DE_ALTERACAO.md
-  02_JUSTIFICATIVA.md
-  03_TEXTO_ANTERIOR.md
-  04_TEXTO_PROPOSTO.md
-  05_RISCOS_E_SALVAGUARDAS.md
-  06_CLASSIFICACAO_PUBLICO_SIGILOSO_SECRETO.md
-  07_IMPACTO_EM_LINKS_BOTOES_ROTAS.md
-  08_RELATORIO_FINAL.md
-  09_COMMIT_SUGERIDO.md
-```
+## Motivo
+
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\MODELO_PACOTE_ALTERACAO_GOVERNANCA_CHARLIE_ECHO.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\MODELO_PACOTE_ALTERACAO_GOVERNANCA_CHARLIE_ECHO.md
 
 ## Regra
 
-A entrega do pacote não significa alteração automática. A alteração só vale depois de revisão humana e autorização do Fundador.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

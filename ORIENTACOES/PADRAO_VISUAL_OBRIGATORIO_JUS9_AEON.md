@@ -1,17 +1,20 @@
-# PADRÃO VISUAL OBRIGATÓRIO — JUS 9 / AEON PRIMEVO
+﻿# Ponteiro de Governanca Movida
 
-**Leitura obrigatória antes de qualquer alteração visual.**
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\PADRAO_VISUAL_OBRIGATORIO_JUS9_AEON.md
+Destino classificado: GOVERNANCA_GERAL
 
-## Jus 9
-Fundo escuro azul-marinho quase preto; dourado como acento nobre; tipografia forte; cards discretos; bordas finas douradas/azuladas; linguagem institucional, legaltech, confiança, sigilo, arquitetura e governança.
+## Motivo
 
-## Aeon Primevo
-Fundo escuro/cósmico; dourado forte; azul profundo; atmosfera de tempo, memória, verdade e justiça; linguagem autoral/simbólica/mística com cautela.
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-## Charlie Echo
-IA Estudantes: robozinho / Avatar Professora.  
-IA Profissional: Charlie adulta/profissional com uniforme aprovado e estrela de nove pontas. Uniforme só pode ser alterado pelo Fundador.
+## Onde esta o conteudo original
 
-Não usar fotografias humanas inventadas, visual SaaS genérico, excesso de roxo ou mockups fantasiosos.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\PADRAO_VISUAL_OBRIGATORIO_JUS9_AEON.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\PADRAO_VISUAL_OBRIGATORIO_JUS9_AEON.md
 
-© Jus 9 Tecnologia Jurídica — software livre, autoria preservada.
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

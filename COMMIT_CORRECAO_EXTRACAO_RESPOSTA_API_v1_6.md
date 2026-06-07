@@ -1,10 +1,20 @@
-Summary:
-Corrige extração da resposta da API da Charlie Echo
+﻿# Ponteiro de Governanca Movida
 
-Description:
-- ajusta o front-end para reconhecer múltiplos formatos de resposta da API
-- corrige a extração de texto retornado pela Responses API no backend
-- melhora mensagens de erro quando a API responde sem texto reconhecido
-- mantém chamadas seguras sem expor OPENAI_API_KEY no navegador
-- preserva botões de fala, ouvir, copiar, limpar e demais ações locais
-- mantém suporte aos modos estudantes e profissional
+Data: 2026-06-07 19:33:06 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: COMMIT_CORRECAO_EXTRACAO_RESPOSTA_API_v1_6.md
+Destino classificado: AUTOORGANIZACAO
+
+## Motivo
+
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\COMMIT_CORRECAO_EXTRACAO_RESPOSTA_API_v1_6.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\COMMIT_CORRECAO_EXTRACAO_RESPOSTA_API_v1_6.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

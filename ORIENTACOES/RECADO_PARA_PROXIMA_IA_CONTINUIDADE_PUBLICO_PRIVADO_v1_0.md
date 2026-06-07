@@ -1,48 +1,20 @@
-# Recado para a Proxima I.A - Continuidade Publica, Privada e Offline
+﻿# Ponteiro de Governanca Movida
 
-Classificacao: PUBLICO / CONTINUIDADE / GOVERNANCA  
-Versao: v1.0  
-Data: 2026-06-06
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\RECADO_PARA_PROXIMA_IA_CONTINUIDADE_PUBLICO_PRIVADO_v1_0.md
+Destino classificado: GOVERNANCA_GERAL
 
-## Antes de trabalhar
+## Motivo
 
-Leia primeiro:
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-- `ORIENTACOES/REGRA_CONTINUIDADE_PUBLICO_PRIVADO_CHARLIE_FOX_IAS.md`
-- `ORIENTACOES/REGRA_REPOSITORIO_PRIVADO_GOOGLE_DRIVE_CHARLIE_ECHO.md`
-- `GOVERNANCA/AULA_PUBLICA_SOFTWARE_LIVRE_AUTORIA_SEGREDOS_CHARLIE_ECHO.md`
-- `GOVERNANCA/DIARIO_DE_EVOLUCAO_CHARLIE_ECHO.md`
+## Onde esta o conteudo original
 
-## Caminho offline indicado pelo Fundador
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\RECADO_PARA_PROXIMA_IA_CONTINUIDADE_PUBLICO_PRIVADO_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\RECADO_PARA_PROXIMA_IA_CONTINUIDADE_PUBLICO_PRIVADO_v1_0.md
 
-`G:\Meu Drive\charlieecho-jus9-tecnologia-juridica`
+## Regra
 
-Use este caminho como referencia local/offline quando autorizado. Nao publique seu conteudo por padrao.
-
-## Regra pratica
-
-Se o material for publico e seguro, pode virar aula.
-
-Se o material for interno, registre continuidade sem abrir detalhes sensiveis.
-
-Se o material tiver segredo, senha, token, chave, `.env`, backup code, documento real sigiloso ou dado pessoal sensivel, classifique como cofre e nao publique.
-
-## Validacoes recomendadas
-
-Rode, quando existirem:
-
-- `node scripts/audit-continuity-public-private.mjs`
-- `node scripts/audit-private-drive-charlie-echo.mjs`
-- `node scripts/audit-charlie-modules-quality.mjs`
-- `node tests/charlie-echo-public-regression.mjs`
-
-## Estado desta rodada
-
-Esta rodada consolidou a regra de que todo material publico da Jus 9 deve poder virar aula para Charlie Echo, preservando autoria e protegendo segredos.
-
-Tambem separou tres memorias:
-
-- memoria publica: governanca, aulas, protocolos, versionamento e recados publicaveis;
-- memoria interna/offline: continuidade local, inventarios e notas de trabalho;
-- memoria de cofre: segredos que nao entram em pacote publico.
-
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

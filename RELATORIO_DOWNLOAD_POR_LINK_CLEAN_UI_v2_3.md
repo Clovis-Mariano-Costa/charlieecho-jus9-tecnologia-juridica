@@ -1,27 +1,20 @@
-# RELATÓRIO — Download por link e limpeza da interface v2.3
+﻿# Ponteiro de Governanca Movida
 
-## O que foi feito
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: RELATORIO_DOWNLOAD_POR_LINK_CLEAN_UI_v2_3.md
+Destino classificado: AUTOORGANIZACAO
 
-- removidos os botões permanentes de download das áreas de resposta da IA Estudantes e da IA Profissional;
-- mantidos os botões essenciais de interação, como falar, perguntar/consultar, copiar, ouvir e limpar;
-- incluída micro-orientação visual explicando que trabalhos médios ou grandes devem ser entregues por link/pacote de download;
-- atualizada a página de Álbum para evitar excesso de botões de baixar imagem, mantendo ação de abrir imagem;
-- criada orientação operacional em `ORIENTACOES/REGRA_DOWNLOAD_POR_LINK_TAMANHO_MEDIO_CHARLIE_ECHO.md`;
-- atualizado o prompt/backend da API para ensinar Charlie Echo a sugerir link/pacote quando o trabalho atingir tamanho médio ou grande;
-- atualizadas rotas limpas das páginas afetadas.
+## Motivo
 
-## Arquivos principais alterados
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-- `ia-estudantes.html`
-- `ia-profissional.html`
-- `album.html`
-- `ia-estudantes/index.html`
-- `ia-profissional/index.html`
-- `album/index.html`
-- `assets/css/charlie-light.css`
-- `functions/api/ia.js`
-- `ORIENTACOES/REGRA_DOWNLOAD_POR_LINK_TAMANHO_MEDIO_CHARLIE_ECHO.md`
+## Onde esta o conteudo original
 
-## Resultado esperado
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\RELATORIO_DOWNLOAD_POR_LINK_CLEAN_UI_v2_3.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\RELATORIO_DOWNLOAD_POR_LINK_CLEAN_UI_v2_3.md
 
-A tela fica mais clean. A Charlie Echo aprende a não poluir a interface com botões permanentes e passa a oferecer download por link apenas quando o volume do trabalho justificar.
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

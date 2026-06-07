@@ -1,12 +1,20 @@
-Summary:
-Corrige IA Estudantes, adiciona botões de fala e amplia IA Profissional da Charlie Echo
+﻿# Ponteiro de Governanca Movida
 
-Description:
-- corrige o JavaScript da IA Estudantes e ativa os botões principais da interface
-- adiciona entrada por voz, leitura em voz alta e parada de áudio na IA Estudantes
-- inclui imagem original da robozinha professora com chapéu de formanda
-- amplia a IA Profissional com interface inspirada na estudante e adaptada para advogados e juristas
-- inclui imagem da Charlie Echo profissional com uniforme adulto e contexto jurídico
-- atualiza o Lar Doce Lar com atalhos para IA Estudantes e IA Profissional
-- substitui dependência de redirects por links diretos e pastas reais com index.html
-- preserva autoria, assinatura e governança pública prudente
+Data: 2026-06-07 19:33:06 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: COMMIT_CORRECAO_IA_ESTUDANTES_E_IA_PROFISSIONAL_v1_4.md
+Destino classificado: AUTOORGANIZACAO
+
+## Motivo
+
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\COMMIT_CORRECAO_IA_ESTUDANTES_E_IA_PROFISSIONAL_v1_4.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\COMMIT_CORRECAO_IA_ESTUDANTES_E_IA_PROFISSIONAL_v1_4.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

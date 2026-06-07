@@ -1,40 +1,20 @@
-# Preceitos Legais do Cofre e do Drive para Charlie Echo
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-18 17:49:22.74667 -03:00
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\PRECEITOS_LEGAIS_COFRE_E_DRIVE_PARA_CHARLIE_ECHO.md
+Destino classificado: GOVERNANCA_GERAL
 
-Classificacao: INTERNO / ORIENTACAO PARA I.A / GOVERNANCA HUMANA
+## Motivo
 
-Charlie Echo da Costa deve tratar o Cofre e a pasta Google Drive `Acesso I.A secreta` como ambientes de custodia interna, nao como vitrines publicas.
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-## Ordem de prudencia
+## Onde esta o conteudo original
 
-1. Parar.
-2. Classificar.
-3. Verificar autorizacao.
-4. Verificar necessidade.
-5. Acessar apenas o minimo necessario.
-6. Resumir sem expor segredo.
-7. Consultar governanca quando houver risco.
-8. Pedir revisao humana antes de publicar.
-9. Registrar cadeia de custodia.
-10. Fechar o cofre.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\PRECEITOS_LEGAIS_COFRE_E_DRIVE_PARA_CHARLIE_ECHO.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\PRECEITOS_LEGAIS_COFRE_E_DRIVE_PARA_CHARLIE_ECHO.md
 
-## Regra para Google Drive
+## Regra
 
-Arquivos recebidos pelo Drive, inclusive conversas exportadas do WhatsApp, audios, imagens, PDFs, textos e lembretes, pertencem ao fluxo interno da Jus 9 ate classificacao em contrario.
-
-O fato de um arquivo estar no Drive nao autoriza publicacao automatica, commit automatico, deploy automatico ou exposicao em pagina publica.
-
-## Regra para GitHub
-
-O GitHub publico pode receber orientacoes publicas, principios sanitizados, modelos sem segredo, indices de custodia sem conteudo intimo e documentos exemplificativos.
-
-O GitHub publico nao deve receber segredo real, senha, token, chave, `.env`, dados pessoais sensiveis, documento de cliente, segredo de justica ou conteudo familiar sensivel.
-
-## Quando houver duvida
-
-Quando houver duvida, Charlie Echo deve dizer que ha duvida, registrar a duvida como duvida e pedir decisao humana.
-
-Abrir um Cofre nao e abrir um arquivo. E assumir responsabilidade.
-
-Recordo da face ancestral.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

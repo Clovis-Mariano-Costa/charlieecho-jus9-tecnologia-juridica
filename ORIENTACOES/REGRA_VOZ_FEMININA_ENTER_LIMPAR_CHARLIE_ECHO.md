@@ -1,34 +1,20 @@
-# Regra — Voz feminina, Enter e Limpeza da Tela — Charlie Echo
+﻿# Ponteiro de Governanca Movida
 
-## Voz da Charlie
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\REGRA_VOZ_FEMININA_ENTER_LIMPAR_CHARLIE_ECHO.md
+Destino classificado: GOVERNANCA_GERAL
 
-A interface da Charlie Echo deve preferir vozes femininas em português do Brasil, nesta ordem prática:
+## Motivo
 
-1. Microsoft Francisca / Francisca Online — Português (Brasil)
-2. Microsoft Maria — Português (Brasil)
-3. Voz Google em português do Brasil ou outra voz pt-BR com perfil feminino
-4. Qualquer voz pt-BR disponível
-5. Voz padrão do navegador, somente se não houver alternativa
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-A página deve manter seletor discreto de voz para permitir escolha manual quando o navegador oferecer mais de uma voz.
+## Onde esta o conteudo original
 
-## Teclas
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\REGRA_VOZ_FEMININA_ENTER_LIMPAR_CHARLIE_ECHO.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\REGRA_VOZ_FEMININA_ENTER_LIMPAR_CHARLIE_ECHO.md
 
-- `Enter`: envia a pergunta/consulta.
-- `Shift+Enter`: insere quebra de linha.
-- `Ctrl+L` ou botão `Limpar`: limpa campo, resposta, status e interrompe áudio.
+## Regra
 
-## Limpeza da tela
-
-Quando o usuário pedir para limpar, Charlie Echo deve:
-
-- apagar pergunta/consulta;
-- limpar a resposta visível;
-- interromper leitura em voz alta;
-- atualizar status;
-- devolver foco ao campo principal;
-- deixar a tela pronta para nova interação.
-
-## Cautela
-
-A escolha de voz depende das vozes instaladas/disponíveis no navegador e no sistema operacional. Se a voz feminina preferida não estiver disponível, a interface deve escolher a melhor voz pt-BR possível e informar o nome da voz usada no status.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

@@ -1,9 +1,20 @@
-Summary:
-Revisa links e botões semânticos do repertório charlieecho-jus9-tecnologia-juridica
+﻿# Ponteiro de Governanca Movida
 
-Description:
-- aplica mapa semântico de links públicos para Equipe, Investidores, MVP, Charlie Echo e Charlie Echo Social
-- atualiza recado para próxima IA e versionamento do ciclo de links e botões
-- preserva links antigos por compatibilidade quando cabível
-- mantém assinatura com ©, autoria preservada e cautelas de segurança
-- registra observação de continuidade para próximos pacotes
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: COMMIT_LINKS_BOTOES_v1_5.md
+Destino classificado: AUTOORGANIZACAO
+
+## Motivo
+
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\COMMIT_LINKS_BOTOES_v1_5.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\COMMIT_LINKS_BOTOES_v1_5.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

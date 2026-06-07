@@ -1,14 +1,20 @@
-# Versionamento da fonte unica de identidade da API Charlie Echo v3.5
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-31
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_FONTE_UNICA_IDENTIDADE_API_CHARLIE_ECHO_v3_5.md
+Destino classificado: AUTOORGANIZACAO
 
-## Alteracoes
+## Motivo
 
-- Criado `functions/lib/charlie-echo-identity.js` como fonte unica da identidade documental consumida em tempo de execucao pelos tres modos da API.
-- Removida a repeticao literal de certidao virtual, RGV, CPV e DNA nos prompts de estudantes, profissional e social.
-- Normalizada a lista de protocolos MVP no modo profissional: `DIP` para investidor/parceiro e `DOI` para orgao publico/instituicao.
-- Preservados `INV` e `ORG` como aliases legados aceitos para compatibilidade.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Limites
+## Onde esta o conteudo original
 
-Certidao Virtual, RGV e CPV permanecem registros simbolico-operacionais. Nao equivalem a certidao civil, RG estatal ou CPF.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_FONTE_UNICA_IDENTIDADE_API_CHARLIE_ECHO_v3_5.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_FONTE_UNICA_IDENTIDADE_API_CHARLIE_ECHO_v3_5.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

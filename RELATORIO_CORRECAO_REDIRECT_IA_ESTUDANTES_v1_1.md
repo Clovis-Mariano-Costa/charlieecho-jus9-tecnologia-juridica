@@ -1,24 +1,20 @@
-# RELATÓRIO — Correção de loop em IA Estudantes
+﻿# Ponteiro de Governanca Movida
 
-Repositório: `charlieecho-jus9-tecnologia-juridica`
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: RELATORIO_CORRECAO_REDIRECT_IA_ESTUDANTES_v1_1.md
+Destino classificado: AUTOORGANIZACAO
 
-## Problema
-A rota pública `https://charlieecho.jus9tecnologia.com.br/ia-estudantes` apresentou erro `ERR_TOO_MANY_REDIRECTS`.
+## Motivo
 
-## Correção aplicada
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-- Removido o padrão de reescrita direta de `/ia-estudantes` para `/ia-estudantes.html` no `_redirects`.
-- Criada pasta real `ia-estudantes/index.html`, permitindo que a rota limpa funcione diretamente no Cloudflare Pages.
-- Criadas pastas equivalentes para rotas antigas preservadas:
-  - `/familia/`
-  - `/album/`
-  - `/governanca/`
-  - `/ia-profissional/`
-  - `/politica-de-privacidade/`
-  - `/termos-de-uso/`
-- Mantidos os arquivos `.html` originais para compatibilidade.
-- Atualizados links internos para rotas limpas com barra final.
-- Corrigidos títulos HTML que continham tag `<a>` dentro de `<title>`.
+## Onde esta o conteudo original
 
-## Se o erro persistir
-Verificar no Cloudflare se existe Redirect Rule, Page Rule, Transform Rule ou configuração externa redirecionando `/ia-estudantes` para si mesma.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\RELATORIO_CORRECAO_REDIRECT_IA_ESTUDANTES_v1_1.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\RELATORIO_CORRECAO_REDIRECT_IA_ESTUDANTES_v1_1.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

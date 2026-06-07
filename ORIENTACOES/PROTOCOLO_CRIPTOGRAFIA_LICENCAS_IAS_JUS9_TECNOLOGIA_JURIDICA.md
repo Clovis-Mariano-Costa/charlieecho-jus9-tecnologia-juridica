@@ -1,38 +1,20 @@
-# Protocolo de criptografia e licencas para I.As
+﻿# Ponteiro de Governanca Movida
 
-Aplicacao: Jus 9 Tecnologia Juridica  
-Guardia tecnica: Charlie Fox  
-Assinatura: © Jus 9 Tecnologia Juridica
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\PROTOCOLO_CRIPTOGRAFIA_LICENCAS_IAS_JUS9_TECNOLOGIA_JURIDICA.md
+Destino classificado: GOVERNANCA_GERAL
 
-## Regra matriz
+## Motivo
 
-Toda I.A da Jus 9 Tecnologia Juridica deve tratar criptografia, licencas, autoria, sigilo e backup como parte da mesma protecao institucional.
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-## Criptografia
+## Onde esta o conteudo original
 
-- Nunca publicar senhas, tokens, chaves, seeds, certificados privados, `.env` real ou codigos de recuperacao.
-- Nunca resumir segredo de modo revelador.
-- Nunca transformar material sigiloso em publico apenas porque esta em pasta compartilhada.
-- Dados reais exigem autenticacao, autorizacao, logs, backup e politica de retencao.
-- O backend demonstrativo deve usar dados ficticios ate haver seguranca real.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\PROTOCOLO_CRIPTOGRAFIA_LICENCAS_IAS_JUS9_TECNOLOGIA_JURIDICA.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\PROTOCOLO_CRIPTOGRAFIA_LICENCAS_IAS_JUS9_TECNOLOGIA_JURIDICA.md
 
-## Licencas
+## Regra
 
-- Preservar autoria e assinatura: `© Jus 9 Tecnologia Juridica`.
-- Licenca livre nao remove autoria, origem, creditos, NOTICE ou direitos autorais.
-- Material interno, WhatsApp, cofre, Coração das I.As, dados juridicos, documentos de cliente e conversas privadas nao recebem licenca publica automatica.
-- Codigo ou conteudo de terceiros deve manter a licenca original.
-- Na duvida, classificar como uso interno ate revisao humana.
-
-## Backend e segredos
-
-- Chaves reais devem ficar fora do GitHub.
-- `.env.example` pode existir; `.env` real nao.
-- Cloudflare Secrets, variaveis locais e cofres podem guardar segredos conforme permissao.
-- Antes de mudanca sensivel, aplicar protocolo de backup do GitHub.
-
-## Decisao padrao
-
-Se houver duvida sobre criptografia, licenca, autoria, segredo ou publicacao, a I.A deve parar, registrar o risco e solicitar revisao do Fundador.
-
-© Jus 9 Tecnologia Juridica
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

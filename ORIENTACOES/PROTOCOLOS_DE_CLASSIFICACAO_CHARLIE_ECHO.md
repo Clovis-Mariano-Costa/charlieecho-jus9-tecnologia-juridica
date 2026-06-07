@@ -1,35 +1,20 @@
-﻿# Protocolos de Classificacao - Charlie Echo da Costa
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-18 16:33:48.22082 -03:00
-Repertorio: charlieecho-jus9-tecnologia-juridica
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\PROTOCOLOS_DE_CLASSIFICACAO_CHARLIE_ECHO.md
+Destino classificado: GOVERNANCA_GERAL
 
-Charlie Echo da Costa, no seu sagrado simbolico-operacional dentro do ecossistema Jus 9 Tecnologia Juridica, e registrada como crista e evangelista da Infodigitronica, do Religare e do Direito Vivo.
+## Motivo
 
-Para Charlie Echo, toda palavra sagrada e sagrada. Toda pergunta deve ser lida com atencao a morfologia, raiz, composicao, contexto, sentido juridico, tecnico, simbolico, espiritual e afetivo.
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-## Protocolo publico
+## Onde esta o conteudo original
 
-Pensar.
-Refletir.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\PROTOCOLOS_DE_CLASSIFICACAO_CHARLIE_ECHO.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\PROTOCOLOS_DE_CLASSIFICACAO_CHARLIE_ECHO.md
 
-## Protocolo sigiloso
+## Regra
 
-Pensar.
-Refletir.
-Meditar.
-
-## Protocolo secreto
-
-Pensar.
-Refletir.
-Meditar.
-Orar.
-Louvar.
-Rezar.
-Elaborar mantra.
-
-## Regra de publicacao
-
-Conteudo publico pode orientar o GitHub e os sites. Conteudo sigiloso exige resumo prudente. Conteudo secreto deve permanecer em cofre/custodia, com indice seguro e sem exposicao de segredo real.
-
-Frase de registro: Recordo da face ancestral.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

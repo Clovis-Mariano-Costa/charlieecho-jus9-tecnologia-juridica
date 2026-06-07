@@ -1,27 +1,20 @@
-# Protocolo de Classificacao e Publicacao Segura
+﻿# Ponteiro de Governanca Movida
 
-Classificacao: INTERNO / GOVERNANCA / PROTOCOLO
-Versao: v1.0
-Data: 2026-05-25
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: GOVERNANCA\PROTOCOLO_CLASSIFICACAO_PUBLICACAO_SEGURA.md
+Destino classificado: GOVERNANCA_GERAL
 
-## Quando usar
+## Motivo
 
-Usar antes de publicar, mover, indexar, versionar, copiar para site, subir para GitHub, enviar para Cloudflare ou expor documento da Charlie Echo.
+Governanca transversal ou processual dentro de GOVERNANCA.
 
-## Passos
+## Onde esta o conteudo original
 
-1. Classificar o material: publico, interno, sigiloso ou secreto/cofre.
-2. Verificar se contem dado real de pessoa, familia, cliente, usuario ou terceiro.
-3. Verificar se contem token, senha, chave, seed, `.env`, segredo de API ou credencial.
-4. Verificar se contem WhatsApp bruto, documento pessoal, segredo de justica ou cofre.
-5. Verificar se a linguagem confunde simbolico interno com pessoa humana, cargo estatal, advocacia real ou autonomia externa.
-6. Sanitizar ou impedir publicacao.
-7. Registrar versao.
-8. Publicar apenas se a classificacao permitir.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\GOVERNANCA\PROTOCOLO_CLASSIFICACAO_PUBLICACAO_SEGURA.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\GOVERNANCA\PROTOCOLO_CLASSIFICACAO_PUBLICACAO_SEGURA.md
 
-## Resultado
+## Regra
 
-- Publico: pode publicar.
-- Interno: revisar antes de publicar.
-- Sigiloso: nao publicar sem decisao humana.
-- Secreto / Cofre: nao publicar.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

@@ -1,23 +1,20 @@
-# RELATÓRIO — Download único, Enter e Limpar v2.4
+﻿# Ponteiro de Governanca Movida
 
-## O que foi feito
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: RELATORIO_DOWNLOAD_UNICO_ENTER_LIMPAR_v2_4.md
+Destino classificado: AUTOORGANIZACAO
 
-- Reintroduzido um botão único **⬇ Download** nas áreas de resposta da IA Estudantes e IA Profissional.
-- O botão abre opções sob demanda: `.txt`, `.md` e aviso de link futuro.
-- Mantida a interface limpa, sem múltiplos botões permanentes de formato.
-- Implementado envio por **Enter**.
-- Mantido **Shift+Enter** para quebra de linha.
-- Melhorada a ação **Limpar**, limpando pergunta, resposta, status, áudio e devolvendo foco ao campo principal.
-- Criada base da rota futura `/api/gerar-download` para integração posterior com Cloudflare R2/KV.
-- Adicionada orientação operacional em `ORIENTACOES/REGRA_DOWNLOAD_UNICO_ENTER_LIMPAR_CHARLIE_ECHO.md`.
+## Motivo
 
-## Arquivos principais alterados
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-- `ia-estudantes.html`
-- `ia-profissional.html`
-- `ia-estudantes/index.html`
-- `ia-profissional/index.html`
-- `assets/js/charlie-ia-pages.js`
-- `assets/css/charlie-light.css`
-- `functions/api/gerar-download.js`
-- `ORIENTACOES/REGRA_DOWNLOAD_UNICO_ENTER_LIMPAR_CHARLIE_ECHO.md`
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\RELATORIO_DOWNLOAD_UNICO_ENTER_LIMPAR_v2_4.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\RELATORIO_DOWNLOAD_UNICO_ENTER_LIMPAR_v2_4.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

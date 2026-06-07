@@ -1,40 +1,20 @@
-# Versionamento - PDF Padrao Profissional Charlie Echo v1.1
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-06-05
-Classificacao: PUBLICO CONTROLADO / UX / DOWNLOADS
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_PDF_PADRAO_PROFISSIONAL_CHARLIE_ECHO_v1_1.md
+Destino classificado: AUTOORGANIZACAO
 
-## Problema observado
+## Motivo
 
-O PDF gerado em `ia-estudantes` melhorou, mas ainda ficava visualmente inferior ao pacote profissional da Charlie Echo usado no ambiente principal da Jus 9.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Correcao
+## Onde esta o conteudo original
 
-O endpoint `functions/api/gerar-download.js` passou a gerar PDF com padrao visual profissional inspirado no pacote da sala:
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_PDF_PADRAO_PROFISSIONAL_CHARLIE_ECHO_v1_1.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_PDF_PADRAO_PROFISSIONAL_CHARLIE_ECHO_v1_1.md
 
-- fundo claro;
-- cabecalho escuro;
-- marca Jus 9 Tecnologia Juridica;
-- titulo em destaque;
-- cartao de informacoes do documento;
-- secao de conteudo;
-- rodape institucional;
-- numeracao de paginas;
-- fonte Helvetica e Helvetica-Bold.
+## Regra
 
-## Impacto
-
-A mudanca afeta:
-
-- PDF direto;
-- PDF interno do ZIP;
-- downloads feitos por `ia-estudantes`;
-- downloads feitos por `ia-profissional`;
-- demais telas que chamem `/api/gerar-download` no dominio da Charlie Echo.
-
-## Validacao
-
-Foram validados localmente:
-
-- sintaxe do endpoint;
-- geracao de PDF, DOCX, PPTX e ZIP;
-- regressao publica da Charlie Echo.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

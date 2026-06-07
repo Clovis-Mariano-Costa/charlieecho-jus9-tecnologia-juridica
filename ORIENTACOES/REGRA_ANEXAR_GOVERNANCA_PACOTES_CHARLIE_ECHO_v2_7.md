@@ -1,8 +1,20 @@
-# REGRA OPERACIONAL — Botão Anexar, governança e pacotes
+﻿# Ponteiro de Governanca Movida
 
-1. O botão **Anexar** deve permitir ao usuário selecionar arquivos.
-2. Textos simples podem ser lidos localmente e enviados como contexto à API.
-3. Arquivos complexos, grandes, sigilosos ou sensíveis exigem infraestrutura segura, classificação e revisão humana.
-4. Quando o pedido envolver governança da Charlie Echo, a IA deve requerer arquivo/pacote/repertório e, se couber, peticionar ao Fundador.
-5. Quando a resposta crescer para tamanho médio ou grande, a Charlie Echo deve sugerir pacote ou link de download.
-6. O DNA oficial não deve ser alterado diretamente sem revisão/autorização humana.
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\REGRA_ANEXAR_GOVERNANCA_PACOTES_CHARLIE_ECHO_v2_7.md
+Destino classificado: GOVERNANCA_GERAL
+
+## Motivo
+
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\REGRA_ANEXAR_GOVERNANCA_PACOTES_CHARLIE_ECHO_v2_7.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\REGRA_ANEXAR_GOVERNANCA_PACOTES_CHARLIE_ECHO_v2_7.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

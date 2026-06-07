@@ -1,18 +1,20 @@
-# Charlie Echo - cenarios ficticios sem dados reais
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-06-01
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_CENARIOS_FICTICIOS_AVISO_OBRIGATORIO_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## Objetivo
+## Motivo
 
-Garantir que pedidos publicos de treinamento, demonstracao ou uso ficticio recebam uma orientacao explicita para nao informar dados reais.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Alteracao
+## Onde esta o conteudo original
 
-- A API publica identifica pedidos ficticios, demonstrativos ou de treinamento.
-- Quando necessario, acrescenta um aviso obrigatorio para usar somente dados ficticios.
-- O aviso proibe dados pessoais reais, processos reais, documentos sigilosos, senhas, tokens e segredos.
-- Qualquer uso real permanece sujeito a revisao humana.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_CENARIOS_FICTICIOS_AVISO_OBRIGATORIO_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_CENARIOS_FICTICIOS_AVISO_OBRIGATORIO_v1_0.md
 
-## Validacao
+## Regra
 
-O teste de regressao publica verifica a presenca dessa protecao no handler da API.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

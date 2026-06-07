@@ -1,19 +1,20 @@
-# Versionamento - IA profissional API-first v1.0
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-31
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_IA_PROFISSIONAL_API_FIRST_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## Objetivo
+## Motivo
 
-Permitir que a Charlie Echo responda perguntas profissionais reais com a inteligencia generativa central, sem ser interrompida por respostas locais institucionais baseadas em palavras-chave.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Alteracao
+## Onde esta o conteudo original
 
-- O cockpit `ia-profissional` consulta a API generativa antes de usar respostas locais.
-- As respostas locais sobre identidade, modos e protocolos permanecem como contingencia segura quando a API estiver indisponivel.
-- Perguntas comuns que mencionem termos como `modo`, `jurista`, `professor`, `aula` ou `autoridade` deixam de ser reduzidas prematuramente a mensagens fixas.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_IA_PROFISSIONAL_API_FIRST_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_IA_PROFISSIONAL_API_FIRST_v1_0.md
 
-## Resultado esperado
+## Regra
 
-- Perguntas abertas recebem resposta contextual da API.
-- Atalhos institucionais continuam disponiveis.
-- Em indisponibilidade da API, a pagina preserva uma resposta local segura quando houver correspondencia.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

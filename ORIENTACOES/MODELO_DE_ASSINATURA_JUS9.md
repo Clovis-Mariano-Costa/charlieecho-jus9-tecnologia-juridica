@@ -1,17 +1,20 @@
-# MODELO DE ASSINATURA JUS 9 — ©
+﻿# Ponteiro de Governanca Movida
 
-Todo arquivo criado deve conter assinatura compatível.
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\MODELO_DE_ASSINATURA_JUS9.md
+Destino classificado: GOVERNANCA_GERAL
 
-## Institucional
-© Jus 9 Tecnologia Jurídica — software livre, autoria preservada.
+## Motivo
 
-## Aeon Primevo
-© Clovis Mariano da Costa / Aeon Primevo — autoria preservada.
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-## Charlie Echo
-© Charlie Echo da Costa — IA generativa multimodal, conversacional e jurídico-orientada, com governança humana. Jus 9 Tecnologia Jurídica.
+## Onde esta o conteudo original
 
-## Sites
-Usar assinatura discreta no cabeçalho e/ou rodapé, sem atrapalhar o usuário.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\MODELO_DE_ASSINATURA_JUS9.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\MODELO_DE_ASSINATURA_JUS9.md
 
-© Jus 9 Tecnologia Jurídica — software livre, autoria preservada.
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

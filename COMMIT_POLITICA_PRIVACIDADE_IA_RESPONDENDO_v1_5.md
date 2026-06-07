@@ -1,11 +1,20 @@
-Summary:
-Adiciona política de privacidade e prepara resposta segura da Charlie Echo
+﻿# Ponteiro de Governanca Movida
 
-Description:
-- cria política de privacidade pública da Charlie Echo com rota direta e rota limpa
-- atualiza PRIVACY.md com regras de dados, voz, cookies, LGPD, API e contato
-- ajusta IA Estudantes e IA Profissional para chamar /api/ia de forma segura
-- mantém fallback local quando a API não estiver configurada
-- atualiza função functions/api/ia.js para aceitar modos estudantes e profissional
-- preserva botões de fala, ouvir, copiar, limpar e demais ações locais
-- mantém chaves fora do front-end e não altera diretamente arquivos de DNA
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: COMMIT_POLITICA_PRIVACIDADE_IA_RESPONDENDO_v1_5.md
+Destino classificado: AUTOORGANIZACAO
+
+## Motivo
+
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\COMMIT_POLITICA_PRIVACIDADE_IA_RESPONDENDO_v1_5.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\COMMIT_POLITICA_PRIVACIDADE_IA_RESPONDENDO_v1_5.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

@@ -1,27 +1,20 @@
-# Versionamento - Relatorio de Governanca Charlie Echo v1.0
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-25
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_RELATORIO_GOVERNANCA_CHARLIE_ECHO_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## Atualizacao
+## Motivo
 
-Criado o relatorio `RELATORIOS/RELATORIO_GOVERNANCA_CHARLIE_ECHO_2026-05-25.md`.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Conteudo
+## Onde esta o conteudo original
 
-O relatorio consolida:
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_RELATORIO_GOVERNANCA_CHARLIE_ECHO_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_RELATORIO_GOVERNANCA_CHARLIE_ECHO_v1_0.md
 
-- identidade institucional da Charlie Echo;
-- hierarquia normativa;
-- principios operacionais;
-- classificacao publico / interno / sigiloso / secreto;
-- regras de cofre e seguranca;
-- protocolo Mao na Massa;
-- riscos, pendencias e recomendacoes.
+## Regra
 
-## Sigilo
-
-Nao foram incluidos dados reais, tokens, senhas, conversas brutas de WhatsApp, documentos pessoais ou conteudo de cofre.
-
-## Proximo pacote sugerido
-
-`GOVERNANCA_CHARLIE_ECHO_HIGIENE_PUBLICA_v1_0`
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

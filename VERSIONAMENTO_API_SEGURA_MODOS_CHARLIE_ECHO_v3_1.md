@@ -1,25 +1,20 @@
-# Versionamento - API segura modos Charlie Echo v3.1
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-26
-Repositorio: charlieecho-jus9-tecnologia-juridica
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_API_SEGURA_MODOS_CHARLIE_ECHO_v3_1.md
+Destino classificado: AUTOORGANIZACAO
 
-## Objetivo
+## Motivo
 
-Consolidar a rota segura de IA da Charlie Echo para os modos estudantes, profissional e social, preservando fallback local e sem expor segredos no frontend.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Alteracoes
+## Onde esta o conteudo original
 
-- `GET /api/ia` passa a responder diagnostico publico seguro da rota.
-- `POST /api/ia` passa a aceitar `mode` com valores `estudantes`, `profissional` e `social`.
-- Criado modo social com linguagem simples, acolhedora e limites de atendimento humano/emergencial.
-- Criadas rotas de compatibilidade:
-  - `/work/api/ia`
-  - `/api/work/ia`
-- Adicionada variavel opcional `JUS9_MODEL_SOCIAL` em `.env.example`.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_API_SEGURA_MODOS_CHARLIE_ECHO_v3_1.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_API_SEGURA_MODOS_CHARLIE_ECHO_v3_1.md
 
-## Governanca
+## Regra
 
-- `OPENAI_API_KEY` continua apenas em Cloudflare Secret ou ambiente seguro.
-- Nenhum token, chave, senha ou dado real foi colocado em HTML/JS.
-- O frontend deve manter fallback local quando a API estiver indisponivel.
-- A versao publica nao substitui profissional humano habilitado.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

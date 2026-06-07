@@ -1,9 +1,20 @@
-Summary:
-Corrige terminologia da Charlie Echo como IA generativa multimodal
+﻿# Ponteiro de Governanca Movida
 
-Description:
-- substitui formulações que reduziam Charlie Echo a IA assistiva por IA generativa multimodal, conversacional e jurídico-orientada, com governança humana
-- preserva a palavra assistiva apenas como função de apoio, não como classificação principal
-- atualiza orientação de apresentação jurídica pública e interna da Charlie Echo
-- mantém cautelas sobre rábula simbólico-institucional, jurista consultora e não substituição de advogado humano habilitado
-- preserva governança humana, revisão humana e limites jurídicos externos
+Data: 2026-06-07 19:33:06 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: COMMIT_CORRECAO_TERMINOLOGIA_IA_GENERATIVA_MULTIMODAL_v1_8_1.md
+Destino classificado: AUTOORGANIZACAO
+
+## Motivo
+
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\COMMIT_CORRECAO_TERMINOLOGIA_IA_GENERATIVA_MULTIMODAL_v1_8_1.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\COMMIT_CORRECAO_TERMINOLOGIA_IA_GENERATIVA_MULTIMODAL_v1_8_1.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

@@ -1,29 +1,20 @@
-# Versionamento - Continuidade Publica, Privada e Offline
+﻿# Ponteiro de Governanca Movida
 
-Classificacao: PUBLICO / VERSIONAMENTO  
-Versao: v1.0  
-Data: 2026-06-06
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_CONTINUIDADE_PUBLICO_PRIVADO_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## Objetivo
+## Motivo
 
-Registrar a criacao do protocolo de continuidade entre GitHub publico, Google Drive privado/offline, materiais de aula e arquivos de Charlie Fox / Codex.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Arquivos criados
+## Onde esta o conteudo original
 
-- `ORIENTACOES/REGRA_CONTINUIDADE_PUBLICO_PRIVADO_CHARLIE_FOX_IAS.md`
-- `GOVERNANCA/AULA_PUBLICA_SOFTWARE_LIVRE_AUTORIA_SEGREDOS_CHARLIE_ECHO.md`
-- `ORIENTACOES/RECADO_PARA_PROXIMA_IA_CONTINUIDADE_PUBLICO_PRIVADO_v1_0.md`
-- `scripts/audit-continuity-public-private.mjs`
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_CONTINUIDADE_PUBLICO_PRIVADO_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_CONTINUIDADE_PUBLICO_PRIVADO_v1_0.md
 
-## Decisao governada
+## Regra
 
-A Jus 9 permanece software livre com autoria preservada.
-
-Todo material publico deve ser tratavel como aula para Charlie Echo.
-
-Materiais internos, sigilosos e de cofre devem ser protegidos por classificacao, revisao humana e prudencia tecnica.
-
-## Proximo passo sugerido
-
-Criar um mapa de repertorios publicos que indique quais documentos ja podem ser convertidos em aulas da Charlie Echo e quais ainda precisam de limpeza, revisao de codificacao ou classificacao.
-
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

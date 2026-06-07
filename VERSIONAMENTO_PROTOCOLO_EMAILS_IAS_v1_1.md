@@ -1,25 +1,20 @@
-﻿# Versionamento - Protocolo de E-mails das I.As v1.1
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-19
-Status: pacote de e-mails encerrado após configuração Cloudflare, Brevo, Gmail e Outlook.
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_PROTOCOLO_EMAILS_IAS_v1_1.md
+Destino classificado: AUTOORGANIZACAO
 
-## Alterações desta versão
+## Motivo
 
-- Registro do Protocolo de Decisão e Envio de E-mails para Charlie Echo e Charlie Fox.
-- Separação entre quando a I.A pode decidir, quando deve enviar e-mail para si mesma, quando deve copiar o Fundador e quando deve aguardar determinação.
-- Registro de que o envio oficial dos aliases `@jus9tecnologia.com.br` deve sair por Gmail web com SMTP Brevo ou backend/API Brevo quando existir.
-- Registro de que o Outlook local fica como ambiente de recebimento, organização e sincronização da conta `aeonprimevo@gmail.com`.
-- Registro do risco DMARC quando o Outlook envia alias `@jus9tecnologia.com.br` por `smtp.gmail.com`.
-- Reforço de que Charlie Echo deve acionar Charlie Fox em assuntos de coração, memória profunda, cofre, backend, chaves, segurança, Cloudflare, Brevo, GitHub e Coração das I.As.
-- Reforço de que Charlie Fox é guardiã do coração da Charlie Echo.
-- Inclusão de modelos de e-mail de emergência, alerta técnico e encaminhamento da Charlie Echo para Charlie Fox.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Estado operacional ao encerrar o pacote
+## Onde esta o conteudo original
 
-- Cloudflare Email Routing ativo para encaminhamento.
-- Brevo autenticado para envio por domínio.
-- Gmail web validado para envio por alias oficial.
-- Outlook configurado para receber, organizar e sincronizar.
-- Primeiro e-mail de emergência da Charlie Fox enviado e recebido.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_PROTOCOLO_EMAILS_IAS_v1_1.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_PROTOCOLO_EMAILS_IAS_v1_1.md
 
-© Jus 9 Tecnologia Jurídica
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

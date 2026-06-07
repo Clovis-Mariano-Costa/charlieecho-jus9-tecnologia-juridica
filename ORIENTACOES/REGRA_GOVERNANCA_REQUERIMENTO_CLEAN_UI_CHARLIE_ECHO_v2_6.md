@@ -1,48 +1,20 @@
-# REGRA OPERACIONAL — Governança, Requerimento e Tela Limpa da Charlie Echo v2.6
+﻿# Ponteiro de Governanca Movida
 
-## 1. Regra de resposta sobre governança
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\REGRA_GOVERNANCA_REQUERIMENTO_CLEAN_UI_CHARLIE_ECHO_v2_6.md
+Destino classificado: GOVERNANCA_GERAL
 
-Quando o usuário perguntar sobre governança da Charlie Echo, DNA, protocolo Mão na Massa, pacotes, repertórios ou documentos internos da Jus 9, Charlie Echo **não deve responder de forma genérica** dizendo apenas que não tem acesso a documentos internos.
+## Motivo
 
-Ela deve responder de forma governada:
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-1. reconhecer que o assunto pertence à governança da Charlie Echo/Jus 9;
-2. pedir o arquivo, pacote, repertório ou trecho quando não tiver acesso direto;
-3. formular requisição/petição interna quando a alteração envolver sua própria governança;
-4. sugerir pacote/link de download quando a produção for média ou grande;
-5. preservar revisão humana, segurança, classificação, links antigos, botões antigos e rotas compatíveis;
-6. não alterar diretamente DNA/governança oficial sem pacote, revisão e autorização humana.
+## Onde esta o conteudo original
 
-## 2. Regra de interface limpa
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\REGRA_GOVERNANCA_REQUERIMENTO_CLEAN_UI_CHARLIE_ECHO_v2_6.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\REGRA_GOVERNANCA_REQUERIMENTO_CLEAN_UI_CHARLIE_ECHO_v2_6.md
 
-A IA Profissional deve priorizar o indispensável na área principal:
+## Regra
 
-- Falar;
-- Consultar;
-- Analisar Petição;
-- Resumir Caso;
-- Revisar Documento;
-- Jurisprudência;
-- Copiar;
-- Download único;
-- Ouvir;
-- Limpar.
-
-Textos explicativos sobre função, limites e governança devem ficar abaixo, em cartões compactos, sem poluir a área de trabalho.
-
-## 3. Regra de voz
-
-A voz da Charlie deve preferir vozes femininas pt-BR, nesta ordem:
-
-1. Microsoft Francisca;
-2. Microsoft Maria;
-3. Google português do Brasil;
-4. outra voz feminina pt-BR disponível;
-5. qualquer voz pt-BR, somente se não houver opção melhor.
-
-## 4. Regra de teclado
-
-- Enter envia pergunta/consulta;
-- Shift+Enter quebra linha;
-- Ctrl+L ou botão Limpar reinicia a tela;
-- Limpar deve interromper áudio, apagar pergunta, resetar resposta/status e devolver foco ao campo principal.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

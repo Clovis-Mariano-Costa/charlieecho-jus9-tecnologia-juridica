@@ -1,59 +1,20 @@
-# RELATÓRIO — Correção de extração da resposta da API v1.6
+﻿# Ponteiro de Governanca Movida
 
-## Problema observado
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: RELATORIO_CORRECAO_EXTRACAO_RESPOSTA_API_v1_6.md
+Destino classificado: AUTOORGANIZACAO
 
-A tela da IA Estudantes exibia:
+## Motivo
 
-> Resposta recebida da Charlie Echo.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-mas a área de resposta mostrava:
+## Onde esta o conteudo original
 
-> Não foi possível extrair a resposta da IA neste momento.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\RELATORIO_CORRECAO_EXTRACAO_RESPOSTA_API_v1_6.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\RELATORIO_CORRECAO_EXTRACAO_RESPOSTA_API_v1_6.md
 
-Isso indicava que a requisição chegava à API, mas o código não extraía corretamente o texto retornado pela OpenAI/API.
+## Regra
 
-## Correção aplicada
-
-### Front-end
-Arquivo alterado:
-
-- `assets/js/charlie-ia-pages.js`
-
-A função de chamada da API agora aceita vários formatos de resposta:
-
-- `answer`
-- `resposta`
-- `response`
-- `output_text`
-- `text`
-- `content`
-- `message`
-- `choices[0].message.content`
-- `choices[0].text`
-- `output[].content[].text`
-
-Também passou a mostrar erro mais claro quando a API responde sem texto reconhecido.
-
-### Backend/API
-Arquivo alterado:
-
-- `functions/api/ia.js`
-
-A função agora extrai texto de forma mais robusta do retorno da Responses API, incluindo `output_text` e conteúdo dentro de `output[].content[]`.
-
-Também foi ajustado o modelo padrão para `gpt-4o-mini`, mantendo a possibilidade de sobrescrever por variáveis:
-
-- `JUS9_MODEL_DEFAULT`
-- `JUS9_MODEL_ESTUDANTES`
-- `JUS9_MODEL_PROFISSIONAL`
-
-## Resultado esperado
-
-Após publicar este pacote e aguardar o deploy do Cloudflare Pages:
-
-1. abrir `https://charlieecho.jus9tecnologia.com.br/ia-estudantes.html`;
-2. digitar uma pergunta;
-3. clicar em `Perguntar`;
-4. a resposta textual deve aparecer na área `Resposta`.
-
-Se ainda falhar, a mensagem deverá mostrar erro mais específico, ajudando a identificar se o problema está no modelo, na rota, no backend, na chave ou no retorno da API.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

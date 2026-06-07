@@ -1,25 +1,20 @@
-<!--
-Jus 9 Tecnologia Jurídica
-Repositório: charlieecho-jus9-tecnologia-juridica
-Software livre com autoria preservada.
-Direitos autorais reservados para Jus 9 Tecnologia Jurídica.
-Produção do site: © **Jus 9 Tecnologia Jurídica**. Direitos autorais da produção reservados.
-A licença livre não remove autoria, origem, assinatura institucional nem direitos autorais.
-Referência oficial: https://charlieecho.jus9tecnologia.com.br/
-E-mail de contato: charlieecho@jus9tecnologia.com.br
-DNA de referência de Charlie Echo da Costa: charlieecho-jus9-tecnologia-juridica
--->
+﻿# Ponteiro de Governanca Movida
 
-# Relatório de segurança — charlieecho-jus9-tecnologia-juridica
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: RELATORIO_SEGURANCA_charlieecho-jus9-tecnologia-juridica.md
+Destino classificado: AUTOORGANIZACAO
 
-## Ações aplicadas
+## Motivo
 
-- Remoção de pastas `.git/` do pacote público.
-- Remoção de caches, dependências instaladas e backups técnicos conhecidos, quando encontrados.
-- Inclusão de `.gitignore`, `LICENSE`, `NOTICE`, `SECURITY.md`, `PRIVACY.md` e assinatura institucional.
-- Inserção de assinatura em arquivos textuais/código quando tecnicamente seguro.
-- Preservação de arquivos de DNA sem alteração direta.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Arquivos removidos neste pacote
+## Onde esta o conteudo original
 
-Nenhum arquivo removido além de regras gerais.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\RELATORIO_SEGURANCA_charlieecho-jus9-tecnologia-juridica.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\RELATORIO_SEGURANCA_charlieecho-jus9-tecnologia-juridica.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

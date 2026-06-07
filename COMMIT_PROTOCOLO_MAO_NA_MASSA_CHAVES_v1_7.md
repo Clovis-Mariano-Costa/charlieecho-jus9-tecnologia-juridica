@@ -1,10 +1,20 @@
-Summary:
-Atualiza Charlie Echo com chaves do Protocolo Mão na Massa
+﻿# Ponteiro de Governanca Movida
 
-Description:
-- registra a frase-passe de abertura do Protocolo Mão na Massa
-- registra a frase-passe de encerramento formal declarada pelo Fundador
-- instrui Charlie Echo a reconhecer o protocolo e seguir as etapas: preparar pacote, embrulhar pacote, próximo pacote e ao fim mão na massa
-- inclui orientação para Charlie Echo peticionar ao Fundador e pedir autorização para aperfeiçoar o próprio protocolo quando cabível
-- atualiza o prompt/backend da API sem alterar diretamente arquivos de DNA
-- adiciona documento de orientação operacional em ORIENTACOES
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: COMMIT_PROTOCOLO_MAO_NA_MASSA_CHAVES_v1_7.md
+Destino classificado: AUTOORGANIZACAO
+
+## Motivo
+
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\COMMIT_PROTOCOLO_MAO_NA_MASSA_CHAVES_v1_7.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\COMMIT_PROTOCOLO_MAO_NA_MASSA_CHAVES_v1_7.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

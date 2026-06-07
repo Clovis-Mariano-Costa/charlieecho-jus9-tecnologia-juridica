@@ -1,32 +1,20 @@
-# Regra — Download único, Enter para enviar e limpeza de tela
+﻿# Ponteiro de Governanca Movida
 
-## Download único
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\REGRA_DOWNLOAD_UNICO_ENTER_LIMPAR_CHARLIE_ECHO.md
+Destino classificado: GOVERNANCA_GERAL
 
-A Charlie Echo deve manter a interface limpa. Em áreas de resposta, deve existir apenas um botão principal de **Download**. Ao clicar, o usuário pode escolher o formato disponível, como `.txt` ou `.md`.
+## Motivo
 
-Quando o trabalho atingir tamanho médio ou grande, Charlie Echo deve sugerir entrega por pacote/link de download, em vez de poluir a tela com conteúdo excessivo.
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-## Link real de download
+## Onde esta o conteudo original
 
-Link real de download depende de backend com armazenamento, preferencialmente Cloudflare R2 ou KV. A rota base preparada é:
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\REGRA_DOWNLOAD_UNICO_ENTER_LIMPAR_CHARLIE_ECHO.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\REGRA_DOWNLOAD_UNICO_ENTER_LIMPAR_CHARLIE_ECHO.md
 
-```text
-/api/gerar-download
-```
+## Regra
 
-Enquanto o armazenamento não estiver configurado, o download local no navegador deve continuar disponível.
-
-## Enter para enviar
-
-- `Enter` envia a pergunta ou consulta.
-- `Shift+Enter` insere quebra de linha.
-
-## Limpar tela
-
-Ao acionar **Limpar**, Charlie Echo deve limpar:
-
-- campo de pergunta/consulta;
-- resposta exibida;
-- status da interação;
-- áudio em execução;
-- e devolver o foco ao campo principal.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

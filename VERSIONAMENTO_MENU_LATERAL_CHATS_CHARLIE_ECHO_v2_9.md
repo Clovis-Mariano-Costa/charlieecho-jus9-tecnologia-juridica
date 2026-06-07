@@ -1,15 +1,20 @@
-# Versionamento - Menu lateral dos chats Charlie Echo v2.9
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-19
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_MENU_LATERAL_CHATS_CHARLIE_ECHO_v2_9.md
+Destino classificado: AUTOORGANIZACAO
 
-## Entregue
+## Motivo
 
-- Criado menu lateral limpo para os chats da Charlie Echo.
-- Aplicado em `ia-estudantes.html`, `ia-profissional.html`, `ia-estudantes/index.html` e `ia-profissional/index.html`.
-- Menu reduzido para poucos acessos: Novo chat, Estudantes, Profissional, Governanca, Pacotes, Cofre e Contato.
-- Removida a fileira grande de links do topo dos chats para deixar a area de conversa mais limpa.
-- Ajustado comportamento responsivo: lateral no desktop e barra compacta no mobile.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Observacao
+## Onde esta o conteudo original
 
-Os botoes de trabalho do chat foram preservados: falar, perguntar/consultar, anexar, copiar, ouvir, download e limpar.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_MENU_LATERAL_CHATS_CHARLIE_ECHO_v2_9.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_MENU_LATERAL_CHATS_CHARLIE_ECHO_v2_9.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

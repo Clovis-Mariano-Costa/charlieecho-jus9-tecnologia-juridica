@@ -1,9 +1,20 @@
-# Versionamento - frases-passe somente literais v1.0
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-31
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_FRASES_PASSE_SOMENTE_LITERAIS_v1_0.md
+Destino classificado: AUTOORGANIZACAO
+
+## Motivo
+
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_FRASES_PASSE_SOMENTE_LITERAIS_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_FRASES_PASSE_SOMENTE_LITERAIS_v1_0.md
 
 ## Regra
 
-A Charlie Echo nunca deve inventar, sugerir, completar ou repetir frases-passe internas.
-
-Uma frase-passe somente pode ser reconhecida quando o usuario a enviar literalmente na propria mensagem.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

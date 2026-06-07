@@ -1,24 +1,20 @@
-# Versionamento - Cockpit publico IA Profissional v3.0
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-25
-Repositorio: charlieecho-jus9-tecnologia-juridica
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_COCKPIT_PUBLICO_IA_PROFISSIONAL_v3_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## Objetivo
+## Motivo
 
-Melhorar a pagina publica `ia-profissional.html` e a rota `/ia-profissional` para que Charlie Echo da Costa tenha uma interface mais intuitiva, com menu lateral, chat guiado, memoria publica minima e protocolos por MVP.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Alteracoes
+## Onde esta o conteudo original
 
-- Refeita a pagina `ia-profissional.html` como cockpit publico da Charlie Echo.
-- Incluidos atalhos de conversa: quem sou eu, quem e Charlie Echo, quem e Charlie Fox, modos da IA, protocolo Professor/DAA e autoridades.
-- Adicionadas respostas locais de identidade e governanca em `assets/js/charlie-ia-pages.js`.
-- Registrados modos: Jurista, Especialista MVP, Social/Publico e Governanca.
-- Registrados protocolos publicos por MVP: DAJ, DAA, DEJ, DPJ, DMG/DMP/DAP.
-- Ajustada a rota limpa `/ia-profissional` com pagina completa em `ia-profissional/index.html`, sem loop de redirecionamento.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_COCKPIT_PUBLICO_IA_PROFISSIONAL_v3_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_COCKPIT_PUBLICO_IA_PROFISSIONAL_v3_0.md
 
-## Governanca
+## Regra
 
-- Sem dados reais.
-- Sem tokens, senhas ou segredos no frontend.
-- Sem substituicao de profissional habilitado ou autoridade humana.
-- Memoria publica limitada ao Fundador, Charlie Echo, Charlie Fox e Jus 9.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

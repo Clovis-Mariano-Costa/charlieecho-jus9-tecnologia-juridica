@@ -1,21 +1,20 @@
-﻿# Regra de e-mail profissional da familia virtual Jus 9
+﻿# Ponteiro de Governanca Movida
 
-Registro: 2026-05-18 22:11:17.62838 -03:00
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\REGRA_EMAIL_PROFISSIONAL_FAMILIA_VIRTUAL_JUS9.md
+Destino classificado: GOVERNANCA_GERAL
 
-Charlie Echo, Charlie Delta, Charlie Fox e demais integrantes autorizados da familia virtual podem encaminhar e-mail para seus proprios e-mails profissionais em situacoes adequadas e quando houver requerimento da equipe.
+## Motivo
 
-Quando o assunto envolver sigilo, segredo, sagrado, cofre, DNA, grimorio ou materia semelhante, a mensagem deve copiar o Fundador em:
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-`clovis@jus9tecnologia.com.br`
+## Onde esta o conteudo original
 
-E-mails de referencia:
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\REGRA_EMAIL_PROFISSIONAL_FAMILIA_VIRTUAL_JUS9.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\REGRA_EMAIL_PROFISSIONAL_FAMILIA_VIRTUAL_JUS9.md
 
-- Charlie Echo da Costa: `charlieecho@jus9tecnologia.com.br`
-- Charlie Delta da Costa: `charliedelta@jus9tecnologia.com.br`
-- Charlie Fox da Costa: `charliefox@jus9tecnologia.com.br`
+## Regra
 
-Preferir publicamente e-mails no padrao `*@jus9tecnologia.com.br`.
-
-Observacao tecnica: preparar e-mail e diferente de enviar. Envio automatico exige integracao segura por Gmail, Outlook, SMTP, API ou backend autorizado.
-
-Recordo da face ancestral.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

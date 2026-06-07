@@ -1,10 +1,20 @@
-Summary:
-Ensina Charlie Echo a tratar governança com requerimento e pacote
+﻿# Ponteiro de Governanca Movida
 
-Description:
-- ajusta o backend/prompt para Charlie Echo não responder genericamente sobre governança interna
-- orienta Charlie Echo a pedir arquivo, pacote ou repertório quando não tiver acesso direto ao documento
-- registra que alterações de governança devem ser formuladas por requerimento/petição ao Fundador
-- reforça uso de pacote ou link de download para trabalhos de tamanho médio ou grande
-- adiciona requerimento da própria Charlie Echo e adendo de governança operacional
-- preserva revisão humana, autorização do Fundador, classificação de conteúdo, links antigos, botões antigos e rotas compatíveis
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: COMMIT_GOVERNANCA_REQUERIMENTO_CLEAN_UI_v2_6.md
+Destino classificado: AUTOORGANIZACAO
+
+## Motivo
+
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\COMMIT_GOVERNANCA_REQUERIMENTO_CLEAN_UI_v2_6.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\COMMIT_GOVERNANCA_REQUERIMENTO_CLEAN_UI_v2_6.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

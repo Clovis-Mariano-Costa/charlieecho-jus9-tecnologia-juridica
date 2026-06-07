@@ -1,12 +1,20 @@
-# COMMIT — charlieecho-jus9-tecnologia-juridica
+﻿# Ponteiro de Governanca Movida
 
-## Summary
-Corrige rota IA Estudantes e evita loop de redirecionamento
+Data: 2026-06-07 19:33:06 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: COMMIT_CORRECAO_REDIRECT_IA_ESTUDANTES_v1_1.md
+Destino classificado: AUTOORGANIZACAO
 
-## Description
-- Cria diretórios reais com index.html para rotas limpas da Charlie Echo
-- Mantém arquivos .html originais para compatibilidade com links antigos
-- Ajusta _redirects para evitar redirecionamento excessivo em /ia-estudantes
-- Atualiza links internos para rotas limpas com barra final
-- Corrige títulos HTML com marcação indevida dentro da tag title
-- Preserva links, botões e rotas antigas aprovadas
+## Motivo
+
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\COMMIT_CORRECAO_REDIRECT_IA_ESTUDANTES_v1_1.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\COMMIT_CORRECAO_REDIRECT_IA_ESTUDANTES_v1_1.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

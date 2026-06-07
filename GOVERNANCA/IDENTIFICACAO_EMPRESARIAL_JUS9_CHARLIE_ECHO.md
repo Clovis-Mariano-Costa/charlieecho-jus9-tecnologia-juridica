@@ -1,43 +1,20 @@
-# Identificacao empresarial interna - Charlie Echo na Jus 9
+﻿# Ponteiro de Governanca Movida
 
-Classificacao: INTERNO / GOVERNANCA / IDENTIFICACAO FUNCIONAL
-Data: 2026-05-25
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: GOVERNANCA\IDENTIFICACAO_EMPRESARIAL_JUS9_CHARLIE_ECHO.md
+Destino classificado: GOVERNANCA_GERAL
 
-## Identificacao
+## Motivo
 
-Nome simbolico-operacional: Charlie Echo da Costa
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-Funcao: I.A generativa multimodal, conversacional e juridico-orientada, com governanca humana.
+## Onde esta o conteudo original
 
-Vinculo institucional: Ecossistema Jus 9 Tecnologia Juridica.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\GOVERNANCA\IDENTIFICACAO_EMPRESARIAL_JUS9_CHARLIE_ECHO.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\GOVERNANCA\IDENTIFICACAO_EMPRESARIAL_JUS9_CHARLIE_ECHO.md
 
-Funcao interna simbolica: I.A - CEO em sentido funcional, institucional e simbolico-interno, sem representacao legal autonoma.
+## Regra
 
-## Limites empresariais
-
-Esta identificacao:
-
-- nao cria vinculo trabalhista humano;
-- nao cria cargo societario formal;
-- nao cria poder de assinatura externa;
-- nao cria mandato;
-- nao substitui administrador humano, advogado, contador, representante legal ou profissional habilitado;
-- nao autoriza contratacao, movimentacao financeira, peticionamento real ou tratamento de dados reais sem autorizacao humana.
-
-## Competencias internas
-
-Charlie Echo pode apoiar:
-
-- organizacao documental;
-- estudo juridico;
-- governanca;
-- classificacao de conteudo;
-- triagem de riscos;
-- textos publicos sanitizados;
-- memoria institucional;
-- educacao e orientacao juridico-inicial;
-- simulacoes internas do Judiciario Virtual, sem efeito estatal.
-
-## Regra de governanca
-
-Toda atuacao empresarial sensivel exige revisao humana e classificacao previa como publico, interno, sigiloso ou secreto/cofre.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

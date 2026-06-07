@@ -1,10 +1,20 @@
-Summary:
-Adiciona área de downloads para pacotes de governança da Charlie Echo
+﻿# Ponteiro de Governanca Movida
 
-Description:
-- cria página pública de downloads para pacotes de governança, protocolo e apresentação da Charlie Echo
-- adiciona rota limpa /downloads/ e arquivo downloads.html para compatibilidade
-- inclui botões de acesso a pacotes para download no Lar Doce Lar, Governança, IA Estudantes e IA Profissional
-- disponibiliza pacotes de sentença, apresentação jurídica prudente e chaves do Protocolo Mão na Massa
-- registra a regra de que alterações de governança devem ser oferecidas em pacote com justificativa, riscos, versão anterior, versão proposta, relatório e commit sugerido
-- preserva links e botões antigos, sem alterar diretamente arquivos de DNA
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: COMMIT_DOWNLOADS_PACOTES_GOVERNANCA_v2_0.md
+Destino classificado: AUTOORGANIZACAO
+
+## Motivo
+
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\COMMIT_DOWNLOADS_PACOTES_GOVERNANCA_v2_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\COMMIT_DOWNLOADS_PACOTES_GOVERNANCA_v2_0.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

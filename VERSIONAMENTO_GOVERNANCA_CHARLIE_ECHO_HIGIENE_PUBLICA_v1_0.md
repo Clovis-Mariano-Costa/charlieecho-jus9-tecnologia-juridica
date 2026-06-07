@@ -1,27 +1,20 @@
-# Versionamento - Governanca Charlie Echo Higiene Publica v1.0
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-25
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_GOVERNANCA_CHARLIE_ECHO_HIGIENE_PUBLICA_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## Pacote
+## Motivo
 
-`GOVERNANCA_CHARLIE_ECHO_HIGIENE_PUBLICA_v1_0`
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Atualizacoes
+## Onde esta o conteudo original
 
-- Criado indice publico sanitizado de governanca.
-- Criado relatorio de pendencias para decisao do Fundador.
-- Atualizado `README.md` com separacao entre casa publica, governanca interna, cofre privado e ponte tecnica.
-- Atualizado `governanca.html` como pagina publica segura.
-- Atualizado `cofre.html` para deixar claro que e pagina simbolica, nao cofre real.
-- Atualizado `SECURITY.md` com regras de secrets, dados reais, WhatsApp, cofre e revisao humana.
-- Atualizado `_redirects` para rotas antigas sensiveis apontarem para pagina simbolica segura.
-- Corrigida linguagem antiga de IA assistiva para I.A generativa multimodal, conversacional e juridico-orientada, com governanca humana.
-- Removidos arquivos de cofre/peticao/recurso interno da arvore publica, com backup privado e manifesto SHA256.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_GOVERNANCA_CHARLIE_ECHO_HIGIENE_PUBLICA_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_GOVERNANCA_CHARLIE_ECHO_HIGIENE_PUBLICA_v1_0.md
 
-## Seguranca
+## Regra
 
-Nenhum token, senha, chave, WhatsApp bruto, documento pessoal, dado real ou conteudo de cofre foi incluido neste versionamento.
-
-## Fonte publica primaria
-
-`documentos-publicos/governanca/INDICE_PUBLICO_GOVERNANCA_CHARLIE_ECHO.md`
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

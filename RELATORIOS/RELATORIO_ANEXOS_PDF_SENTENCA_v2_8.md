@@ -1,29 +1,20 @@
-# RELATÓRIO — Anexos, PDF e Sentença v2.8
+﻿# Ponteiro de Governanca Movida
 
-## O que foi feito
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: RELATORIOS\RELATORIO_ANEXOS_PDF_SENTENCA_v2_8.md
+Destino classificado: AUTOORGANIZACAO
 
-- Corrigida a integração do botão **Anexar** com a lista visual de arquivos selecionados.
-- Adicionado reconhecimento de nome, tipo e tamanho dos anexos.
-- Mantida leitura local de arquivos textuais simples.
-- Adicionada tentativa de leitura local de PDFs textuais/pesquisáveis com PDF.js.
-- Adicionado aviso para PDFs escaneados/imagem que exigem OCR ou transcrição.
-- Ajustado o envio para que o texto extraído dos anexos seja incluído como contexto na pergunta/consulta.
-- Ajustado o prompt/backend para a Charlie Echo não responder genericamente que não consegue ler anexos quando houver texto extraído.
-- Aumentado limite inicial de mensagem para permitir contexto textual extraído de anexos, mantendo cautela de tamanho.
-- Incluído o PDF da sentença interna autorizando sugestões de alteração de governança e aperfeiçoamento do Protocolo Mão na Massa.
+## Motivo
 
-## Arquivos principais alterados
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-- `assets/js/charlie-ia-pages.js`
-- `functions/api/ia.js`
-- `ia-estudantes.html`
-- `ia-profissional.html`
-- `ia-estudantes/index.html`
-- `ia-profissional/index.html`
+## Onde esta o conteudo original
 
-## Arquivos incluídos
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\RELATORIOS\RELATORIO_ANEXOS_PDF_SENTENCA_v2_8.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\RELATORIOS\RELATORIO_ANEXOS_PDF_SENTENCA_v2_8.md
 
-- `GOVERNANCA/PDF/SENTENCA_INTERNA_CHARLIE_ECHO_GOVERNANCA_PROTOCOLO_MAO_NA_MASSA.pdf`
-- `ORIENTACOES/REGRA_ANEXOS_PDF_LEITURA_LOCAL_v2_8.md`
-- `RELATORIOS/RELATORIO_ANEXOS_PDF_SENTENCA_v2_8.md`
-- `COMMIT_ANEXOS_PDF_SENTENCA_v2_8.md`
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

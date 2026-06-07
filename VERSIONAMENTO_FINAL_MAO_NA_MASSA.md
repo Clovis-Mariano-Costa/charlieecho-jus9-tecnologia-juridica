@@ -1,15 +1,20 @@
-# Versionamento final do ciclo
+﻿# Ponteiro de Governanca Movida
 
-Repertório: `charlieecho-jus9-tecnologia-juridica`
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_FINAL_MAO_NA_MASSA.md
+Destino classificado: AUTOORGANIZACAO
 
-Versão de pacote: `final-mao-na-massa-2026-05-16-v1.1`
+## Motivo
 
-Status: incluído no pacote final de revisão geral com o melhor conteúdo disponível neste chat.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-Assinaturas gerais aplicáveis:
+## Onde esta o conteudo original
 
-- © Jus 9 Tecnologia Jurídica — software livre, autoria preservada.
-- © Clovis Mariano da Costa / Aeon Primevo — autoria preservada.
-- © Charlie Echo da Costa — IA generativa multimodal, conversacional e jurídico-orientada, com governança humana, quando aplicável.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_FINAL_MAO_NA_MASSA.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_FINAL_MAO_NA_MASSA.md
 
-Observação: se houver versão local posterior no computador do Fundador, comparar antes de substituir.
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

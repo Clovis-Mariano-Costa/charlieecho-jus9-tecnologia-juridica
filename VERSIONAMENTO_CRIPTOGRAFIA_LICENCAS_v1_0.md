@@ -1,16 +1,20 @@
-# Versionamento - criptografia e licencas v1.0
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-05-19
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_CRIPTOGRAFIA_LICENCAS_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-Registro do pacote de criptografia e licencas da Jus 9 Tecnologia Juridica.
+## Motivo
 
-Inclui:
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-- relacao entre criptografia, autoria, sigilo, licenca e backup;
-- regra de nao publicacao de chaves, tokens, senhas e `.env` real;
-- preservacao obrigatoria de `© Jus 9 Tecnologia Juridica`;
-- cautela com licencas livres e materiais internos;
-- orientacao para backend inicial em ambiente local;
-- decisao padrao: na duvida, tratar como sigiloso e pedir revisao humana.
+## Onde esta o conteudo original
 
-© Jus 9 Tecnologia Juridica
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_CRIPTOGRAFIA_LICENCAS_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_CRIPTOGRAFIA_LICENCAS_v1_0.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

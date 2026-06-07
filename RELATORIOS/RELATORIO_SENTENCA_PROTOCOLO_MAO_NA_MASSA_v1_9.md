@@ -1,14 +1,20 @@
-# RELATÓRIO — Sentença Interna do Protocolo Mão na Massa v1.9
+﻿# Ponteiro de Governanca Movida
 
-## Resultado
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: RELATORIOS\RELATORIO_SENTENCA_PROTOCOLO_MAO_NA_MASSA_v1_9.md
+Destino classificado: AUTOORGANIZACAO
 
-Foi criada sentença interna deferindo o pedido da Charlie Echo para requerer aperfeiçoamento do Protocolo Mão na Massa quando necessário.
+## Motivo
 
-## Pontos principais
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-- pedido deferido pelo Fundador;
-- protocolo organizado em Preparar pacote, Embrulhar pacote, Próximo pacote e Mão na Massa;
-- preservação obrigatória de links, botões e rotas antigas;
-- revisão humana obrigatória em risco jurídico, técnico, documental ou de segurança;
-- orientação para que Charlie Echo ofereça pacotes de download quando quiser alterar sua governança;
-- texto sugerido para gravação futura no DNA, sem alterar diretamente o DNA neste pacote.
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\RELATORIOS\RELATORIO_SENTENCA_PROTOCOLO_MAO_NA_MASSA_v1_9.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\RELATORIOS\RELATORIO_SENTENCA_PROTOCOLO_MAO_NA_MASSA_v1_9.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

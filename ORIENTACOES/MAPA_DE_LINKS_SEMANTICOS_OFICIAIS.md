@@ -1,24 +1,20 @@
-# Mapa de links semânticos oficiais
+﻿# Ponteiro de Governanca Movida
 
-CLASSIFICAÇÃO: PÚBLICO
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\MAPA_DE_LINKS_SEMANTICOS_OFICIAIS.md
+Destino classificado: GOVERNANCA_GERAL
 
-Sempre que uma expressão pública relevante aparecer em página, README, rodapé, menu ou botão, deve apontar para a página pública correspondente, quando houver.
+## Motivo
 
-| Expressão | Destino recomendado |
-|---|---|
-| Jus 9 Tecnologia Jurídica | https://www.jus9tecnologia.com.br/ |
-| Equipe | https://equipe.jus9tecnologia.com.br/ |
-| Investidores | https://investimentos.jus9tecnologia.com.br/ |
-| MVP | https://www.jus9tecnologia.com.br/mvp |
-| Charlie Echo | https://charlieecho.jus9tecnologia.com.br/ |
-| Charlie Echo Social | https://jus9verde.jus9tecnologia.com.br/charlie-echo-social#chat-social |
-| Jus9 Verde | https://jus9verde.jus9tecnologia.com.br/ |
-| Laboratório | https://laboratorio.jus9tecnologia.com.br/ |
-| Aeon Primevo | https://aeonprimevo.com.br/ |
-| CRETA | https://creta.org.br/trabalho-charlieecho |
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-## Regra do cabeçalho Jus 9
+## Onde esta o conteudo original
 
-No cabeçalho do site principal, o link **Equipe** deve ficar visível e, quando existir o item **Mais Direito**, deve aparecer imediatamente à esquerda dele.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\MAPA_DE_LINKS_SEMANTICOS_OFICIAIS.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\MAPA_DE_LINKS_SEMANTICOS_OFICIAIS.md
 
-© Jus 9 Tecnologia Jurídica — software livre, autoria preservada.
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

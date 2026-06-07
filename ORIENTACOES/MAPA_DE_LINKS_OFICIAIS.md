@@ -1,21 +1,20 @@
-# MAPA DE LINKS OFICIAIS — Jus 9 Tecnologia Jurídica
+﻿# Ponteiro de Governanca Movida
 
-Use estes destinos sempre que houver referência pública correspondente:
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: ORIENTACOES\MAPA_DE_LINKS_OFICIAIS.md
+Destino classificado: GOVERNANCA_GERAL
 
-- Jus 9 Tecnologia Jurídica: https://www.jus9tecnologia.com.br/
-- Equipe Jus 9 Tecnologia Jurídica: https://equipe.jus9tecnologia.com.br/
-- Investidores: https://investimentos.jus9tecnologia.com.br/
-- MVP: https://www.jus9tecnologia.com.br/mvp
-- Charlie Echo: https://charlieecho.jus9tecnologia.com.br/
-- Charlie Echo Social / Inteligência Artificial CRETA: https://jus9verde.jus9tecnologia.com.br/charlie-echo-social#chat-social
-- Jus9 Verde: https://jus9verde.jus9tecnologia.com.br/
-- Livros: https://livros.jus9tecnologia.com.br/
-- Carta: https://carta.jus9tecnologia.com.br/
-- Olá Mundo do Fundador / Aeon Primevo: https://olamundo.aeonprimevo.com.br/
-- Aeon Primevo: https://aeonprimevo.com.br/
+## Motivo
 
-## Regra semântica
+Governanca transversal da Jus 9 ou duvida de permanencia em GitHub.
 
-Sempre que aparecerem termos públicos como “Equipe”, “Investidores”, “MVP”, “Charlie Echo”, “Charlie Echo Social”, “Inteligência Artificial CRETA”, “Jus9 Verde”, “Política de Privacidade”, “Termos de Uso” ou “Contato”, verificar se há link clicável para a página pública adequada.
+## Onde esta o conteudo original
 
-Não criar links públicos para conteúdo secreto, cofre, dados sigilosos, chaves, tokens, `.env`, documentos de cliente ou segredo de justiça.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\ORIENTACOES\MAPA_DE_LINKS_OFICIAIS.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\ORIENTACOES\MAPA_DE_LINKS_OFICIAIS.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

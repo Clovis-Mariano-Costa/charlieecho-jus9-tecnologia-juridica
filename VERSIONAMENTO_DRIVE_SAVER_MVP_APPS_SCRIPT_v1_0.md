@@ -1,27 +1,20 @@
-# Versionamento - Drive Saver MVP Apps Script
+﻿# Ponteiro de Governanca Movida
 
-Classificacao: PUBLICO / VERSIONAMENTO / INTEGRACAO
-Versao: v1.0
-Data: 2026-06-06
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_DRIVE_SAVER_MVP_APPS_SCRIPT_v1_0.md
+Destino classificado: AUTOORGANIZACAO
 
-## O que foi criado
+## Motivo
 
-- `INTEGRACOES/JUS9_DRIVE_SAVER_MVP/Code.gs`
-- `INTEGRACOES/JUS9_DRIVE_SAVER_MVP/TESTES_MANUAIS.md`
-- `GOVERNANCA/PROTOCOLO_SALVAMENTO_JURIDICO_ASSISTIDO_CHARLIE_ECHO.md`
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-## Decisao
+## Onde esta o conteudo original
 
-O Apps Script sera usado como mini-backend gratuito para o MVP de salvamento no Google Drive.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_DRIVE_SAVER_MVP_APPS_SCRIPT_v1_0.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_DRIVE_SAVER_MVP_APPS_SCRIPT_v1_0.md
 
-## Limite do Cofre
+## Regra
 
-`04_COFRE_NAO_AUTOMATICO` permanece reservado ao Fundador.
-
-O MVP pode criar arquivo novo em `04_COFRE_NAO_AUTOMATICO`, com revisao humana obrigatoria.
-
-O MVP nao cria rota de edicao, exclusao ou sobrescrita.
-
-## Proximo passo
-
-Colar `Code.gs` no projeto Apps Script `JUS9_DRIVE_SAVER_MVP`, salvar, executar teste ficticio e somente depois avaliar publicacao como Web App.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

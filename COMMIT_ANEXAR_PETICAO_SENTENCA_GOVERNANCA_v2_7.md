@@ -1,11 +1,20 @@
-Summary:
-Adiciona botão Anexar e registra petição de governança da Charlie Echo
+﻿# Ponteiro de Governanca Movida
 
-Description:
-- adiciona botão Anexar na IA Estudantes e na IA Profissional
-- exibe lista visual de arquivos anexados e lê textos simples como contexto local
-- diferencia anexo local de upload seguro para documentos complexos, sigilosos ou sensíveis
-- inclui petição interna da Charlie Echo para governança, anexos e pacotes
-- inclui sentença interna sugerida do Fundador sobre governança, anexos e pacotes
-- registra regra operacional para pedidos de governança e trabalhos de tamanho médio ou grande
-- preserva revisão humana, autorização do Fundador e não alteração direta do DNA oficial
+Data: 2026-06-07 19:33:06 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: COMMIT_ANEXAR_PETICAO_SENTENCA_GOVERNANCA_v2_7.md
+Destino classificado: AUTOORGANIZACAO
+
+## Motivo
+
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\COMMIT_ANEXAR_PETICAO_SENTENCA_GOVERNANCA_v2_7.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\COMMIT_ANEXAR_PETICAO_SENTENCA_GOVERNANCA_v2_7.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

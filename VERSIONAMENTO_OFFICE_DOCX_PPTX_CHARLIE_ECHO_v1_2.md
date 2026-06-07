@@ -1,44 +1,20 @@
-# Versionamento - Office DOCX/PPTX Charlie Echo v1.2
+﻿# Ponteiro de Governanca Movida
 
-Data: 2026-06-05
-Classificacao: PUBLICO CONTROLADO / UX / DOWNLOADS
+Data: 2026-06-07 19:33:08 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: VERSIONAMENTO_OFFICE_DOCX_PPTX_CHARLIE_ECHO_v1_2.md
+Destino classificado: AUTOORGANIZACAO
 
-## Diagnostico
+## Motivo
 
-O PDF foi aprovado como exemplar e o ZIP estava completo.
+Historico/processo redundante da Charlie Echo para autoorganizacao.
 
-O DOCX ainda podia melhorar visualmente.
+## Onde esta o conteudo original
 
-O PPTX direto e o PPTX compactado nao abriam corretamente em alguns leitores.
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\VERSIONAMENTO_OFFICE_DOCX_PPTX_CHARLIE_ECHO_v1_2.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\VERSIONAMENTO_OFFICE_DOCX_PPTX_CHARLIE_ECHO_v1_2.md
 
-## Correcoes
+## Regra
 
-1. DOCX recebeu estrutura Office mais completa:
-   - propriedades `docProps`;
-   - estilos internos `word/styles.xml`;
-   - relacao `word/_rels/document.xml.rels`;
-   - margens de pagina;
-   - estilos para marca, subtitulo, titulo, metadados e texto.
-
-2. PPTX foi reconstruido com estrutura OOXML completa:
-   - `ppt/presentation.xml`;
-   - `ppt/slides/slide1.xml`;
-   - relacao do slide;
-   - slide master;
-   - slide layout;
-   - tema;
-   - propriedades de apresentacao;
-   - propriedades de visualizacao;
-   - propriedades de documento.
-
-3. ZIP preserva pacote completo e passa a incluir o PPTX corrigido.
-
-## Validacao
-
-Foram gerados arquivos de teste em Downloads:
-
-- `charlie-echo-teste-office-corrigido.docx`
-- `charlie-echo-teste-office-corrigido.pptx`
-- `charlie-echo-teste-office-corrigido.zip`
-
-Os arquivos foram validados como pacotes ZIP Office, com entradas obrigatorias presentes e XML bem formado.
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

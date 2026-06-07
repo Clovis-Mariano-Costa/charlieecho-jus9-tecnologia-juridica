@@ -1,10 +1,20 @@
-Summary:
-Ajusta voz feminina da Charlie Echo e corrige Enter/Limpar
+﻿# Ponteiro de Governanca Movida
 
-Description:
-- adiciona preferência por vozes femininas em português do Brasil para a leitura da Charlie Echo
-- inclui seletor discreto de voz na IA Estudantes e IA Profissional
-- implementa Enter para envio e Shift+Enter para quebra de linha
-- corrige a ação Limpar para reiniciar pergunta, resposta, status, áudio e foco
-- registra orientação operacional sobre voz, teclado e limpeza da tela
-- preserva o botão único de Download e a interface limpa
+Data: 2026-06-07 19:33:07 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: COMMIT_VOZ_FEMININA_ENTER_LIMPAR_v2_5.md
+Destino classificado: AUTOORGANIZACAO
+
+## Motivo
+
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\COMMIT_VOZ_FEMININA_ENTER_LIMPAR_v2_5.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\COMMIT_VOZ_FEMININA_ENTER_LIMPAR_v2_5.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.

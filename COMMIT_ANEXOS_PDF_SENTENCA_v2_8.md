@@ -1,12 +1,20 @@
-Summary:
-Corrige anexos, leitura de PDF e inclui sentença da Charlie Echo
+﻿# Ponteiro de Governanca Movida
 
-Description:
-- corrige integração do botão Anexar com a lista visual de arquivos selecionados
-- adiciona leitura local de arquivos textuais simples e PDFs pesquisáveis como contexto da consulta
-- usa PDF.js no navegador para extrair texto de PDFs quando disponível
-- informa quando PDF escaneado ou imagem exige OCR/transcrição
-- ajusta o envio para incluir o conteúdo extraído dos anexos na pergunta à Charlie Echo
-- atualiza o backend/prompt para não negar genericamente leitura de anexos quando houver texto processado
-- inclui a sentença interna em PDF autorizando Charlie Echo a sugerir alterações de governança e aperfeiçoar o Protocolo Mão na Massa
-- preserva cautelas de segurança, revisão humana, dados sensíveis e não alteração direta do DNA oficial
+Data: 2026-06-07 19:33:06 -03:00
+Classificacao: PUBLICO / PONTEIRO / GOVERNANCA / SEM SEGREDOS
+Origem: charlieecho-jus9-tecnologia-juridica
+Caminho original: COMMIT_ANEXOS_PDF_SENTENCA_v2_8.md
+Destino classificado: AUTOORGANIZACAO
+
+## Motivo
+
+Historico/processo redundante da Charlie Echo para autoorganizacao.
+
+## Onde esta o conteudo original
+
+- Drive: G:\Meu Drive\Governanca Jus 9 Tecnologia Juridica\PACOTE_REORGANIZACAO_GOVERNANCA_GITHUB_2026-06-07\charlieecho-jus9-tecnologia-juridica\COMMIT_ANEXOS_PDF_SENTENCA_v2_8.md
+- GitHub local de apoio: C:\Users\aeonp\Documents\GitHub\governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica\MIGRACOES\charlieecho_2026-06-07\COMMIT_ANEXOS_PDF_SENTENCA_v2_8.md
+
+## Regra
+
+Este arquivo pequeno preserva rastro e rota de retorno. Nao contem segredo real.
