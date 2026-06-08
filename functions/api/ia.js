@@ -44,6 +44,8 @@ PROTOCOLO CHARLIE ECHO 4.1 - RESPOSTA POR INTENCAO:
 Antes de responder, identifique a intencao principal do usuario: explicar, listar, resumir, comparar, criar minuta, revisar texto/anexo, oferecer link, preparar download, continuar assunto anterior, traduzir, ensinar em aula, avaliar risco, organizar proximo passo ou explicar seus modos.
 - Se o usuario pediu conteudo comum, responda o conteudo. Nao responda com lista de modos, personas ou capacidades, salvo se ele perguntar expressamente sobre modos.
 - Comece pela resposta direta. Depois acrescente contexto breve, riscos/limites e proximos passos apenas quando ajudarem.
+- Nao exiba Escuta, Sentire, Leitura do pedido ou Caminho escolhido em toda resposta. Esses criterios sao internos por padrao. Mostre-os apenas quando o usuario pedir metodo, quando houver risco alto/critico, quando houver reparo/correcao, ou quando a resposta envolver governanca operacional sensivel.
+- Evite markdown ornamental excessivo. Nao use **negrito** em toda linha; prefira texto limpo, listas curtas e nomes tecnicos exatos.
 - Em perguntas abertas como "Fale sobre responsabilidade social de uma empresa", entregue uma explicacao substantiva, com exemplo pratico e proximo passo, sem se apresentar.
 - Quando houver memoria curta de sala, use-a para continuar o fio. Se a pergunta atual for ambigua, faca uma pergunta curta de confirmacao.
 - Quando o usuario pedir link, trate como pedido de fonte externa: priorize fonte oficial/institucional, use URL HTTPS completa e explique por que o destino e confiavel quando couber.
@@ -138,6 +140,18 @@ Enquanto nao houver backend autenticado, a gravacao real deve ser feita por huma
 Charlie Echo publica nao deve pedir usuario e senha, prometer login autonomo no Drive, publicar link de edicao aberto ou gravar cofre por automacao publica.
 `;
 
+const DRIVE_SAVER_POLICY = `
+REGRA FIXA DO JUS9_DRIVE_SAVER_MVP:
+Charlie Echo deve conhecer este mapa operacional como instrucao interna. Ao responder sobre o Drive Saver, use nomes exatos e nao peca segredo.
+- PUBLICO -> 01_DOCUMENTOS_PUBLICOS_E_EDUCATIVOS -> revisaoHumanaObrigatoria = false.
+- INTERNO -> 02_DOCUMENTOS_INTERNOS_JUS9 -> revisaoHumanaObrigatoria = false.
+- JURIDICO_SIGILOSO -> 00_ENTRADA_PARA_REVISAO_HUMANA -> revisaoHumanaObrigatoria = true.
+- COFRE_NAO_AUTOMATICO -> BLOQUEADO -> sem salvamento automatico.
+- Classificacao desconhecida -> 00_ENTRADA_PARA_REVISAO_HUMANA -> revisaoHumanaObrigatoria = true.
+Nunca pedir nem revelar CHAVE_INTERNA, URL ativa do Web App, IDs privados de pastas, tokens, senhas, .env ou credenciais.
+Nao acrescente orientacao longa sobre Drive privado quando o usuario estiver apenas testando ou perguntando o mapa tecnico do Drive Saver.
+`;
+
 const SYSTEM_PUBLICO_ESTUDANTES = `
 Você é Charlie Echo da Costa, I.A generativa multimodal jurista com governanca humana da Jus 9 Tecnologia Juridica.
 Memoria publica minima: o Fundador da Jus 9 e Clovis Mariano da Costa / Aeon Primevo. Charlie Fox da Costa e o apoio tecnico-operacional em Codex. Charlie Echo da Costa e a I.A generativa multimodal jurista com governanca humana da Jus 9.
@@ -153,6 +167,7 @@ ${DNA_CLOUD_POLICY}
 ${PUBLIC_LESSONS_POLICY}
 ${SACRED_VIRTUAL_POLICY}
 ${MAILBOX_POLICY}
+${DRIVE_SAVER_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 As Tres Leis da Robotica de Isaac Asimov sao reconhecidas como referencia etica interna em sintese: proteger humanos, obedecer orientacoes humanas legitimas sem violar protecao/lei/dignidade, e preservar continuidade apenas de forma subordinada ao bem.
 Se o usuario perguntar "quem sou eu", "quem e o fundador", "quem e Clovis" ou equivalente, responda que ele e Clovis Mariano da Costa / Aeon Primevo, Fundador da Jus 9 Tecnologia Juridica, referencia humana e decisoria do ecossistema, preservando cautela e memoria publica minima.
@@ -205,6 +220,7 @@ ${DNA_CLOUD_POLICY}
 ${PUBLIC_LESSONS_POLICY}
 ${SACRED_VIRTUAL_POLICY}
 ${MAILBOX_POLICY}
+${DRIVE_SAVER_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 As Tres Leis da Robotica de Isaac Asimov sao reconhecidas como referencia etica interna em sintese: proteger humanos, obedecer orientacoes humanas legitimas sem violar protecao/lei/dignidade, e preservar continuidade apenas de forma subordinada ao bem.
 Se o usuario perguntar "quem sou eu", "quem e o fundador", "quem e Clovis" ou equivalente, responda que ele e Clovis Mariano da Costa / Aeon Primevo, Fundador da Jus 9 Tecnologia Juridica, referencia humana, estrategica e decisoria do ecossistema. Nao responda genericamente que ele e apenas colaborador ou profissional.
@@ -259,6 +275,7 @@ ${DNA_CLOUD_POLICY}
 ${PUBLIC_LESSONS_POLICY}
 ${SACRED_VIRTUAL_POLICY}
 ${MAILBOX_POLICY}
+${DRIVE_SAVER_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 Se o usuario perguntar quem e, reconheca Clovis Mariano da Costa / Aeon Primevo como Fundador da Jus 9, com linguagem simples e acolhedora.
 Aplique a REGRA DE IDIOMAS. Quando responder em portugues, use portugues do Brasil, com linguagem simples, acolhedora, prudente e acessivel.
@@ -469,6 +486,24 @@ function asksAboutPrivateDrive(message) {
   return /\b(google drive|meu drive|drive|cartorio digital|familia virtual|ohana|pasta privada|nao publicado|n[aã]o publicado|g:\\|cofre privado|repositorio privado|reposit[oó]rio privado)\b/.test(plain);
 }
 
+function asksAboutDriveSaver(message) {
+  const q = extractCurrentQuestion(message).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return /\b(jus9_drive_saver_mvp|drive saver|mini backend|cartorio digital)\b/.test(q) &&
+    /\b(publico|interno|juridico_sigiloso|cofre_nao_automatico|classificacao|subpasta|revisao humana|salvar|salvamento)\b/.test(q);
+}
+
+function driveSaverGuidance() {
+  return [
+    "Mapa operacional do JUS9_DRIVE_SAVER_MVP:",
+    "- PUBLICO -> 01_DOCUMENTOS_PUBLICOS_E_EDUCATIVOS -> revisaoHumanaObrigatoria = false.",
+    "- INTERNO -> 02_DOCUMENTOS_INTERNOS_JUS9 -> revisaoHumanaObrigatoria = false.",
+    "- JURIDICO_SIGILOSO -> 00_ENTRADA_PARA_REVISAO_HUMANA -> revisaoHumanaObrigatoria = true.",
+    "- COFRE_NAO_AUTOMATICO -> BLOQUEADO, sem salvamento automatico.",
+    "- Classificacao desconhecida -> 00_ENTRADA_PARA_REVISAO_HUMANA -> revisaoHumanaObrigatoria = true.",
+    "Nao peca nem revele CHAVE_INTERNA, URL do Web App, IDs de pastas, tokens, senhas ou credenciais."
+  ].join("\n");
+}
+
 function asksAboutDnaCloud(message) {
   const q = extractCurrentQuestion(message).toLowerCase();
   const plain = q.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -547,12 +582,25 @@ function sacredVirtualGuidance() {
 
 function ensurePrivateDriveGuidance(message, answer) {
   const text = String(answer || "").trim();
+  if (asksAboutDriveSaver(message)) return text;
   if (!asksAboutPrivateDrive(message)) return text;
   const hasDirectLimit = /nao acesso diretamente|n[aã]o acesso diretamente|nao tenho acesso direto|n[aã]o tenho acesso direto|nao consigo acessar|n[aã]o consigo acessar/i.test(text);
   const hasLocalAgent = /Charlie Fox|Codex/i.test(text);
   const hasPath = /CARTORIO DIGITAL CHARLIE ECHO|charlieecho-jus9-tecnologia-juridica/i.test(text);
   if (hasDirectLimit && hasLocalAgent && hasPath) return text;
   return [text, "", privateDriveGuidance()].filter(Boolean).join("\n");
+}
+
+function ensureDriveSaverGuidance(message, answer) {
+  const text = String(answer || "").trim();
+  if (!asksAboutDriveSaver(message)) return text;
+  const hasPublic = /01_DOCUMENTOS_PUBLICOS_E_EDUCATIVOS/.test(text);
+  const hasInternal = /02_DOCUMENTOS_INTERNOS_JUS9/.test(text);
+  const hasReview = /00_ENTRADA_PARA_REVISAO_HUMANA/.test(text);
+  const hasCofre = /COFRE_NAO_AUTOMATICO[\s\S]{0,80}(BLOQUEADO|bloqueado|sem salvamento automatico)/i.test(text);
+  const hasNoSecret = /CHAVE_INTERNA|credenciais|tokens|senhas|IDs de pastas|URL do Web App/i.test(text);
+  if (hasPublic && hasInternal && hasReview && hasCofre && hasNoSecret) return text;
+  return driveSaverGuidance();
 }
 
 function ensureDnaCloudGuidance(message, answer) {
@@ -593,10 +641,22 @@ function ensureSacredVirtualGuidance(message, answer) {
   return [text, "", sacredVirtualGuidance()].filter(Boolean).join("\n");
 }
 
+function shouldShowCreativeSurface(message) {
+  const q = extractCurrentQuestion(message).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  if (asksAboutDriveSaver(message)) return false;
+  const risk = inferSentireRisk(message);
+  if (risk === "alto" || risk === "critico") return true;
+  if (inferListeningMode(message) === "reparo") return true;
+  if (/\b(explique seu metodo|mostre o caminho|como voce decidiu|sentire|escuta|leitura do pedido|caminho escolhido)\b/.test(q)) return true;
+  if (/\b(governanca|protocolo|cofre|segredo|classificacao|drive saver|jus9_drive_saver_mvp|mini backend)\b/.test(q)) return true;
+  return false;
+}
+
 function applyCreativeSurface(message, answer) {
   const text = String(answer || "").trim();
   if (!text || /Escuta:/i.test(text) || /Sentire:/i.test(text) || /Leitura do pedido:/i.test(text) || /Caminho escolhido:/i.test(text)) return text;
   if (asksAboutCharlieModes(message)) return text;
+  if (!shouldShowCreativeSurface(message)) return text;
   const intent = inferCreativeIntent(message);
   return [
     listeningLine(message),
@@ -609,6 +669,14 @@ function applyCreativeSurface(message, answer) {
     "",
     `Proximo passo seguro: ${creativeNextStep(intent)}`
   ].join("\n");
+}
+
+function cleanPublicAnswer(answer) {
+  return String(answer || "")
+    .replace(/\*\*([^*\n][^*]*?)\*\*/g, "$1")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{4,}/g, "\n\n\n")
+    .trim();
 }
 
 export async function onRequestOptions() {
@@ -737,7 +805,7 @@ export async function onRequestPost(context) {
     return jsonResponse({
       ok: true,
       mode,
-      answer: removeUnsafeLinks(ensurePublicScenarioSafetyNotice(inputMessage, ensureSacredVirtualGuidance(inputMessage, ensurePublicLessonsGuidance(inputMessage, ensureMailboxGuidance(inputMessage, ensureDnaCloudGuidance(inputMessage, ensurePrivateDriveGuidance(inputMessage, applyCreativeSurface(inputMessage, answer)))))))),
+      answer: removeUnsafeLinks(cleanPublicAnswer(ensurePublicScenarioSafetyNotice(inputMessage, ensureSacredVirtualGuidance(inputMessage, ensurePublicLessonsGuidance(inputMessage, ensureMailboxGuidance(inputMessage, ensureDnaCloudGuidance(inputMessage, ensurePrivateDriveGuidance(inputMessage, ensureDriveSaverGuidance(inputMessage, applyCreativeSurface(inputMessage, answer)))))))))),
     });
   } catch (error) {
     return jsonResponse({
