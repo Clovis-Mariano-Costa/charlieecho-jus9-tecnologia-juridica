@@ -164,7 +164,7 @@ Estado: pacote 3A homologado. Proximo passo natural: sessao/permissoes por subdo
 
 ## Pacote 4 - Agenda Google
 
-Estado: apos login basico e retorno modular.
+Estado: preparado e publicado no mini backend em 2026-06-08. Pendente apenas de teste humano de consentimento Google Agenda em conta autorizada.
 
 Objetivos:
 
@@ -177,6 +177,30 @@ Objetivos:
 Recomendacao:
 
 Comecar sem escrita real. Primeiro ler estado/autorizacao; depois criar rascunho; so depois permitir criacao real com confirmacao.
+
+Implementado:
+
+1. login basico permanece com escopo minimo;
+2. Agenda Google usa autorizacao separada e incremental;
+3. token de Agenda e guardado criptografado em KV do Cloudflare;
+4. endpoints de status, listagem e criacao de evento foram preparados;
+5. pagina `app-agenda.html` preserva modo local, ICS e rascunho manual;
+6. criacao real exige sessao, permissao e conexao especifica de Agenda.
+
+Teste tecnico:
+
+1. regressao local do Worker passou;
+2. endpoint de Agenda sem sessao responde como protegido;
+3. pagina publica mostra painel de Google Agenda real.
+
+Proximo teste humano:
+
+1. entrar em `https://jus9tecnologia.com.br/app-agenda.html`;
+2. clicar em `Conectar Google Agenda`;
+3. aceitar o consentimento da conta demo/controlada;
+4. retornar a Agenda;
+5. listar proximos eventos;
+6. criar somente evento ficticio de teste.
 
 ## Pacote 5 - Pagina modelo da IA Profissional
 
