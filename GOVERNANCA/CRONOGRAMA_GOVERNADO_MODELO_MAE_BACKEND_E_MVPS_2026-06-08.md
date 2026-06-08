@@ -44,7 +44,15 @@ Saida esperada:
 
 ## Pacote 2 - Login Google real e conta demonstrativa
 
-Estado: proximo pacote tecnico.
+Estado: parcialmente publicado e aguardando configuracao segura.
+
+Situacao em 2026-06-08:
+
+1. o botao publico `Entrar com Google` ja aparece no MVP;
+2. a rota `/auth/google/start` ja responde no Worker;
+3. sem variaveis reais, a rota exibe aviso seguro de configuracao pendente;
+4. o aviso visto em tela nao e erro de usuario: e o bloqueio seguro antes do OAuth real;
+5. o proximo passo nao e mexer no frontend; e configurar variaveis seguras no ambiente Cloudflare e Google Cloud.
 
 Objetivos:
 
@@ -53,6 +61,7 @@ Objetivos:
 3. Preparar conta demonstrativa para evento.
 4. Separar usuario visitante, lider/pre-cadastro, operador autorizado e administrador humano.
 5. Mapear telas que continuam publicas, telas com login real e telas de demonstracao controlada.
+6. Validar redirecionamento OAuth real somente com conta demonstrativa autorizada.
 
 Salvaguardas:
 
@@ -61,6 +70,18 @@ Salvaguardas:
 3. nao pedir senha Google em chat;
 4. usar backend autenticado ou provedor adequado;
 5. registrar termos minimos de uso e aviso de MVP.
+6. manter `AUTH_ENFORCE_API=false` ate sessao e permissoes estarem testadas;
+7. comecar `AUTH_ALLOWED_EMAILS` com apenas conta demonstrativa controlada.
+
+Subetapas:
+
+1. Visual do botao no MVP: concluido.
+2. Publicacao Worker Assets: concluida.
+3. Rota segura `/auth/google/start`: concluida em modo bloqueio seguro.
+4. Variaveis Cloudflare: pendente de configuracao humana sem exposicao de segredo.
+5. Projeto/credencial OAuth no Google Cloud: pendente de configuracao humana.
+6. Teste com conta demo autorizada: pendente.
+7. Registro do resultado e revisao de pacote: pendente.
 
 ## Pacote 3 - Agenda Google
 
