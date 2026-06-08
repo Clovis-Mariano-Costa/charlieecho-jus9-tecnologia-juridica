@@ -259,6 +259,32 @@ Pendente:
 2. ajustes esteticos finos por modulo;
 3. revisao de botoes, menus laterais e paginas dedicadas por modulo.
 
+## Pacote 6B - Memoria governada local e configuracoes do usuario
+
+Estado: implementado em primeira versao em 2026-06-08.
+
+Objetivos:
+
+1. ampliar memoria da Charlie Echo;
+2. tornar memoria acessivel ao usuario;
+3. permitir exportar, editar e limpar memoria;
+4. criar configuracoes de resposta sob controle do usuario;
+5. preparar caminho para memoria autenticada futura.
+
+Implementado:
+
+1. memoria de sala migrou para `localStorage`;
+2. historico ampliado para 96 mensagens por padrao, configuravel ate 160;
+3. painel `Abrir memoria` criado;
+4. painel `Configuracoes` criado;
+5. contexto enviado para Charlie Echo passou a incluir preferencias, decisoes, pendencias e historico recente.
+
+Pendente:
+
+1. homologacao humana do painel;
+2. decidir quando migrar memoria local para backend autenticado;
+3. revisar politica/termos antes de memoria com dados reais.
+
 ## Pacote 7 - Revisao geral de informacoes
 
 Estado: obrigatorio antes de evento ou uso real.
