@@ -85,3 +85,19 @@ Perfil de Charlie Juris:
 Cadastros iniciais:
 
 `https://equipe.jus9tecnologia.com.br/cadastros.html`
+
+## Backend operacional
+
+O portal principal disponibiliza a rota governada:
+
+`GET https://jus9tecnologia.com.br/api/auth/context`
+
+Uso esperado:
+
+- reconhecer perfil operacional;
+- reconhecer origem governada;
+- reconhecer modulo/MVP ativo;
+- reconhecer Fundador Humano e Familia Virtual quando a sessao permitir;
+- orientar a resposta sem repetir bastidores, hashes, e-mails, tokens ou dados sensiveis.
+
+Essa rota nao substitui revisao humana, nao libera cofre e nao autoriza dado real sozinha.
