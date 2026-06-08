@@ -282,14 +282,18 @@ Implementado:
 7. regra de pesquisa juridica mantida para fontes, links, jurisprudencia e inteiro teor;
 8. pacote da sala passou a oferecer links clicaveis para PDF e roteiro em texto;
 9. corrigida a raiz da classificacao: `doutrina` isolada nao e mais gatilho automatico de pesquisa guiada;
-10. `Sentire`, `Escuta`, `Leitura do pedido` e `Caminho escolhido` reforcados como criterios internos por padrao.
+10. `Sentire`, `Escuta`, `Leitura do pedido` e `Caminho escolhido` reforcados como criterios internos por padrao;
+11. troca de salas, limpeza de sala e exclusao/arquivamento passaram a renderizar a janela correta;
+12. chat dedicado recebeu lateral de salas, painel de configuracoes amplo e preferencia de rolagem automatica.
 
 Pendente:
 
 1. homologacao humana do painel;
 2. decidir quando migrar memoria local para backend autenticado;
 3. revisar politica/termos antes de memoria com dados reais;
-4. homologar com pergunta de doutrina, pergunta de jurisprudencia e geracao de pacote por download.
+4. homologar com pergunta de doutrina, pergunta de jurisprudencia e geracao de pacote por download;
+5. homologar troca de sala, limpeza, rolagem automatica e painel amplo;
+6. evoluir para configuracoes globais do usuario autenticado.
 
 ## Pacote 7 - Revisao geral de informacoes
 
