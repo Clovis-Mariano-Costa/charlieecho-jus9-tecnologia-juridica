@@ -193,18 +193,18 @@ Teste tecnico:
 2. endpoint de Agenda sem sessao responde como protegido;
 3. pagina publica mostra painel de Google Agenda real.
 
-Homologacao humana parcial:
+Homologacao humana concluida:
 
 1. login Google passou;
 2. consentimento de Agenda passou;
 3. Google Calendar API foi ativada;
-4. listagem de evento real passou em `app-agenda.html`.
+4. listagem de evento real passou em `app-agenda.html`;
+5. criacao de evento ficticio controlado passou;
+6. evento `Teste ficticio Agenda Jus 9` apareceu na listagem.
 
-Proximo teste humano:
+Estado final:
 
-1. criar somente evento ficticio de teste;
-2. confirmar aparicao do evento no Google Calendar;
-3. apagar o evento ficticio se nao for necessario preservar prova de homologacao.
+Pacote 4 fechado em leitura e escrita controlada. Se a prova nao precisar ser preservada, apagar o evento ficticio no Google Calendar. Proximo pacote: pagina modelo da IA Profissional.
 
 ## Pacote 5 - Pagina modelo da IA Profissional
 

@@ -20,14 +20,16 @@ O mini backend da Jus 9 recebeu preparo real para Google Agenda:
 
 Tecnico publicado.
 
-Homologacao humana parcial concluida:
+Homologacao humana concluida:
 
 1. login passou;
 2. consentimento passou;
 3. Google Calendar API foi ativada;
-4. listagem de evento real passou.
+4. listagem de evento real passou;
+5. criacao de evento ficticio controlado passou;
+6. evento `Teste ficticio Agenda Jus 9` apareceu na listagem.
 
-Pendente apenas criacao de evento ficticio controlado.
+Pacote 4 fechado em leitura e escrita controlada.
 
 ## Seguranca
 
@@ -35,8 +37,5 @@ Este registro nao contem token, refresh token, cookie, segredo, chave, URL de ca
 
 ## Proximo passo
 
-Homologar no navegador:
-
-1. criar evento ficticio;
-2. confirmar que nenhum dado real foi utilizado;
-3. apagar o evento ficticio apos a prova, se cabivel.
+1. apagar o evento ficticio se nao for necessario preservar prova de homologacao;
+2. avancar para Pacote 5: pagina modelo da IA Profissional.
