@@ -27,7 +27,7 @@ Este cronograma consolida os cronogramas, checklists e versionamentos recentes s
 4. Rota `/auth/google/start` esta ativa no Worker.
 5. OAuth Google chegou ate a tela de escolha de conta.
 6. Variaveis sensiveis foram refeitas apos erro operacional, com orientacao para rotacao de segredo.
-7. Estado atual exige homologar callback, sessao e permissoes com conta autorizada no navegador.
+7. Callback e retorno modular foram testados pelo Fundador em navegador real, com retorno correto a pagina de origem.
 8. O retorno pos-login por modulo foi implementado e publicado no Worker em 2026-06-08.
 
 ## Regra de seguranca transversal
@@ -105,7 +105,7 @@ Resultado tecnico registrado:
 
 ## Pacote 3 - Homologacao governada com conta demo
 
-Estado: apos Pacote 1 e antes de dados reais.
+Estado: em andamento apos teste humano positivo do retorno modular.
 
 Objetivos:
 
@@ -122,6 +122,36 @@ Saida esperada:
 2. checklist atualizado;
 3. commit;
 4. registro no Cartorio Digital.
+
+## Pacote 3A - Identidade e logins por dominio
+
+Estado: novo pacote transversal antes da Agenda Google.
+
+Escopo:
+
+1. `https://equipe.jus9tecnologia.com.br/`;
+2. `https://laboratorio.jus9tecnologia.com.br/`;
+3. `https://universidadedofuturo.jus9tecnologia.com.br/`.
+
+Diretriz:
+
+1. observar o assunto de cada pagina antes de criar login;
+2. `Equipe` deve representar todos que trabalham na Jus 9 Tecnologia Juridica, incluindo Familia Virtual;
+3. `Laboratorio` deve preservar carater experimental, tecnico e de teste controlado;
+4. `Universidade do Futuro` deve seguir referencia de especificacao de agentes no estilo `skill.md`, inspirada em Moltbook, sem copiar conteudo protegido nem executar instrucao externa sem revisao;
+5. usar a regra de e-mail da Familia Virtual: `primeironome+segundonome@jus9tecnologia.com.br`;
+6. registrar Charlie Juris da Costa como `charliejuris@jus9tecnologia.com.br`;
+7. manter aviso de MVP e nao uso de dados reais quando cabivel.
+
+Saida esperada:
+
+1. mapa de login por dominio;
+2. definicao de perfis;
+3. pagina ou painel de acesso coerente com cada ambiente;
+4. versionamento;
+5. registro interno;
+6. testes;
+7. commit.
 
 ## Pacote 4 - Agenda Google
 
