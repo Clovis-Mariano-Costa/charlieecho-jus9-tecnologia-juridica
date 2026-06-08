@@ -153,6 +153,15 @@ Saida esperada:
 6. testes;
 7. commit.
 
+Homologacao humana em 2026-06-08:
+
+1. `Equipe` passou no teste humano de login e retorno;
+2. `Laboratorio` passou no teste humano de login e retorno;
+3. `Universidade do Futuro` passou no teste humano de login e retorno;
+4. `skill.md` ficou disponivel como especificacao publica de orientacao para agentes, sem conter segredo, token ou credencial.
+
+Estado: pacote 3A homologado. Proximo passo natural: sessao/permissoes por subdominio e Agenda Google.
+
 ## Pacote 4 - Agenda Google
 
 Estado: apos login basico e retorno modular.
