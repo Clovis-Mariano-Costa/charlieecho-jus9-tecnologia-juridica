@@ -277,13 +277,17 @@ Implementado:
 2. historico ampliado para 96 mensagens por padrao, configuravel ate 160;
 3. painel `Abrir memoria` criado;
 4. painel `Configuracoes` criado;
-5. contexto enviado para Charlie Echo passou a incluir preferencias, decisoes, pendencias e historico recente.
+5. contexto enviado para Charlie Echo passou a incluir preferencias, decisoes, pendencias e historico recente;
+6. regra de doutrina ajustada: produzir sintese doutrinaria quando o pedido for de conteudo, sem inventar autor, obra, pagina ou citacao;
+7. regra de pesquisa juridica mantida para fontes, links, jurisprudencia e inteiro teor;
+8. pacote da sala passou a oferecer links clicaveis para PDF e roteiro em texto.
 
 Pendente:
 
 1. homologacao humana do painel;
 2. decidir quando migrar memoria local para backend autenticado;
-3. revisar politica/termos antes de memoria com dados reais.
+3. revisar politica/termos antes de memoria com dados reais;
+4. homologar com pergunta de doutrina, pergunta de jurisprudencia e geracao de pacote por download.
 
 ## Pacote 7 - Revisao geral de informacoes
 
