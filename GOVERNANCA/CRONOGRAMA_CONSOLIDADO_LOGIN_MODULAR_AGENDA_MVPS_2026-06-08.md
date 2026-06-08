@@ -27,8 +27,8 @@ Este cronograma consolida os cronogramas, checklists e versionamentos recentes s
 4. Rota `/auth/google/start` esta ativa no Worker.
 5. OAuth Google chegou ate a tela de escolha de conta.
 6. Variaveis sensiveis foram refeitas apos erro operacional, com orientacao para rotacao de segredo.
-7. Estado atual exige validar callback, sessao e permissoes.
-8. O retorno pos-login ainda esta fixo em `app.html`; isso deve evoluir para retorno governado ao modulo de origem.
+7. Estado atual exige homologar callback, sessao e permissoes com conta autorizada no navegador.
+8. O retorno pos-login por modulo foi implementado e publicado no Worker em 2026-06-08.
 
 ## Regra de seguranca transversal
 
@@ -58,15 +58,15 @@ Saida esperada:
 
 ## Pacote 2 - Retorno ao modulo de origem apos login
 
-Estado: proximo pacote tecnico recomendado.
+Estado: implementado e publicado em 2026-06-08.
 
 Problema:
 
-O login atual usa `AUTH_SUCCESS_REDIRECT=https://jus9tecnologia.com.br/app.html`, fazendo todo usuario voltar ao app geral.
+O login usava `AUTH_SUCCESS_REDIRECT=https://jus9tecnologia.com.br/app.html`, fazendo todo usuario voltar ao app geral.
 
 Decisao recomendada:
 
-Criar retorno governado por modulo, sem permitir redirecionamento aberto.
+Retorno governado por modulo criado, sem permitir redirecionamento aberto.
 
 Modelo:
 
@@ -93,6 +93,15 @@ Saida esperada:
 2. login feito a partir da Agenda retorna para Agenda;
 3. login feito a partir do MVP geral retorna para o painel adequado;
 4. fallback continua seguro.
+
+Resultado tecnico registrado:
+
+1. commit `cd24836` em `jus9-tecnologia-juridica`;
+2. Worker publicado com version ID `5ebc91aa-66b6-46fd-96de-323f5062984c`;
+3. teste local `WORKER_AUTH_REGRESSION_OK`;
+4. teste online confirmou redirecionamento `302` para Google com `return_to` interno;
+5. `return_to` externo bloqueado em regressao local;
+6. registros copiados ao Cartorio Digital interno.
 
 ## Pacote 3 - Homologacao governada com conta demo
 
