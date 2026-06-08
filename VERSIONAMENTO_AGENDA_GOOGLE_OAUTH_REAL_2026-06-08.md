@@ -20,7 +20,14 @@ O mini backend da Jus 9 recebeu preparo real para Google Agenda:
 
 Tecnico publicado.
 
-Pendente teste humano de consentimento em conta demo/controlada.
+Homologacao humana parcial concluida:
+
+1. login passou;
+2. consentimento passou;
+3. Google Calendar API foi ativada;
+4. listagem de evento real passou.
+
+Pendente apenas criacao de evento ficticio controlado.
 
 ## Seguranca
 
@@ -30,8 +37,6 @@ Este registro nao contem token, refresh token, cookie, segredo, chave, URL de ca
 
 Homologar no navegador:
 
-1. abrir Agenda;
-2. conectar Google Agenda;
-3. listar eventos;
-4. criar evento ficticio;
-5. confirmar que nenhum dado real foi utilizado.
+1. criar evento ficticio;
+2. confirmar que nenhum dado real foi utilizado;
+3. apagar o evento ficticio apos a prova, se cabivel.
