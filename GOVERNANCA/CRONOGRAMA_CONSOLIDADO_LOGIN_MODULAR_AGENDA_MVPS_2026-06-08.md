@@ -208,7 +208,7 @@ Pacote 4 fechado em leitura e escrita controlada. Se a prova nao precisar ser pr
 
 ## Pacote 5 - Pagina modelo da IA Profissional
 
-Estado: apos login modular minimo.
+Estado: primeira versao implementada em 2026-06-08.
 
 Objetivos:
 
@@ -218,6 +218,22 @@ Objetivos:
 4. usar menu lateral com navegacao modular;
 5. manter paleta e aroma do modulo;
 6. manter aviso de MVP e dados ficticios.
+
+Implementado:
+
+1. criada pagina dedicada `app-chat-charlie-echo.html`;
+2. criada rota curta `/chat-charlie`;
+3. `app-ia-profissional.html` passou a apontar para o chat dedicado;
+4. prompt externo da Charlie Echo foi limpo para nao repetir cabecalhos internos em toda resposta;
+5. renderizacao visual de respostas ganhou tratamento de titulos, bullets, negrito e links;
+6. aviso de MVP fica preservado por risco, sem repeticao automatica desnecessaria.
+
+Proximo teste humano:
+
+1. abrir `https://jus9tecnologia.com.br/chat-charlie`;
+2. fazer uma pergunta simples e verificar resposta limpa;
+3. fazer uma pergunta com risco/dado real ficticio e verificar se o limite aparece;
+4. testar `Melhorar resposta`, `Fontes`, `Atualizar resumo` e `Gerar PDF`.
 
 ## Pacote 6 - Replicacao para os MVPs
 
