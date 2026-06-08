@@ -237,7 +237,7 @@ Proximo teste humano:
 
 ## Pacote 6 - Replicacao para os MVPs
 
-Estado: apos validar a IA Profissional como modelo.
+Estado: iniciado em 2026-06-08 apos primeira versao do chat modelo.
 
 Objetivos:
 
@@ -246,6 +246,18 @@ Objetivos:
 3. preservar persona ambiental de cada modulo;
 4. atualizar links semanticos;
 5. testar chat, sala, memoria, anexos, OCR, downloads e rotas.
+
+Executado:
+
+1. script compartilhado da Charlie Echo atualizado em todas as paginas `app*.html`;
+2. cache-bust novo aplicado para puxar `script.js?v=20260608-chat-modelo-v1`;
+3. padrao de resposta limpa passa a alcançar os MVPs que usam o script compartilhado.
+
+Pendente:
+
+1. teste humano em cada persona ambiental;
+2. ajustes esteticos finos por modulo;
+3. revisao de botoes, menus laterais e paginas dedicadas por modulo.
 
 ## Pacote 7 - Revisao geral de informacoes
 
