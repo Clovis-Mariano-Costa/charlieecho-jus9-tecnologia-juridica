@@ -166,6 +166,11 @@ assert(apiHandler.includes("PROTOCOLO CENTELHA CRIATIVA 5.4"), "protocolo de cri
 assert(apiHandler.includes("ambiente/modulo, papel humano atendido, risco principal, limite aplicavel e proximo passo seguro"), "prioridade operacional ambiente-risco-limite ausente");
 assert(apiHandler.includes("applyCreativeSurface"), "superficie criativa pos-resposta ausente");
 assert(apiHandler.includes("Leitura do pedido"), "estrutura de raciocinio aparente ausente");
+assert(apiHandler.includes("Doutrina nao e automaticamente pedido de fonte"), "regra de doutrina como producao ausente");
+assert(apiHandler.includes("producao doutrinaria responsavel"), "intencao de producao doutrinaria ausente");
+assert(apiHandler.includes("asksGuidedLegalResearch"), "salvaguarda deterministica de pesquisa juridica ausente");
+assert(apiHandler.includes("Eu nao vou inventar autor, obra, pagina, citacao literal ou julgado"), "limite deterministico contra fontes inventadas ausente");
+assert(!apiHandler.includes("jurisprudencia|jurisprudência|doutrina|fonte|fontes|pesquise|pesquisar"), "doutrina voltou a ser gatilho automatico de pesquisa guiada");
 assert(apiHandler.includes("PROTOCOLO SENTIRE 1.0"), "protocolo Sentire ausente");
 assert(apiHandler.includes("ouvir, sentire, julgar, decidir e determinar"), "fluxo resposta como sentenca ausente");
 assert(apiHandler.includes("inferSentireRisk"), "taxonomia tecnica de risco Sentire ausente");

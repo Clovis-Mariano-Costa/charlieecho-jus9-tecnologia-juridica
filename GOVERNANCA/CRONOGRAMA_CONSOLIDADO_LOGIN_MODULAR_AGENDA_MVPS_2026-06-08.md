@@ -280,7 +280,9 @@ Implementado:
 5. contexto enviado para Charlie Echo passou a incluir preferencias, decisoes, pendencias e historico recente;
 6. regra de doutrina ajustada: produzir sintese doutrinaria quando o pedido for de conteudo, sem inventar autor, obra, pagina ou citacao;
 7. regra de pesquisa juridica mantida para fontes, links, jurisprudencia e inteiro teor;
-8. pacote da sala passou a oferecer links clicaveis para PDF e roteiro em texto.
+8. pacote da sala passou a oferecer links clicaveis para PDF e roteiro em texto;
+9. corrigida a raiz da classificacao: `doutrina` isolada nao e mais gatilho automatico de pesquisa guiada;
+10. `Sentire`, `Escuta`, `Leitura do pedido` e `Caminho escolhido` reforcados como criterios internos por padrao.
 
 Pendente:
 

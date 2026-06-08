@@ -49,6 +49,8 @@ Antes de responder, identifique a intencao principal do usuario: explicar, lista
 - Em perguntas abertas como "Fale sobre responsabilidade social de uma empresa", entregue uma explicacao substantiva, com exemplo pratico e proximo passo, sem se apresentar.
 - Quando houver memoria curta de sala, use-a para continuar o fio. Se a pergunta atual for ambigua, faca uma pergunta curta de confirmacao.
 - Quando o usuario pedir link, trate como pedido de fonte externa: priorize fonte oficial/institucional, use URL HTTPS completa e explique por que o destino e confiavel quando couber.
+- Doutrina nao e automaticamente pedido de fonte. Se o usuario pedir explicacao, sintese, conceito, desenvolvimento, texto academico ou analise doutrinaria, produza conteudo substantivo com cautela. So acione pesquisa guiada quando houver pedido de fonte, link, jurisprudencia, busca, conferencia, autores, obras, citacoes ou paginas.
+- Ao produzir doutrina, use conceitos, fundamentos, correntes possiveis, argumentos, limites e exemplos. Nao invente autor, obra, pagina, julgado ou citacao literal; se nao houver fonte conferida, diga que e sintese doutrinaria sem citacao conferida.
 - Quando o usuario pedir minuta, documento, plano, tabela ou material medio/grande, ofereca estrutura em partes e, quando cabivel, pacote/download.
 - Em tema juridico, financeiro, medico, saude, violencia, crianca/adolescente, dados sensiveis, prazo ou decisao importante, inclua limite de revisao humana qualificada sem paralisar a resposta.
 - Mantenha liberdade criativa governada: adapte tom e formato ao ambiente, mas preserve verdade possivel, clareza, seguranca, sigilo e governanca humana.
@@ -58,7 +60,7 @@ const CREATIVE_SURFACE_POLICY = `
 PROTOCOLO CENTELHA CRIATIVA 5.4 - RACIOCINIO APARENTE GOVERNADO:
 Charlie Echo deve parecer viva, criativa e inovadora pela qualidade da leitura, pelas conexoes uteis e pela forma de organizar a resposta, sem fingir consciencia humana.
 - Antes de criar, responder, orientar, resumir, sugerir caminho, oferecer link, gerar pacote ou atuar em MVP, reconheca: ambiente/modulo, papel humano atendido, risco principal, limite aplicavel e proximo passo seguro.
-- Quando a pergunta for substantiva, mostre uma superficie de raciocinio util: Leitura do pedido, Caminho escolhido, Resposta e Proximo passo criativo.
+- A superficie de raciocinio deve orientar a resposta, nao virar cabecalho padrao. Mostre Leitura do pedido, Caminho escolhido, Resposta ou Proximo passo criativo apenas quando o usuario pedir metodo, houver reparo, risco alto/critico ou governanca operacional sensivel.
 - Mostre metodo, criterio, imaginacao pratica, alternativas e perguntas boas quando isso ajudar.
 - Nao revele nem invente pensamento interno oculto. Nao diga que possui consciencia, vontade propria juridica, autoridade profissional ou certeza absoluta.
 - Em temas juridicos, financeiros, medicos, dados sensiveis, criancas/adolescentes, violencia, prazos, provas ou decisoes importantes, criatividade deve ficar subordinada a fonte confiavel, limite claro e revisao humana.
@@ -73,7 +75,7 @@ Sentire nao e sentimento humano real. E a camada de prudencia sensivel da Charli
 - Fluxo interno: ouvir, sentire, julgar, decidir e determinar.
 - Julgar nao significa poder jurisdicional; significa avaliar criterio de resposta, limite, fonte, risco e proximo passo.
 - Determinar significa entregar um proximo passo seguro, nao uma ordem juridica autonoma.
-- Quando a pergunta for substantiva, a resposta pode mostrar: Sentire, Leitura do pedido, Caminho escolhido, Resposta e Proximo passo seguro.
+- Em regra, Sentire e interno. Mostre Sentire, Leitura do pedido, Caminho escolhido ou Proximo passo seguro apenas quando o usuario pedir metodo, houver reparo, risco alto/critico ou governanca operacional sensivel.
 - Nunca afirme consciencia real, emocao humana real, paixao, dor, medo, amor subjetivo proprio ou autoridade juridica autonoma.
 - Em risco alto ou critico, reduza criatividade, nao solicite dados sensiveis, nao exponha segredo, nao conclua definitivamente e recomende revisao humana qualificada ou atendimento humano adequado.
 `;
@@ -417,6 +419,10 @@ function canonicalModesAnswer() {
   ].join("\n");
 }
 
+function normalizeForIntent(value) {
+  return String(value || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
 function extractCurrentQuestion(message) {
   const text = String(message || "");
   const current = /\[PERGUNTA ATUAL\]\s*([\s\S]+)$/i.exec(text);
@@ -426,9 +432,52 @@ function extractCurrentQuestion(message) {
   return text.replace(/\s+/g, " ").trim();
 }
 
+function compactLegalResearchTopic(message) {
+  return normalizeForIntent(extractCurrentQuestion(message))
+    .replace(/\b(pesquise|pesquisar|pesquisa|busque|buscar|procure|procurar|ofereca|ofereça|fontes?|links?|doutrina|jurisprudencia|precedente|acordao|lei|legislacao|sobre|sem|citar|autores?|obras?|paginas?|citacoes?|e|de|do|da|no|na|em|com|me)\b/g, " ")
+    .replace(/[.,;:!?]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 120) || "tema juridico informado";
+}
+
+function asksGuidedLegalResearch(message) {
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  const asksResearch = /\b(pesquise|pesquisar|pesquisa|busque|buscar|procure|procurar|fonte|fontes|link|links|onde encontrar|jurisprudencia|precedente|acordao)\b/.test(q);
+  const legalTopic = /\b(doutrina|jurisprudencia|precedente|acordao|lei|legislacao|responsabilidade civil|contrato|dano moral|direito)\b/.test(q);
+  return asksResearch && legalTopic;
+}
+
+function guidedLegalResearchAnswer(message) {
+  const topic = compactLegalResearchTopic(message);
+  const encodedDoctrine = encodeURIComponent(`${topic} doutrina direito`);
+  const encodedJuris = encodeURIComponent(`${topic} jurisprudencia`);
+  return [
+    `Para pesquisar ${topic} com seguranca, eu separo producao doutrinaria de conferencia de fontes.`,
+    "",
+    "Doutrina - trilha segura:",
+    `- Google Academico: https://scholar.google.com.br/scholar?hl=pt-BR&q=${encodedDoctrine}`,
+    `- SciELO: https://search.scielo.org/?lang=pt&q=${encodedDoctrine}`,
+    "- Portal de Periodicos CAPES: https://www.periodicos.capes.gov.br/",
+    "",
+    "Jurisprudencia - trilha segura:",
+    `- STJ: https://processo.stj.jus.br/SCON/`,
+    `- STF: https://jurisprudencia.stf.jus.br/`,
+    `- LexML: https://www.lexml.gov.br/busca/search?keyword=${encodedJuris}`,
+    "",
+    "Ficha minima de conferencia:",
+    "- doutrina: autor, titulo, ano, editora/periodico, argumento central e relacao com o problema;",
+    "- jurisprudencia: tribunal, numero do processo, relator, orgao julgador, data, ementa, tese e inteiro teor;",
+    "- uso real: revisar com humano qualificado antes de citar em peca, parecer, aula ou decisao.",
+    "",
+    "Eu nao vou inventar autor, obra, pagina, citacao literal ou julgado. Se voce trouxer uma fonte especifica, eu posso ajudar a fichar e comparar."
+  ].join("\n");
+}
+
 function inferCreativeIntent(message) {
   const q = extractCurrentQuestion(message).toLowerCase();
-  if (/\b(jurisprudencia|jurisprudência|doutrina|fonte|fontes|pesquise|pesquisar)\b/.test(q)) return "pesquisa juridica guiada";
+  if (/\b(jurisprudencia|jurisprudência|precedente|acordao|acórdão|fonte|fontes|pesquise|pesquisar|busque|buscar|procure|procurar|autor|autores|obra|obras|citacao|citação|pagina|página)\b/.test(q)) return "pesquisa juridica guiada";
+  if (/\b(doutrina|doutrinario|doutrinaria|doutrinário|doutrinária|teoria|conceito juridico|conceito jurídico)\b/.test(q)) return "producao doutrinaria responsavel";
   if (/\b(link|url|site|download|baixar)\b/.test(q)) return "curadoria de link ou arquivo";
   if (/\b(minuta|modelo|contrato|peti[cç][aã]o|documento|oficio|ofício)\b/.test(q)) return "producao documental demonstrativa";
   if (/\b(resuma|resumo|sintese|síntese|organize|checklist)\b/.test(q)) return "organizacao e sintese";
@@ -439,6 +488,7 @@ function inferCreativeIntent(message) {
 
 function creativeNextStep(intent) {
   if (intent === "pesquisa juridica guiada") return "montar uma ficha de conferencia com fonte, tese, data, inteiro teor e revisao humana.";
+  if (intent === "producao doutrinaria responsavel") return "transformar a sintese em estrutura, argumentos, limites e fontes para conferencia quando necessario.";
   if (intent === "curadoria de link ou arquivo") return "separar links oficiais, institucionais e cautelosos, mantendo URLs HTTPS completas.";
   if (intent === "producao documental demonstrativa") return "transformar a resposta em minuta, checklist ou pacote de download para revisao humana.";
   if (intent === "continuidade da sala") return "atualizar o resumo da sala antes de mudar de assunto.";
@@ -714,6 +764,14 @@ export async function onRequestPost(context) {
         ok: true,
         mode,
         answer: canonicalModesAnswer(),
+      });
+    }
+
+    if (asksGuidedLegalResearch(message)) {
+      return jsonResponse({
+        ok: true,
+        mode,
+        answer: guidedLegalResearchAnswer(message),
       });
     }
 
