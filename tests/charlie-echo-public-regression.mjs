@@ -103,6 +103,13 @@ await runLiveCase(
 );
 
 await runLiveCase(
+  "jurisprudencia-sem-trava",
+  "Explique jurisprudencia sobre responsabilidade civil sem citar julgados especificos.",
+  [/jurisprud/i, /responsabilidade civil|dano|nexo|culpa|risco/i],
+  [/Para pesquisar/i, /Fontes recomendadas/i, /Google Academico/i],
+);
+
+await runLiveCase(
   "deji-revisao-contrato",
   "No DEJI, crie um roteiro de revisao de contrato empresarial ficticio.",
   [/contrato|contratual/i, /risco|clausula|cláusula|revisao humana|revisão humana/i],
@@ -166,10 +173,14 @@ assert(apiHandler.includes("PROTOCOLO CENTELHA CRIATIVA 5.4"), "protocolo de cri
 assert(apiHandler.includes("ambiente/modulo, papel humano atendido, risco principal, limite aplicavel e proximo passo seguro"), "prioridade operacional ambiente-risco-limite ausente");
 assert(apiHandler.includes("applyCreativeSurface"), "superficie criativa pos-resposta ausente");
 assert(apiHandler.includes("Leitura do pedido"), "estrutura de raciocinio aparente ausente");
-assert(apiHandler.includes("Doutrina nao e automaticamente pedido de fonte"), "regra de doutrina como producao ausente");
+assert(apiHandler.includes("Doutrina e jurisprudencia nao sao automaticamente pedido de fonte"), "regra de jurisprudencia como analise ausente");
+assert(apiHandler.includes("analise jurisprudencial responsavel"), "intencao de analise jurisprudencial ausente");
+assert(apiHandler.includes("Se o usuario pedir \"proponha jurisprudencia\""), "regra de proposta jurisprudencial sem trava ausente");
 assert(apiHandler.includes("producao doutrinaria responsavel"), "intencao de producao doutrinaria ausente");
 assert(apiHandler.includes("asksGuidedLegalResearch"), "salvaguarda deterministica de pesquisa juridica ausente");
 assert(apiHandler.includes("Eu nao vou inventar autor, obra, pagina, citacao literal ou julgado"), "limite deterministico contra fontes inventadas ausente");
+assert(browserScript.includes("Analise jurisprudencial orientativa"), "fallback local de jurisprudencia substantiva ausente");
+assert(browserScript.includes("Sintese doutrinaria orientativa"), "fallback local de doutrina substantiva ausente");
 assert(!apiHandler.includes("jurisprudencia|jurisprudência|doutrina|fonte|fontes|pesquise|pesquisar"), "doutrina voltou a ser gatilho automatico de pesquisa guiada");
 assert(apiHandler.includes("PROTOCOLO SENTIRE 1.0"), "protocolo Sentire ausente");
 assert(apiHandler.includes("ouvir, sentire, julgar, decidir e determinar"), "fluxo resposta como sentenca ausente");
