@@ -21,6 +21,8 @@ const TRIAGE_MENU_REPLY = [
   "",
   "N\u00e3o envie senhas, tokens, c\u00f3digos de acesso ou documentos sens\u00edveis por aqui. Esta triagem n\u00e3o substitui an\u00e1lise humana qualificada."
 ].join("\n");
+const TRIAGE_SESSION_TTL_MS = 6 * 60 * 60 * 1000;
+const triageSessions = new Map();
 
 export const app = express();
 
@@ -116,23 +118,76 @@ export function extractIncomingMessages(payload) {
 
 export async function handleIncomingMessage({ from, text }) {
   const normalizedText = String(text || "").trim();
-  const triage = buildGovernedTriageReply(normalizedText);
+  const currentSession = getTriageSession(from);
+  const triage = buildGovernedTriageReply(normalizedText, currentSession);
+  setTriageSession(from, triage.nextSession);
 
   await sendWhatsAppTextMessage(from, triage.reply);
 
   console.log("Charlie Echo processou mensagem.", {
     from: maskWhatsAppId(from),
     hasOriginalText: Boolean(normalizedText),
-    triageIntent: triage.intent
+    triageIntent: triage.intent,
+    triageStage: triage.nextSession?.stage || null
   });
 }
 
-export function buildGovernedTriageReply(text) {
+export function buildGovernedTriageReply(text, session = null) {
+  const normalized = normalizeForTriage(text);
   const intent = inferTriageIntent(text);
+
+  if (isStructuredTriageDetails(text, session)) {
+    const resolvedIntent = session?.intent && session.intent !== "menu" ? session.intent : intent;
+    return {
+      intent: "details_received",
+      nextSession: {
+        intent: resolvedIntent,
+        stage: "ready_for_handoff"
+      },
+      reply: buildDetailsReceivedReply(resolvedIntent)
+    };
+  }
+
+  if (isBareOption(normalized) && session?.stage === "awaiting_details" && session?.intent === intent) {
+    return {
+      intent,
+      nextSession: {
+        intent,
+        stage: "awaiting_details"
+      },
+      reply: buildAlreadySelectedReply(intent)
+    };
+  }
+
+  if (intent === "inheritance") {
+    return {
+      intent,
+      nextSession: {
+        intent,
+        stage: "awaiting_details"
+      },
+      reply: [
+        "Sinto muito pela perda do seu pai.",
+        "Pelo que voc\u00ea descreveu, isso parece uma triagem de invent\u00e1rio, heran\u00e7a ou verifica\u00e7\u00e3o de bens.",
+        "",
+        "Para encaminhar com governan\u00e7a humana, responda em uma \u00fanica mensagem:",
+        "1. seu nome e melhor contato;",
+        "2. cidade/UF;",
+        "3. se j\u00e1 existe invent\u00e1rio, processo ou documento;",
+        "4. se h\u00e1 prazo, conflito familiar ou urg\u00eancia.",
+        "",
+        "N\u00e3o envie documentos completos agora. A Charlie Echo organiza a triagem; a an\u00e1lise jur\u00eddica precisa de revis\u00e3o humana qualificada."
+      ].join("\n")
+    };
+  }
 
   if (intent === "urgent") {
     return {
       intent,
+      nextSession: {
+        intent,
+        stage: "awaiting_details"
+      },
       reply: [
         "Entendi que pode haver urg\u00eancia, prazo ou audi\u00eancia.",
         "Para a triagem humana, responda somente com:",
@@ -149,6 +204,10 @@ export function buildGovernedTriageReply(text) {
   if (intent === "document") {
     return {
       intent,
+      nextSession: {
+        intent,
+        stage: "awaiting_details"
+      },
       reply: [
         "Recebi sinal de assunto com documento, processo ou contrato.",
         "Para manter a governan\u00e7a, envie primeiro apenas uma descri\u00e7\u00e3o geral do caso, sem dados sens\u00edveis.",
@@ -162,6 +221,10 @@ export function buildGovernedTriageReply(text) {
   if (intent === "human") {
     return {
       intent,
+      nextSession: {
+        intent,
+        stage: "awaiting_details"
+      },
       reply: [
         "Certo. Vou tratar como pedido de atendimento humano.",
         "Para encaminhar melhor, responda com nome, melhor hor\u00e1rio de retorno e resumo breve do assunto.",
@@ -174,21 +237,29 @@ export function buildGovernedTriageReply(text) {
   if (intent === "general") {
     return {
       intent,
+      nextSession: {
+        intent,
+        stage: "awaiting_details"
+      },
       reply: [
-        "Recebemos sua mensagem e vamos iniciar a triagem com governan\u00e7a humana.",
-        "Descreva em poucas linhas o que voc\u00ea precisa, sem enviar senhas, tokens, c\u00f3digos ou documentos sens\u00edveis.",
+        "Recebi sua descri\u00e7\u00e3o inicial e vou organizar a triagem com governan\u00e7a humana.",
+        "Para avan\u00e7ar sem ficar preso ao menu, responda em uma \u00fanica mensagem:",
+        "1. nome e melhor contato;",
+        "2. cidade/UF;",
+        "3. assunto principal;",
+        "4. se existe prazo ou urg\u00eancia.",
         "",
-        "Se preferir, responda:",
-        "1 - urg\u00eancia/prazo",
-        "2 - documento/processo",
-        "3 - d\u00favida geral",
-        "4 - atendimento humano"
+        "Evite enviar senhas, tokens, c\u00f3digos ou documentos sens\u00edveis por aqui."
       ].join("\n")
     };
   }
 
   return {
     intent,
+    nextSession: {
+      intent,
+      stage: "menu"
+    },
     reply: TRIAGE_MENU_REPLY
   };
 }
@@ -196,23 +267,100 @@ export function buildGovernedTriageReply(text) {
 export function inferTriageIntent(text) {
   const normalized = normalizeForTriage(text);
 
-  if (!normalized || /^(oi|ola|ol\u00e1|bom dia|boa tarde|boa noite|teste|charlie|oi charlie)\b/.test(normalized)) {
+  if (!normalized || isGreetingOnly(normalized)) {
     return "menu";
   }
 
-  if (/^(1)\b/.test(normalized) || /\b(urgente|urgencia|prazo|audiencia|audi\u00eancia|liminar|intimacao|intima\u00e7\u00e3o|hoje|amanha|amanh\u00e3|vencendo)\b/.test(normalized)) {
+  if (/^(1)\b/.test(normalized) || /\b(urgente|urgencia|prazo|audiencia|liminar|intimacao|hoje|amanha|vencendo|imediato|grave|risco|emergencia)\b/.test(normalized)) {
     return "urgent";
   }
 
-  if (/^(2)\b/.test(normalized) || /\b(documento|processo|contrato|peticao|peti\u00e7\u00e3o|sentenca|senten\u00e7a|decisao|decis\u00e3o|anexo|pdf)\b/.test(normalized)) {
-    return "document";
+  if (/\b(heranca|herdeiro|inventario|espolio|falecimento|obito|pai morreu|mae morreu|bens deixados|bens do meu pai|bens da minha mae)\b/.test(normalized)) {
+    return "inheritance";
   }
 
-  if (/^(4)\b/.test(normalized) || /\b(humano|atendente|pessoa|clovis|cl\u00f3vis|falar com alguem|falar com algu\u00e9m|retorno)\b/.test(normalized)) {
+  if (/^(4)\b/.test(normalized) || /\b(humano|atendente|pessoa|clovis|falar com alguem|retorno|preciso de atendimento|quero atendimento|atendimento humano)\b/.test(normalized)) {
     return "human";
   }
 
+  if (/^(2)\b/.test(normalized) || /\b(documento|processo|contrato|peticao|sentenca|decisao|anexo|pdf)\b/.test(normalized)) {
+    return "document";
+  }
+
   return "general";
+}
+
+function buildAlreadySelectedReply(intent) {
+  if (intent === "urgent") {
+    return [
+      "Voc\u00ea j\u00e1 marcou este atendimento como urg\u00eancia.",
+      "Agora envie os dados m\u00ednimos em uma \u00fanica mensagem:",
+      "1. nome ou forma de contato;",
+      "2. cidade/UF;",
+      "3. tipo de prazo ou ato;",
+      "4. data limite, se houver.",
+      "",
+      "Se o prazo \u00e9 hoje ou h\u00e1 risco imediato, acione tamb\u00e9m o respons\u00e1vel humano por liga\u00e7\u00e3o."
+    ].join("\n");
+  }
+
+  if (intent === "human") {
+    return [
+      "Voc\u00ea j\u00e1 pediu atendimento humano.",
+      "Agora envie nome, melhor hor\u00e1rio de retorno e resumo breve do assunto em uma \u00fanica mensagem."
+    ].join("\n");
+  }
+
+  return [
+    "Voc\u00ea j\u00e1 iniciou essa triagem.",
+    "Para avan\u00e7ar, envie os dados m\u00ednimos em uma \u00fanica mensagem: nome/contato, cidade/UF, assunto principal e urg\u00eancia ou prazo."
+  ].join("\n");
+}
+
+function buildDetailsReceivedReply(intent) {
+  const label = intent === "inheritance"
+    ? "invent\u00e1rio/heran\u00e7a"
+    : intent === "urgent"
+      ? "urg\u00eancia"
+      : intent === "human"
+        ? "atendimento humano"
+        : intent === "document"
+          ? "documento/processo"
+          : "triagem geral";
+
+  return [
+    "Recebi os dados m\u00ednimos para triagem.",
+    `Status: pronto para atendimento humano (${label}).`,
+    "",
+    "Pr\u00f3ximo passo: um respons\u00e1vel humano da Jus 9 Tecnologia Jur\u00eddica deve revisar o caso antes de qualquer orienta\u00e7\u00e3o jur\u00eddica.",
+    "Enquanto isso, n\u00e3o envie senhas, tokens, c\u00f3digos de acesso ou documentos sens\u00edveis por aqui.",
+    "",
+    "Se houver prazo hoje, audi\u00eancia, risco de perda de direito ou situa\u00e7\u00e3o grave, acione o respons\u00e1vel humano tamb\u00e9m por liga\u00e7\u00e3o ou canal direto."
+  ].join("\n");
+}
+
+function isGreetingOnly(normalized) {
+  return /^(oi|ola|bom dia|boa tarde|boa noite|teste|charlie|oi charlie|ok|sim|certo|tudo bem)[.!? ]*$/.test(normalized);
+}
+
+function isBareOption(normalized) {
+  return /^[1-4]$/.test(normalized);
+}
+
+function isStructuredTriageDetails(text, session) {
+  const normalized = normalizeForTriage(text);
+  if (!normalized || isBareOption(normalized) || isGreetingOnly(normalized)) return false;
+
+  const numberedFields = (String(text).match(/(?:^|\n)\s*[1-4][.)-]/g) || []).length;
+  const hasContactSignal = /\b(nome|contato|celular|telefone|whatsapp|retorno|horario)\b/.test(normalized);
+  const hasLocationSignal = /\b(cidade|uf|rio grande|sao paulo|florianopolis|curitiba|brasil)\b/.test(normalized);
+  const hasDeadlineSignal = /\b(hoje|amanha|prazo|urgente|imediato|grave)\b/.test(normalized);
+
+  if (numberedFields >= 2) return true;
+  if (session?.stage === "awaiting_details" && (hasContactSignal || hasLocationSignal || hasDeadlineSignal)) return true;
+  if (/\b(meu nome e|me chamo|sou o|sou a)\b/.test(normalized) && /\b(retorno|atendimento|contato|processo|caso|assunto)\b/.test(normalized)) return true;
+
+  return false;
 }
 
 function normalizeForTriage(text) {
@@ -222,6 +370,30 @@ function normalizeForTriage(text) {
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/\s+/g, " ");
+}
+
+function getTriageSession(from) {
+  const key = String(from || "");
+  const session = triageSessions.get(key);
+  if (!session) return null;
+
+  if (Date.now() - session.updatedAt > TRIAGE_SESSION_TTL_MS) {
+    triageSessions.delete(key);
+    return null;
+  }
+
+  return session;
+}
+
+function setTriageSession(from, session) {
+  const key = String(from || "");
+  if (!key || !session) return;
+
+  triageSessions.set(key, {
+    intent: session.intent,
+    stage: session.stage,
+    updatedAt: Date.now()
+  });
 }
 
 export async function sendWhatsAppTextMessage(to, body) {

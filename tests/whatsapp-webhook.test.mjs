@@ -155,8 +155,11 @@ test("buildWhatsAppRecipientCandidates adds Brazilian mobile fallback when ninth
 test("inferTriageIntent classifies governed WhatsApp triage messages", () => {
   assert.equal(inferTriageIntent("Oi Charlie"), "menu");
   assert.equal(inferTriageIntent("1 urgente, tenho prazo hoje"), "urgent");
+  assert.equal(inferTriageIntent("Oi, meu pai morreu e quero saber sobre heranca"), "inheritance");
   assert.equal(inferTriageIntent("Preciso revisar um contrato em PDF"), "document");
   assert.equal(inferTriageIntent("Quero falar com atendimento humano"), "human");
+  assert.equal(inferTriageIntent("Eu preciso de atendimento"), "human");
+  assert.equal(inferTriageIntent("Meu nome e X e preciso de retorno imediato, o processo e grave"), "urgent");
   assert.equal(inferTriageIntent("Tenho uma duvida sobre atendimento"), "general");
 });
 
@@ -164,6 +167,7 @@ test("buildGovernedTriageReply keeps legal triage under human governance", () =>
   const menu = buildGovernedTriageReply("Oi");
   const urgent = buildGovernedTriageReply("prazo urgente amanha");
   const document = buildGovernedTriageReply("tenho documento do processo");
+  const inheritance = buildGovernedTriageReply("Oi, meu pai morreu e queria saber se existe heranca");
 
   assert.equal(menu.intent, "menu");
   assert.match(menu.reply, /governan\u00e7a humana/);
@@ -174,4 +178,25 @@ test("buildGovernedTriageReply keeps legal triage under human governance", () =>
 
   assert.equal(document.intent, "document");
   assert.match(document.reply, /sem dados sens\u00edveis/i);
+
+  assert.equal(inheritance.intent, "inheritance");
+  assert.match(inheritance.reply, /invent\u00e1rio, heran\u00e7a/i);
+  assert.doesNotMatch(inheritance.reply, /responda com uma op\u00e7\u00e3o/i);
+});
+
+test("buildGovernedTriageReply advances instead of looping after a selected route", () => {
+  const selected = buildGovernedTriageReply("1");
+  const repeated = buildGovernedTriageReply("1", selected.nextSession);
+  const details = buildGovernedTriageReply(
+    "1. Nome de teste\n2. Cidade/UF\n3. Contato\n4. Hoje",
+    repeated.nextSession
+  );
+
+  assert.equal(selected.intent, "urgent");
+  assert.equal(selected.nextSession.stage, "awaiting_details");
+  assert.equal(repeated.intent, "urgent");
+  assert.match(repeated.reply, /j\u00e1 marcou este atendimento como urg\u00eancia/i);
+  assert.equal(details.intent, "details_received");
+  assert.equal(details.nextSession.stage, "ready_for_handoff");
+  assert.match(details.reply, /pronto para atendimento humano/i);
 });

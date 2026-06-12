@@ -162,6 +162,8 @@ Fluxo atual da triagem WhatsApp:
 
 A Charlie Echo apenas acolhe, organiza o primeiro contato e reforça governança humana. Ela não toma decisão jurídica final, não substitui profissional habilitado e orienta o usuário a não enviar senhas, tokens, códigos de acesso ou documentos sensíveis por WhatsApp.
 
+Na versão atual, a triagem mantém uma memória curta em RAM por número de WhatsApp. Isso permite interpretar uma descrição direta, como inventário/herança, urgência ou pedido de atendimento humano, e avançar para coleta mínima de dados sem repetir o menu a cada mensagem. Essa memória não substitui banco de dados, protocolo formal ou revisão humana.
+
 Configuração sugerida no Render:
 
 ```txt
