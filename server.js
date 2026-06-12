@@ -9,6 +9,24 @@ dotenv.config();
 const SERVICE_NAME = "WhatsApp Charlie Echo da Costa";
 const COMPANY_NAME = "Jus 9 Tecnologia Jur\u00eddica";
 const DEFAULT_GRAPH_API_VERSION = "v20.0";
+const SOCIAL_LISTENING_REPEAT_THRESHOLD = 3;
+const EMERGENCY_CONTACTS_REVIEWED_AT = "2026-06-12";
+const EMERGENCY_CONTACTS_SOURCE_URLS = Object.freeze([
+  "https://www.ssp.df.gov.br/emergencia-190-193-e-199",
+  "https://cvv.org.br/",
+  "https://www.gov.br/mulheres/pt-br/ligue180",
+  "https://www.gov.br/pt-br/servicos/denunciar-violacao-de-direitos-humanos"
+]);
+const IMMEDIATE_EMERGENCY_CONTACTS_BR = Object.freeze([
+  "190 (Pol\u00edcia Militar)",
+  "192 (SAMU)",
+  "193 (Bombeiros)"
+]);
+const SOCIAL_SUPPORT_CONTACTS_BR = Object.freeze([
+  "188 (CVV, apoio emocional)",
+  "180 (Central de Atendimento \u00e0 Mulher)",
+  "100 (Disque Direitos Humanos)"
+]);
 const TRIAGE_MENU_REPLY = [
   "Ol\u00e1. Aqui \u00e9 o atendimento oficial da Jus 9 Tecnologia Jur\u00eddica.",
   "Eu sou Charlie Echo da Costa, I.A generativa multimodal jur\u00eddico-orientada, com governan\u00e7a humana.",
@@ -144,25 +162,43 @@ export function buildGovernedTriageReply(text, session = null) {
 
   if (session?.stage === "ready_for_handoff") {
     const resolvedIntent = mergeTriageIntent(session.intent, intent);
+    const currentPressureCount = getPostHandoffPressureCount(session);
+    const buildReadySession = ({ incrementPressure = false, socialListeningOffered = false } = {}) => ({
+      intent: resolvedIntent,
+      stage: "ready_for_handoff",
+      postHandoffPressureCount: incrementPressure ? currentPressureCount + 1 : currentPressureCount,
+      socialListeningOffered: Boolean(session.socialListeningOffered || socialListeningOffered)
+    });
+    const shouldOfferSocialListening = (nextPressureCount) =>
+      nextPressureCount >= SOCIAL_LISTENING_REPEAT_THRESHOLD && !session.socialListeningOffered;
 
     if (isContinuityQuestion(normalized)) {
       return {
         intent: "continuity",
-        nextSession: {
-          intent: resolvedIntent,
-          stage: "ready_for_handoff"
-        },
+        nextSession: buildReadySession(),
         reply: buildContinuityReply(resolvedIntent)
       };
     }
 
     if (isImmediateDangerSignal(normalized)) {
+      const nextPressureCount = currentPressureCount + 1;
+
+      if (shouldOfferSocialListening(nextPressureCount)) {
+        return {
+          intent: "social_listening_offer",
+          nextSession: buildReadySession({
+            incrementPressure: true,
+            socialListeningOffered: true
+          }),
+          shouldSaveProtocol: true,
+          protocolClassification: getDriveSaverProtocolClassification(),
+          reply: buildSocialListeningOfferReply(resolvedIntent)
+        };
+      }
+
       return {
         intent: "immediate_danger",
-        nextSession: {
-          intent: resolvedIntent,
-          stage: "ready_for_handoff"
-        },
+        nextSession: buildReadySession({ incrementPressure: true }),
         shouldSaveProtocol: true,
         protocolClassification: getDriveSaverProtocolClassification(),
         reply: buildImmediateDangerReply(resolvedIntent)
@@ -170,12 +206,24 @@ export function buildGovernedTriageReply(text, session = null) {
     }
 
     if (isImmediateAttentionRequest(normalized) || isReturnExpectationQuestion(normalized)) {
+      const nextPressureCount = currentPressureCount + 1;
+
+      if (shouldOfferSocialListening(nextPressureCount)) {
+        return {
+          intent: "social_listening_offer",
+          nextSession: buildReadySession({
+            incrementPressure: true,
+            socialListeningOffered: true
+          }),
+          shouldSaveProtocol: true,
+          protocolClassification: getDriveSaverProtocolClassification(),
+          reply: buildSocialListeningOfferReply(resolvedIntent)
+        };
+      }
+
       return {
         intent: "human_return_expectation",
-        nextSession: {
-          intent: resolvedIntent,
-          stage: "ready_for_handoff"
-        },
+        nextSession: buildReadySession({ incrementPressure: true }),
         shouldSaveProtocol: true,
         protocolClassification: getDriveSaverProtocolClassification(),
         reply: buildHumanReturnExpectationReply(resolvedIntent)
@@ -183,23 +231,47 @@ export function buildGovernedTriageReply(text, session = null) {
     }
 
     if (isAnxiousFollowUp(normalized) || intent === "human") {
+      const nextPressureCount = currentPressureCount + 1;
+
+      if (shouldOfferSocialListening(nextPressureCount)) {
+        return {
+          intent: "social_listening_offer",
+          nextSession: buildReadySession({
+            incrementPressure: true,
+            socialListeningOffered: true
+          }),
+          shouldSaveProtocol: true,
+          protocolClassification: getDriveSaverProtocolClassification(),
+          reply: buildSocialListeningOfferReply(resolvedIntent)
+        };
+      }
+
       return {
         intent: "comfort_next_steps",
-        nextSession: {
-          intent: resolvedIntent,
-          stage: "ready_for_handoff"
-        },
+        nextSession: buildReadySession({ incrementPressure: true }),
         reply: buildComfortNextStepsReply(resolvedIntent)
       };
     }
 
     if (isMeaningfulFollowUp(normalized)) {
+      const nextPressureCount = currentPressureCount + 1;
+
+      if (shouldOfferSocialListening(nextPressureCount)) {
+        return {
+          intent: "social_listening_offer",
+          nextSession: buildReadySession({
+            incrementPressure: true,
+            socialListeningOffered: true
+          }),
+          shouldSaveProtocol: true,
+          protocolClassification: getDriveSaverProtocolClassification(),
+          reply: buildSocialListeningOfferReply(resolvedIntent)
+        };
+      }
+
       return {
         intent: "handoff_update",
-        nextSession: {
-          intent: resolvedIntent,
-          stage: "ready_for_handoff"
-        },
+        nextSession: buildReadySession({ incrementPressure: true }),
         shouldSaveProtocol: true,
         protocolClassification: getDriveSaverProtocolClassification(),
         reply: buildUpdateReceivedReply(resolvedIntent)
@@ -208,10 +280,7 @@ export function buildGovernedTriageReply(text, session = null) {
 
     return {
       intent: "handoff_status",
-      nextSession: {
-        intent: resolvedIntent,
-        stage: "ready_for_handoff"
-      },
+      nextSession: buildReadySession(),
       reply: buildContinuityReply(resolvedIntent)
     };
   }
@@ -246,6 +315,19 @@ export function buildGovernedTriageReply(text, session = null) {
       shouldSaveProtocol: true,
       protocolClassification: getDriveSaverProtocolClassification(),
       reply: buildImmediateDangerReply(resolvedIntent)
+    };
+  }
+
+  if (isPressedFirstContact(normalized)) {
+    const resolvedIntent = mergeTriageIntent(session?.intent, intent);
+
+    return {
+      intent: "pressed_triage_start",
+      nextSession: {
+        intent: resolvedIntent,
+        stage: "awaiting_details"
+      },
+      reply: buildPressedTriageStartReply(resolvedIntent)
     };
   }
 
@@ -421,6 +503,21 @@ function buildAlreadySelectedReply(intent) {
   ].join("\n");
 }
 
+function buildPressedTriageStartReply(intent) {
+  return [
+    "Entendi. Vou sair do menu e organizar sua triagem agora.",
+    `Status inicial: escuta dirigida para supervis\u00e3o humana (${triageIntentLabel(intent)}).`,
+    "",
+    "Responda em uma \u00fanica mensagem, sem documentos e sem dados sens\u00edveis:",
+    "1. seu nome ou forma de contato;",
+    "2. cidade/UF;",
+    "3. resumo curto da situa\u00e7\u00e3o;",
+    "4. se h\u00e1 risco imediato, prazo hoje ou algu\u00e9m em perigo.",
+    "",
+    "A Charlie Echo organiza a triagem, mas atendimento sens\u00edvel depende de supervis\u00e3o humana."
+  ].join("\n");
+}
+
 function buildDetailsReceivedReply(intent) {
   const label = triageIntentLabel(intent);
 
@@ -444,7 +541,7 @@ function buildHighRiskDetailsReceivedReply(intent) {
     `Status: pronto para revis\u00e3o humana priorit\u00e1ria (${label}).`,
     "",
     "Pr\u00e9-an\u00e1lise segura: quando h\u00e1 risco de vida, viol\u00eancia, amea\u00e7a ou perigo acontecendo agora, n\u00e3o espere apenas este WhatsApp.",
-    "Se voc\u00ea estiver no Brasil, acione imediatamente 190, 192 ou 193 conforme o caso. Se estiver em outro pa\u00eds, acione o servi\u00e7o de emerg\u00eancia local.",
+    buildImmediateEmergencyGuidance(),
     "",
     "A Charlie Echo organiza e protege a triagem, mas n\u00e3o garante liga\u00e7\u00e3o imediata, n\u00e3o substitui socorro presencial e n\u00e3o toma decis\u00e3o jur\u00eddica final.",
     "N\u00e3o envie documentos, senhas, tokens, c\u00f3digos ou detalhes sens\u00edveis por aqui. Se precisar complementar, envie s\u00f3 cidade/UF e uma frase curta sobre o risco."
@@ -467,7 +564,7 @@ function buildImmediateDangerReply(intent) {
     `Status: triagem mantida para revis\u00e3o humana priorit\u00e1ria (${triageIntentLabel(intent)}).`,
     "",
     "Se h\u00e1 risco de morte, viol\u00eancia, amea\u00e7a ou perigo acontecendo agora, acione emerg\u00eancia imediatamente.",
-    "No Brasil: 190, 192 ou 193, conforme o caso. Fora do Brasil, use o servi\u00e7o de emerg\u00eancia local.",
+    buildImmediateEmergencyGuidance(),
     "",
     "Eu n\u00e3o consigo garantir liga\u00e7\u00e3o autom\u00e1tica nem substituir atendimento humano imediato.",
     "Para sua seguran\u00e7a, n\u00e3o envie documentos, senhas, tokens, c\u00f3digos ou detalhes sens\u00edveis aqui. Envie no m\u00e1ximo cidade/UF e uma frase curta sem expor terceiros."
@@ -482,8 +579,24 @@ function buildHumanReturnExpectationReply(intent) {
     "Com honestidade: por este WhatsApp eu n\u00e3o consigo garantir liga\u00e7\u00e3o imediata nem fazer atendimento jur\u00eddico sens\u00edvel sozinha.",
     "O passo mais seguro \u00e9 manter a triagem enxuta aqui e acionar tamb\u00e9m o canal humano direto da Jus 9 quando houver prazo, risco ou urg\u00eancia.",
     "",
-    "Se houver risco de vida, viol\u00eancia ou perigo neste momento, n\u00e3o espere retorno: procure um local seguro e acione emerg\u00eancia local. No Brasil: 190, 192 ou 193.",
+    `Se houver risco de vida, viol\u00eancia ou perigo neste momento, n\u00e3o espere retorno: procure um local seguro e acione emerg\u00eancia local. ${buildImmediateEmergencyGuidance()}`,
     "N\u00e3o envie dados sens\u00edveis por aqui. Se precisar complementar, envie apenas cidade/UF, melhor contato e uma frase curta sobre a urg\u00eancia."
+  ].join("\n");
+}
+
+function buildSocialListeningOfferReply(intent) {
+  return [
+    "Complemento recebido e anexado \u00e0 triagem deste mesmo atendimento.",
+    `Status: entregue para supervis\u00e3o humana com urg\u00eancia (${triageIntentLabel(intent)}).`,
+    "",
+    "A melhor coisa \u00e9 evitar repetir informa\u00e7\u00f5es sens\u00edveis no WhatsApp.",
+    "",
+    "Percebi que voc\u00ea ainda precisa ser ouvido(a). Vou abrir o modo social de acolhimento da Charlie Echo Social.",
+    "Esse modo n\u00e3o substitui emerg\u00eancia, psicologia, medicina, advocacia, pol\u00edcia ou atendimento humano respons\u00e1vel. Ele serve para escuta breve, prudente e protegida enquanto voc\u00ea aciona ajuda real.",
+    "",
+    buildSocialEmergencyGuidance(),
+    "",
+    "Voc\u00ea precisa conversar agora? Responda apenas SIM ou N\u00c3O, sem detalhes sens\u00edveis."
   ].join("\n");
 }
 
@@ -505,10 +618,37 @@ function buildComfortNextStepsReply(intent) {
 function buildUpdateReceivedReply(intent) {
   return [
     "Complemento recebido e anexado \u00e0 triagem deste mesmo atendimento.",
-    `Status: segue para revis\u00e3o humana (${triageIntentLabel(intent)}).`,
+    `Status: entregue para supervis\u00e3o humana com urg\u00eancia (${triageIntentLabel(intent)}).`,
     "",
-    "A melhor coisa agora \u00e9 evitar repetir informa\u00e7\u00f5es sens\u00edveis no WhatsApp. Se houver prazo hoje ou situa\u00e7\u00e3o grave, acione tamb\u00e9m o canal humano direto."
+    "A melhor coisa \u00e9 evitar repetir informa\u00e7\u00f5es sens\u00edveis no WhatsApp. Se houver prazo hoje ou situa\u00e7\u00e3o grave, acione tamb\u00e9m o canal humano direto."
   ].join("\n");
+}
+
+function buildImmediateEmergencyGuidance() {
+  return `No Brasil: ${IMMEDIATE_EMERGENCY_CONTACTS_BR.join(", ")}. Fora do Brasil, use o servi\u00e7o de emerg\u00eancia local.`;
+}
+
+function buildSocialEmergencyGuidance() {
+  return [
+    "Contatos de apoio no Brasil:",
+    `Emerg\u00eancia imediata: ${IMMEDIATE_EMERGENCY_CONTACTS_BR.join(", ")}.`,
+    `Apoio social e emocional: ${SOCIAL_SUPPORT_CONTACTS_BR.join(", ")}.`
+  ].join("\n");
+}
+
+function getPostHandoffPressureCount(session) {
+  const count = Number(session?.postHandoffPressureCount || 0);
+  return Number.isFinite(count) && count > 0 ? count : 0;
+}
+
+export function getEmergencyContactsProtocol() {
+  return {
+    reviewedAt: EMERGENCY_CONTACTS_REVIEWED_AT,
+    sourceUrls: [...EMERGENCY_CONTACTS_SOURCE_URLS],
+    immediateEmergencyBrazil: [...IMMEDIATE_EMERGENCY_CONTACTS_BR],
+    socialSupportBrazil: [...SOCIAL_SUPPORT_CONTACTS_BR],
+    updateRule: "Protocolos podem ser atualizados com fonte oficial, data e revisao humana. Leis internas nao podem ser alteradas pela IA sozinha."
+  };
 }
 
 function isGreetingOnly(normalized) {
@@ -574,6 +714,10 @@ function isImmediateAttentionRequest(normalized) {
 
 function isReturnExpectationQuestion(normalized) {
   return /\b(garantia|garantir|vai me ligar|alguem vai me ligar|quando vao me ligar|quando vai me ligar|ninguem vai me ligar|retorno humano|me dar retorno|dar retorno)\b/.test(normalized);
+}
+
+function isPressedFirstContact(normalized) {
+  return isImmediateAttentionRequest(normalized) || isAnxiousFollowUp(normalized) || isReturnExpectationQuestion(normalized);
 }
 
 function isMeaningfulFollowUp(normalized) {

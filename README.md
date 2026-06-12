@@ -166,6 +166,17 @@ Na versão atual, a triagem mantém uma memória curta em RAM por número de Wha
 
 Quando a triagem já estiver pronta para atendimento humano, a Charlie Echo diferencia complemento comum de sinais de angústia, expectativa de retorno imediato e risco real. Em mensagens como "alguém pode morrer", "socorro" ou "preciso ser atendido agora", ela deve acolher, acalmar, explicitar limites do canal, orientar emergência local quando houver perigo imediato e reforçar que dados sensíveis não devem ser enviados pelo WhatsApp. Essa pré-análise é somente prudencial e operacional; não é parecer jurídico.
 
+Contatos de urgência e apoio social são tratados como protocolo operacional auditável, não como lei interna. A Charlie Echo pode manter esses números centralizados, indicar data de verificação e apontar fonte oficial. Atualizações futuras do protocolo devem registrar fonte, data e motivo. Leis internas, Constituição, cláusulas pétreas e governança normativa não podem ser alteradas pela IA sozinha.
+
+Contatos protocolados em 2026-06-12:
+
+```txt
+Emergência imediata no Brasil: 190 (Polícia Militar), 192 (SAMU), 193 (Bombeiros)
+Apoio emocional: 188 (CVV)
+Violência contra mulher: 180 (Central de Atendimento à Mulher)
+Direitos humanos: 100 (Disque Direitos Humanos)
+```
+
 Quando `JUS9_DRIVE_SAVER_URL` e `JUS9_DRIVE_SAVER_CHAVE_INTERNA` estiverem configuradas no Render, a triagem pronta para atendimento humano envia um protocolo classificado como `JURIDICO_SIGILOSO` ao `JUS9_DRIVE_SAVER_MVP`, destinado à entrada de revisão humana no Google Drive. A URL ativa do Web App e a chave interna nunca devem ser publicadas no GitHub, prints ou chat.
 
 Se houver autorização expressa do Fundador e o Apps Script estiver configurado com `JUS9_FOLDER_COFRE_DEPOSITO`, o Render pode usar `JUS9_DRIVE_SAVER_CLASSIFICACAO_PROTOCOLO=COFRE_DEPOSITO_ASSISTIDO`. Essa rota é somente depósito assistido: cria documento novo no cofre e não lê, lista, edita, exclui, sobrescreve ou modifica conteúdo existente. A classificação `COFRE_NAO_AUTOMATICO` continua bloqueada.

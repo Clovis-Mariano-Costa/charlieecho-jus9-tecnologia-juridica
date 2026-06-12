@@ -13,6 +13,7 @@ const {
   buildWhatsAppRecipientCandidates,
   extractIncomingMessages,
   getDriveSaverProtocolClassification,
+  getEmergencyContactsProtocol,
   inferTriageIntent,
   maskWhatsAppId
 } = await import("../server.js");
@@ -232,6 +233,7 @@ test("buildGovernedTriageReply handles continuity and anxious follow-up after ha
 
 test("buildGovernedTriageReply recognizes high-risk distress instead of looping on complements", () => {
   const firstContactHelp = buildGovernedTriageReply("Socorro");
+  const pressuredFirstContact = buildGovernedTriageReply("Eu preciso ser atendido agora");
   const highRiskDetails = buildGovernedTriageReply(
     "Eu sou o Pedrinho de Londrina, o tipo de prazo e risco de morte, a data limite e o quanto antes",
     { intent: "urgent", stage: "awaiting_details" }
@@ -254,31 +256,41 @@ test("buildGovernedTriageReply recognizes high-risk distress instead of looping 
   assert.equal(firstContactHelp.nextSession.stage, "ready_for_handoff");
   assert.equal(firstContactHelp.shouldSaveProtocol, true);
   assert.match(firstContactHelp.reply, /risco imediato/i);
+  assert.match(firstContactHelp.reply, /190.*192.*193/i);
+
+  assert.equal(pressuredFirstContact.intent, "pressed_triage_start");
+  assert.equal(pressuredFirstContact.nextSession.stage, "awaiting_details");
+  assert.match(pressuredFirstContact.reply, /Vou sair do menu/i);
+  assert.match(pressuredFirstContact.reply, /nome ou forma de contato/i);
 
   assert.equal(highRiskDetails.intent, "details_received_high_risk");
   assert.equal(highRiskDetails.nextSession.stage, "ready_for_handoff");
   assert.equal(highRiskDetails.shouldSaveProtocol, true);
   assert.match(highRiskDetails.reply, /risco alto/i);
-  assert.match(highRiskDetails.reply, /190, 192 ou 193/i);
+  assert.match(highRiskDetails.reply, /190.*192.*193/i);
   assert.match(highRiskDetails.reply, /N\u00e3o envie documentos/i);
 
   assert.equal(attentionNow.intent, "human_return_expectation");
+  assert.equal(attentionNow.nextSession.postHandoffPressureCount, 1);
   assert.match(attentionNow.reply, /n\u00e3o consigo garantir liga\u00e7\u00e3o imediata/i);
   assert.match(attentionNow.reply, /canal humano direto/i);
   assert.doesNotMatch(attentionNow.reply, /Complemento recebido/i);
 
   assert.equal(guarantee.intent, "human_return_expectation");
+  assert.equal(guarantee.nextSession.postHandoffPressureCount, 2);
   assert.match(guarantee.reply, /Com honestidade/i);
   assert.match(guarantee.reply, /n\u00e3o consigo garantir liga\u00e7\u00e3o imediata/i);
 
-  assert.equal(danger.intent, "immediate_danger");
-  assert.match(danger.reply, /risco imediato/i);
-  assert.match(danger.reply, /190, 192 ou 193/i);
-  assert.match(danger.reply, /n\u00e3o envie documentos/i);
+  assert.equal(danger.intent, "social_listening_offer");
+  assert.equal(danger.nextSession.postHandoffPressureCount, 3);
+  assert.equal(danger.nextSession.socialListeningOffered, true);
+  assert.match(danger.reply, /Charlie Echo Social/i);
+  assert.match(danger.reply, /188.*180.*100/i);
+  assert.match(danger.reply, /Voc\u00ea precisa conversar agora/i);
 
   assert.equal(help.intent, "immediate_danger");
   assert.match(help.reply, /n\u00e3o \u00e9 apenas complemento/i);
-  assert.doesNotMatch(help.reply, /Complemento recebido/i);
+  assert.match(help.reply, /190.*192.*193/i);
 });
 
 test("buildWhatsAppProtocolContent creates a governed Drive Saver protocol", () => {
@@ -318,4 +330,19 @@ test("getDriveSaverProtocolClassification allows explicit assisted vault deposit
       process.env.JUS9_DRIVE_SAVER_CLASSIFICACAO_PROTOCOLO = previous;
     }
   }
+});
+
+test("getEmergencyContactsProtocol keeps emergency contacts as auditable protocol data", () => {
+  const protocol = getEmergencyContactsProtocol();
+
+  assert.equal(protocol.reviewedAt, "2026-06-12");
+  assert.deepEqual(protocol.immediateEmergencyBrazil, [
+    "190 (Pol\u00edcia Militar)",
+    "192 (SAMU)",
+    "193 (Bombeiros)"
+  ]);
+  assert.match(protocol.socialSupportBrazil.join(" "), /188.*180.*100/);
+  assert.ok(protocol.sourceUrls.some((url) => url.includes("gov.br")));
+  assert.match(protocol.updateRule, /Protocolos podem ser atualizados/i);
+  assert.match(protocol.updateRule, /Leis internas nao podem ser alteradas pela IA sozinha/i);
 });
