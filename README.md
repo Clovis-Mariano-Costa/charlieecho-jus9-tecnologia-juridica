@@ -166,6 +166,8 @@ Na versão atual, a triagem mantém uma memória curta em RAM por número de Wha
 
 Quando a triagem já estiver pronta para atendimento humano, a Charlie Echo diferencia complemento comum de sinais de angústia, expectativa de retorno imediato e risco real. Em mensagens como "alguém pode morrer", "socorro" ou "preciso ser atendido agora", ela deve acolher, acalmar, explicitar limites do canal, orientar emergência local quando houver perigo imediato e reforçar que dados sensíveis não devem ser enviados pelo WhatsApp. Essa pré-análise é somente prudencial e operacional; não é parecer jurídico.
 
+O comando exato `NOVO ATENDIMENTO` reinicia a triagem curta daquela conversa. Perguntas como "é novo atendimento ou continua o mesmo?" continuam sendo tratadas como dúvida de continuidade. Pedidos explícitos de escuta, como "quero conversar com alguém" ou "fala comigo", podem abrir o modo Charlie Echo Social quando a triagem já estiver entregue para supervisão humana.
+
 Contatos de urgência e apoio social são tratados como protocolo operacional auditável, não como lei interna. A Charlie Echo pode manter esses números centralizados, indicar data de verificação e apontar fonte oficial. Atualizações futuras do protocolo devem registrar fonte, data e motivo. Leis internas, Constituição, cláusulas pétreas e governança normativa não podem ser alteradas pela IA sozinha.
 
 Contatos protocolados em 2026-06-12:

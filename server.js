@@ -160,6 +160,19 @@ export function buildGovernedTriageReply(text, session = null) {
   const normalized = normalizeForTriage(text);
   const intent = inferTriageIntent(text);
 
+  if (isNewAttendanceCommand(normalized)) {
+    return {
+      intent: "new_attendance",
+      nextSession: {
+        intent: "menu",
+        stage: "menu",
+        postHandoffPressureCount: 0,
+        socialListeningOffered: false
+      },
+      reply: buildNewAttendanceReply()
+    };
+  }
+
   if (session?.stage === "ready_for_handoff") {
     const resolvedIntent = mergeTriageIntent(session.intent, intent);
     const currentPressureCount = getPostHandoffPressureCount(session);
@@ -177,6 +190,19 @@ export function buildGovernedTriageReply(text, session = null) {
         intent: "continuity",
         nextSession: buildReadySession(),
         reply: buildContinuityReply(resolvedIntent)
+      };
+    }
+
+    if (isSocialListeningRequest(normalized)) {
+      return {
+        intent: "social_listening_offer",
+        nextSession: buildReadySession({
+          incrementPressure: true,
+          socialListeningOffered: true
+        }),
+        shouldSaveProtocol: true,
+        protocolClassification: getDriveSaverProtocolClassification(),
+        reply: buildSocialListeningOfferReply(resolvedIntent)
       };
     }
 
@@ -503,6 +529,14 @@ function buildAlreadySelectedReply(intent) {
   ].join("\n");
 }
 
+function buildNewAttendanceReply() {
+  return [
+    "Novo atendimento iniciado.",
+    "",
+    TRIAGE_MENU_REPLY
+  ].join("\n");
+}
+
 function buildPressedTriageStartReply(intent) {
   return [
     "Entendi. Vou sair do menu e organizar sua triagem agora.",
@@ -697,7 +731,11 @@ function triageIntentLabel(intent) {
 }
 
 function isContinuityQuestion(normalized) {
-  return /\b(novo atendimento|continua|continuar|mesmo atendimento|mesmo caso|ja existe atendimento|j[aá] existe atendimento)\b/.test(normalized);
+  return /\b(continua|continuar|mesmo atendimento|mesmo caso|ja existe atendimento|j[aá] existe atendimento)\b/.test(normalized);
+}
+
+function isNewAttendanceCommand(normalized) {
+  return /^(novo atendimento|nova triagem|novo caso|reiniciar atendimento|comecar novo atendimento|começar novo atendimento)[.!? ]*$/.test(normalized);
 }
 
 function isAnxiousFollowUp(normalized) {
@@ -705,7 +743,7 @@ function isAnxiousFollowUp(normalized) {
 }
 
 function isImmediateDangerSignal(normalized) {
-  return /\b(risco de morte|risco de vida|ameaca de morte|alguem pode morrer|alguem vai morrer|posso morrer|vou morrer|querem me matar|quer me matar|socorro|perigo imediato|perigo agora|violencia agora|agressao|sequestro|arma|tiro|ferido|ferida|sangrando|ambulancia|policia|bombeiro|incendio)\b/.test(normalized);
+  return /\b(risco de morte|risco de vida|ameaca de morte|alguem pode morrer|alguem vai morrer|posso morrer|vou morrer|querem me matar|quer me matar|socorro|correndo perigo|em perigo|perigo serio|perigo sim|perigo imediato|perigo agora|violencia agora|agressao|sequestro|arma|tiro|ferido|ferida|sangrando|ambulancia|policia|bombeiro|incendio)\b/.test(normalized);
 }
 
 function isImmediateAttentionRequest(normalized) {
@@ -714,6 +752,10 @@ function isImmediateAttentionRequest(normalized) {
 
 function isReturnExpectationQuestion(normalized) {
   return /\b(garantia|garantir|vai me ligar|alguem vai me ligar|quando vao me ligar|quando vai me ligar|ninguem vai me ligar|retorno humano|me dar retorno|dar retorno)\b/.test(normalized);
+}
+
+function isSocialListeningRequest(normalized) {
+  return /\b(quero conversar|preciso conversar|conversar com alguem|conversar com alguém|fala comigo|fale comigo|conversa comigo|converse comigo|me escuta|me escute|voce pode me ajudar|você pode me ajudar|pode me ouvir|preciso ser ouvido|preciso ser ouvida)\b/.test(normalized);
 }
 
 function isPressedFirstContact(normalized) {

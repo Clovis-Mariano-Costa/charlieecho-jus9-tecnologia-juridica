@@ -231,6 +231,25 @@ test("buildGovernedTriageReply handles continuity and anxious follow-up after ha
   assert.doesNotMatch(comfort.reply, /responda em uma \u00fanica mensagem/i);
 });
 
+test("buildGovernedTriageReply resets the session when user asks for a new attendance", () => {
+  const details = buildGovernedTriageReply(
+    "1. Nome de teste\n2. Cidade/UF\n3. Urgente\n4. Hoje",
+    { intent: "urgent", stage: "awaiting_details" }
+  );
+  const reset = buildGovernedTriageReply("NOVO ATENDIMENTO", details.nextSession);
+  const nextSelection = buildGovernedTriageReply("1", reset.nextSession);
+
+  assert.equal(reset.intent, "new_attendance");
+  assert.equal(reset.nextSession.stage, "menu");
+  assert.equal(reset.nextSession.postHandoffPressureCount, 0);
+  assert.match(reset.reply, /Novo atendimento iniciado/i);
+  assert.match(reset.reply, /Para iniciar a triagem/i);
+  assert.doesNotMatch(reset.reply, /Continua o mesmo atendimento/i);
+
+  assert.equal(nextSelection.intent, "urgent");
+  assert.equal(nextSelection.nextSession.stage, "awaiting_details");
+});
+
 test("buildGovernedTriageReply recognizes high-risk distress instead of looping on complements", () => {
   const firstContactHelp = buildGovernedTriageReply("Socorro");
   const pressuredFirstContact = buildGovernedTriageReply("Eu preciso ser atendido agora");
@@ -291,6 +310,32 @@ test("buildGovernedTriageReply recognizes high-risk distress instead of looping 
   assert.equal(help.intent, "immediate_danger");
   assert.match(help.reply, /n\u00e3o \u00e9 apenas complemento/i);
   assert.match(help.reply, /190.*192.*193/i);
+});
+
+test("buildGovernedTriageReply opens social listening when user explicitly asks to talk", () => {
+  const details = buildGovernedTriageReply(
+    "Meu nome e Joaozinho, cidade Mariazinha da Penha, assunto urgente, estou correndo perigo",
+    { intent: "urgent", stage: "awaiting_details" }
+  );
+  const talk = buildGovernedTriageReply(
+    "Eu quero conversar com alguem, voce pode me ajudar?",
+    details.nextSession
+  );
+  const talkAgain = buildGovernedTriageReply(
+    "Vamos la, fala comigo do jeito que tu sabe",
+    talk.nextSession
+  );
+
+  assert.equal(details.intent, "details_received_high_risk");
+  assert.match(details.reply, /risco alto/i);
+
+  assert.equal(talk.intent, "social_listening_offer");
+  assert.equal(talk.nextSession.socialListeningOffered, true);
+  assert.match(talk.reply, /Charlie Echo Social/i);
+  assert.match(talk.reply, /Voc\u00ea precisa conversar agora/i);
+
+  assert.equal(talkAgain.intent, "social_listening_offer");
+  assert.match(talkAgain.reply, /Charlie Echo Social/i);
 });
 
 test("buildWhatsAppProtocolContent creates a governed Drive Saver protocol", () => {
