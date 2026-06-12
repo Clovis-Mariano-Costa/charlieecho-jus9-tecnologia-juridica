@@ -164,6 +164,8 @@ A Charlie Echo apenas acolhe, organiza o primeiro contato e reforça governança
 
 Na versão atual, a triagem mantém uma memória curta em RAM por número de WhatsApp. Isso permite interpretar uma descrição direta, como inventário/herança, urgência ou pedido de atendimento humano, e avançar para coleta mínima de dados sem repetir o menu a cada mensagem. Essa memória não substitui banco de dados, protocolo formal ou revisão humana.
 
+Quando `JUS9_DRIVE_SAVER_URL` e `JUS9_DRIVE_SAVER_CHAVE_INTERNA` estiverem configuradas no Render, a triagem pronta para atendimento humano envia um protocolo classificado como `JURIDICO_SIGILOSO` ao `JUS9_DRIVE_SAVER_MVP`, destinado à entrada de revisão humana no Google Drive. A URL ativa do Web App e a chave interna nunca devem ser publicadas no GitHub, prints ou chat.
+
 Configuração sugerida no Render:
 
 ```txt
@@ -180,6 +182,8 @@ WHATSAPP_TOKEN
 WHATSAPP_PHONE_NUMBER_ID
 WHATSAPP_WABA_ID
 NODE_ENV=production
+JUS9_DRIVE_SAVER_URL
+JUS9_DRIVE_SAVER_CHAVE_INTERNA
 ```
 
 URL de callback para configurar na Meta:

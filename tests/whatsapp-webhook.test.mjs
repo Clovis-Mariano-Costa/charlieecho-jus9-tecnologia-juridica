@@ -8,6 +8,8 @@ delete process.env.WHATSAPP_PHONE_NUMBER_ID;
 const {
   app,
   buildGovernedTriageReply,
+  buildWhatsAppProtocolContent,
+  buildWhatsAppProtocolTitle,
   buildWhatsAppRecipientCandidates,
   extractIncomingMessages,
   inferTriageIntent,
@@ -198,5 +200,25 @@ test("buildGovernedTriageReply advances instead of looping after a selected rout
   assert.match(repeated.reply, /j\u00e1 marcou este atendimento como urg\u00eancia/i);
   assert.equal(details.intent, "details_received");
   assert.equal(details.nextSession.stage, "ready_for_handoff");
+  assert.equal(details.shouldSaveProtocol, true);
+  assert.equal(details.protocolClassification, "JURIDICO_SIGILOSO");
   assert.match(details.reply, /pronto para atendimento humano/i);
+});
+
+test("buildWhatsAppProtocolContent creates a governed Drive Saver protocol", () => {
+  const triage = buildGovernedTriageReply(
+    "1. Nome de teste\n2. Cidade/UF\n3. Inventario\n4. Hoje",
+    { intent: "inheritance", stage: "awaiting_details" }
+  );
+  const content = buildWhatsAppProtocolContent({
+    from: "554899082726",
+    text: "1. Nome de teste\n2. Cidade/UF\n3. Inventario\n4. Hoje",
+    triage
+  });
+
+  assert.match(buildWhatsAppProtocolTitle(triage.intent), /^Triagem WhatsApp - dados-minimos - \d{4}-\d{2}-\d{2}$/);
+  assert.match(content, /Classificacao: JURIDICO_SIGILOSO/);
+  assert.match(content, /Revisao humana obrigatoria: SIM/);
+  assert.match(content, /Identificador WhatsApp mascarado: \*+2726/);
+  assert.match(content, /Nao representa parecer juridico/i);
 });

@@ -23,6 +23,7 @@ const TRIAGE_MENU_REPLY = [
 ].join("\n");
 const TRIAGE_SESSION_TTL_MS = 6 * 60 * 60 * 1000;
 const triageSessions = new Map();
+const DRIVE_SAVER_CLASSIFICATION = "JURIDICO_SIGILOSO";
 
 export const app = express();
 
@@ -123,6 +124,7 @@ export async function handleIncomingMessage({ from, text }) {
   setTriageSession(from, triage.nextSession);
 
   await sendWhatsAppTextMessage(from, triage.reply);
+  await saveWhatsAppTriageProtocol({ from, text: normalizedText, triage });
 
   console.log("Charlie Echo processou mensagem.", {
     from: maskWhatsAppId(from),
@@ -144,6 +146,8 @@ export function buildGovernedTriageReply(text, session = null) {
         intent: resolvedIntent,
         stage: "ready_for_handoff"
       },
+      shouldSaveProtocol: true,
+      protocolClassification: DRIVE_SAVER_CLASSIFICATION,
       reply: buildDetailsReceivedReply(resolvedIntent)
     };
   }
@@ -394,6 +398,101 @@ function setTriageSession(from, session) {
     stage: session.stage,
     updatedAt: Date.now()
   });
+}
+
+export async function saveWhatsAppTriageProtocol({ from, text, triage }) {
+  if (!triage?.shouldSaveProtocol) return { skipped: true, reason: "not_ready_for_handoff" };
+
+  const driveSaverUrl = process.env.JUS9_DRIVE_SAVER_URL;
+  const driveSaverKey = process.env.JUS9_DRIVE_SAVER_CHAVE_INTERNA;
+
+  if (!driveSaverUrl || !driveSaverKey) {
+    console.warn("Drive Saver ignorado: integracao nao configurada.", {
+      hasUrl: Boolean(driveSaverUrl),
+      hasInternalKey: Boolean(driveSaverKey),
+      classification: triage.protocolClassification || DRIVE_SAVER_CLASSIFICATION
+    });
+    return { skipped: true, reason: "not_configured" };
+  }
+
+  const payload = {
+    chaveInterna: driveSaverKey,
+    titulo: buildWhatsAppProtocolTitle(triage.intent),
+    conteudo: buildWhatsAppProtocolContent({ from, text, triage }),
+    classificacao: triage.protocolClassification || DRIVE_SAVER_CLASSIFICATION,
+    tipoDocumento: "PROTOCOLO_WHATSAPP_TRIAGEM",
+    origem: "WhatsApp Cloud API / Charlie Echo da Costa",
+    autorOperacional: "Charlie Echo da Costa",
+    observacao: "Registro minimo de triagem para revisao humana. Nao e decisao juridica."
+  };
+
+  try {
+    const response = await axios.post(driveSaverUrl, payload, {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      timeout: 10000
+    });
+    const data = response.data || {};
+
+    if (data.ok === false) {
+      console.error("Drive Saver recusou protocolo de triagem.", {
+        statusCode: data.statusCode || null,
+        classification: data.classificacaoFinal || payload.classificacao,
+        reviewRequired: data.revisaoHumanaObrigatoria ?? null,
+        cofreAutomatico: data.cofreAutomatico ?? null
+      });
+      return { ok: false, data };
+    }
+
+    console.log("Protocolo de triagem enviado ao Drive Saver.", {
+      classification: data.classificacaoFinal || payload.classificacao,
+      destination: data.pastaDestino || null,
+      reviewRequired: data.revisaoHumanaObrigatoria ?? null,
+      hasFileId: Boolean(data.fileId)
+    });
+
+    return { ok: true, data };
+  } catch (error) {
+    console.error("Falha ao enviar protocolo ao Drive Saver.", {
+      message: error?.response?.data?.erro || error?.response?.data?.mensagem || error?.message || String(error),
+      status: error?.response?.status || null
+    });
+    return { ok: false, error };
+  }
+}
+
+export function buildWhatsAppProtocolTitle(intent) {
+  const label = intent === "details_received" ? "dados-minimos" : String(intent || "triagem");
+  return `Triagem WhatsApp - ${label} - ${new Date().toISOString().slice(0, 10)}`;
+}
+
+export function buildWhatsAppProtocolContent({ from, text, triage }) {
+  return [
+    "PROTOCOLO DE TRIAGEM WHATSAPP - CHARLIE ECHO DA COSTA",
+    "",
+    "Classificacao: JURIDICO_SIGILOSO",
+    "Revisao humana obrigatoria: SIM",
+    "Origem: WhatsApp Cloud API",
+    `Identificador WhatsApp mascarado: ${maskWhatsAppId(from)}`,
+    `Intencao detectada: ${triage?.intent || "desconhecida"}`,
+    `Estagio: ${triage?.nextSession?.stage || "desconhecido"}`,
+    "",
+    "Conteudo informado pelo usuario para triagem:",
+    sanitizeProtocolText(text),
+    "",
+    "Aviso de governanca:",
+    "Este registro organiza atendimento inicial. Nao representa parecer juridico, decisao final, promessa de resultado ou substituicao de revisao humana qualificada.",
+    "Nao anexar senhas, tokens, codigos de acesso, credenciais ou documentos de cofre neste fluxo automatico."
+  ].join("\n");
+}
+
+function sanitizeProtocolText(value) {
+  return String(value || "")
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, " ")
+    .replace(/\n{4,}/g, "\n\n\n")
+    .trim()
+    .slice(0, 12000) || "Sem conteudo textual informado.";
 }
 
 export async function sendWhatsAppTextMessage(to, body) {
