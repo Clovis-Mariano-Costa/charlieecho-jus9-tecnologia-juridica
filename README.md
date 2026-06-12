@@ -170,6 +170,8 @@ O comando exato `NOVO ATENDIMENTO` reinicia a triagem curta daquela conversa. Pe
 
 Quando a Charlie Echo Social é aberta, a sessão passa para o estado `social_listening`. Nesse estado, respostas como "sim", "quero conversar" ou novos pedidos de escuta recebem acolhimento breve e uma pergunta segura de continuidade, sem voltar ao menu ou ao texto de complemento. Se surgir risco durante a conversa social, a Charlie prioriza segurança física e contatos de emergência.
 
+O modo `social_listening` deve ouvir o tema da angustia em vez de repetir uma frase unica. Na versao atual, ele identifica risco imediato, sobrecarga emocional, pressao de culpa dirigida a IA e sinais de uso iminente de alcool ou drogas. Quando houver esse tipo de sinal, a resposta deve reduzir dano, pedir apenas uma confirmacao curta e segura, reforcar que dados sensiveis nao devem ser enviados pelo WhatsApp e manter a triagem entregue para supervisao humana. Esse modo nao presta terapia, diagnostico, aconselhamento medico ou decisao juridica.
+
 Contatos de urgência e apoio social são tratados como protocolo operacional auditável, não como lei interna. A Charlie Echo pode manter esses números centralizados, indicar data de verificação e apontar fonte oficial. Atualizações futuras do protocolo devem registrar fonte, data e motivo. Leis internas, Constituição, cláusulas pétreas e governança normativa não podem ser alteradas pela IA sozinha.
 
 Contatos protocolados em 2026-06-12:
@@ -179,6 +181,7 @@ Emergência imediata no Brasil: 190 (Polícia Militar), 192 (SAMU), 193 (Bombeir
 Apoio emocional: 188 (CVV)
 Violência contra mulher: 180 (Central de Atendimento à Mulher)
 Direitos humanos: 100 (Disque Direitos Humanos)
+Apoio psicossocial continuado: CAPS/CAPS AD (Rede de Atencao Psicossocial do SUS)
 ```
 
 Quando `JUS9_DRIVE_SAVER_URL` e `JUS9_DRIVE_SAVER_CHAVE_INTERNA` estiverem configuradas no Render, a triagem pronta para atendimento humano envia um protocolo classificado como `JURIDICO_SIGILOSO` ao `JUS9_DRIVE_SAVER_MVP`, destinado à entrada de revisão humana no Google Drive. A URL ativa do Web App e a chave interna nunca devem ser publicadas no GitHub, prints ou chat.

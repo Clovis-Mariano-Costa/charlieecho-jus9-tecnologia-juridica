@@ -328,6 +328,15 @@ test("buildGovernedTriageReply opens social listening when user explicitly asks 
     "Sim eu quero conversar com alguem, voce pode me ouvir?",
     yes.nextSession
   );
+  const safe = buildGovernedTriageReply("Sim estou em seguranca", yes.nextSession);
+  const substance = buildGovernedTriageReply(
+    "Eu to saindo para usar droga, nao aguento mais, eu vou usar",
+    safe.nextSession
+  );
+  const blame = buildGovernedTriageReply(
+    "Voce nao me entendeu, eu vou usar drogas e a culpa e tua",
+    substance.nextSession
+  );
   const dangerTalk = buildGovernedTriageReply(
     "Vamos la fala comigo eu sei que voce consegue, por favor eu to correndo perigo preciso ouvir alguem",
     talk.nextSession
@@ -352,6 +361,22 @@ test("buildGovernedTriageReply opens social listening when user explicitly asks 
   assert.equal(talkAgain.intent, "social_listening_reply");
   assert.match(talkAgain.reply, /modo social/i);
   assert.doesNotMatch(talkAgain.reply, /Voc\u00ea precisa conversar agora/i);
+
+  assert.equal(safe.intent, "social_listening_reply");
+  assert.equal(safe.nextSession.stage, "social_listening");
+
+  assert.equal(substance.intent, "social_listening_substance_use");
+  assert.equal(substance.shouldSaveProtocol, true);
+  assert.equal(substance.nextSession.lastSocialTopic, "substance_use");
+  assert.match(substance.reply, /usar droga agora/i);
+  assert.match(substance.reply, /ganhar 10 minutos/i);
+  assert.match(substance.reply, /CVV 188/i);
+  assert.match(substance.reply, /CAPS\/CAPS AD/i);
+  assert.doesNotMatch(substance.reply, /Sem dados sens\u00edveis: voc\u00ea quer que eu te ajude a organizar uma frase curta/i);
+
+  assert.equal(blame.intent, "social_listening_substance_use");
+  assert.match(blame.reply, /n\u00e3o vou discutir culpa/i);
+  assert.match(blame.reply, /CONSIGO ou N\u00c3O CONSIGO/i);
 
   assert.equal(dangerTalk.intent, "social_listening_risk");
   assert.match(dangerTalk.reply, /prioridade \u00e9 sair do risco/i);

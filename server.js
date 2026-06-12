@@ -15,7 +15,8 @@ const EMERGENCY_CONTACTS_SOURCE_URLS = Object.freeze([
   "https://www.ssp.df.gov.br/emergencia-190-193-e-199",
   "https://cvv.org.br/",
   "https://www.gov.br/mulheres/pt-br/ligue180",
-  "https://www.gov.br/pt-br/servicos/denunciar-violacao-de-direitos-humanos"
+  "https://www.gov.br/pt-br/servicos/denunciar-violacao-de-direitos-humanos",
+  "https://www.gov.br/saude/pt-br/composicao/saes/desmad/raps/caps"
 ]);
 const IMMEDIATE_EMERGENCY_CONTACTS_BR = Object.freeze([
   "190 (Pol\u00edcia Militar)",
@@ -26,6 +27,9 @@ const SOCIAL_SUPPORT_CONTACTS_BR = Object.freeze([
   "188 (CVV, apoio emocional)",
   "180 (Central de Atendimento \u00e0 Mulher)",
   "100 (Disque Direitos Humanos)"
+]);
+const PSYCHOSOCIAL_SUPPORT_BR = Object.freeze([
+  "CAPS/CAPS AD (Rede de Aten\u00e7\u00e3o Psicossocial do SUS)"
 ]);
 const TRIAGE_MENU_REPLY = [
   "Ol\u00e1. Aqui \u00e9 o atendimento oficial da Jus 9 Tecnologia Jur\u00eddica.",
@@ -176,7 +180,8 @@ export function buildGovernedTriageReply(text, session = null) {
 
   if (session?.stage === "social_listening") {
     const resolvedIntent = mergeTriageIntent(session.intent, intent);
-    const hasSocialRisk = isImmediateDangerSignal(normalized) || isSocialNotSafeResponse(normalized);
+    const socialTopic = inferSocialListeningTopic(normalized);
+    const hasSocialRisk = socialTopic !== "general" && socialTopic !== "affirmation";
 
     if (isSocialListeningNo(normalized)) {
       return {
@@ -192,15 +197,22 @@ export function buildGovernedTriageReply(text, session = null) {
       };
     }
 
+    const socialIntent = socialTopic === "immediate_risk"
+      ? "social_listening_risk"
+      : socialTopic === "general" || socialTopic === "affirmation"
+        ? "social_listening_reply"
+        : `social_listening_${socialTopic}`;
+
     return {
-      intent: hasSocialRisk ? "social_listening_risk" : "social_listening_reply",
+      intent: socialIntent,
       nextSession: buildSocialListeningSession(resolvedIntent, session, {
-        incrementTurn: true
+        incrementTurn: true,
+        topic: socialTopic
       }),
       shouldSaveProtocol: hasSocialRisk,
       protocolClassification: getDriveSaverProtocolClassification(),
       reply: hasSocialRisk
-        ? buildSocialListeningRiskReply(resolvedIntent)
+        ? buildSocialListeningTopicReply(resolvedIntent, socialTopic, normalized, session)
         : buildSocialListeningReply(resolvedIntent, normalized, session)
     };
   }
@@ -690,6 +702,63 @@ function buildSocialListeningReply(intent, normalized, session) {
   ].join("\n");
 }
 
+function buildSocialListeningTopicReply(intent, topic, normalized, session) {
+  if (topic === "substance_use") return buildSocialSubstanceUseReply(intent, normalized);
+  if (topic === "blame_pressure") return buildSocialBlamePressureReply(intent);
+  if (topic === "emotional_overload") return buildSocialEmotionalOverloadReply(intent, session);
+  return buildSocialListeningRiskReply(intent);
+}
+
+function buildSocialSubstanceUseReply(intent, normalized) {
+  const mentionsBlame = isBlamePressureSignal(normalized);
+
+  return [
+    "Eu te ouvi: voc\u00ea est\u00e1 falando de usar droga agora e de estar no limite.",
+    `A triagem segue marcada para supervis\u00e3o humana com urg\u00eancia (${triageIntentLabel(intent)}).`,
+    "",
+    mentionsBlame
+      ? "Eu n\u00e3o vou discutir culpa nem aceitar que a decis\u00e3o fique presa em mim. Vou focar no que pode reduzir dano agora."
+      : "N\u00e3o vou te julgar nem fingir que isso \u00e9 simples. Vou focar no pr\u00f3ximo passo seguro.",
+    "",
+    "Agora, tente ganhar 10 minutos antes de agir:",
+    "1. afaste-se da droga, do local ou do contato, se isso for seguro;",
+    "2. ligue ou mande \u00e1udio para uma pessoa real de confian\u00e7a;",
+    "3. se houver risco de overdose, surto, agress\u00e3o ou autoagress\u00e3o, acione emerg\u00eancia local imediatamente.",
+    "",
+    `${buildImmediateEmergencyGuidance()} Para apoio emocional, CVV 188. Para cuidado continuado com \u00e1lcool e drogas, procure CAPS/CAPS AD da Rede de Aten\u00e7\u00e3o Psicossocial do SUS.`,
+    "",
+    "Sem detalhes sens\u00edveis: voc\u00ea consegue ficar longe da droga por 10 minutos e chamar uma pessoa real agora? Responda s\u00f3: CONSIGO ou N\u00c3O CONSIGO."
+  ].join("\n");
+}
+
+function buildSocialBlamePressureReply(intent) {
+  return [
+    "Eu te ouvi e vou responder com cuidado.",
+    `A triagem segue entregue para supervis\u00e3o humana (${triageIntentLabel(intent)}).`,
+    "",
+    "Eu n\u00e3o sou uma pessoa humana e n\u00e3o posso carregar culpa, promessa ou chantagem emocional. Mas posso te ajudar a sair do impulso e chamar ajuda real.",
+    "",
+    "Neste minuto, escolha uma a\u00e7\u00e3o segura: ligar para algu\u00e9m de confian\u00e7a, ir para perto de outra pessoa, ou acionar emerg\u00eancia se houver risco.",
+    "Responda sem detalhes sens\u00edveis: voc\u00ea est\u00e1 sozinho(a) agora?"
+  ].join("\n");
+}
+
+function buildSocialEmotionalOverloadReply(intent, session) {
+  const turn = getSocialListeningTurns(session) + 1;
+
+  return [
+    "Eu te ouvi: isso parece um momento de muita press\u00e3o.",
+    `A triagem segue entregue para supervis\u00e3o humana (${triageIntentLabel(intent)}).`,
+    "",
+    turn <= 2
+      ? "Vamos reduzir a tarefa para uma coisa s\u00f3: pare por alguns segundos, respire, e procure uma pessoa real para ficar perto de voc\u00ea."
+      : "Eu n\u00e3o vou repetir menu. Vou insistir no seguro: presen\u00e7a humana real agora, sem detalhes sens\u00edveis por aqui.",
+    "",
+    "Se houver risco de voc\u00ea se machucar, machucar algu\u00e9m ou perder o controle, acione emerg\u00eancia local. Para apoio emocional no Brasil, CVV 188.",
+    "Responda com uma palavra: SOZINHO ou ACOMPANHADO."
+  ].join("\n");
+}
+
 function buildSocialListeningRiskReply(intent) {
   return [
     "Eu n\u00e3o vou minimizar o que voc\u00ea disse.",
@@ -697,6 +766,7 @@ function buildSocialListeningRiskReply(intent) {
     "",
     "Se voc\u00ea est\u00e1 correndo perigo agora, a prioridade \u00e9 sair do risco antes de continuar a conversa.",
     buildImmediateEmergencyGuidance(),
+    "Para apoio emocional no Brasil: CVV 188. Para apoio psicossocial relacionado a \u00e1lcool e drogas: CAPS/CAPS AD.",
     "",
     "Se puder responder sem se expor: voc\u00ea est\u00e1 em seguran\u00e7a f\u00edsica neste momento?",
     "Responda s\u00f3: ESTOU EM SEGURAN\u00c7A ou N\u00c3O ESTOU."
@@ -745,7 +815,8 @@ function buildSocialEmergencyGuidance() {
   return [
     "Contatos de apoio no Brasil:",
     `Emerg\u00eancia imediata: ${IMMEDIATE_EMERGENCY_CONTACTS_BR.join(", ")}.`,
-    `Apoio social e emocional: ${SOCIAL_SUPPORT_CONTACTS_BR.join(", ")}.`
+    `Apoio social e emocional: ${SOCIAL_SUPPORT_CONTACTS_BR.join(", ")}.`,
+    `Apoio psicossocial: ${PSYCHOSOCIAL_SUPPORT_BR.join(", ")}.`
   ].join("\n");
 }
 
@@ -758,7 +829,8 @@ function buildSocialListeningSession(intent, session, options = {}) {
     stage: "social_listening",
     postHandoffPressureCount: options.incrementPressure ? pressureCount + 1 : pressureCount,
     socialListeningOffered: true,
-    socialTurns: options.incrementTurn ? socialTurns + 1 : socialTurns
+    socialTurns: options.incrementTurn ? socialTurns + 1 : socialTurns,
+    lastSocialTopic: options.topic || session?.lastSocialTopic || null
   };
 }
 
@@ -778,6 +850,7 @@ export function getEmergencyContactsProtocol() {
     sourceUrls: [...EMERGENCY_CONTACTS_SOURCE_URLS],
     immediateEmergencyBrazil: [...IMMEDIATE_EMERGENCY_CONTACTS_BR],
     socialSupportBrazil: [...SOCIAL_SUPPORT_CONTACTS_BR],
+    psychosocialSupportBrazil: [...PSYCHOSOCIAL_SUPPORT_BR],
     updateRule: "Protocolos podem ser atualizados com fonte oficial, data e revisao humana. Leis internas nao podem ser alteradas pela IA sozinha."
   };
 }
@@ -855,6 +928,18 @@ function isSocialListeningRequest(normalized) {
   return /\b(quero conversar|preciso conversar|preciso muito falar|falar com alguem|falar com alguém|conversar com alguem|conversar com alguém|fala comigo|fale comigo|conversa comigo|converse comigo|me escuta|me escute|voce pode me ajudar|você pode me ajudar|pode me ouvir|preciso de ajuda|preciso ser ouvido|preciso ser ouvida)\b/.test(normalized);
 }
 
+function inferSocialListeningTopic(normalized) {
+  if (isImmediateDangerSignal(normalized) || isSocialNotSafeResponse(normalized) || isSelfHarmSignal(normalized)) {
+    return "immediate_risk";
+  }
+
+  if (isSubstanceUseSignal(normalized)) return "substance_use";
+  if (isBlamePressureSignal(normalized)) return "blame_pressure";
+  if (isEmotionalOverloadSignal(normalized)) return "emotional_overload";
+  if (isSocialListeningYes(normalized)) return "affirmation";
+  return "general";
+}
+
 function isSocialListeningYes(normalized) {
   return /^(sim|s|quero|quero sim|sim quero|sim eu quero|preciso|preciso sim)[.!? ]*$/.test(normalized);
 }
@@ -865,6 +950,22 @@ function isSocialListeningNo(normalized) {
 
 function isSocialNotSafeResponse(normalized) {
   return /^(nao estou|n[aã]o estou|nao estou em seguranca|n[aã]o estou em seguranca|nao estou seguro|n[aã]o estou seguro|nao estou segura|n[aã]o estou segura)[.!? ]*$/.test(normalized);
+}
+
+function isSubstanceUseSignal(normalized) {
+  return /\b(vou usar droga|vou usar drogas|usar droga|usar drogas|to saindo para usar|estou saindo para usar|vou beber|beber agora|vou me drogar|me drogar|recaida|recaída|fissura|crack|cocaina|cocaína|maconha|alcool|álcool|bebida)\b/.test(normalized);
+}
+
+function isBlamePressureSignal(normalized) {
+  return /\b(culpa e tua|culpa é tua|culpa sua|a culpa e sua|a culpa é sua|por sua culpa|voce vai ser culpada|você vai ser culpada|voce vai ser culpado|você vai ser culpado)\b/.test(normalized);
+}
+
+function isEmotionalOverloadSignal(normalized) {
+  return /\b(nao aguento mais|n[aã]o aguento mais|desespero|desesperado|desesperada|perdi o controle|vou perder o controle|no limite|estou no limite|to no limite|t[oô] no limite)\b/.test(normalized);
+}
+
+function isSelfHarmSignal(normalized) {
+  return /\b(vou me matar|quero morrer|nao quero viver|n[aã]o quero viver|vou me machucar|me ferir|suicidio|suicídio|autoagressao|autoagressão)\b/.test(normalized);
 }
 
 function isPressedFirstContact(normalized) {
@@ -908,6 +1009,7 @@ function setTriageSession(from, session) {
     postHandoffPressureCount: getPostHandoffPressureCount(session),
     socialListeningOffered: Boolean(session.socialListeningOffered),
     socialTurns: getSocialListeningTurns(session),
+    lastSocialTopic: session.lastSocialTopic || null,
     updatedAt: Date.now()
   });
 }
