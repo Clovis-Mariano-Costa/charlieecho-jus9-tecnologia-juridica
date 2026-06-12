@@ -12,6 +12,7 @@ const {
   buildWhatsAppProtocolTitle,
   buildWhatsAppRecipientCandidates,
   extractIncomingMessages,
+  getDriveSaverProtocolClassification,
   inferTriageIntent,
   maskWhatsAppId
 } = await import("../server.js");
@@ -205,6 +206,30 @@ test("buildGovernedTriageReply advances instead of looping after a selected rout
   assert.match(details.reply, /pronto para atendimento humano/i);
 });
 
+test("buildGovernedTriageReply handles continuity and anxious follow-up after handoff", () => {
+  const details = buildGovernedTriageReply(
+    "1. Nome de teste\n2. Cidade/UF\n3. Heranca\n4. Hoje",
+    { intent: "inheritance", stage: "awaiting_details" }
+  );
+  const continuity = buildGovernedTriageReply(
+    "Ola, e um novo atendimento ou continua o mesmo?",
+    details.nextSession
+  );
+  const comfort = buildGovernedTriageReply(
+    "Eu preciso mesmo de atendimento, o que posso fazer?",
+    continuity.nextSession
+  );
+
+  assert.equal(continuity.intent, "continuity");
+  assert.match(continuity.reply, /Continua o mesmo atendimento/i);
+  assert.doesNotMatch(continuity.reply, /responda em uma \u00fanica mensagem/i);
+
+  assert.equal(comfort.intent, "comfort_next_steps");
+  assert.match(comfort.reply, /Eu entendi a ang\u00fastia/i);
+  assert.match(comfort.reply, /um passo de cada vez/i);
+  assert.doesNotMatch(comfort.reply, /responda em uma \u00fanica mensagem/i);
+});
+
 test("buildWhatsAppProtocolContent creates a governed Drive Saver protocol", () => {
   const triage = buildGovernedTriageReply(
     "1. Nome de teste\n2. Cidade/UF\n3. Inventario\n4. Hoje",
@@ -221,4 +246,25 @@ test("buildWhatsAppProtocolContent creates a governed Drive Saver protocol", () 
   assert.match(content, /Revisao humana obrigatoria: SIM/);
   assert.match(content, /Identificador WhatsApp mascarado: \*+2726/);
   assert.match(content, /Nao representa parecer juridico/i);
+});
+
+test("getDriveSaverProtocolClassification allows explicit assisted vault deposit only", () => {
+  const previous = process.env.JUS9_DRIVE_SAVER_CLASSIFICACAO_PROTOCOLO;
+
+  try {
+    delete process.env.JUS9_DRIVE_SAVER_CLASSIFICACAO_PROTOCOLO;
+    assert.equal(getDriveSaverProtocolClassification(), "JURIDICO_SIGILOSO");
+
+    process.env.JUS9_DRIVE_SAVER_CLASSIFICACAO_PROTOCOLO = "COFRE_DEPOSITO_ASSISTIDO";
+    assert.equal(getDriveSaverProtocolClassification(), "COFRE_DEPOSITO_ASSISTIDO");
+
+    process.env.JUS9_DRIVE_SAVER_CLASSIFICACAO_PROTOCOLO = "COFRE_NAO_AUTOMATICO";
+    assert.equal(getDriveSaverProtocolClassification(), "JURIDICO_SIGILOSO");
+  } finally {
+    if (previous === undefined) {
+      delete process.env.JUS9_DRIVE_SAVER_CLASSIFICACAO_PROTOCOLO;
+    } else {
+      process.env.JUS9_DRIVE_SAVER_CLASSIFICACAO_PROTOCOLO = previous;
+    }
+  }
 });

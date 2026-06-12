@@ -5,7 +5,8 @@
  * Regra maior:
  * - Nao pedir senha Google.
  * - Nao salvar token, chave, .env ou segredo.
- * - Nao escrever em 04_COFRE_NAO_AUTOMATICO.
+ * - Nao ler, editar, excluir ou sobrescrever conteudo de cofre.
+ * - Escrever no cofre somente pela rota COFRE_DEPOSITO_ASSISTIDO.
  * - Nao editar, excluir ou sobrescrever arquivos existentes.
  * - Criar sempre novo documento com cabecalho de classificacao.
  *
@@ -16,13 +17,15 @@
  * JUS9_FOLDER_ENTRADA_REVISAO
  * JUS9_FOLDER_PUBLICO
  * JUS9_FOLDER_INTERNO
+ * JUS9_FOLDER_COFRE_DEPOSITO = opcional, somente para deposito assistido write-only.
  */
 
 const JUS9_DRIVE_SAVER_CONFIG = {
   folderPropertyKeys: {
     ENTRADA_REVISAO: "JUS9_FOLDER_ENTRADA_REVISAO",
     PUBLICO: "JUS9_FOLDER_PUBLICO",
-    INTERNO: "JUS9_FOLDER_INTERNO"
+    INTERNO: "JUS9_FOLDER_INTERNO",
+    COFRE_DEPOSITO: "JUS9_FOLDER_COFRE_DEPOSITO"
   },
   maxContentLength: 90000
 };
@@ -38,7 +41,11 @@ function doGet() {
       "JUS9_FOLDER_ENTRADA_REVISAO",
       "JUS9_FOLDER_PUBLICO",
       "JUS9_FOLDER_INTERNO"
-    ]
+    ],
+    optionalScriptProperties: [
+      "JUS9_FOLDER_COFRE_DEPOSITO"
+    ],
+    cofreDepositoAssistido: "Somente cria documento novo. Nao le, edita, exclui, sobrescreve nem lista conteudo de cofre."
   });
 }
 
@@ -73,7 +80,8 @@ function doPost(e) {
       classificacaoFinal: normalized.classificacao,
       pastaDestino: route.folderName,
       revisaoHumanaObrigatoria: route.reviewRequired,
-      cofreAutomatico: false
+      cofreAutomatico: false,
+      cofreDepositoAssistido: Boolean(route.vaultDepositOnly)
     });
   } catch (error) {
     return json_({
@@ -159,6 +167,16 @@ function resolveRoute_(classificacao) {
       reviewRequired: true,
       blocked: true,
       message: "Cofre nao recebe salvamento automatico. Use revisao humana e procedimento proprio."
+    };
+  }
+
+  if (classificacao === "COFRE_DEPOSITO_ASSISTIDO") {
+    return {
+      folderId: getRequiredFolderId_("COFRE_DEPOSITO"),
+      folderName: "04_COFRE_DEPOSITO_ASSISTIDO",
+      reviewRequired: true,
+      blocked: false,
+      vaultDepositOnly: true
     };
   }
 

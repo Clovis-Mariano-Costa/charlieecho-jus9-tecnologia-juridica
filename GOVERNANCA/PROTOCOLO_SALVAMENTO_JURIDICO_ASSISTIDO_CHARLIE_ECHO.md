@@ -1,7 +1,7 @@
 # Protocolo de Salvamento Juridico Assistido - Charlie Echo
 
 Classificacao: GOVERNANCA / PROTOCOLO / DRIVE SAVER MVP
-Versao: v1.1
+Versao: v1.2
 Data: 2026-06-07
 
 ## Finalidade
@@ -20,7 +20,9 @@ Fundador autoriza.
 
 Documento juridico sensivel exige revisao humana.
 
-Cofre nao recebe salvamento automatico pelo MVP. A classificacao `COFRE_NAO_AUTOMATICO` deve retornar bloqueio, exigir procedimento proprio e manter o Fundador junto para qualquer acao material.
+Cofre nao recebe salvamento automatico comum pelo MVP. A classificacao `COFRE_NAO_AUTOMATICO` deve retornar bloqueio, exigir procedimento proprio e manter o Fundador junto para qualquer acao material.
+
+Quando houver autorizacao expressa do Fundador, pode existir uma rota separada de deposito assistido, `COFRE_DEPOSITO_ASSISTIDO`, para gravar documento novo em pasta secreta configurada por Script Property. Essa rota e somente escrita/criacao. Nao autoriza leitura, listagem, edicao, exclusao, sobrescrita, limpeza, movimentacao de arquivo existente ou publicacao de conteudo de cofre.
 
 ## Cartorio Digital
 
@@ -33,6 +35,7 @@ Rotas:
 - `PUBLICO` -> `01_DOCUMENTOS_PUBLICOS_E_EDUCATIVOS`
 - `INTERNO` -> `02_DOCUMENTOS_INTERNOS_JUS9`
 - `JURIDICO_SIGILOSO` -> `00_ENTRADA_PARA_REVISAO_HUMANA`
+- `COFRE_DEPOSITO_ASSISTIDO` -> pasta secreta definida por `JUS9_FOLDER_COFRE_DEPOSITO`, somente criacao de documento novo
 - `COFRE_NAO_AUTOMATICO` -> bloqueio explicito, sem criacao automatica
 
 ## Cofre
@@ -43,7 +46,7 @@ Charlie Fox e Charlie Echo podem ler por autorizacao do Fundador.
 
 Automacao comum nao deve criar, editar, excluir, mover, sobrescrever, limpar ou publicar conteudo de cofre.
 
-Historico: a versao v1.0 admitia deposito novo governado no cofre. A versao v1.1 substitui essa permissao por bloqueio automatico completo, conforme a regra operacional vigente do Cartorio Digital.
+Historico: a versao v1.0 admitia deposito novo governado no cofre. A versao v1.1 substituiu essa permissao por bloqueio automatico completo. A versao v1.2 reintroduz apenas deposito assistido write-only por classificacao propria (`COFRE_DEPOSITO_ASSISTIDO`), sem leitura, listagem, edicao, exclusao ou modificacao de conteudo existente.
 
 ## Propriedades seguras do Apps Script
 
@@ -55,6 +58,7 @@ Configurar no Apps Script, em Project Settings -> Script Properties:
 - `JUS9_FOLDER_ENTRADA_REVISAO`
 - `JUS9_FOLDER_PUBLICO`
 - `JUS9_FOLDER_INTERNO`
+- `JUS9_FOLDER_COFRE_DEPOSITO` apenas se o Fundador autorizar deposito assistido write-only
 
 Esses valores nao devem ser publicados no GitHub, Drive publico, prints ou chat.
 
@@ -71,3 +75,5 @@ Nao permitir exclusao automatica.
 Nao permitir sobrescrita automatica.
 
 Nao salvar documento juridico real como definitivo sem revisao humana.
+
+Nao usar `COFRE_DEPOSITO_ASSISTIDO` como permissao de acesso ao cofre. A permissao e apenas de criacao de novo documento por backend autenticado.

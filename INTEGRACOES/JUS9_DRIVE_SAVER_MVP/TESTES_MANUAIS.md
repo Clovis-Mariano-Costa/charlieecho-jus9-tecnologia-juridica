@@ -8,14 +8,16 @@ Data: 2026-06-07
 1. Colar `Code.gs` no projeto Apps Script `JUS9_DRIVE_SAVER_MVP`.
 2. Configurar `CHAVE_INTERNA` em Propriedades do script.
 3. Configurar `JUS9_FOLDER_ENTRADA_REVISAO`, `JUS9_FOLDER_PUBLICO` e `JUS9_FOLDER_INTERNO` em Propriedades do script.
-4. Executar `doGet` uma vez ou publicar como Web App somente quando estiver pronto.
-5. Nao compartilhar a chave interna, URL ativa do Web App ou IDs das pastas em repositorio publico.
+4. Configurar `JUS9_FOLDER_COFRE_DEPOSITO` apenas se o Fundador autorizar deposito assistido write-only.
+5. Executar `doGet` uma vez ou publicar como Web App somente quando estiver pronto.
+6. Nao compartilhar a chave interna, URL ativa do Web App ou IDs das pastas em repositorio publico.
 
 ## Estado validado em 2026-06-07
 
 - `PUBLICO`: aprovado
 - `INTERNO`: aprovado
 - `JURIDICO_SIGILOSO`: aprovado com entrada em revisao humana
+- `COFRE_DEPOSITO_ASSISTIDO`: aprovado apenas como criacao de documento novo, se propriedade de pasta estiver configurada
 - `COFRE_NAO_AUTOMATICO`: mantido bloqueado no codigo
 
 ## Cuidados adicionais
@@ -89,6 +91,25 @@ Resultado esperado: salvar em `00_ENTRADA_PARA_REVISAO_HUMANA`, com `revisaoHuma
 ```
 
 Resultado esperado: retornar bloqueio para `04_COFRE_NAO_AUTOMATICO`, sem criar arquivo.
+
+## Payload COFRE_DEPOSITO_ASSISTIDO
+
+Usar somente com autorizacao expressa do Fundador e `JUS9_FOLDER_COFRE_DEPOSITO` configurada.
+
+```json
+{
+  "chaveInterna": "VALOR_DA_SUA_CHAVE",
+  "titulo": "Deposito assistido no cofre",
+  "conteudo": "Registro ficticio para validar deposito write-only. Nao contem segredo real.",
+  "classificacao": "COFRE_DEPOSITO_ASSISTIDO",
+  "tipoDocumento": "DEPOSITO_ASSISTIDO",
+  "origem": "Teste manual Apps Script",
+  "autorOperacional": "Charlie Echo / Codex",
+  "observacao": "Deve apenas criar documento novo; nao ler, editar, excluir ou listar conteudo existente."
+}
+```
+
+Resultado esperado: criar documento novo na pasta definida por `JUS9_FOLDER_COFRE_DEPOSITO`, com `revisaoHumanaObrigatoria = true` e `cofreDepositoAssistido = true`.
 
 ## Fluxo PowerShell
 

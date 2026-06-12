@@ -23,7 +23,11 @@ const TRIAGE_MENU_REPLY = [
 ].join("\n");
 const TRIAGE_SESSION_TTL_MS = 6 * 60 * 60 * 1000;
 const triageSessions = new Map();
-const DRIVE_SAVER_CLASSIFICATION = "JURIDICO_SIGILOSO";
+const DEFAULT_DRIVE_SAVER_CLASSIFICATION = "JURIDICO_SIGILOSO";
+const DRIVE_SAVER_ALLOWED_CLASSIFICATIONS = new Set([
+  "JURIDICO_SIGILOSO",
+  "COFRE_DEPOSITO_ASSISTIDO"
+]);
 
 export const app = express();
 
@@ -138,8 +142,56 @@ export function buildGovernedTriageReply(text, session = null) {
   const normalized = normalizeForTriage(text);
   const intent = inferTriageIntent(text);
 
+  if (session?.stage === "ready_for_handoff") {
+    const resolvedIntent = mergeTriageIntent(session.intent, intent);
+
+    if (isContinuityQuestion(normalized)) {
+      return {
+        intent: "continuity",
+        nextSession: {
+          intent: resolvedIntent,
+          stage: "ready_for_handoff"
+        },
+        reply: buildContinuityReply(resolvedIntent)
+      };
+    }
+
+    if (isAnxiousFollowUp(normalized) || intent === "human") {
+      return {
+        intent: "comfort_next_steps",
+        nextSession: {
+          intent: resolvedIntent,
+          stage: "ready_for_handoff"
+        },
+        reply: buildComfortNextStepsReply(resolvedIntent)
+      };
+    }
+
+    if (isMeaningfulFollowUp(normalized)) {
+      return {
+        intent: "handoff_update",
+        nextSession: {
+          intent: resolvedIntent,
+          stage: "ready_for_handoff"
+        },
+        shouldSaveProtocol: true,
+        protocolClassification: getDriveSaverProtocolClassification(),
+        reply: buildUpdateReceivedReply(resolvedIntent)
+      };
+    }
+
+    return {
+      intent: "handoff_status",
+      nextSession: {
+        intent: resolvedIntent,
+        stage: "ready_for_handoff"
+      },
+      reply: buildContinuityReply(resolvedIntent)
+    };
+  }
+
   if (isStructuredTriageDetails(text, session)) {
-    const resolvedIntent = session?.intent && session.intent !== "menu" ? session.intent : intent;
+    const resolvedIntent = mergeTriageIntent(session?.intent, intent);
     return {
       intent: "details_received",
       nextSession: {
@@ -147,7 +199,7 @@ export function buildGovernedTriageReply(text, session = null) {
         stage: "ready_for_handoff"
       },
       shouldSaveProtocol: true,
-      protocolClassification: DRIVE_SAVER_CLASSIFICATION,
+      protocolClassification: getDriveSaverProtocolClassification(),
       reply: buildDetailsReceivedReply(resolvedIntent)
     };
   }
@@ -173,6 +225,8 @@ export function buildGovernedTriageReply(text, session = null) {
       reply: [
         "Sinto muito pela perda do seu pai.",
         "Pelo que voc\u00ea descreveu, isso parece uma triagem de invent\u00e1rio, heran\u00e7a ou verifica\u00e7\u00e3o de bens.",
+        "",
+        "N\u00e3o precisa resolver tudo nesta mensagem. Vamos organizar o primeiro passo com calma.",
         "",
         "Para encaminhar com governan\u00e7a humana, responda em uma \u00fanica mensagem:",
         "1. seu nome e melhor contato;",
@@ -231,6 +285,7 @@ export function buildGovernedTriageReply(text, session = null) {
       },
       reply: [
         "Certo. Vou tratar como pedido de atendimento humano.",
+        "Eu posso acolher e organizar a triagem por aqui; a decis\u00e3o e o atendimento sens\u00edvel ficam com uma pessoa respons\u00e1vel.",
         "Para encaminhar melhor, responda com nome, melhor hor\u00e1rio de retorno e resumo breve do assunto.",
         "",
         "A Charlie Echo organiza a triagem, mas decis\u00f5es jur\u00eddicas sens\u00edveis dependem de revis\u00e3o humana qualificada."
@@ -322,24 +377,51 @@ function buildAlreadySelectedReply(intent) {
 }
 
 function buildDetailsReceivedReply(intent) {
-  const label = intent === "inheritance"
-    ? "invent\u00e1rio/heran\u00e7a"
-    : intent === "urgent"
-      ? "urg\u00eancia"
-      : intent === "human"
-        ? "atendimento humano"
-        : intent === "document"
-          ? "documento/processo"
-          : "triagem geral";
+  const label = triageIntentLabel(intent);
 
   return [
     "Recebi os dados m\u00ednimos para triagem.",
     `Status: pronto para atendimento humano (${label}).`,
     "",
+    "Voc\u00ea n\u00e3o precisa repetir tudo agora; o mais importante j\u00e1 foi organizado.",
     "Pr\u00f3ximo passo: um respons\u00e1vel humano da Jus 9 Tecnologia Jur\u00eddica deve revisar o caso antes de qualquer orienta\u00e7\u00e3o jur\u00eddica.",
     "Enquanto isso, n\u00e3o envie senhas, tokens, c\u00f3digos de acesso ou documentos sens\u00edveis por aqui.",
     "",
     "Se houver prazo hoje, audi\u00eancia, risco de perda de direito ou situa\u00e7\u00e3o grave, acione o respons\u00e1vel humano tamb\u00e9m por liga\u00e7\u00e3o ou canal direto."
+  ].join("\n");
+}
+
+function buildContinuityReply(intent) {
+  return [
+    "Continua o mesmo atendimento.",
+    `Status atual: pronto para atendimento humano (${triageIntentLabel(intent)}).`,
+    "",
+    "Se voc\u00ea quiser acrescentar algo, envie como complemento curto. Se for outro caso, escreva: NOVO ATENDIMENTO.",
+    "Para este caso, n\u00e3o precisa repetir nome, cidade e assunto se eles j\u00e1 foram informados."
+  ].join("\n");
+}
+
+function buildComfortNextStepsReply(intent) {
+  return [
+    "Eu entendi a ang\u00fastia. Vamos deixar isso em ordem, um passo de cada vez.",
+    `Este atendimento j\u00e1 est\u00e1 sinalizado para revis\u00e3o humana (${triageIntentLabel(intent)}).`,
+    "",
+    "Enquanto aguarda o retorno humano, o caminho mais seguro \u00e9:",
+    "1. separar documentos b\u00e1sicos, sem enviar tudo por aqui;",
+    "2. anotar datas, prazos e nomes importantes;",
+    "3. guardar prints ou comprovantes, se existirem;",
+    "4. se o prazo for hoje ou houver risco imediato, ligar para o respons\u00e1vel humano.",
+    "",
+    "Eu n\u00e3o vou fingir uma decis\u00e3o jur\u00eddica. Vou ajudar a manter o caso organizado e protegido."
+  ].join("\n");
+}
+
+function buildUpdateReceivedReply(intent) {
+  return [
+    "Complemento recebido e anexado \u00e0 triagem deste mesmo atendimento.",
+    `Status: segue para revis\u00e3o humana (${triageIntentLabel(intent)}).`,
+    "",
+    "A melhor coisa agora \u00e9 evitar repetir informa\u00e7\u00f5es sens\u00edveis no WhatsApp. Se houver prazo hoje ou situa\u00e7\u00e3o grave, acione tamb\u00e9m o canal humano direto."
   ].join("\n");
 }
 
@@ -365,6 +447,40 @@ function isStructuredTriageDetails(text, session) {
   if (/\b(meu nome e|me chamo|sou o|sou a)\b/.test(normalized) && /\b(retorno|atendimento|contato|processo|caso|assunto)\b/.test(normalized)) return true;
 
   return false;
+}
+
+function mergeTriageIntent(currentIntent, nextIntent) {
+  const current = currentIntent && currentIntent !== "menu" ? currentIntent : null;
+  const next = nextIntent && nextIntent !== "menu" ? nextIntent : null;
+
+  if (current === "inheritance" && next === "urgent") return "inheritance_urgent";
+  if (current === "urgent" && next === "inheritance") return "inheritance_urgent";
+  if (current === "human" && next === "inheritance") return "inheritance";
+  if (current === "human" && next === "urgent") return "urgent";
+  if (current === "general" && next) return next;
+  return current || next || "general";
+}
+
+function triageIntentLabel(intent) {
+  if (intent === "inheritance_urgent") return "invent\u00e1rio/heran\u00e7a com urg\u00eancia";
+  if (intent === "inheritance") return "invent\u00e1rio/heran\u00e7a";
+  if (intent === "urgent") return "urg\u00eancia";
+  if (intent === "human") return "atendimento humano";
+  if (intent === "document") return "documento/processo";
+  return "triagem geral";
+}
+
+function isContinuityQuestion(normalized) {
+  return /\b(novo atendimento|continua|continuar|mesmo atendimento|mesmo caso|ja existe atendimento|j[aá] existe atendimento)\b/.test(normalized);
+}
+
+function isAnxiousFollowUp(normalized) {
+  return /\b(o que posso fazer|preciso mesmo|estou angustiado|estou angustiada|estou preocupado|estou preocupada|nao sei o que fazer|n[aã]o sei o que fazer|me ajuda|me ajude|pode ser com voce|pode ser com voc[eê])\b/.test(normalized);
+}
+
+function isMeaningfulFollowUp(normalized) {
+  if (!normalized || isGreetingOnly(normalized) || isBareOption(normalized)) return false;
+  return normalized.length >= 16;
 }
 
 function normalizeForTriage(text) {
@@ -410,7 +526,7 @@ export async function saveWhatsAppTriageProtocol({ from, text, triage }) {
     console.warn("Drive Saver ignorado: integracao nao configurada.", {
       hasUrl: Boolean(driveSaverUrl),
       hasInternalKey: Boolean(driveSaverKey),
-      classification: triage.protocolClassification || DRIVE_SAVER_CLASSIFICATION
+      classification: triage.protocolClassification || getDriveSaverProtocolClassification()
     });
     return { skipped: true, reason: "not_configured" };
   }
@@ -419,7 +535,7 @@ export async function saveWhatsAppTriageProtocol({ from, text, triage }) {
     chaveInterna: driveSaverKey,
     titulo: buildWhatsAppProtocolTitle(triage.intent),
     conteudo: buildWhatsAppProtocolContent({ from, text, triage }),
-    classificacao: triage.protocolClassification || DRIVE_SAVER_CLASSIFICATION,
+    classificacao: triage.protocolClassification || getDriveSaverProtocolClassification(),
     tipoDocumento: "PROTOCOLO_WHATSAPP_TRIAGEM",
     origem: "WhatsApp Cloud API / Charlie Echo da Costa",
     autorOperacional: "Charlie Echo da Costa",
@@ -468,10 +584,12 @@ export function buildWhatsAppProtocolTitle(intent) {
 }
 
 export function buildWhatsAppProtocolContent({ from, text, triage }) {
+  const classification = triage?.protocolClassification || getDriveSaverProtocolClassification();
+
   return [
     "PROTOCOLO DE TRIAGEM WHATSAPP - CHARLIE ECHO DA COSTA",
     "",
-    "Classificacao: JURIDICO_SIGILOSO",
+    `Classificacao: ${classification}`,
     "Revisao humana obrigatoria: SIM",
     "Origem: WhatsApp Cloud API",
     `Identificador WhatsApp mascarado: ${maskWhatsAppId(from)}`,
@@ -485,6 +603,18 @@ export function buildWhatsAppProtocolContent({ from, text, triage }) {
     "Este registro organiza atendimento inicial. Nao representa parecer juridico, decisao final, promessa de resultado ou substituicao de revisao humana qualificada.",
     "Nao anexar senhas, tokens, codigos de acesso, credenciais ou documentos de cofre neste fluxo automatico."
   ].join("\n");
+}
+
+export function getDriveSaverProtocolClassification() {
+  const configured = String(process.env.JUS9_DRIVE_SAVER_CLASSIFICACAO_PROTOCOLO || "")
+    .trim()
+    .toUpperCase();
+
+  if (DRIVE_SAVER_ALLOWED_CLASSIFICATIONS.has(configured)) {
+    return configured;
+  }
+
+  return DEFAULT_DRIVE_SAVER_CLASSIFICATION;
 }
 
 function sanitizeProtocolText(value) {

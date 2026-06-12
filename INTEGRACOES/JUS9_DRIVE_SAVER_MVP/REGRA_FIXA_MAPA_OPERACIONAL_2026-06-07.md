@@ -14,6 +14,7 @@ Fixar o mapa operacional que Charlie Echo deve usar ao explicar ou orientar o us
 | `PUBLICO` | `01_DOCUMENTOS_PUBLICOS_E_EDUCATIVOS` | `false` | permitido |
 | `INTERNO` | `02_DOCUMENTOS_INTERNOS_JUS9` | `false` | permitido |
 | `JURIDICO_SIGILOSO` | `00_ENTRADA_PARA_REVISAO_HUMANA` | `true` | permitido com revisao |
+| `COFRE_DEPOSITO_ASSISTIDO` | `04_COFRE_DEPOSITO_ASSISTIDO` ou pasta secreta definida pelo Fundador | `true` | permitido somente para criar documento novo |
 | `COFRE_NAO_AUTOMATICO` | nenhum destino automatico | `true` | bloqueado |
 | classificacao desconhecida | `00_ENTRADA_PARA_REVISAO_HUMANA` | `true` | permitido com revisao |
 
@@ -39,7 +40,9 @@ Frase correta:
 
 ## Regra do cofre
 
-`COFRE_NAO_AUTOMATICO` permanece bloqueado. O sistema nao deve salvar automaticamente no cofre nem solicitar ID do cofre.
+`COFRE_NAO_AUTOMATICO` permanece bloqueado. O sistema nao deve usar essa classificacao para salvar automaticamente no cofre nem solicitar ID do cofre.
+
+`COFRE_DEPOSITO_ASSISTIDO` e uma rota separada de deposito write-only, permitida somente quando o Fundador configurar `JUS9_FOLDER_COFRE_DEPOSITO` nas Script Properties. A automacao pode criar documento novo nessa pasta, mas nao pode ler, listar, editar, excluir, mover, sobrescrever, limpar ou publicar conteudo existente de cofre.
 
 ## Resultado de teste
 

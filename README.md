@@ -166,6 +166,8 @@ Na versão atual, a triagem mantém uma memória curta em RAM por número de Wha
 
 Quando `JUS9_DRIVE_SAVER_URL` e `JUS9_DRIVE_SAVER_CHAVE_INTERNA` estiverem configuradas no Render, a triagem pronta para atendimento humano envia um protocolo classificado como `JURIDICO_SIGILOSO` ao `JUS9_DRIVE_SAVER_MVP`, destinado à entrada de revisão humana no Google Drive. A URL ativa do Web App e a chave interna nunca devem ser publicadas no GitHub, prints ou chat.
 
+Se houver autorização expressa do Fundador e o Apps Script estiver configurado com `JUS9_FOLDER_COFRE_DEPOSITO`, o Render pode usar `JUS9_DRIVE_SAVER_CLASSIFICACAO_PROTOCOLO=COFRE_DEPOSITO_ASSISTIDO`. Essa rota é somente depósito assistido: cria documento novo no cofre e não lê, lista, edita, exclui, sobrescreve ou modifica conteúdo existente. A classificação `COFRE_NAO_AUTOMATICO` continua bloqueada.
+
 Configuração sugerida no Render:
 
 ```txt
@@ -184,6 +186,7 @@ WHATSAPP_WABA_ID
 NODE_ENV=production
 JUS9_DRIVE_SAVER_URL
 JUS9_DRIVE_SAVER_CHAVE_INTERNA
+JUS9_DRIVE_SAVER_CLASSIFICACAO_PROTOCOLO
 ```
 
 URL de callback para configurar na Meta:
