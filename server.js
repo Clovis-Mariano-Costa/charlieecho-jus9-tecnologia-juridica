@@ -9,9 +9,18 @@ dotenv.config();
 const SERVICE_NAME = "WhatsApp Charlie Echo da Costa";
 const COMPANY_NAME = "Jus 9 Tecnologia Jur\u00eddica";
 const DEFAULT_GRAPH_API_VERSION = "v20.0";
-const INSTITUTIONAL_REPLY =
-  "Ol\u00e1. Aqui \u00e9 o atendimento oficial da Jus 9 Tecnologia Jur\u00eddica. " +
-  "Recebemos sua mensagem e vamos iniciar a triagem com governan\u00e7a humana.";
+const TRIAGE_MENU_REPLY = [
+  "Ol\u00e1. Aqui \u00e9 o atendimento oficial da Jus 9 Tecnologia Jur\u00eddica.",
+  "Eu sou Charlie Echo da Costa, I.A generativa multimodal jur\u00eddico-orientada, com governan\u00e7a humana.",
+  "",
+  "Para iniciar a triagem, responda com uma op\u00e7\u00e3o:",
+  "1 - Urg\u00eancia, prazo ou audi\u00eancia",
+  "2 - Documento, processo ou contrato",
+  "3 - D\u00favida geral ou primeiro atendimento",
+  "4 - Falar com atendimento humano",
+  "",
+  "N\u00e3o envie senhas, tokens, c\u00f3digos de acesso ou documentos sens\u00edveis por aqui. Esta triagem n\u00e3o substitui an\u00e1lise humana qualificada."
+].join("\n");
 
 export const app = express();
 
@@ -107,13 +116,112 @@ export function extractIncomingMessages(payload) {
 
 export async function handleIncomingMessage({ from, text }) {
   const normalizedText = String(text || "").trim();
+  const triage = buildGovernedTriageReply(normalizedText);
 
-  await sendWhatsAppTextMessage(from, INSTITUTIONAL_REPLY);
+  await sendWhatsAppTextMessage(from, triage.reply);
 
   console.log("Charlie Echo processou mensagem.", {
     from: maskWhatsAppId(from),
-    hasOriginalText: Boolean(normalizedText)
+    hasOriginalText: Boolean(normalizedText),
+    triageIntent: triage.intent
   });
+}
+
+export function buildGovernedTriageReply(text) {
+  const intent = inferTriageIntent(text);
+
+  if (intent === "urgent") {
+    return {
+      intent,
+      reply: [
+        "Entendi que pode haver urg\u00eancia, prazo ou audi\u00eancia.",
+        "Para a triagem humana, responda somente com:",
+        "1. nome ou forma de contato;",
+        "2. cidade/UF;",
+        "3. tipo de prazo ou ato;",
+        "4. data limite, se houver.",
+        "",
+        "Se houver risco imediato, perda de prazo hoje ou situa\u00e7\u00e3o sens\u00edvel, procure atendimento humano qualificado agora. Eu n\u00e3o tomo decis\u00e3o jur\u00eddica final."
+      ].join("\n")
+    };
+  }
+
+  if (intent === "document") {
+    return {
+      intent,
+      reply: [
+        "Recebi sinal de assunto com documento, processo ou contrato.",
+        "Para manter a governan\u00e7a, envie primeiro apenas uma descri\u00e7\u00e3o geral do caso, sem dados sens\u00edveis.",
+        "Informe: tipo de documento, objetivo, prazo aproximado e se j\u00e1 existe profissional humano acompanhando.",
+        "",
+        "Documentos completos devem passar por revis\u00e3o humana e ambiente adequado antes de qualquer an\u00e1lise."
+      ].join("\n")
+    };
+  }
+
+  if (intent === "human") {
+    return {
+      intent,
+      reply: [
+        "Certo. Vou tratar como pedido de atendimento humano.",
+        "Para encaminhar melhor, responda com nome, melhor hor\u00e1rio de retorno e resumo breve do assunto.",
+        "",
+        "A Charlie Echo organiza a triagem, mas decis\u00f5es jur\u00eddicas sens\u00edveis dependem de revis\u00e3o humana qualificada."
+      ].join("\n")
+    };
+  }
+
+  if (intent === "general") {
+    return {
+      intent,
+      reply: [
+        "Recebemos sua mensagem e vamos iniciar a triagem com governan\u00e7a humana.",
+        "Descreva em poucas linhas o que voc\u00ea precisa, sem enviar senhas, tokens, c\u00f3digos ou documentos sens\u00edveis.",
+        "",
+        "Se preferir, responda:",
+        "1 - urg\u00eancia/prazo",
+        "2 - documento/processo",
+        "3 - d\u00favida geral",
+        "4 - atendimento humano"
+      ].join("\n")
+    };
+  }
+
+  return {
+    intent,
+    reply: TRIAGE_MENU_REPLY
+  };
+}
+
+export function inferTriageIntent(text) {
+  const normalized = normalizeForTriage(text);
+
+  if (!normalized || /^(oi|ola|ol\u00e1|bom dia|boa tarde|boa noite|teste|charlie|oi charlie)\b/.test(normalized)) {
+    return "menu";
+  }
+
+  if (/^(1)\b/.test(normalized) || /\b(urgente|urgencia|prazo|audiencia|audi\u00eancia|liminar|intimacao|intima\u00e7\u00e3o|hoje|amanha|amanh\u00e3|vencendo)\b/.test(normalized)) {
+    return "urgent";
+  }
+
+  if (/^(2)\b/.test(normalized) || /\b(documento|processo|contrato|peticao|peti\u00e7\u00e3o|sentenca|senten\u00e7a|decisao|decis\u00e3o|anexo|pdf)\b/.test(normalized)) {
+    return "document";
+  }
+
+  if (/^(4)\b/.test(normalized) || /\b(humano|atendente|pessoa|clovis|cl\u00f3vis|falar com alguem|falar com algu\u00e9m|retorno)\b/.test(normalized)) {
+    return "human";
+  }
+
+  return "general";
+}
+
+function normalizeForTriage(text) {
+  return String(text || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ");
 }
 
 export async function sendWhatsAppTextMessage(to, body) {

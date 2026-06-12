@@ -5,7 +5,14 @@ process.env.VERIFY_TOKEN = "jus9_echo_verify_2026";
 delete process.env.WHATSAPP_TOKEN;
 delete process.env.WHATSAPP_PHONE_NUMBER_ID;
 
-const { app, buildWhatsAppRecipientCandidates, extractIncomingMessages, maskWhatsAppId } = await import("../server.js");
+const {
+  app,
+  buildGovernedTriageReply,
+  buildWhatsAppRecipientCandidates,
+  extractIncomingMessages,
+  inferTriageIntent,
+  maskWhatsAppId
+} = await import("../server.js");
 
 function listen() {
   return new Promise((resolve) => {
@@ -143,4 +150,28 @@ test("buildWhatsAppRecipientCandidates adds Brazilian mobile fallback when ninth
     buildWhatsAppRecipientCandidates("5548999082726"),
     ["5548999082726"]
   );
+});
+
+test("inferTriageIntent classifies governed WhatsApp triage messages", () => {
+  assert.equal(inferTriageIntent("Oi Charlie"), "menu");
+  assert.equal(inferTriageIntent("1 urgente, tenho prazo hoje"), "urgent");
+  assert.equal(inferTriageIntent("Preciso revisar um contrato em PDF"), "document");
+  assert.equal(inferTriageIntent("Quero falar com atendimento humano"), "human");
+  assert.equal(inferTriageIntent("Tenho uma duvida sobre atendimento"), "general");
+});
+
+test("buildGovernedTriageReply keeps legal triage under human governance", () => {
+  const menu = buildGovernedTriageReply("Oi");
+  const urgent = buildGovernedTriageReply("prazo urgente amanha");
+  const document = buildGovernedTriageReply("tenho documento do processo");
+
+  assert.equal(menu.intent, "menu");
+  assert.match(menu.reply, /governan\u00e7a humana/);
+  assert.match(menu.reply, /n\u00e3o substitui an\u00e1lise humana qualificada/i);
+
+  assert.equal(urgent.intent, "urgent");
+  assert.match(urgent.reply, /n\u00e3o tomo decis\u00e3o jur\u00eddica final/i);
+
+  assert.equal(document.intent, "document");
+  assert.match(document.reply, /sem dados sens\u00edveis/i);
 });

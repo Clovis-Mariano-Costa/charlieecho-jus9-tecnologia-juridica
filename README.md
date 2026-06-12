@@ -149,7 +149,18 @@ GET /webhook
 POST /webhook
 ```
 
-O `GET /` retorna o healthcheck do serviço. O `GET /webhook` valida o desafio da Meta usando `VERIFY_TOKEN`. O `POST /webhook` recebe eventos da WhatsApp Cloud API, responde rapidamente `200` para a Meta, extrai mensagens recebidas quando existirem e envia uma resposta institucional inicial sem aconselhamento jurídico automático.
+O `GET /` retorna o healthcheck do serviço. O `GET /webhook` valida o desafio da Meta usando `VERIFY_TOKEN`. O `POST /webhook` recebe eventos da WhatsApp Cloud API, responde rapidamente `200` para a Meta, extrai mensagens recebidas quando existirem e envia uma triagem institucional inicial sem aconselhamento jurídico automático.
+
+Fluxo atual da triagem WhatsApp:
+
+```txt
+1 - Urgência, prazo ou audiência
+2 - Documento, processo ou contrato
+3 - Dúvida geral ou primeiro atendimento
+4 - Falar com atendimento humano
+```
+
+A Charlie Echo apenas acolhe, organiza o primeiro contato e reforça governança humana. Ela não toma decisão jurídica final, não substitui profissional habilitado e orienta o usuário a não enviar senhas, tokens, códigos de acesso ou documentos sensíveis por WhatsApp.
 
 Configuração sugerida no Render:
 
