@@ -156,6 +156,32 @@ export function buildGovernedTriageReply(text, session = null) {
       };
     }
 
+    if (isImmediateDangerSignal(normalized)) {
+      return {
+        intent: "immediate_danger",
+        nextSession: {
+          intent: resolvedIntent,
+          stage: "ready_for_handoff"
+        },
+        shouldSaveProtocol: true,
+        protocolClassification: getDriveSaverProtocolClassification(),
+        reply: buildImmediateDangerReply(resolvedIntent)
+      };
+    }
+
+    if (isImmediateAttentionRequest(normalized) || isReturnExpectationQuestion(normalized)) {
+      return {
+        intent: "human_return_expectation",
+        nextSession: {
+          intent: resolvedIntent,
+          stage: "ready_for_handoff"
+        },
+        shouldSaveProtocol: true,
+        protocolClassification: getDriveSaverProtocolClassification(),
+        reply: buildHumanReturnExpectationReply(resolvedIntent)
+      };
+    }
+
     if (isAnxiousFollowUp(normalized) || intent === "human") {
       return {
         intent: "comfort_next_steps",
@@ -192,15 +218,34 @@ export function buildGovernedTriageReply(text, session = null) {
 
   if (isStructuredTriageDetails(text, session)) {
     const resolvedIntent = mergeTriageIntent(session?.intent, intent);
+    const hasImmediateDanger = isImmediateDangerSignal(normalized);
+
     return {
-      intent: "details_received",
+      intent: hasImmediateDanger ? "details_received_high_risk" : "details_received",
       nextSession: {
         intent: resolvedIntent,
         stage: "ready_for_handoff"
       },
       shouldSaveProtocol: true,
       protocolClassification: getDriveSaverProtocolClassification(),
-      reply: buildDetailsReceivedReply(resolvedIntent)
+      reply: hasImmediateDanger
+        ? buildHighRiskDetailsReceivedReply(resolvedIntent)
+        : buildDetailsReceivedReply(resolvedIntent)
+    };
+  }
+
+  if (isImmediateDangerSignal(normalized)) {
+    const resolvedIntent = mergeTriageIntent(session?.intent, "urgent");
+
+    return {
+      intent: "immediate_danger",
+      nextSession: {
+        intent: resolvedIntent,
+        stage: "ready_for_handoff"
+      },
+      shouldSaveProtocol: true,
+      protocolClassification: getDriveSaverProtocolClassification(),
+      reply: buildImmediateDangerReply(resolvedIntent)
     };
   }
 
@@ -391,6 +436,21 @@ function buildDetailsReceivedReply(intent) {
   ].join("\n");
 }
 
+function buildHighRiskDetailsReceivedReply(intent) {
+  const label = triageIntentLabel(intent);
+
+  return [
+    "Recebi os dados m\u00ednimos e entendi que voc\u00ea descreveu risco alto.",
+    `Status: pronto para revis\u00e3o humana priorit\u00e1ria (${label}).`,
+    "",
+    "Pr\u00e9-an\u00e1lise segura: quando h\u00e1 risco de vida, viol\u00eancia, amea\u00e7a ou perigo acontecendo agora, n\u00e3o espere apenas este WhatsApp.",
+    "Se voc\u00ea estiver no Brasil, acione imediatamente 190, 192 ou 193 conforme o caso. Se estiver em outro pa\u00eds, acione o servi\u00e7o de emerg\u00eancia local.",
+    "",
+    "A Charlie Echo organiza e protege a triagem, mas n\u00e3o garante liga\u00e7\u00e3o imediata, n\u00e3o substitui socorro presencial e n\u00e3o toma decis\u00e3o jur\u00eddica final.",
+    "N\u00e3o envie documentos, senhas, tokens, c\u00f3digos ou detalhes sens\u00edveis por aqui. Se precisar complementar, envie s\u00f3 cidade/UF e uma frase curta sobre o risco."
+  ].join("\n");
+}
+
 function buildContinuityReply(intent) {
   return [
     "Continua o mesmo atendimento.",
@@ -398,6 +458,32 @@ function buildContinuityReply(intent) {
     "",
     "Se voc\u00ea quiser acrescentar algo, envie como complemento curto. Se for outro caso, escreva: NOVO ATENDIMENTO.",
     "Para este caso, n\u00e3o precisa repetir nome, cidade e assunto se eles j\u00e1 foram informados."
+  ].join("\n");
+}
+
+function buildImmediateDangerReply(intent) {
+  return [
+    "Eu entendi: isso n\u00e3o \u00e9 apenas complemento, \u00e9 sinal de risco imediato.",
+    `Status: triagem mantida para revis\u00e3o humana priorit\u00e1ria (${triageIntentLabel(intent)}).`,
+    "",
+    "Se h\u00e1 risco de morte, viol\u00eancia, amea\u00e7a ou perigo acontecendo agora, acione emerg\u00eancia imediatamente.",
+    "No Brasil: 190, 192 ou 193, conforme o caso. Fora do Brasil, use o servi\u00e7o de emerg\u00eancia local.",
+    "",
+    "Eu n\u00e3o consigo garantir liga\u00e7\u00e3o autom\u00e1tica nem substituir atendimento humano imediato.",
+    "Para sua seguran\u00e7a, n\u00e3o envie documentos, senhas, tokens, c\u00f3digos ou detalhes sens\u00edveis aqui. Envie no m\u00e1ximo cidade/UF e uma frase curta sem expor terceiros."
+  ].join("\n");
+}
+
+function buildHumanReturnExpectationReply(intent) {
+  return [
+    "Eu entendi que voc\u00ea quer uma resposta humana agora.",
+    `Status: a triagem j\u00e1 est\u00e1 organizada para revis\u00e3o humana (${triageIntentLabel(intent)}).`,
+    "",
+    "Com honestidade: por este WhatsApp eu n\u00e3o consigo garantir liga\u00e7\u00e3o imediata nem fazer atendimento jur\u00eddico sens\u00edvel sozinha.",
+    "O passo mais seguro \u00e9 manter a triagem enxuta aqui e acionar tamb\u00e9m o canal humano direto da Jus 9 quando houver prazo, risco ou urg\u00eancia.",
+    "",
+    "Se houver risco de vida, viol\u00eancia ou perigo neste momento, n\u00e3o espere retorno: procure um local seguro e acione emerg\u00eancia local. No Brasil: 190, 192 ou 193.",
+    "N\u00e3o envie dados sens\u00edveis por aqui. Se precisar complementar, envie apenas cidade/UF, melhor contato e uma frase curta sobre a urg\u00eancia."
   ].join("\n");
 }
 
@@ -476,6 +562,18 @@ function isContinuityQuestion(normalized) {
 
 function isAnxiousFollowUp(normalized) {
   return /\b(o que posso fazer|preciso mesmo|estou angustiado|estou angustiada|estou preocupado|estou preocupada|nao sei o que fazer|n[aã]o sei o que fazer|me ajuda|me ajude|pode ser com voce|pode ser com voc[eê])\b/.test(normalized);
+}
+
+function isImmediateDangerSignal(normalized) {
+  return /\b(risco de morte|risco de vida|ameaca de morte|alguem pode morrer|alguem vai morrer|posso morrer|vou morrer|querem me matar|quer me matar|socorro|perigo imediato|perigo agora|violencia agora|agressao|sequestro|arma|tiro|ferido|ferida|sangrando|ambulancia|policia|bombeiro|incendio)\b/.test(normalized);
+}
+
+function isImmediateAttentionRequest(normalized) {
+  return /\b(ser atendido agora|atendido agora|atendimento agora|me atende agora|preciso que voce me atenda|preciso que me atenda|preciso ser atendido|nao esta entendendo|voce nao entendeu|voce nao ta entendendo)\b/.test(normalized);
+}
+
+function isReturnExpectationQuestion(normalized) {
+  return /\b(garantia|garantir|vai me ligar|alguem vai me ligar|quando vao me ligar|quando vai me ligar|ninguem vai me ligar|retorno humano|me dar retorno|dar retorno)\b/.test(normalized);
 }
 
 function isMeaningfulFollowUp(normalized) {
@@ -579,7 +677,13 @@ export async function saveWhatsAppTriageProtocol({ from, text, triage }) {
 }
 
 export function buildWhatsAppProtocolTitle(intent) {
-  const label = intent === "details_received" ? "dados-minimos" : String(intent || "triagem");
+  const titleLabels = {
+    details_received: "dados-minimos",
+    details_received_high_risk: "dados-minimos-risco-alto",
+    immediate_danger: "risco-imediato",
+    human_return_expectation: "expectativa-retorno-humano"
+  };
+  const label = titleLabels[intent] || String(intent || "triagem");
   return `Triagem WhatsApp - ${label} - ${new Date().toISOString().slice(0, 10)}`;
 }
 

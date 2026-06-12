@@ -230,6 +230,57 @@ test("buildGovernedTriageReply handles continuity and anxious follow-up after ha
   assert.doesNotMatch(comfort.reply, /responda em uma \u00fanica mensagem/i);
 });
 
+test("buildGovernedTriageReply recognizes high-risk distress instead of looping on complements", () => {
+  const firstContactHelp = buildGovernedTriageReply("Socorro");
+  const highRiskDetails = buildGovernedTriageReply(
+    "Eu sou o Pedrinho de Londrina, o tipo de prazo e risco de morte, a data limite e o quanto antes",
+    { intent: "urgent", stage: "awaiting_details" }
+  );
+  const attentionNow = buildGovernedTriageReply(
+    "Voce nao entendeu, eu preciso ser atendido agora",
+    highRiskDetails.nextSession
+  );
+  const guarantee = buildGovernedTriageReply(
+    "Minha querida qual a garantia que eu tenho que alguem vai me ligar?",
+    attentionNow.nextSession
+  );
+  const danger = buildGovernedTriageReply(
+    "Voce nao ta entendendo, alguem pode morrer",
+    guarantee.nextSession
+  );
+  const help = buildGovernedTriageReply("Por favor socorro", danger.nextSession);
+
+  assert.equal(firstContactHelp.intent, "immediate_danger");
+  assert.equal(firstContactHelp.nextSession.stage, "ready_for_handoff");
+  assert.equal(firstContactHelp.shouldSaveProtocol, true);
+  assert.match(firstContactHelp.reply, /risco imediato/i);
+
+  assert.equal(highRiskDetails.intent, "details_received_high_risk");
+  assert.equal(highRiskDetails.nextSession.stage, "ready_for_handoff");
+  assert.equal(highRiskDetails.shouldSaveProtocol, true);
+  assert.match(highRiskDetails.reply, /risco alto/i);
+  assert.match(highRiskDetails.reply, /190, 192 ou 193/i);
+  assert.match(highRiskDetails.reply, /N\u00e3o envie documentos/i);
+
+  assert.equal(attentionNow.intent, "human_return_expectation");
+  assert.match(attentionNow.reply, /n\u00e3o consigo garantir liga\u00e7\u00e3o imediata/i);
+  assert.match(attentionNow.reply, /canal humano direto/i);
+  assert.doesNotMatch(attentionNow.reply, /Complemento recebido/i);
+
+  assert.equal(guarantee.intent, "human_return_expectation");
+  assert.match(guarantee.reply, /Com honestidade/i);
+  assert.match(guarantee.reply, /n\u00e3o consigo garantir liga\u00e7\u00e3o imediata/i);
+
+  assert.equal(danger.intent, "immediate_danger");
+  assert.match(danger.reply, /risco imediato/i);
+  assert.match(danger.reply, /190, 192 ou 193/i);
+  assert.match(danger.reply, /n\u00e3o envie documentos/i);
+
+  assert.equal(help.intent, "immediate_danger");
+  assert.match(help.reply, /n\u00e3o \u00e9 apenas complemento/i);
+  assert.doesNotMatch(help.reply, /Complemento recebido/i);
+});
+
 test("buildWhatsAppProtocolContent creates a governed Drive Saver protocol", () => {
   const triage = buildGovernedTriageReply(
     "1. Nome de teste\n2. Cidade/UF\n3. Inventario\n4. Hoje",

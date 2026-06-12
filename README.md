@@ -164,6 +164,8 @@ A Charlie Echo apenas acolhe, organiza o primeiro contato e reforça governança
 
 Na versão atual, a triagem mantém uma memória curta em RAM por número de WhatsApp. Isso permite interpretar uma descrição direta, como inventário/herança, urgência ou pedido de atendimento humano, e avançar para coleta mínima de dados sem repetir o menu a cada mensagem. Essa memória não substitui banco de dados, protocolo formal ou revisão humana.
 
+Quando a triagem já estiver pronta para atendimento humano, a Charlie Echo diferencia complemento comum de sinais de angústia, expectativa de retorno imediato e risco real. Em mensagens como "alguém pode morrer", "socorro" ou "preciso ser atendido agora", ela deve acolher, acalmar, explicitar limites do canal, orientar emergência local quando houver perigo imediato e reforçar que dados sensíveis não devem ser enviados pelo WhatsApp. Essa pré-análise é somente prudencial e operacional; não é parecer jurídico.
+
 Quando `JUS9_DRIVE_SAVER_URL` e `JUS9_DRIVE_SAVER_CHAVE_INTERNA` estiverem configuradas no Render, a triagem pronta para atendimento humano envia um protocolo classificado como `JURIDICO_SIGILOSO` ao `JUS9_DRIVE_SAVER_MVP`, destinado à entrada de revisão humana no Google Drive. A URL ativa do Web App e a chave interna nunca devem ser publicadas no GitHub, prints ou chat.
 
 Se houver autorização expressa do Fundador e o Apps Script estiver configurado com `JUS9_FOLDER_COFRE_DEPOSITO`, o Render pode usar `JUS9_DRIVE_SAVER_CLASSIFICACAO_PROTOCOLO=COFRE_DEPOSITO_ASSISTIDO`. Essa rota é somente depósito assistido: cria documento novo no cofre e não lê, lista, edita, exclui, sobrescreve ou modifica conteúdo existente. A classificação `COFRE_NAO_AUTOMATICO` continua bloqueada.
