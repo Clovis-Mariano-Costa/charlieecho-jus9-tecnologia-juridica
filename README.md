@@ -136,3 +136,43 @@ Governanca geral da Jus 9, governanca de outras identidades, historico processua
 - [Charlie Echo](https://charlieecho.jus9tecnologia.com.br/)
 - [Charlie Echo Social](https://jus9verde.jus9tecnologia.com.br/charlie-echo-social)
 - [Contato](mailto:Contato@jus9tecnologia.com.br)
+
+## WhatsApp Cloud API no Render
+
+Este repositório também inclui o primeiro MVP do webhook do WhatsApp Charlie Echo da Costa para a Jus 9 Tecnologia Jurídica.
+
+Endpoints principais:
+
+```txt
+GET /
+GET /webhook
+POST /webhook
+```
+
+O `GET /` retorna o healthcheck do serviço. O `GET /webhook` valida o desafio da Meta usando `VERIFY_TOKEN`. O `POST /webhook` recebe eventos da WhatsApp Cloud API, responde rapidamente `200` para a Meta, extrai mensagens recebidas quando existirem e envia uma resposta institucional inicial sem aconselhamento jurídico automático.
+
+Configuração sugerida no Render:
+
+```txt
+Language: Node
+Build Command: npm install
+Start Command: npm start
+```
+
+Variáveis de ambiente necessárias no Render:
+
+```txt
+VERIFY_TOKEN
+WHATSAPP_TOKEN
+WHATSAPP_PHONE_NUMBER_ID
+WHATSAPP_WABA_ID
+NODE_ENV=production
+```
+
+URL de callback para configurar na Meta:
+
+```txt
+https://charlieecho-jus9-tecnologia-juridica.onrender.com/webhook
+```
+
+Use o mesmo `VERIFY_TOKEN` no Render e na Meta. Nunca publique o token de acesso da Meta, `OPENAI_API_KEY`, `.env` real, prints com credenciais ou payloads brutos de WhatsApp.

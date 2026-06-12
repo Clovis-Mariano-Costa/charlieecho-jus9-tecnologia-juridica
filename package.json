@@ -1,0 +1,20 @@
+{
+  "name": "charlieecho-jus9-tecnologia-juridica",
+  "version": "0.1.0",
+  "description": "Webhook WhatsApp Cloud API para Charlie Echo da Costa - Jus 9 Tecnologia Juridica",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test tests/whatsapp-webhook.test.mjs"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
