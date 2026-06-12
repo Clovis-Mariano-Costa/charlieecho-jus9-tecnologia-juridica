@@ -5,7 +5,7 @@ process.env.VERIFY_TOKEN = "jus9_echo_verify_2026";
 delete process.env.WHATSAPP_TOKEN;
 delete process.env.WHATSAPP_PHONE_NUMBER_ID;
 
-const { app, extractIncomingMessages, maskWhatsAppId } = await import("../server.js");
+const { app, buildWhatsAppRecipientCandidates, extractIncomingMessages, maskWhatsAppId } = await import("../server.js");
 
 function listen() {
   return new Promise((resolve) => {
@@ -131,4 +131,16 @@ test("extractIncomingMessages handles Meta entries and masks identifiers", () =>
   assert.equal(messages[0].from, "5511987654321");
   assert.equal(messages[0].text, "Teste");
   assert.equal(maskWhatsAppId(messages[0].from), "*********4321");
+});
+
+test("buildWhatsAppRecipientCandidates adds Brazilian mobile fallback when ninth digit is missing", () => {
+  assert.deepEqual(
+    buildWhatsAppRecipientCandidates("554899082726"),
+    ["554899082726", "5548999082726"]
+  );
+
+  assert.deepEqual(
+    buildWhatsAppRecipientCandidates("5548999082726"),
+    ["5548999082726"]
+  );
 });

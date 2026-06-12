@@ -120,15 +120,16 @@ export async function sendWhatsAppTextMessage(to, body) {
   const token = process.env.WHATSAPP_TOKEN;
   const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
   const graphApiVersion = process.env.WHATSAPP_GRAPH_API_VERSION || DEFAULT_GRAPH_API_VERSION;
+  const recipients = buildWhatsAppRecipientCandidates(to);
 
-  if (!to) {
+  if (recipients.length === 0) {
     console.warn("Envio ignorado: destinatario ausente.");
     return;
   }
 
   if (!token || !phoneNumberId) {
     console.warn("Envio ignorado: variaveis da WhatsApp API nao configuradas.", {
-      to: maskWhatsAppId(to),
+      to: maskWhatsAppId(recipients[0]),
       hasToken: Boolean(token),
       hasPhoneNumberId: Boolean(phoneNumberId)
     });
@@ -136,36 +137,55 @@ export async function sendWhatsAppTextMessage(to, body) {
   }
 
   const url = `https://graph.facebook.com/${graphApiVersion}/${phoneNumberId}/messages`;
+  let lastError = null;
 
-  try {
-    await axios.post(
-      url,
-      {
-        messaging_product: "whatsapp",
-        to,
-        type: "text",
-        text: { body }
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
+  for (const recipient of recipients) {
+    try {
+      await axios.post(
+        url,
+        {
+          messaging_product: "whatsapp",
+          to: recipient,
+          type: "text",
+          text: { body }
         },
-        timeout: 10000
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+          timeout: 10000
+        }
+      );
 
-    console.log("Mensagem institucional enviada.", {
-      to: maskWhatsAppId(to)
-    });
-  } catch (error) {
-    console.error("Falha ao enviar mensagem pelo WhatsApp.", {
-      to: maskWhatsAppId(to),
-      status: error?.response?.status || null,
-      code: error?.response?.data?.error?.code || null,
-      message: error?.response?.data?.error?.message || error?.message || String(error)
-    });
+      console.log("Mensagem institucional enviada.", {
+        to: maskWhatsAppId(recipient),
+        usedBrazilMobileFallback: recipient !== recipients[0]
+      });
+      return;
+    } catch (error) {
+      lastError = error;
+      const code = error?.response?.data?.error?.code || null;
+
+      if (code === 131030 && recipient === recipients[0] && recipients.length > 1) {
+        console.warn("Destinatario recusado pela lista de teste; tentando formato movel brasileiro alternativo.", {
+          original: maskWhatsAppId(recipient),
+          alternative: maskWhatsAppId(recipients[1])
+        });
+        continue;
+      }
+
+      break;
+    }
   }
+
+  console.error("Falha ao enviar mensagem pelo WhatsApp.", {
+    to: maskWhatsAppId(recipients[0]),
+    attemptedRecipients: recipients.map(maskWhatsAppId),
+    status: lastError?.response?.status || null,
+    code: lastError?.response?.data?.error?.code || null,
+    message: lastError?.response?.data?.error?.message || lastError?.message || String(lastError)
+  });
 }
 
 export function maskWhatsAppId(value) {
@@ -173,6 +193,23 @@ export function maskWhatsAppId(value) {
   if (!text) return "";
   if (text.length <= 4) return "****";
   return `${"*".repeat(text.length - 4)}${text.slice(-4)}`;
+}
+
+export function buildWhatsAppRecipientCandidates(value) {
+  const digits = String(value || "").replace(/\D/g, "");
+  if (!digits) return [];
+
+  const candidates = [digits];
+  const isBrazilianMobileWithoutNinthDigit =
+    digits.startsWith("55") &&
+    digits.length === 12 &&
+    digits.slice(4).startsWith("9");
+
+  if (isBrazilianMobileWithoutNinthDigit) {
+    candidates.push(`${digits.slice(0, 4)}9${digits.slice(4)}`);
+  }
+
+  return [...new Set(candidates)];
 }
 
 const currentFilePath = fileURLToPath(import.meta.url);
