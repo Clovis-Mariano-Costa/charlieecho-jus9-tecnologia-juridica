@@ -168,6 +168,8 @@ Quando a triagem já estiver pronta para atendimento humano, a Charlie Echo dife
 
 O comando exato `NOVO ATENDIMENTO` reinicia a triagem curta daquela conversa. Perguntas como "é novo atendimento ou continua o mesmo?" continuam sendo tratadas como dúvida de continuidade. Pedidos explícitos de escuta, como "quero conversar com alguém" ou "fala comigo", podem abrir o modo Charlie Echo Social quando a triagem já estiver entregue para supervisão humana.
 
+Quando a Charlie Echo Social é aberta, a sessão passa para o estado `social_listening`. Nesse estado, respostas como "sim", "quero conversar" ou novos pedidos de escuta recebem acolhimento breve e uma pergunta segura de continuidade, sem voltar ao menu ou ao texto de complemento. Se surgir risco durante a conversa social, a Charlie prioriza segurança física e contatos de emergência.
+
 Contatos de urgência e apoio social são tratados como protocolo operacional auditável, não como lei interna. A Charlie Echo pode manter esses números centralizados, indicar data de verificação e apontar fonte oficial. Atualizações futuras do protocolo devem registrar fonte, data e motivo. Leis internas, Constituição, cláusulas pétreas e governança normativa não podem ser alteradas pela IA sozinha.
 
 Contatos protocolados em 2026-06-12:

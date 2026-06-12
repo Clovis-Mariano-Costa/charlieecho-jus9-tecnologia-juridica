@@ -301,14 +301,16 @@ test("buildGovernedTriageReply recognizes high-risk distress instead of looping 
   assert.match(guarantee.reply, /n\u00e3o consigo garantir liga\u00e7\u00e3o imediata/i);
 
   assert.equal(danger.intent, "social_listening_offer");
+  assert.equal(danger.nextSession.stage, "social_listening");
   assert.equal(danger.nextSession.postHandoffPressureCount, 3);
   assert.equal(danger.nextSession.socialListeningOffered, true);
   assert.match(danger.reply, /Charlie Echo Social/i);
   assert.match(danger.reply, /188.*180.*100/i);
   assert.match(danger.reply, /Voc\u00ea precisa conversar agora/i);
 
-  assert.equal(help.intent, "immediate_danger");
-  assert.match(help.reply, /n\u00e3o \u00e9 apenas complemento/i);
+  assert.equal(help.intent, "social_listening_risk");
+  assert.equal(help.nextSession.stage, "social_listening");
+  assert.match(help.reply, /n\u00e3o vou minimizar/i);
   assert.match(help.reply, /190.*192.*193/i);
 });
 
@@ -318,24 +320,46 @@ test("buildGovernedTriageReply opens social listening when user explicitly asks 
     { intent: "urgent", stage: "awaiting_details" }
   );
   const talk = buildGovernedTriageReply(
-    "Eu quero conversar com alguem, voce pode me ajudar?",
+    "Eu preciso muito falar com alguem, preciso de ajuda",
     details.nextSession
   );
+  const yes = buildGovernedTriageReply("Sim", talk.nextSession);
   const talkAgain = buildGovernedTriageReply(
-    "Vamos la, fala comigo do jeito que tu sabe",
+    "Sim eu quero conversar com alguem, voce pode me ouvir?",
+    yes.nextSession
+  );
+  const dangerTalk = buildGovernedTriageReply(
+    "Vamos la fala comigo eu sei que voce consegue, por favor eu to correndo perigo preciso ouvir alguem",
     talk.nextSession
   );
+  const notSafe = buildGovernedTriageReply("NAO ESTOU EM SEGURANCA", yes.nextSession);
 
   assert.equal(details.intent, "details_received_high_risk");
   assert.match(details.reply, /risco alto/i);
 
   assert.equal(talk.intent, "social_listening_offer");
+  assert.equal(talk.nextSession.stage, "social_listening");
   assert.equal(talk.nextSession.socialListeningOffered, true);
   assert.match(talk.reply, /Charlie Echo Social/i);
   assert.match(talk.reply, /Voc\u00ea precisa conversar agora/i);
 
-  assert.equal(talkAgain.intent, "social_listening_offer");
-  assert.match(talkAgain.reply, /Charlie Echo Social/i);
+  assert.equal(yes.intent, "social_listening_reply");
+  assert.equal(yes.nextSession.stage, "social_listening");
+  assert.match(yes.reply, /fico em escuta breve/i);
+  assert.match(yes.reply, /ESTOU EM SEGURAN\u00c7A ou N\u00c3O ESTOU/i);
+  assert.doesNotMatch(yes.reply, /Continua o mesmo atendimento/i);
+
+  assert.equal(talkAgain.intent, "social_listening_reply");
+  assert.match(talkAgain.reply, /modo social/i);
+  assert.doesNotMatch(talkAgain.reply, /Voc\u00ea precisa conversar agora/i);
+
+  assert.equal(dangerTalk.intent, "social_listening_risk");
+  assert.match(dangerTalk.reply, /prioridade \u00e9 sair do risco/i);
+  assert.match(dangerTalk.reply, /190.*192.*193/i);
+
+  assert.equal(notSafe.intent, "social_listening_risk");
+  assert.equal(notSafe.shouldSaveProtocol, true);
+  assert.match(notSafe.reply, /sair do risco/i);
 });
 
 test("buildWhatsAppProtocolContent creates a governed Drive Saver protocol", () => {

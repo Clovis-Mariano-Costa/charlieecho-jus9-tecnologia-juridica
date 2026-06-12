@@ -167,9 +167,41 @@ export function buildGovernedTriageReply(text, session = null) {
         intent: "menu",
         stage: "menu",
         postHandoffPressureCount: 0,
-        socialListeningOffered: false
+        socialListeningOffered: false,
+        socialTurns: 0
       },
       reply: buildNewAttendanceReply()
+    };
+  }
+
+  if (session?.stage === "social_listening") {
+    const resolvedIntent = mergeTriageIntent(session.intent, intent);
+    const hasSocialRisk = isImmediateDangerSignal(normalized) || isSocialNotSafeResponse(normalized);
+
+    if (isSocialListeningNo(normalized)) {
+      return {
+        intent: "social_listening_closed",
+        nextSession: {
+          intent: resolvedIntent,
+          stage: "ready_for_handoff",
+          postHandoffPressureCount: getPostHandoffPressureCount(session),
+          socialListeningOffered: true,
+          socialTurns: getSocialListeningTurns(session)
+        },
+        reply: buildSocialListeningClosedReply(resolvedIntent)
+      };
+    }
+
+    return {
+      intent: hasSocialRisk ? "social_listening_risk" : "social_listening_reply",
+      nextSession: buildSocialListeningSession(resolvedIntent, session, {
+        incrementTurn: true
+      }),
+      shouldSaveProtocol: hasSocialRisk,
+      protocolClassification: getDriveSaverProtocolClassification(),
+      reply: hasSocialRisk
+        ? buildSocialListeningRiskReply(resolvedIntent)
+        : buildSocialListeningReply(resolvedIntent, normalized, session)
     };
   }
 
@@ -180,7 +212,8 @@ export function buildGovernedTriageReply(text, session = null) {
       intent: resolvedIntent,
       stage: "ready_for_handoff",
       postHandoffPressureCount: incrementPressure ? currentPressureCount + 1 : currentPressureCount,
-      socialListeningOffered: Boolean(session.socialListeningOffered || socialListeningOffered)
+      socialListeningOffered: Boolean(session.socialListeningOffered || socialListeningOffered),
+      socialTurns: getSocialListeningTurns(session)
     });
     const shouldOfferSocialListening = (nextPressureCount) =>
       nextPressureCount >= SOCIAL_LISTENING_REPEAT_THRESHOLD && !session.socialListeningOffered;
@@ -196,9 +229,8 @@ export function buildGovernedTriageReply(text, session = null) {
     if (isSocialListeningRequest(normalized)) {
       return {
         intent: "social_listening_offer",
-        nextSession: buildReadySession({
-          incrementPressure: true,
-          socialListeningOffered: true
+        nextSession: buildSocialListeningSession(resolvedIntent, session, {
+          incrementPressure: true
         }),
         shouldSaveProtocol: true,
         protocolClassification: getDriveSaverProtocolClassification(),
@@ -212,9 +244,8 @@ export function buildGovernedTriageReply(text, session = null) {
       if (shouldOfferSocialListening(nextPressureCount)) {
         return {
           intent: "social_listening_offer",
-          nextSession: buildReadySession({
-            incrementPressure: true,
-            socialListeningOffered: true
+          nextSession: buildSocialListeningSession(resolvedIntent, session, {
+            incrementPressure: true
           }),
           shouldSaveProtocol: true,
           protocolClassification: getDriveSaverProtocolClassification(),
@@ -237,9 +268,8 @@ export function buildGovernedTriageReply(text, session = null) {
       if (shouldOfferSocialListening(nextPressureCount)) {
         return {
           intent: "social_listening_offer",
-          nextSession: buildReadySession({
-            incrementPressure: true,
-            socialListeningOffered: true
+          nextSession: buildSocialListeningSession(resolvedIntent, session, {
+            incrementPressure: true
           }),
           shouldSaveProtocol: true,
           protocolClassification: getDriveSaverProtocolClassification(),
@@ -262,9 +292,8 @@ export function buildGovernedTriageReply(text, session = null) {
       if (shouldOfferSocialListening(nextPressureCount)) {
         return {
           intent: "social_listening_offer",
-          nextSession: buildReadySession({
-            incrementPressure: true,
-            socialListeningOffered: true
+          nextSession: buildSocialListeningSession(resolvedIntent, session, {
+            incrementPressure: true
           }),
           shouldSaveProtocol: true,
           protocolClassification: getDriveSaverProtocolClassification(),
@@ -285,9 +314,8 @@ export function buildGovernedTriageReply(text, session = null) {
       if (shouldOfferSocialListening(nextPressureCount)) {
         return {
           intent: "social_listening_offer",
-          nextSession: buildReadySession({
-            incrementPressure: true,
-            socialListeningOffered: true
+          nextSession: buildSocialListeningSession(resolvedIntent, session, {
+            incrementPressure: true
           }),
           shouldSaveProtocol: true,
           protocolClassification: getDriveSaverProtocolClassification(),
@@ -634,6 +662,57 @@ function buildSocialListeningOfferReply(intent) {
   ].join("\n");
 }
 
+function buildSocialListeningReply(intent, normalized, session) {
+  const turn = getSocialListeningTurns(session) + 1;
+  const intro = isSocialListeningYes(normalized)
+    ? "Sim. Eu fico em escuta breve com voc\u00ea agora."
+    : "Eu te ouvi. Vamos sair do looping e cuidar do pr\u00f3ximo minuto.";
+
+  if (turn <= 1) {
+    return [
+      intro,
+      `A triagem jur\u00eddica segue entregue para supervis\u00e3o humana (${triageIntentLabel(intent)}).`,
+      "",
+      "Aqui no modo social eu n\u00e3o vou pedir detalhes sens\u00edveis, nomes completos, documentos ou provas. A ideia \u00e9 te ajudar a respirar, se orientar e buscar ajuda real.",
+      "",
+      "Primeiro: voc\u00ea est\u00e1 em seguran\u00e7a f\u00edsica neste momento?",
+      "Responda s\u00f3: ESTOU EM SEGURAN\u00c7A ou N\u00c3O ESTOU."
+    ].join("\n");
+  }
+
+  return [
+    "Estou acompanhando sua mensagem em modo social, sem transformar isso em parecer jur\u00eddico.",
+    "",
+    "Se voc\u00ea estiver em seguran\u00e7a, fa\u00e7a uma coisa simples agora: sente, encoste os p\u00e9s no ch\u00e3o e escreva em uma frase o que precisa que o humano da Jus 9 veja primeiro.",
+    "Se voc\u00ea n\u00e3o estiver em seguran\u00e7a, a conversa n\u00e3o vem antes da prote\u00e7\u00e3o: procure um local seguro e acione emerg\u00eancia local.",
+    "",
+    "Sem dados sens\u00edveis: voc\u00ea quer que eu te ajude a organizar uma frase curta para o humano respons\u00e1vel?"
+  ].join("\n");
+}
+
+function buildSocialListeningRiskReply(intent) {
+  return [
+    "Eu n\u00e3o vou minimizar o que voc\u00ea disse.",
+    `A triagem continua marcada para supervis\u00e3o humana com urg\u00eancia (${triageIntentLabel(intent)}).`,
+    "",
+    "Se voc\u00ea est\u00e1 correndo perigo agora, a prioridade \u00e9 sair do risco antes de continuar a conversa.",
+    buildImmediateEmergencyGuidance(),
+    "",
+    "Se puder responder sem se expor: voc\u00ea est\u00e1 em seguran\u00e7a f\u00edsica neste momento?",
+    "Responda s\u00f3: ESTOU EM SEGURAN\u00c7A ou N\u00c3O ESTOU."
+  ].join("\n");
+}
+
+function buildSocialListeningClosedReply(intent) {
+  return [
+    "Tudo bem. Vou manter a triagem entregue para supervis\u00e3o humana.",
+    `Status: atendimento humano pendente (${triageIntentLabel(intent)}).`,
+    "",
+    "N\u00e3o envie dados sens\u00edveis por aqui. Se mudar de ideia e quiser conversar em modo social, escreva: QUERO CONVERSAR.",
+    "Se houver perigo imediato, acione emerg\u00eancia local."
+  ].join("\n");
+}
+
 function buildComfortNextStepsReply(intent) {
   return [
     "Eu entendi a ang\u00fastia. Vamos deixar isso em ordem, um passo de cada vez.",
@@ -670,9 +749,27 @@ function buildSocialEmergencyGuidance() {
   ].join("\n");
 }
 
+function buildSocialListeningSession(intent, session, options = {}) {
+  const pressureCount = getPostHandoffPressureCount(session);
+  const socialTurns = getSocialListeningTurns(session);
+
+  return {
+    intent,
+    stage: "social_listening",
+    postHandoffPressureCount: options.incrementPressure ? pressureCount + 1 : pressureCount,
+    socialListeningOffered: true,
+    socialTurns: options.incrementTurn ? socialTurns + 1 : socialTurns
+  };
+}
+
 function getPostHandoffPressureCount(session) {
   const count = Number(session?.postHandoffPressureCount || 0);
   return Number.isFinite(count) && count > 0 ? count : 0;
+}
+
+function getSocialListeningTurns(session) {
+  const turns = Number(session?.socialTurns || 0);
+  return Number.isFinite(turns) && turns > 0 ? turns : 0;
 }
 
 export function getEmergencyContactsProtocol() {
@@ -755,7 +852,19 @@ function isReturnExpectationQuestion(normalized) {
 }
 
 function isSocialListeningRequest(normalized) {
-  return /\b(quero conversar|preciso conversar|conversar com alguem|conversar com alguém|fala comigo|fale comigo|conversa comigo|converse comigo|me escuta|me escute|voce pode me ajudar|você pode me ajudar|pode me ouvir|preciso ser ouvido|preciso ser ouvida)\b/.test(normalized);
+  return /\b(quero conversar|preciso conversar|preciso muito falar|falar com alguem|falar com alguém|conversar com alguem|conversar com alguém|fala comigo|fale comigo|conversa comigo|converse comigo|me escuta|me escute|voce pode me ajudar|você pode me ajudar|pode me ouvir|preciso de ajuda|preciso ser ouvido|preciso ser ouvida)\b/.test(normalized);
+}
+
+function isSocialListeningYes(normalized) {
+  return /^(sim|s|quero|quero sim|sim quero|sim eu quero|preciso|preciso sim)[.!? ]*$/.test(normalized);
+}
+
+function isSocialListeningNo(normalized) {
+  return /^(nao|n[aã]o|n|nao quero|n[aã]o quero|agora nao|agora n[aã]o)[.!? ]*$/.test(normalized);
+}
+
+function isSocialNotSafeResponse(normalized) {
+  return /^(nao estou|n[aã]o estou|nao estou em seguranca|n[aã]o estou em seguranca|nao estou seguro|n[aã]o estou seguro|nao estou segura|n[aã]o estou segura)[.!? ]*$/.test(normalized);
 }
 
 function isPressedFirstContact(normalized) {
@@ -796,6 +905,9 @@ function setTriageSession(from, session) {
   triageSessions.set(key, {
     intent: session.intent,
     stage: session.stage,
+    postHandoffPressureCount: getPostHandoffPressureCount(session),
+    socialListeningOffered: Boolean(session.socialListeningOffered),
+    socialTurns: getSocialListeningTurns(session),
     updatedAt: Date.now()
   });
 }
