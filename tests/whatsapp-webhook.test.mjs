@@ -387,6 +387,35 @@ test("buildGovernedTriageReply opens social listening when user explicitly asks 
   assert.match(notSafe.reply, /sair do risco/i);
 });
 
+test("buildGovernedTriageReply opens social listening from awaiting details instead of returning to menu", () => {
+  const reset = buildGovernedTriageReply("NOVO ATENDIMENTO");
+  const urgent = buildGovernedTriageReply("1", reset.nextSession);
+  const wantsTalk = buildGovernedTriageReply("Preciso muito falar", urgent.nextSession);
+  const yes = buildGovernedTriageReply("Sim", wantsTalk.nextSession);
+  const substance = buildGovernedTriageReply("Vou usar droga", yes.nextSession);
+  const directSubstance = buildGovernedTriageReply("Vou usar droga", urgent.nextSession);
+
+  assert.equal(urgent.intent, "urgent");
+  assert.equal(urgent.nextSession.stage, "awaiting_details");
+
+  assert.equal(wantsTalk.intent, "social_listening_offer");
+  assert.equal(wantsTalk.nextSession.stage, "social_listening");
+  assert.match(wantsTalk.reply, /Charlie Echo Social/i);
+  assert.doesNotMatch(wantsTalk.reply, /responda em uma \u00fanica mensagem/i);
+
+  assert.equal(yes.intent, "social_listening_reply");
+  assert.equal(yes.nextSession.stage, "social_listening");
+  assert.doesNotMatch(yes.reply, /Para iniciar a triagem/i);
+
+  assert.equal(substance.intent, "social_listening_substance_use");
+  assert.match(substance.reply, /usar droga agora/i);
+  assert.match(substance.reply, /CONSIGO ou N\u00c3O CONSIGO/i);
+
+  assert.equal(directSubstance.intent, "social_listening_substance_use");
+  assert.equal(directSubstance.nextSession.stage, "social_listening");
+  assert.match(directSubstance.reply, /usar droga agora/i);
+});
+
 test("buildWhatsAppProtocolContent creates a governed Drive Saver protocol", () => {
   const triage = buildGovernedTriageReply(
     "1. Nome de teste\n2. Cidade/UF\n3. Inventario\n4. Hoje",

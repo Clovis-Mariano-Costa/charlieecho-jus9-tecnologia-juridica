@@ -384,6 +384,40 @@ export function buildGovernedTriageReply(text, session = null) {
     };
   }
 
+  if (session?.stage === "awaiting_details") {
+    const resolvedIntent = mergeTriageIntent(session.intent, intent);
+    const socialTopic = inferSocialListeningTopic(normalized);
+
+    if (socialTopic !== "general" && socialTopic !== "affirmation") {
+      const socialIntent = socialTopic === "immediate_risk"
+        ? "social_listening_risk"
+        : `social_listening_${socialTopic}`;
+
+      return {
+        intent: socialIntent,
+        nextSession: buildSocialListeningSession(resolvedIntent, session, {
+          incrementTurn: true,
+          topic: socialTopic
+        }),
+        shouldSaveProtocol: true,
+        protocolClassification: getDriveSaverProtocolClassification(),
+        reply: buildSocialListeningTopicReply(resolvedIntent, socialTopic, normalized, session)
+      };
+    }
+
+    if (isSocialListeningRequest(normalized)) {
+      return {
+        intent: "social_listening_offer",
+        nextSession: buildSocialListeningSession(resolvedIntent, session, {
+          incrementPressure: true
+        }),
+        shouldSaveProtocol: true,
+        protocolClassification: getDriveSaverProtocolClassification(),
+        reply: buildSocialListeningOfferReply(resolvedIntent)
+      };
+    }
+  }
+
   if (isPressedFirstContact(normalized)) {
     const resolvedIntent = mergeTriageIntent(session?.intent, intent);
 
