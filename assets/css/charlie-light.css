@@ -162,3 +162,62 @@ button,input,select,textarea{max-width:100%}
 .protocol-table>div{display:grid;grid-template-columns:minmax(88px,.22fr) 1fr;gap:.8rem;align-items:start;padding:.85rem 1rem;border:1px solid var(--line);border-radius:12px;background:#fff}
 .protocol-table strong{color:#6f4bb2}.protocol-table span{color:var(--muted)}
 @media(max-width:640px){.protocol-table>div{grid-template-columns:1fr}.prompt-row{display:grid}.prompt-row .mini{width:100%}}
+
+/* Pacote visual 4.2 - chat e memoria governada */
+.charlie-chat-card,
+.chat-card,
+.chat-room-panel,
+.chat-response,
+.card,
+.feature{
+  border-radius:8px;
+}
+.charlie-chat-card,
+.chat-card{
+  box-shadow:0 16px 38px rgba(45,38,56,.08);
+}
+.prompt-row,
+.actions,
+.action-row,
+.chat-room-actions{
+  gap:.45rem;
+}
+.mini,
+.btn,
+.download-button,
+.download-hero-button{
+  border-radius:8px;
+  min-height:40px;
+}
+.mini{
+  padding:.52rem .72rem;
+}
+.inputbox textarea,
+.charlie-chat-card textarea,
+.chat-card textarea{
+  border-radius:8px;
+  border-color:rgba(45,38,56,.14);
+  background:#fff;
+  color:#2d2638;
+  line-height:1.55;
+}
+.inputbox textarea:focus,
+.charlie-chat-card textarea:focus,
+.chat-card textarea:focus{
+  outline:none;
+  border-color:#8f65d7;
+  box-shadow:0 0 0 4px rgba(143,101,215,.13);
+}
+.chat-response{
+  max-height:min(62vh,620px);
+  overflow:auto;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+.charlie-memory,
+.chat-room-memory{
+  border-radius:0 8px 8px 0;
+}
+@media(max-width:640px){
+  .chat-response{max-height:none}
+}
