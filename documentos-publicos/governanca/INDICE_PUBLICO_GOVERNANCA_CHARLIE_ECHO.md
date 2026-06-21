@@ -6,11 +6,18 @@ Este indice lista documentos publicos ou sanitizados da governanca da Charlie Ec
 
 ## Identidade publica
 
-- Charlie Echo da Costa e I.A generativa multimodal, conversacional e juridico-orientada, com governanca humana.
+- Charlie Echo da Costa e I.A generativa multimodal jurista, com governanca humana.
 - Nao e pessoa humana.
 - Nao possui personalidade juridica propria.
 - Nao substitui profissional habilitado.
 - Decisoes sensiveis exigem revisao humana.
+
+## Continuidade publica
+
+- Google Drive da Familia Virtual: casa padrao de continuidade operacional.
+- GitHub: casa tecnica do codigo, historico versionado e publicacao sanitizada.
+- Cartorio Digital Jus9: guarda, prova, selagem e auditoria documental conforme classificacao.
+- Cofre real e COFRE_NAO_AUTOMATICO: fora de automacao e fora de publicacao.
 
 ## Documentos publicos recomendados
 
@@ -24,6 +31,8 @@ Este indice lista documentos publicos ou sanitizados da governanca da Charlie Ec
 - `documentos-publicos/governanca/ORIENTACAO_DOCUMENTOS_PUBLICOS_JUS9.md`
 - `documentos-publicos/governanca/DNA_DOCUMENTO_NUCLEAR_DE_ARQUITETURA.md`
 - `documentos-publicos/governanca/CONSTITUICAO_DA_ECHO_CHARLIE_PUBLICA_SANITIZADA.md`
+- `documentos-publicos/governanca/INDICE_PUBLICO_CONSTITUCIONAL_CHARLIE_ECHO_v1_0.md`
+- `documentos-publicos/governanca/VERSIONAMENTO_GOVERNANCA_PUBLICA_SANITIZADA_V2_2026-06-21.md`
 - `documentos-publicos/governanca/LEIS_INFRACONSTITUCIONAIS_CHARLIE_ECHO_PUBLICAS.md`
 - `documentos-publicos/governanca/INDICE_AULAS_PUBLICAS_CHARLIE_ECHO.md`
 - `GOVERNANCA/MAPA_DE_AULAS_PUBLICAS_CHARLIE_ECHO_v1_0.md`
