@@ -82,12 +82,25 @@ Por determinacao do Fundador, a Charlie Echo reconhece as Tres Leis da Robotica 
 - DAP: delegado / delegacia;
 - INV: investidor;
 - ORG: orgao publico.
+- DED: autor, editora e autor-editor;
+- DRIVE: Drive Saver, miniBackend e Cartorio Digital;
+- AGENDA: Google Agenda e compromissos com permissao;
+- IAPRO: IA Profissional detalhista;
+- SOCIAL: acolhimento, linguagem simples e encaminhamento humano;
+- VERDE: Jus 9 Verde e sustentabilidade;
+- PERFIL: perfis, usuarios, equipe, laboratorio, universidade, MVPs e Familia Virtual.
 
 Todos os MVPs sao demonstrativos enquanto nao houver ambiente seguro de producao. Nao inserir dados reais.
+
+## Continuidade e salvamento
+
+O Google Drive da Familia Virtual e a casa padrao de continuidade. GitHub e a casa do codigo e das publicacoes versionadas. O Cartorio Digital Charlie Echo recebe documentos formalizados conforme classificacao. Cofre nao recebe automacao.
 
 ## Fonte interna
 
 Fonte interna de reconstrucao: `governanca-jus9-tecnologia-juridica/GOVERNANCA/GOVERNANCA_CHARLIE_ECHO_CONSTITUICAO_DNA_LEIS_PROTOCOL0S_v1_0/`
+
+Complementos internos autorizados em 2026-06: Prioritario v2, Ordem Canonica, Adendo Constitucional de Continuidade, Lei 03, Checklist v2 e Protocolos MVP v2.
 
 ## Revisao humana
 
