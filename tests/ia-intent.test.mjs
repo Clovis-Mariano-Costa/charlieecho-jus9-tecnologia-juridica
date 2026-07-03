@@ -87,3 +87,34 @@ test("document download post-processing removes hallucinated links", async () =>
     globalThis.fetch = originalFetch;
   }
 });
+
+test("document download post-processing avoids asking for real party data", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    assert.match(String(url), /api\.openai\.com/);
+    return Response.json({
+      output_text: [
+        "Posso preparar a minuta.",
+        "Por favor, me informe os detalhes: nome das partes, valores propostos e frequencia dos pagamentos.",
+        "Apos receber essas informacoes, elaborarei a minuta."
+      ].join("\n")
+    });
+  };
+
+  try {
+    const response = await postIa(
+      "quero link para donwload de uma minuta de pensao alimenticia",
+      { OPENAI_API_KEY: "test-key", JUS9_MODEL_DEFAULT: "test-model" }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.match(body.answer, /AO JUIZO DA VARA DE FAMILIA/i);
+    assert.match(body.answer, /\[NOME DO ALIMENTANDO\]/i);
+    assert.doesNotMatch(body.answer, /me informe os detalhes|nome das partes|valores propostos/i);
+    assert.match(body.answer, /Download seguro/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});

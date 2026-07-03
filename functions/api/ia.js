@@ -734,12 +734,54 @@ function ensureDownloadRequestNoHallucinatedLink(message, answer) {
     .join("\n")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
+  const asksForRealData = /\b(me informe|informe os detalhes|por favor, me informe|nome das partes|nomes das partes|valores propostos|frequencia dos pagamentos|frequência dos pagamentos|apos receber|após receber)\b/i.test(cleaned);
+  const lacksDocumentShape = !/\b(ao juizo|dos fatos|dos fundamentos|dos pedidos|requer|minuta|peticao|petição)\b/i.test(normalizeForIntent(cleaned));
+  const safeDocument = asksForRealData || (cleaned.length < 360 && lacksDocumentShape)
+    ? demonstrativeDocumentDownloadScaffold(message)
+    : cleaned;
 
   return [
-    cleaned || "Posso estruturar a minuta demonstrativa e preparar o conteudo para download.",
+    safeDocument || "Posso estruturar a minuta demonstrativa e preparar o conteudo para download.",
     "",
     "Download seguro: nesta pagina, use o botao/menu de download depois da resposta para baixar em PDF, DOCX ou ZIP. Eu nao devo inventar URL. Link publico do Drive so deve aparecer quando um backend autorizado retornar uma `downloadUrl` real.",
     "Cautela: se houver nomes, documentos, valores, processo, crianca/adolescente ou dados reais, classifique como JURIDICO_SIGILOSO e encaminhe para revisao humana qualificada."
+  ].join("\n");
+}
+
+function demonstrativeDocumentDownloadScaffold(message) {
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  if (/\b(alimentos|pensao|alimenticia|alimenticia)\b/.test(q)) {
+    return [
+      "Minuta demonstrativa - pensao alimenticia",
+      "",
+      "AO JUIZO DA VARA DE FAMILIA DA COMARCA DE [CIDADE/UF]",
+      "",
+      "[NOME DO REPRESENTANTE], [qualificacao resumida], em favor de [NOME DO ALIMENTANDO], por seu advogado, vem propor PEDIDO DE ALIMENTOS ou REVISAO DE ALIMENTOS, conforme o caso concreto, em face de [NOME DO ALIMENTANTE], pelos fatos e fundamentos a seguir.",
+      "",
+      "1. Dos fatos",
+      "O alimentando necessita de contribuicao regular para moradia, alimentacao, saude, educacao, transporte e demais despesas ordinarias. A capacidade contributiva do alimentante deve ser apurada com base no binomio necessidade-possibilidade e nos documentos que forem conferidos por humano habilitado.",
+      "",
+      "2. Dos fundamentos",
+      "O pedido deve observar os arts. 1.694 e seguintes do Codigo Civil e, se houver revisao de valor ja fixado, o art. 1.699 do Codigo Civil. A adequacao ao rito, competencia, prova e pedidos depende de revisao profissional.",
+      "",
+      "3. Dos pedidos",
+      "Requer: a) fixacao ou revisao dos alimentos em valor compativel com as necessidades do alimentando e a possibilidade do alimentante; b) citacao/intimacao da parte contraria; c) producao de provas; d) prioridade ou tutela provisoria se houver fundamento; e) demais medidas cabiveis.",
+      "",
+      "4. Campos para completar com seguranca",
+      "[cidade/UF], [data], [partes], [idade do alimentando], [valor pretendido ou percentual], [despesas comprovadas], [documentos anexos], [assinatura profissional]."
+    ].join("\n");
+  }
+
+  return [
+    "Minuta demonstrativa - documento solicitado",
+    "",
+    "Estrutura segura:",
+    "1. Identificacao do documento e finalidade.",
+    "2. Partes ou envolvidos apenas com placeholders entre colchetes.",
+    "3. Fatos relevantes em linguagem objetiva.",
+    "4. Fundamentos, criterios ou regras aplicaveis.",
+    "5. Pedidos, providencias ou encaminhamentos.",
+    "6. Campo de revisao humana obrigatoria antes de uso real."
   ].join("\n");
 }
 
