@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import fs from "node:fs/promises";
 import test from "node:test";
 
 const { onRequestPost } = await import("../functions/api/ia.js");
@@ -35,4 +36,12 @@ test("explicit jurisprudence research still uses guided legal research", async (
   assert.equal(body.ok, true);
   assert.match(body.answer, /Para pesquisar/i);
   assert.match(body.answer, /Jurisprudencia - trilha segura/i);
+});
+
+test("download prompt forbids empty link promises", async () => {
+  const apiHandler = await fs.readFile(new URL("../functions/api/ia.js", import.meta.url), "utf8");
+
+  assert.match(apiHandler, /nao prometa "vou disponibilizar"/i);
+  assert.match(apiHandler, /botao\/menu de download/i);
+  assert.match(apiHandler, /backend retornar uma URL/i);
 });
