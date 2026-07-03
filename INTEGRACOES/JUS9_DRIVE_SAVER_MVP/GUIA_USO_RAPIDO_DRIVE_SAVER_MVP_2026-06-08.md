@@ -21,6 +21,31 @@ Reduzir o atrito para a Charlie Echo e para a equipe ao salvar documentos no Car
 Usar:
 
 - `INTEGRACOES/JUS9_DRIVE_SAVER_MVP/Enviar-Jus9Documento.ps1`
+- `INTEGRACOES/JUS9_DRIVE_SAVER_MVP/Configurar-DriveSaverEnv.ps1`, para criar ou atualizar o `.env` local da Charlie Echo sem versionar segredos.
+
+## Configurar o miniBackend local
+
+Quando a URL do Web App do Apps Script ja estiver publicada, executar na raiz da integracao:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File ".\Configurar-DriveSaverEnv.ps1" -GerarApiToken
+```
+
+O script pede `JUS9_DRIVE_SAVER_URL` e `JUS9_DRIVE_SAVER_CHAVE_INTERNA` sem imprimir a chave no terminal, gera `JUS9_DRIVE_SAVER_API_TOKEN` local forte e grava somente no `.env` local, protegido pelo `.gitignore`.
+
+Depois, iniciar a Charlie Echo:
+
+```powershell
+npm start
+```
+
+Para teste a partir do MVP Advogados, usar o endpoint intermediario:
+
+```text
+http://127.0.0.1:3000/api/drive-saver/documentos
+```
+
+No DAJ Express, informar apenas o `JUS9_DRIVE_SAVER_API_TOKEN`. A `CHAVE_INTERNA` do Apps Script nunca deve entrar no navegador.
 
 ## Exemplo rapido
 
@@ -54,6 +79,14 @@ O registro nao grava `CHAVE_INTERNA` nem a URL do Web App.
 ### 4. Enviar e abrir documento criado
 
 Usar `-AbrirUrlCriada`.
+
+### 5. Link publico de download
+
+O Apps Script aceita `criarLinkDownload=true`, mas somente para classificacao `PUBLICO`.
+
+Para `INTERNO`, `JURIDICO_SIGILOSO`, `COFRE_NAO_AUTOMATICO` ou qualquer rota com revisao/cofre, o retorno deve permanecer sem link publico.
+
+O caminho recomendado para o MVP Advogados e usar um backend intermediario, como `/api/drive-saver/documentos`, para que a `CHAVE_INTERNA` fique no servidor e nunca no navegador.
 
 ### Compatibilidade
 

@@ -7,6 +7,7 @@ delete process.env.WHATSAPP_PHONE_NUMBER_ID;
 
 const {
   app,
+  buildDriveSaverDocumentPayload,
   buildGovernedTriageReply,
   buildWhatsAppProtocolContent,
   buildWhatsAppProtocolTitle,
@@ -15,7 +16,8 @@ const {
   getDriveSaverProtocolClassification,
   getEmergencyContactsProtocol,
   inferTriageIntent,
-  maskWhatsAppId
+  maskWhatsAppId,
+  sanitizeDriveSaverResponse
 } = await import("../server.js");
 
 function listen() {
@@ -453,6 +455,54 @@ test("getDriveSaverProtocolClassification allows explicit assisted vault deposit
       process.env.JUS9_DRIVE_SAVER_CLASSIFICACAO_PROTOCOLO = previous;
     }
   }
+});
+
+test("buildDriveSaverDocumentPayload governs document links by classification", () => {
+  const publico = buildDriveSaverDocumentPayload({
+    titulo: "DAJ publico",
+    conteudo: "Conteudo educativo ficticio",
+    classificacao: "PUBLICO",
+    criarLinkDownload: true
+  }, "segredo-servidor");
+
+  assert.equal(publico.chaveInterna, "segredo-servidor");
+  assert.equal(publico.classificacao, "PUBLICO");
+  assert.equal(publico.criarLinkDownload, true);
+
+  const sigiloso = buildDriveSaverDocumentPayload({
+    titulo: "DAJ sigiloso",
+    conteudo: "Conteudo juridico",
+    classificacao: "JURIDICO_SIGILOSO",
+    criarLinkDownload: true
+  }, "segredo-servidor");
+
+  assert.equal(sigiloso.classificacao, "JURIDICO_SIGILOSO");
+  assert.equal(sigiloso.criarLinkDownload, false);
+
+  assert.throws(() => buildDriveSaverDocumentPayload({
+    titulo: "Cofre",
+    conteudo: "Conteudo",
+    classificacao: "COFRE_NAO_AUTOMATICO"
+  }, "segredo-servidor"), /nao aceita salvamento automatico/);
+});
+
+test("sanitizeDriveSaverResponse never includes internal keys", () => {
+  const response = sanitizeDriveSaverResponse({
+    ok: true,
+    fileId: "abc",
+    url: "https://docs.google.com/document/d/abc/edit",
+    downloadUrl: "https://docs.google.com/document/d/abc/export?format=pdf",
+    linkPublicoCriado: true,
+    classificacaoFinal: "PUBLICO",
+    pastaDestino: "01_DOCUMENTOS_PUBLICOS_E_EDUCATIVOS",
+    chaveInterna: "nao-devolver"
+  });
+
+  assert.equal(response.ok, true);
+  assert.equal(response.fileId, "abc");
+  assert.equal(response.linkPublicoCriado, true);
+  assert.equal(response.downloadUrl, "https://docs.google.com/document/d/abc/export?format=pdf");
+  assert.equal(Object.hasOwn(response, "chaveInterna"), false);
 });
 
 test("getEmergencyContactsProtocol keeps emergency contacts as auditable protocol data", () => {

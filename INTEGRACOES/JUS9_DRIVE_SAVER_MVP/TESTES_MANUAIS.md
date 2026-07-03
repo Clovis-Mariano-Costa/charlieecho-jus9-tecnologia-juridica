@@ -43,6 +43,24 @@ Data: 2026-06-07
 
 Resultado esperado: salvar em `01_DOCUMENTOS_PUBLICOS_E_EDUCATIVOS`, com `revisaoHumanaObrigatoria = false`.
 
+## Payload PUBLICO com link de download
+
+```json
+{
+  "chaveInterna": "VALOR_DA_SUA_CHAVE",
+  "titulo": "Teste publico com link de download",
+  "conteudo": "Este e um teste publico ficticio para validar link governado.",
+  "classificacao": "PUBLICO",
+  "tipoDocumento": "TESTE_DOWNLOAD",
+  "origem": "Teste manual Apps Script",
+  "autorOperacional": "Charlie Echo / Codex",
+  "observacao": "Deve criar link publico apenas por estar classificado como PUBLICO.",
+  "criarLinkDownload": true
+}
+```
+
+Resultado esperado: salvar em `01_DOCUMENTOS_PUBLICOS_E_EDUCATIVOS`, retornar `linkPublicoCriado = true` e preencher `downloadUrl`. Nao usar este modo para documento interno, juridico sigiloso ou cofre.
+
 ## Payload INTERNO
 
 ```json

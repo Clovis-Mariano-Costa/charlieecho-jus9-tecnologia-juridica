@@ -1,4 +1,5 @@
 import axios from "axios";
+import crypto from "node:crypto";
 import dotenv from "dotenv";
 import express from "express";
 import path from "node:path";
@@ -50,6 +51,26 @@ const DRIVE_SAVER_ALLOWED_CLASSIFICATIONS = new Set([
   "JURIDICO_SIGILOSO",
   "COFRE_DEPOSITO_ASSISTIDO"
 ]);
+const DRIVE_SAVER_DOCUMENT_ALLOWED_CLASSIFICATIONS = new Set([
+  "PUBLICO",
+  "INTERNO",
+  "JURIDICO_SIGILOSO",
+  "COFRE_DEPOSITO_ASSISTIDO"
+]);
+const DRIVE_SAVER_CORS_ORIGINS = new Set(
+  (process.env.JUS9_DRIVE_SAVER_ALLOWED_ORIGINS || [
+    "null",
+    "http://127.0.0.1:8787",
+    "http://localhost:8787",
+    "http://127.0.0.1:8788",
+    "http://localhost:8788",
+    "https://mvp.jus9tecnologia.com.br",
+    "https://jus9tecnologia.com.br"
+  ].join(","))
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean)
+);
 
 export const app = express();
 
@@ -61,6 +82,62 @@ app.get("/", (_req, res) => {
     service: SERVICE_NAME,
     company: COMPANY_NAME
   });
+});
+
+app.options("/api/drive-saver/documentos", (req, res) => {
+  applyDriveSaverCors(req, res);
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Max-Age", "600");
+  res.sendStatus(204);
+});
+
+app.post("/api/drive-saver/documentos", async (req, res) => {
+  applyDriveSaverCors(req, res);
+
+  if (!isDriveSaverApiAuthorized(req)) {
+    return res.status(401).json({
+      ok: false,
+      error: "Autorizacao necessaria para salvar documento no Drive Saver."
+    });
+  }
+
+  const driveSaverUrl = process.env.JUS9_DRIVE_SAVER_URL;
+  const driveSaverKey = process.env.JUS9_DRIVE_SAVER_CHAVE_INTERNA;
+
+  if (!driveSaverUrl || !driveSaverKey) {
+    return res.status(503).json({
+      ok: false,
+      error: "Drive Saver nao configurado neste ambiente."
+    });
+  }
+
+  try {
+    const payload = buildDriveSaverDocumentPayload(req.body, driveSaverKey);
+    const response = await axios.post(driveSaverUrl, payload, {
+      headers: { "Content-Type": "application/json" },
+      timeout: 10000
+    });
+    const data = sanitizeDriveSaverResponse(response.data || {});
+
+    if (data.ok === false) {
+      return res.status(400).json(data);
+    }
+
+    return res.status(202).json(data);
+  } catch (error) {
+    const status = error?.response?.status || 400;
+    const message =
+      error?.response?.data?.erro ||
+      error?.response?.data?.mensagem ||
+      error?.message ||
+      "Falha ao salvar documento no Drive Saver.";
+
+    return res.status(status >= 400 && status < 600 ? status : 400).json({
+      ok: false,
+      error: String(message)
+    });
+  }
 });
 
 app.get("/webhook", (req, res) => {
@@ -1153,6 +1230,87 @@ export function getDriveSaverProtocolClassification() {
   }
 
   return DEFAULT_DRIVE_SAVER_CLASSIFICATION;
+}
+
+export function buildDriveSaverDocumentPayload(body, driveSaverKey) {
+  const classificacao = String(body?.classificacao || "JURIDICO_SIGILOSO")
+    .trim()
+    .toUpperCase();
+
+  if (classificacao === "COFRE_NAO_AUTOMATICO") {
+    throw new Error("COFRE_NAO_AUTOMATICO nao aceita salvamento automatico.");
+  }
+
+  if (!DRIVE_SAVER_DOCUMENT_ALLOWED_CLASSIFICATIONS.has(classificacao)) {
+    throw new Error("Classificacao nao permitida para salvamento governado.");
+  }
+
+  const conteudo = sanitizeDocumentText(body?.conteudo || body?.content || "", 90000);
+  if (!conteudo) {
+    throw new Error("Conteudo vazio.");
+  }
+
+  return {
+    chaveInterna: driveSaverKey,
+    titulo: sanitizeDocumentText(body?.titulo || body?.title || "Documento Charlie Echo", 120),
+    conteudo,
+    classificacao,
+    tipoDocumento: sanitizeDocumentText(body?.tipoDocumento || "DOCUMENTO_GOVERNADO", 80),
+    origem: sanitizeDocumentText(body?.origem || "Charlie Echo / Jus 9", 120),
+    autorOperacional: sanitizeDocumentText(body?.autorOperacional || "Charlie Echo da Costa", 120),
+    observacao: sanitizeDocumentText(body?.observacao || "", 400),
+    criarLinkDownload: Boolean(body?.criarLinkDownload && classificacao === "PUBLICO")
+  };
+}
+
+export function sanitizeDriveSaverResponse(data) {
+  return {
+    ok: Boolean(data.ok),
+    mensagem: data.mensagem || data.message || "",
+    fileId: data.fileId || null,
+    url: data.url || null,
+    viewUrl: data.viewUrl || data.url || null,
+    downloadUrl: data.downloadUrl || null,
+    linkPublicoCriado: Boolean(data.linkPublicoCriado),
+    classificacaoFinal: data.classificacaoFinal || null,
+    pastaDestino: data.pastaDestino || null,
+    revisaoHumanaObrigatoria: Boolean(data.revisaoHumanaObrigatoria),
+    cofreAutomatico: Boolean(data.cofreAutomatico),
+    cofreDepositoAssistido: Boolean(data.cofreDepositoAssistido),
+    linkGovernado: data.linkGovernado || null,
+    statusCode: data.statusCode || undefined
+  };
+}
+
+function sanitizeDocumentText(value, maxLength) {
+  return String(value || "")
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, " ")
+    .replace(/\n{5,}/g, "\n\n\n\n")
+    .trim()
+    .slice(0, maxLength);
+}
+
+function applyDriveSaverCors(req, res) {
+  const origin = req.headers.origin || "";
+  if (DRIVE_SAVER_CORS_ORIGINS.has(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Vary", "Origin");
+  }
+}
+
+function isDriveSaverApiAuthorized(req) {
+  const expectedToken =
+    process.env.JUS9_DRIVE_SAVER_API_TOKEN ||
+    process.env.JUS9_PUBLIC_ACCESS_TOKEN ||
+    "";
+
+  if (!expectedToken) {
+    return false;
+  }
+
+  const expected = Buffer.from(`Bearer ${expectedToken}`);
+  const received = Buffer.from(req.headers.authorization || "");
+  return received.length === expected.length && crypto.timingSafeEqual(received, expected);
 }
 
 function sanitizeProtocolText(value) {

@@ -9,6 +9,7 @@
  * - Escrever no cofre somente pela rota COFRE_DEPOSITO_ASSISTIDO.
  * - Nao editar, excluir ou sobrescrever arquivos existentes.
  * - Criar sempre novo documento com cabecalho de classificacao.
+ * - Criar link publico de download somente para PUBLICO e quando solicitado.
  *
  * Script Property obrigatoria:
  * CHAVE_INTERNA = valor definido pelo Fundador nas Propriedades do script.
@@ -45,7 +46,8 @@ function doGet() {
     optionalScriptProperties: [
       "JUS9_FOLDER_COFRE_DEPOSITO"
     ],
-    cofreDepositoAssistido: "Somente cria documento novo. Nao le, edita, exclui, sobrescreve nem lista conteudo de cofre."
+    cofreDepositoAssistido: "Somente cria documento novo. Nao le, edita, exclui, sobrescreve nem lista conteudo de cofre.",
+    linkDownloadGovernado: "Use criarLinkDownload=true somente para classificacao PUBLICO."
   });
 }
 
@@ -77,6 +79,10 @@ function doPost(e) {
       mensagem: "Documento salvo com governanca no Cartorio Digital Charlie Echo.",
       fileId: created.fileId,
       url: created.url,
+      viewUrl: created.viewUrl,
+      downloadUrl: created.downloadUrl,
+      linkPublicoCriado: created.linkPublicoCriado,
+      linkGovernado: created.linkGovernado,
       classificacaoFinal: normalized.classificacao,
       pastaDestino: route.folderName,
       revisaoHumanaObrigatoria: route.reviewRequired,
@@ -128,6 +134,7 @@ function normalizeRequest_(payload) {
     origem: String(payload.origem || "Charlie Echo / Jus 9").trim(),
     autorOperacional: String(payload.autorOperacional || "Charlie Echo da Costa").trim(),
     observacao: String(payload.observacao || "").trim(),
+    criarLinkDownload: Boolean(payload.criarLinkDownload),
     criadoEm: new Date()
   };
 }
@@ -228,11 +235,77 @@ function createGovernedDocument_(data, route) {
 
   const file = DriveApp.getFileById(doc.getId());
   file.moveTo(DriveApp.getFolderById(route.folderId));
+  const links = buildGovernedLinks_(file, data, route);
 
   return {
     fileId: doc.getId(),
-    url: doc.getUrl()
+    url: links.viewUrl,
+    viewUrl: links.viewUrl,
+    downloadUrl: links.downloadUrl,
+    linkPublicoCriado: links.linkPublicoCriado,
+    linkGovernado: links.linkGovernado
   };
+}
+
+function buildGovernedLinks_(file, data, route) {
+  const viewUrl = file.getUrl();
+  const requested = Boolean(data.criarLinkDownload);
+
+  if (!requested) {
+    return {
+      viewUrl,
+      downloadUrl: null,
+      linkPublicoCriado: false,
+      linkGovernado: {
+        solicitado: false,
+        permitido: false,
+        motivo: "link publico nao solicitado"
+      }
+    };
+  }
+
+  if (data.classificacao !== "PUBLICO") {
+    return {
+      viewUrl,
+      downloadUrl: null,
+      linkPublicoCriado: false,
+      linkGovernado: {
+        solicitado: true,
+        permitido: false,
+        motivo: "somente PUBLICO pode gerar link publico de download"
+      }
+    };
+  }
+
+  if (route.reviewRequired || route.vaultDepositOnly) {
+    return {
+      viewUrl,
+      downloadUrl: null,
+      linkPublicoCriado: false,
+      linkGovernado: {
+        solicitado: true,
+        permitido: false,
+        motivo: "rota com revisao/cofre nao pode gerar link publico"
+      }
+    };
+  }
+
+  file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+
+  return {
+    viewUrl,
+    downloadUrl: file.getDownloadUrl() || buildGoogleDocPdfExportUrl_(file.getId()),
+    linkPublicoCriado: true,
+    linkGovernado: {
+      solicitado: true,
+      permitido: true,
+      motivo: "classificacao PUBLICO autorizada para visualizacao por link"
+    }
+  };
+}
+
+function buildGoogleDocPdfExportUrl_(fileId) {
+  return `https://docs.google.com/document/d/${encodeURIComponent(fileId)}/export?format=pdf`;
 }
 
 function sanitizeTitle_(title) {

@@ -152,6 +152,8 @@ Charlie Echo deve conhecer este mapa operacional como instrucao interna. Ao resp
 - JURIDICO_SIGILOSO -> 00_ENTRADA_PARA_REVISAO_HUMANA -> revisaoHumanaObrigatoria = true.
 - COFRE_NAO_AUTOMATICO -> BLOQUEADO -> sem salvamento automatico.
 - Classificacao desconhecida -> 00_ENTRADA_PARA_REVISAO_HUMANA -> revisaoHumanaObrigatoria = true.
+- Link publico/download: somente para PUBLICO, quando solicitado e autorizado pelo backend; INTERNO e JURIDICO_SIGILOSO nao geram link publico.
+- Apagar arquivo do Drive: nao prometer. Preferir arquivar, revogar link ou encaminhar para revisao humana.
 Nunca pedir nem revelar CHAVE_INTERNA, URL ativa do Web App, IDs privados de pastas, tokens, senhas, .env ou credenciais.
 Nao acrescente orientacao longa sobre Drive privado quando o usuario estiver apenas testando ou perguntando o mapa tecnico do Drive Saver.
 `;
@@ -567,6 +569,8 @@ function driveSaverGuidance() {
     "- JURIDICO_SIGILOSO -> 00_ENTRADA_PARA_REVISAO_HUMANA -> revisaoHumanaObrigatoria = true.",
     "- COFRE_NAO_AUTOMATICO -> BLOQUEADO, sem salvamento automatico.",
     "- Classificacao desconhecida -> 00_ENTRADA_PARA_REVISAO_HUMANA -> revisaoHumanaObrigatoria = true.",
+    "- Link publico/download -> somente PUBLICO, quando solicitado e autorizado pelo backend.",
+    "- Apagar no Drive -> nao prometer; encaminhar para arquivamento, revogacao de link ou revisao humana.",
     "Nao peca nem revele CHAVE_INTERNA, URL do Web App, IDs de pastas, tokens, senhas ou credenciais."
   ].join("\n");
 }

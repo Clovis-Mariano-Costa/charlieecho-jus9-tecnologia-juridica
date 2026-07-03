@@ -9,7 +9,7 @@ param(
   [switch]$PedirChave,
 
   [Parameter(Mandatory = $true)]
-  [ValidateSet("PUBLICO", "INTERNO", "JURIDICO_SIGILOSO", "COFRE_NAO_AUTOMATICO")]
+  [ValidateSet("PUBLICO", "INTERNO", "JURIDICO_SIGILOSO", "COFRE_NAO_AUTOMATICO", "COFRE_DEPOSITO_ASSISTIDO")]
   [string]$Classificacao,
 
   [Parameter(Mandatory = $true)]
@@ -23,6 +23,7 @@ param(
   [string]$AutorOperacional = "Charlie Echo / Codex",
   [string]$Observacao = "",
   [string]$RegistrarEm = "",
+  [switch]$CriarLinkDownload,
   [switch]$AbrirUrlCriada
 )
 
@@ -74,6 +75,7 @@ $body = @{
   origem = $Origem
   autorOperacional = $AutorOperacional
   observacao = $Observacao
+  criarLinkDownload = [bool]($CriarLinkDownload -and $Classificacao -eq "PUBLICO")
 } | ConvertTo-Json -Depth 5
 
 $response = Invoke-RestMethod `
