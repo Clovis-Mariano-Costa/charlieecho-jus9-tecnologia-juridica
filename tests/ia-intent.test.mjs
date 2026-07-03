@@ -275,6 +275,121 @@ test("Drive Saver corrective action diagnoses older Apps Script response", async
   }
 });
 
+test("Drive Saver corrective action ignores FILE_ID placeholder and uses the real link", async () => {
+  const originalFetch = globalThis.fetch;
+  const fileId = "1iobpq0KhwG2iHy9nsIlsw0w-CMOGK0cASoA3LsrMDYI";
+  let calls = 0;
+  globalThis.fetch = async (url, options = {}) => {
+    calls += 1;
+    assert.equal(String(url), "https://drive-saver.test/exec");
+    const payload = JSON.parse(String(options.body || "{}"));
+    assert.equal(payload.acao, "RESTRINGIR_LINK_PUBLICO");
+    assert.equal(payload.fileId, fileId);
+
+    return Response.json({
+      ok: true,
+      status: "LINK_PUBLICO_RESTRINGIDO",
+      mensagem: "Link publico revogado.",
+      fileId,
+      viewUrl: `https://docs.google.com/document/d/${fileId}/edit`,
+      auditId: "audit-real-link",
+      auditUrl: "https://docs.google.com/document/d/audit-real-link/edit"
+    });
+  };
+
+  try {
+    const response = await postIa(
+      `revogue o link publico deste documento https://docs.google.com/document/d/FILE_ID/edit e tambem deste = https://docs.google.com/document/d/${fileId}/edit?usp=drivesdk`,
+      {
+        JUS9_DRIVE_SAVER_URL: "https://drive-saver.test/exec",
+        JUS9_DRIVE_SAVER_CHAVE_INTERNA: "internal-test-key"
+      }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(calls, 1);
+    assert.equal(body.ok, true);
+    assert.equal(body.driveSaverAction.fileId, fileId);
+    assert.deepEqual(body.driveSaverAction.fileIds, [fileId]);
+    assert.doesNotMatch(body.answer, /Para pesquisar|Fontes recomendadas/i);
+    assert.match(body.answer, /AuditId: audit-real-link/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("Drive Saver corrective action wins before guided legal research", async () => {
+  const originalFetch = globalThis.fetch;
+  const fileId = "1WnIK_dAlLjD5dxo1JH5GaAP7Vt3TB9iwA93dic7Zck4";
+  globalThis.fetch = async () => Response.json({
+    ok: true,
+    status: "LINK_PUBLICO_RESTRINGIDO",
+    mensagem: "Link publico revogado.",
+    fileId,
+    auditId: "audit-priority"
+  });
+
+  try {
+    const response = await postIa(
+      `revogue o link publico deste documento https://docs.google.com/document/d/${fileId}/edit e depois pesquise jurisprudencia sobre alimentos`,
+      {
+        JUS9_DRIVE_SAVER_URL: "https://drive-saver.test/exec",
+        JUS9_DRIVE_SAVER_CHAVE_INTERNA: "internal-test-key"
+      }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(body.driveSaverAction.acao, "RESTRINGIR_LINK_PUBLICO");
+    assert.doesNotMatch(body.answer, /Para pesquisar|Jurisprudencia - trilha segura|Fontes recomendadas/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("Drive Saver corrective action processes multiple real Drive links", async () => {
+  const originalFetch = globalThis.fetch;
+  const fileIds = [
+    "1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "1bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  ];
+  const seen = [];
+  globalThis.fetch = async (url, options = {}) => {
+    assert.equal(String(url), "https://drive-saver.test/exec");
+    const payload = JSON.parse(String(options.body || "{}"));
+    seen.push(payload.fileId);
+
+    return Response.json({
+      ok: true,
+      status: "LINK_PUBLICO_RESTRINGIDO",
+      mensagem: "Link publico revogado.",
+      fileId: payload.fileId,
+      auditId: `audit-${payload.fileId.slice(1, 5)}`
+    });
+  };
+
+  try {
+    const response = await postIa(
+      `revogue estes links https://docs.google.com/document/d/${fileIds[0]}/edit e https://drive.google.com/file/d/${fileIds[1]}/view`,
+      {
+        JUS9_DRIVE_SAVER_URL: "https://drive-saver.test/exec",
+        JUS9_DRIVE_SAVER_CHAVE_INTERNA: "internal-test-key"
+      }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.deepEqual(seen, fileIds);
+    assert.deepEqual(body.driveSaverAction.fileIds, fileIds);
+    assert.equal(body.driveSaverResults.length, 2);
+    assert.match(body.answer, /Acao governada processada para 2 arquivos/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("Drive Saver Apps Script declares governed corrective actions", async () => {
   const code = await fs.readFile(new URL("../INTEGRACOES/JUS9_DRIVE_SAVER_MVP/Code.gs", import.meta.url), "utf8");
 

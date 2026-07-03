@@ -479,18 +479,28 @@ function inferDriveSaverCorrectiveAction(message) {
 }
 
 function extractGoogleDriveFileId(text) {
+  return extractGoogleDriveFileIds(text)[0] || "";
+}
+
+function extractGoogleDriveFileIds(text) {
   const value = String(text || "");
   const patterns = [
-    /\/document\/d\/([A-Za-z0-9_-]{20,})/i,
-    /\/file\/d\/([A-Za-z0-9_-]{20,})/i,
-    /[?&]id=([A-Za-z0-9_-]{20,})/i,
-    /\bfileId[:=\s]+([A-Za-z0-9_-]{20,})/i
+    /\/document\/d\/([A-Za-z0-9_-]{20,})/ig,
+    /\/file\/d\/([A-Za-z0-9_-]{20,})/ig,
+    /[?&]id=([A-Za-z0-9_-]{20,})/ig,
+    /\bfileId[:=\s]+([A-Za-z0-9_-]{20,})/ig
   ];
+  const seen = new Set();
+  const ids = [];
   for (const pattern of patterns) {
-    const match = value.match(pattern);
-    if (match?.[1]) return match[1];
+    let match;
+    while ((match = pattern.exec(value))) {
+      if (!match[1] || seen.has(match[1])) continue;
+      seen.add(match[1]);
+      ids.push(match[1]);
+    }
   }
-  return "";
+  return ids;
 }
 
 function guidedLegalResearchAnswer(message) {
@@ -960,11 +970,11 @@ function sanitizeDriveSaverData(data) {
 }
 
 async function performDriveSaverCorrectiveAction(env, message) {
-  const fileId = extractGoogleDriveFileId(message);
+  const fileIds = extractGoogleDriveFileIds(message);
   const acao = inferDriveSaverCorrectiveAction(message);
   const motivo = inferDriveSaverCorrectiveReason(message, acao);
 
-  if (!fileId) {
+  if (!fileIds.length) {
     return {
       ok: false,
       answer: "Consigo fazer a correcao governada, mas preciso do link do Google Docs/Drive ou do fileId do arquivo criado pelo Drive Saver.",
@@ -972,21 +982,28 @@ async function performDriveSaverCorrectiveAction(env, message) {
     };
   }
 
-  const driveSaver = await callDriveSaver(env, {
-    acao,
-    fileId,
-    titulo: "Correcao governada Drive Saver",
-    origem: "Charlie Echo / API IA",
-    autorOperacional: "Charlie Echo da Costa",
-    motivo,
-    observacao: motivo
-  });
+  const results = [];
+  for (const fileId of fileIds) {
+    const driveSaver = await callDriveSaver(env, {
+      acao,
+      fileId,
+      titulo: "Correcao governada Drive Saver",
+      origem: "Charlie Echo / API IA",
+      autorOperacional: "Charlie Echo da Costa",
+      motivo,
+      observacao: motivo
+    });
+    results.push({ fileId, driveSaver });
+  }
+
+  const ok = results.every((item) => Boolean(item.driveSaver?.ok));
 
   return {
-    ok: Boolean(driveSaver?.ok),
-    answer: buildDriveSaverCorrectiveAnswer(acao, driveSaver),
-    action: { acao, fileId, motivo },
-    driveSaver
+    ok,
+    answer: buildDriveSaverCorrectiveBatchAnswer(acao, results),
+    action: { acao, fileId: fileIds[0], fileIds, motivo },
+    driveSaver: results[0]?.driveSaver || null,
+    driveSaverResults: results
   };
 }
 
@@ -1025,6 +1042,32 @@ function buildDriveSaverCorrectiveAnswer(acao, driveSaver) {
     return "Tentei executar a correcao governada, mas o Apps Script do Drive Saver parece ainda estar na versao anterior e tratou a acao corretiva como criacao de documento sem conteudo. Atualize e publique o Web App com o `Code.gs` novo.";
   }
   return `Tentei executar a correcao governada, mas ${detail}. Verifique se o Apps Script do Drive Saver ja foi atualizado com as acoes corretivas.`;
+}
+
+function buildDriveSaverCorrectiveBatchAnswer(acao, results) {
+  if (!Array.isArray(results) || results.length <= 1) {
+    return buildDriveSaverCorrectiveAnswer(acao, results?.[0]?.driveSaver);
+  }
+
+  const lines = [`Acao governada processada para ${results.length} arquivos.`];
+  for (const item of results) {
+    const driveSaver = item.driveSaver || {};
+    const label = item.fileId ? `${item.fileId.slice(0, 8)}...${item.fileId.slice(-6)}` : "arquivo sem fileId";
+    if (driveSaver.ok) {
+      lines.push(`- ${label}: concluido.`);
+      if (driveSaver.auditId) lines.push(`  AuditId: ${driveSaver.auditId}.`);
+      if (driveSaver.auditUrl) lines.push(`  Registro de auditoria: ${driveSaver.auditUrl}`);
+      if (driveSaver.viewUrl) lines.push(`  Arquivo: ${driveSaver.viewUrl}`);
+    } else {
+      const detail = driveSaver.reason || driveSaver.mensagem || "o Drive Saver nao concluiu a acao";
+      if (/conteudo vazio/i.test(detail)) {
+        lines.push(`- ${label}: pendente. O Apps Script do Drive Saver parece ainda estar na versao anterior e tratou a acao corretiva como criacao de documento sem conteudo.`);
+      } else {
+        lines.push(`- ${label}: pendente. Motivo: ${detail}.`);
+      }
+    }
+  }
+  return lines.join("\n");
 }
 
 function appendArtifactDelivery(answer, artifact, driveSaver) {
@@ -1157,14 +1200,6 @@ export async function onRequestPost(context) {
       });
     }
 
-    if (asksGuidedLegalResearch(message)) {
-      return jsonResponse({
-        ok: true,
-        mode,
-        answer: guidedLegalResearchAnswer(message),
-      });
-    }
-
     if (asksDriveSaverCorrectiveAction(message)) {
       const corrective = await performDriveSaverCorrectiveAction(env, message);
       return jsonResponse({
@@ -1173,7 +1208,21 @@ export async function onRequestPost(context) {
         answer: removeUnsafeLinks(cleanPublicAnswer(corrective.answer)),
         driveSaverAction: corrective.action || null,
         driveSaver: corrective.driveSaver ? sanitizeDriveSaverData(corrective.driveSaver) : null,
+        driveSaverResults: Array.isArray(corrective.driveSaverResults)
+          ? corrective.driveSaverResults.map((item) => ({
+              fileId: item.fileId || null,
+              driveSaver: sanitizeDriveSaverData(item.driveSaver)
+            }))
+          : null,
       }, corrective.ok ? 200 : 400);
+    }
+
+    if (asksGuidedLegalResearch(message)) {
+      return jsonResponse({
+        ok: true,
+        mode,
+        answer: guidedLegalResearchAnswer(message),
+      });
     }
 
     if (!env.OPENAI_API_KEY) {
