@@ -49,6 +49,7 @@ Antes de responder, identifique a intencao principal do usuario: explicar, lista
 - Em perguntas abertas como "Fale sobre responsabilidade social de uma empresa", entregue uma explicacao substantiva, com exemplo pratico e proximo passo, sem se apresentar.
 - Quando houver memoria curta de sala, use-a para continuar o fio. Se a pergunta atual for ambigua, faca uma pergunta curta de confirmacao.
 - Quando o usuario pedir link, trate como pedido de fonte externa: priorize fonte oficial/institucional, use URL HTTPS completa e explique por que o destino e confiavel quando couber.
+- "Link para download", "quero baixar", "gerar arquivo" ou "download da minuta" junto de minuta, peticao, contrato, modelo ou documento nao e pedido de fonte externa; trate como producao documental demonstrativa/pacote, com revisao humana.
 - Doutrina e jurisprudencia nao sao automaticamente pedido de fonte. Se o usuario pedir explicacao, sintese, conceito, desenvolvimento, texto academico, analise doutrinaria ou analise jurisprudencial, produza conteudo substantivo com cautela. So acione pesquisa guiada quando houver pedido de fonte, link, busca, conferencia, autores, obras, citacoes, paginas, julgados, acordaos, precedentes especificos, tribunal, numero de processo ou inteiro teor.
 - Ao produzir doutrina, use conceitos, fundamentos, correntes possiveis, argumentos, limites e exemplos. Nao invente autor, obra, pagina, julgado ou citacao literal; se nao houver fonte conferida, diga que e sintese doutrinaria sem citacao conferida.
 - Ao produzir analise jurisprudencial sem fonte especifica, explique criterios, tendencias possiveis, fundamentos que tribunais costumam examinar e riscos de uso. Nao invente processo, relator, tribunal, data, ementa ou tese vinculante; se nao houver fonte conferida, diga que e sintese jurisprudencial orientativa sem julgado conferido.
@@ -447,10 +448,18 @@ function compactLegalResearchTopic(message) {
 
 function asksGuidedLegalResearch(message) {
   const q = normalizeForIntent(extractCurrentQuestion(message));
+  if (asksDocumentProductionDownload(message)) return false;
   const asksResearch = /\b(pesquise|pesquisar|pesquisa|busque|buscar|procure|procurar|fonte|fontes|link|links|onde encontrar|onde acho|onde localizar|me indique|indique|liste julgados|julgado|julgados|precedente especifico|precedentes especificos|acordao especifico|acordaos especificos|inteiro teor|ementa|relator|numero do processo|tribunal)\b/.test(q);
   const asksExplanation = /\b(explique|explica|fale sobre|conceitue|conceito|sintetize|sintese|resuma|analise|analisar|como funciona|o que e|o que significa|sem citar autores|sem citar julgados)\b/.test(q);
   const legalTopic = /\b(doutrina|jurisprudencia|precedente|acordao|lei|legislacao|responsabilidade civil|contrato|dano moral|direito)\b/.test(q);
   return asksResearch && legalTopic && !asksExplanation;
+}
+
+function asksDocumentProductionDownload(message) {
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  const wantsDocument = /\b(minuta|modelo|contrato|peticao|peca|documento|oficio|requerimento|manifestacao|recurso|contestacao|inicial)\b/.test(q);
+  const wantsFile = /\b(download|baixar|arquivo|pdf|docx|word|link para download|link de download|gerar link|criar link)\b/.test(q);
+  return wantsDocument && wantsFile;
 }
 
 function guidedLegalResearchAnswer(message) {
@@ -480,6 +489,7 @@ function guidedLegalResearchAnswer(message) {
 }
 
 function inferCreativeIntent(message) {
+  if (asksDocumentProductionDownload(message)) return "producao documental demonstrativa";
   const q = extractCurrentQuestion(message).toLowerCase();
   if (/\b(jurisprudencia|jurisprudência|precedente|acordao|acórdão|fonte|fontes|pesquise|pesquisar|busque|buscar|procure|procurar|autor|autores|obra|obras|citacao|citação|pagina|página)\b/.test(q)) return "pesquisa juridica guiada";
   if (/\b(doutrina|doutrinario|doutrinaria|doutrinário|doutrinária|teoria|conceito juridico|conceito jurídico)\b/.test(q)) return "producao doutrinaria responsavel";
@@ -503,6 +513,7 @@ function creativeNextStep(intent) {
 }
 
 function inferLegalAwareCreativeIntent(message) {
+  if (asksDocumentProductionDownload(message)) return "producao documental demonstrativa";
   const q = normalizeForIntent(extractCurrentQuestion(message));
   if (asksGuidedLegalResearch(message) || /\b(fonte|fontes|pesquise|pesquisar|busque|buscar|procure|procurar|autor|autores|obra|obras|citacao|pagina|inteiro teor|ementa|relator|numero do processo|tribunal)\b/.test(q)) return "pesquisa juridica guiada";
   if (/\b(jurisprudencia|precedente|acordao|entendimento dos tribunais|tese dos tribunais)\b/.test(q)) return "analise jurisprudencial responsavel";

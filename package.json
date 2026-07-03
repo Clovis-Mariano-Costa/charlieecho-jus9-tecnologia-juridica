@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "test": "node --test tests/whatsapp-webhook.test.mjs"
+    "test": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "axios": "^1.7.9",
