@@ -45,3 +45,35 @@ test("download prompt forbids empty link promises", async () => {
   assert.match(apiHandler, /botao\/menu de download/i);
   assert.match(apiHandler, /backend retornar uma URL/i);
 });
+
+test("document download post-processing removes hallucinated links", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    assert.match(String(url), /api\.openai\.com/);
+    return Response.json({
+      output_text: [
+        "Vou preparar a minuta e fornecer um link para download.",
+        "",
+        "Estrutura da minuta: fatos, fundamentos, pedidos e documentos.",
+        "Agora, vou gerar o link para voce. Um momento, por favor.",
+        "https://example.com/minuta-revisao-alimentos.pdf"
+      ].join("\n")
+    });
+  };
+
+  try {
+    const response = await postIa(
+      "minuta de peticao revisao de alimentos. Quero um link para download",
+      { OPENAI_API_KEY: "test-key", JUS9_MODEL_DEFAULT: "test-model" }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.match(body.answer, /Estrutura da minuta/i);
+    assert.match(body.answer, /Download seguro/i);
+    assert.doesNotMatch(body.answer, /example\.com|Um momento|vou gerar o link/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});

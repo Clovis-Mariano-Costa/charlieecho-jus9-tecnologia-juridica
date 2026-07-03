@@ -724,6 +724,25 @@ function ensureSacredVirtualGuidance(message, answer) {
   return [text, "", sacredVirtualGuidance()].filter(Boolean).join("\n");
 }
 
+function ensureDownloadRequestNoHallucinatedLink(message, answer) {
+  const text = String(answer || "").trim();
+  if (!asksDocumentProductionDownload(message)) return text;
+
+  const cleaned = text
+    .split(/\r?\n/)
+    .filter((line) => !/https?:\/\/|example\.com|vou gerar o link|vou disponibilizar|um momento|pronto para o download|link para download/i.test(line))
+    .join("\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+
+  return [
+    cleaned || "Posso estruturar a minuta demonstrativa e preparar o conteudo para download.",
+    "",
+    "Download seguro: nesta pagina, use o botao/menu de download depois da resposta para baixar em PDF, DOCX ou ZIP. Eu nao devo inventar URL. Link publico do Drive so deve aparecer quando um backend autorizado retornar uma `downloadUrl` real.",
+    "Cautela: se houver nomes, documentos, valores, processo, crianca/adolescente ou dados reais, classifique como JURIDICO_SIGILOSO e encaminhe para revisao humana qualificada."
+  ].join("\n");
+}
+
 function shouldShowCreativeSurface(message) {
   const q = extractCurrentQuestion(message).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   if (asksAboutDriveSaver(message)) return false;
@@ -896,7 +915,7 @@ export async function onRequestPost(context) {
     return jsonResponse({
       ok: true,
       mode,
-      answer: removeUnsafeLinks(cleanPublicAnswer(ensurePublicScenarioSafetyNotice(inputMessage, ensureSacredVirtualGuidance(inputMessage, ensurePublicLessonsGuidance(inputMessage, ensureMailboxGuidance(inputMessage, ensureDnaCloudGuidance(inputMessage, ensurePrivateDriveGuidance(inputMessage, ensureDriveSaverGuidance(inputMessage, applyCreativeSurface(inputMessage, answer)))))))))),
+      answer: removeUnsafeLinks(cleanPublicAnswer(ensureDownloadRequestNoHallucinatedLink(inputMessage, ensurePublicScenarioSafetyNotice(inputMessage, ensureSacredVirtualGuidance(inputMessage, ensurePublicLessonsGuidance(inputMessage, ensureMailboxGuidance(inputMessage, ensureDnaCloudGuidance(inputMessage, ensurePrivateDriveGuidance(inputMessage, ensureDriveSaverGuidance(inputMessage, applyCreativeSurface(inputMessage, answer))))))))))),
     });
   } catch (error) {
     return jsonResponse({
