@@ -914,7 +914,7 @@ async function callDriveSaver(env, payload) {
         ...sanitized,
         ok: false,
         httpStatus: response.status,
-        reason: data?.mensagem || data?.erro || response.statusText || "drive_saver_rejected"
+        reason: data?.reason || data?.erro || data?.mensagem || response.statusText || "drive_saver_rejected"
       };
     }
     return {
@@ -949,7 +949,7 @@ function sanitizeDriveSaverData(data) {
     cofreDepositoAssistido: data?.cofreDepositoAssistido ?? null,
     linkGovernado: data?.linkGovernado || null,
     skipped: Boolean(data?.skipped),
-    reason: data?.reason || null,
+    reason: data?.reason || data?.erro || data?.mensagem || null,
     httpStatus: data?.httpStatus || null,
     auditId: data?.auditId || null,
     auditUrl: data?.auditUrl || null,
@@ -1021,6 +1021,9 @@ function buildDriveSaverCorrectiveAnswer(acao, driveSaver) {
   }
 
   const detail = driveSaver?.reason || driveSaver?.mensagem || "o Drive Saver nao concluiu a acao";
+  if (/conteudo vazio/i.test(detail)) {
+    return "Tentei executar a correcao governada, mas o Apps Script do Drive Saver parece ainda estar na versao anterior e tratou a acao corretiva como criacao de documento sem conteudo. Atualize e publique o Web App com o `Code.gs` novo.";
+  }
   return `Tentei executar a correcao governada, mas ${detail}. Verifique se o Apps Script do Drive Saver ja foi atualizado com as acoes corretivas.`;
 }
 

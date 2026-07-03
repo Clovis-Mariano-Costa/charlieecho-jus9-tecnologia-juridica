@@ -247,6 +247,34 @@ test("Drive Saver corrective action revokes public link without OpenAI", async (
   }
 });
 
+test("Drive Saver corrective action diagnoses older Apps Script response", async () => {
+  const originalFetch = globalThis.fetch;
+  const fileId = "1WnIK_dAlLjD5dxo1JH5GaAP7Vt3TB9iwA93dic7Zck4";
+  globalThis.fetch = async () => Response.json({
+    ok: false,
+    mensagem: "Falha no salvamento governado.",
+    erro: "Conteudo vazio."
+  });
+
+  try {
+    const response = await postIa(
+      `revogue o link publico deste documento https://docs.google.com/document/d/${fileId}/edit`,
+      {
+        JUS9_DRIVE_SAVER_URL: "https://drive-saver.test/exec",
+        JUS9_DRIVE_SAVER_CHAVE_INTERNA: "internal-test-key"
+      }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 400);
+    assert.equal(body.ok, false);
+    assert.match(body.answer, /Apps Script do Drive Saver parece ainda estar na versao anterior/i);
+    assert.equal(body.driveSaver.reason, "Conteudo vazio.");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("Drive Saver Apps Script declares governed corrective actions", async () => {
   const code = await fs.readFile(new URL("../INTEGRACOES/JUS9_DRIVE_SAVER_MVP/Code.gs", import.meta.url), "utf8");
 
