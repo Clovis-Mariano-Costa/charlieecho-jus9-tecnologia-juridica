@@ -70,6 +70,24 @@ function New-UrlSafeToken {
   [Convert]::ToBase64String($apiTokenBytes).TrimEnd("=").Replace("+", "-").Replace("/", "_")
 }
 
+function Test-EnvValue {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string[]]$Lines,
+    [Parameter(Mandatory = $true)]
+    [string]$Name
+  )
+
+  $escapedName = [Regex]::Escape($Name)
+  $line = $Lines | Where-Object { $_ -match "^\s*$escapedName\s*=" } | Select-Object -First 1
+  if (-not $line) {
+    return $false
+  }
+
+  $value = $line -replace "^\s*$escapedName\s*=", ""
+  -not [string]::IsNullOrWhiteSpace($value)
+}
+
 $repoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..\..")).Path
 if (-not $EnvPath) {
   $EnvPath = Join-Path $repoRoot ".env"
@@ -128,6 +146,25 @@ if (-not (Test-Path -LiteralPath $directory)) {
 }
 
 $lines | Set-Content -LiteralPath $EnvPath -Encoding UTF8
+
+$savedLines = Get-Content -LiteralPath $EnvPath
+$requiredNames = @(
+  "JUS9_DRIVE_SAVER_URL",
+  "JUS9_DRIVE_SAVER_CHAVE_INTERNA",
+  "JUS9_DRIVE_SAVER_API_TOKEN",
+  "JUS9_DRIVE_SAVER_ALLOWED_ORIGINS"
+)
+
+$missingNames = @()
+foreach ($name in $requiredNames) {
+  if (-not (Test-EnvValue -Lines $savedLines -Name $name)) {
+    $missingNames += $name
+  }
+}
+
+if ($missingNames.Count -gt 0) {
+  throw "Configuracao incompleta. Variaveis ausentes no .env: $($missingNames -join ', ')"
+}
 
 Write-Host "Drive Saver configurado em .env local."
 Write-Host "Nao publique este arquivo. O .gitignore ja protege .env."
