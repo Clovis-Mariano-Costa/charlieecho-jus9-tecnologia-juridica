@@ -10,6 +10,8 @@
  * - Nao editar, excluir ou sobrescrever arquivos existentes.
  * - Criar sempre novo documento com cabecalho de classificacao.
  * - Criar link publico de download somente para PUBLICO e quando solicitado.
+ * - Acoes corretivas governadas podem revogar link publico, mover para revisao
+ *   ou enviar arquivo criado pelo Drive Saver para lixeira governada.
  *
  * Script Property obrigatoria:
  * CHAVE_INTERNA = valor definido pelo Fundador nas Propriedades do script.
@@ -47,7 +49,14 @@ function doGet() {
       "JUS9_FOLDER_COFRE_DEPOSITO"
     ],
     cofreDepositoAssistido: "Somente cria documento novo. Nao le, edita, exclui, sobrescreve nem lista conteudo de cofre.",
-    linkDownloadGovernado: "Use criarLinkDownload=true somente para classificacao PUBLICO."
+    linkDownloadGovernado: "Use criarLinkDownload=true somente para classificacao PUBLICO.",
+    acoesGovernadas: [
+      "RESTRINGIR_LINK_PUBLICO",
+      "MOVER_PARA_REVISAO",
+      "RESTRINGIR_E_MOVER_PARA_REVISAO",
+      "ENVIAR_LIXEIRA_GOVERNADA"
+    ],
+    regraAcoesGovernadas: "Acoes corretivas exigem fileId de documento criado pelo Drive Saver e geram auditId."
   });
 }
 
@@ -55,6 +64,16 @@ function doPost(e) {
   try {
     const payload = parsePayload_(e);
     validateInternalKey_(payload.chaveInterna);
+    const acao = normalizeAction_(payload.acao || payload.action || "CRIAR_DOCUMENTO");
+
+    if (acao !== "CRIAR_DOCUMENTO") {
+      const normalizedAction = normalizeGovernedActionRequest_(payload, acao);
+      const actionResult = performGovernedFileAction_(normalizedAction);
+      logSafe_(actionResult.status || "ACAO_GOVERNADA", normalizedAction, {
+        folderName: actionResult.pastaDestino || "ACAO_GOVERNADA"
+      }, normalizedAction.fileId, actionResult.auditId);
+      return json_(actionResult);
+    }
 
     const normalized = normalizeRequest_(payload);
     const route = resolveRoute_(normalized.classificacao);
@@ -139,6 +158,54 @@ function normalizeRequest_(payload) {
   };
 }
 
+function normalizeAction_(action) {
+  const normalized = String(action || "CRIAR_DOCUMENTO").toUpperCase().trim();
+  const aliases = {
+    CRIAR: "CRIAR_DOCUMENTO",
+    CRIAR_DOCUMENTO: "CRIAR_DOCUMENTO",
+    SALVAR_DOCUMENTO: "CRIAR_DOCUMENTO",
+    REVOGAR_LINK_PUBLICO: "RESTRINGIR_LINK_PUBLICO",
+    RESTRINGIR_LINK_PUBLICO: "RESTRINGIR_LINK_PUBLICO",
+    DESPUBLICAR: "RESTRINGIR_LINK_PUBLICO",
+    TIRAR_DO_AR: "RESTRINGIR_LINK_PUBLICO",
+    MOVER_PARA_REVISAO: "MOVER_PARA_REVISAO",
+    MOVER_REVISAO: "MOVER_PARA_REVISAO",
+    RESTRINGIR_E_MOVER_PARA_REVISAO: "RESTRINGIR_E_MOVER_PARA_REVISAO",
+    RESTRINGIR_MOVER_REVISAO: "RESTRINGIR_E_MOVER_PARA_REVISAO",
+    LIXEIRA: "ENVIAR_LIXEIRA_GOVERNADA",
+    ENVIAR_LIXEIRA: "ENVIAR_LIXEIRA_GOVERNADA",
+    ENVIAR_LIXEIRA_GOVERNADA: "ENVIAR_LIXEIRA_GOVERNADA",
+    APAGAR_GOVERNADO: "ENVIAR_LIXEIRA_GOVERNADA",
+    EXCLUIR_GOVERNADO: "ENVIAR_LIXEIRA_GOVERNADA"
+  };
+  const resolved = aliases[normalized] || normalized;
+  const allowed = {
+    CRIAR_DOCUMENTO: true,
+    RESTRINGIR_LINK_PUBLICO: true,
+    MOVER_PARA_REVISAO: true,
+    RESTRINGIR_E_MOVER_PARA_REVISAO: true,
+    ENVIAR_LIXEIRA_GOVERNADA: true
+  };
+  if (!allowed[resolved]) throw new Error(`Acao governada nao permitida: ${normalized}`);
+  return resolved;
+}
+
+function normalizeGovernedActionRequest_(payload, acao) {
+  const fileId = sanitizeFileId_(payload.fileId || payload.id || payload.documentId || "");
+  if (!fileId) throw new Error("fileId obrigatorio para acao governada.");
+  return {
+    acao,
+    fileId,
+    titulo: sanitizeTitle_(payload.titulo || payload.title || "Acao governada Drive Saver"),
+    classificacao: "ACAO_GOVERNADA",
+    origem: String(payload.origem || "Charlie Echo / Jus 9").trim(),
+    autorOperacional: String(payload.autorOperacional || "Charlie Echo da Costa").trim(),
+    motivo: String(payload.motivo || payload.observacao || "Correcao governada solicitada pela Charlie Echo.").trim().slice(0, 500),
+    observacao: String(payload.observacao || payload.motivo || "").trim().slice(0, 500),
+    criadoEm: new Date()
+  };
+}
+
 function resolveRoute_(classificacao) {
   if (classificacao === "PUBLICO") {
     return {
@@ -201,6 +268,11 @@ function getRequiredFolderId_(routeKey) {
     throw new Error(`Rota de pasta sem propriedade configurada: ${routeKey}`);
   }
   return getRequiredScriptProperty_(propertyName);
+}
+
+function getOptionalScriptProperty_(propertyName) {
+  const value = PropertiesService.getScriptProperties().getProperty(propertyName);
+  return value ? String(value).trim() : "";
 }
 
 function getRequiredScriptProperty_(propertyName) {
@@ -308,6 +380,146 @@ function buildGoogleDocPdfExportUrl_(fileId) {
   return `https://docs.google.com/document/d/${encodeURIComponent(fileId)}/export?format=pdf`;
 }
 
+function performGovernedFileAction_(request) {
+  const auditId = Utilities.getUuid();
+  const file = DriveApp.getFileById(request.fileId);
+  assertManagedDriveSaverFile_(file);
+
+  const previousName = file.getName();
+  const previousClassification = inferClassificationFromManagedName_(previousName);
+  const result = {
+    ok: true,
+    auditId,
+    acaoExecutada: request.acao,
+    fileId: request.fileId,
+    fileName: previousName,
+    classificacaoAnterior: previousClassification,
+    motivo: request.motivo,
+    downloadUrl: null,
+    linkPublicoCriado: false,
+    linkGovernado: {
+      solicitado: true,
+      permitido: false,
+      motivo: "acao corretiva governada"
+    },
+    cofreAutomatico: false,
+    cofreDepositoAssistido: false
+  };
+
+  if (request.acao === "RESTRINGIR_LINK_PUBLICO") {
+    restrictPublicSharing_(file);
+    result.status = "LINK_PUBLICO_RESTRINGIDO";
+    result.mensagem = "Link publico revogado ou restringido com governanca.";
+    result.viewUrl = file.getUrl();
+    result.url = result.viewUrl;
+    result.pastaDestino = "mantida";
+    result.revisaoHumanaObrigatoria = false;
+  } else if (request.acao === "MOVER_PARA_REVISAO" || request.acao === "RESTRINGIR_E_MOVER_PARA_REVISAO") {
+    restrictPublicSharing_(file);
+    file.moveTo(DriveApp.getFolderById(getRequiredFolderId_("ENTRADA_REVISAO")));
+    result.status = "MOVIDO_PARA_REVISAO";
+    result.mensagem = "Arquivo restringido e movido para revisao humana.";
+    result.viewUrl = file.getUrl();
+    result.url = result.viewUrl;
+    result.pastaDestino = "00_ENTRADA_PARA_REVISAO_HUMANA";
+    result.classificacaoFinal = "JURIDICO_SIGILOSO";
+    result.revisaoHumanaObrigatoria = true;
+  } else if (request.acao === "ENVIAR_LIXEIRA_GOVERNADA") {
+    restrictPublicSharing_(file);
+    file.setTrashed(true);
+    result.status = "LIXEIRA_GOVERNADA";
+    result.mensagem = "Arquivo enviado para lixeira governada apos restricao de link publico.";
+    result.viewUrl = null;
+    result.url = null;
+    result.pastaDestino = "LIXEIRA_GOVERNADA";
+    result.classificacaoFinal = "LIXEIRA_GOVERNADA";
+    result.revisaoHumanaObrigatoria = true;
+  } else {
+    throw new Error(`Acao governada nao implementada: ${request.acao}`);
+  }
+
+  attachAuditRecord_(request, result);
+  return result;
+}
+
+function restrictPublicSharing_(file) {
+  file.setSharing(DriveApp.Access.PRIVATE, DriveApp.Permission.NONE);
+}
+
+function assertManagedDriveSaverFile_(file) {
+  const name = file.getName();
+  const allowed = /^\[(PUBLICO|INTERNO|JURIDICO_SIGILOSO|COFRE_DEPOSITO_ASSISTIDO)\]\s+/.test(name);
+  if (!allowed) {
+    throw new Error("Acao recusada: arquivo nao parece ter sido criado pelo Drive Saver.");
+  }
+  if (!fileBelongsToManagedDriveSaverFolder_(file)) {
+    throw new Error("Acao recusada: arquivo nao esta em pasta governada do Drive Saver.");
+  }
+}
+
+function inferClassificationFromManagedName_(name) {
+  const match = String(name || "").match(/^\[([A-Z_]+)\]\s+/);
+  return match ? match[1] : "DESCONHECIDA";
+}
+
+function fileBelongsToManagedDriveSaverFolder_(file) {
+  const allowedFolderIds = getManagedDriveSaverFolderIds_();
+  const parents = file.getParents();
+  while (parents.hasNext()) {
+    const parent = parents.next();
+    if (allowedFolderIds[parent.getId()]) return true;
+  }
+  return false;
+}
+
+function getManagedDriveSaverFolderIds_() {
+  const ids = {};
+  const keys = JUS9_DRIVE_SAVER_CONFIG.folderPropertyKeys;
+  for (const routeKey in keys) {
+    if (!Object.prototype.hasOwnProperty.call(keys, routeKey)) continue;
+    const id = getOptionalScriptProperty_(keys[routeKey]);
+    if (id) ids[id] = true;
+  }
+  return ids;
+}
+
+function attachAuditRecord_(request, result) {
+  try {
+    const timestamp = Utilities.formatDate(request.criadoEm, Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
+    const doc = DocumentApp.create(`[AUDITORIA] ${result.status} - ${timestamp}`);
+    const body = doc.getBody();
+    body.appendParagraph("JUS 9 TECNOLOGIA JURIDICA - AUDITORIA DRIVE SAVER")
+      .setHeading(DocumentApp.ParagraphHeading.HEADING1);
+    body.appendParagraph(`AuditId: ${result.auditId}`);
+    body.appendParagraph(`Acao: ${request.acao}`);
+    body.appendParagraph(`Status: ${result.status}`);
+    body.appendParagraph(`FileId: ${request.fileId}`);
+    body.appendParagraph(`Nome do arquivo: ${result.fileName}`);
+    body.appendParagraph(`Classificacao anterior: ${result.classificacaoAnterior}`);
+    body.appendParagraph(`Classificacao final: ${result.classificacaoFinal || result.classificacaoAnterior}`);
+    body.appendParagraph(`Pasta destino: ${result.pastaDestino}`);
+    body.appendParagraph(`Origem: ${request.origem}`);
+    body.appendParagraph(`Autor operacional: ${request.autorOperacional}`);
+    body.appendParagraph(`Motivo: ${request.motivo}`);
+    body.appendParagraph(`Criado em: ${timestamp}`);
+    body.appendParagraph("Observacao: registro sem conteudo do documento original, sem chaves e sem segredos.");
+    doc.saveAndClose();
+
+    const auditFile = DriveApp.getFileById(doc.getId());
+    auditFile.moveTo(DriveApp.getFolderById(getRequiredFolderId_("ENTRADA_REVISAO")));
+    result.auditFileId = doc.getId();
+    result.auditUrl = auditFile.getUrl();
+  } catch (error) {
+    result.auditError = String(error && error.message ? error.message : error);
+  }
+}
+
+function sanitizeFileId_(fileId) {
+  const value = String(fileId || "").trim();
+  if (!/^[A-Za-z0-9_-]{20,}$/.test(value)) return "";
+  return value;
+}
+
 function sanitizeTitle_(title) {
   return String(title)
     .replace(/[\\/:*?"<>|#%{}~&]/g, " ")
@@ -316,9 +528,11 @@ function sanitizeTitle_(title) {
     .slice(0, 120) || "Documento Charlie Echo";
 }
 
-function logSafe_(status, data, route, fileId) {
+function logSafe_(status, data, route, fileId, auditId) {
   Logger.log(JSON.stringify({
     status,
+    acao: data.acao || "CRIAR_DOCUMENTO",
+    auditId: auditId || null,
     titulo: data.titulo,
     classificacao: data.classificacao,
     pastaDestino: route.folderName,

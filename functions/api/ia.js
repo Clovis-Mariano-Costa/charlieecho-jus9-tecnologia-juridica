@@ -463,6 +463,36 @@ function asksDocumentProductionDownload(message) {
   return wantsDocument && wantsFile;
 }
 
+function asksDriveSaverCorrectiveAction(message) {
+  const raw = extractCurrentQuestion(message);
+  const q = normalizeForIntent(raw);
+  const hasAction = /\b(revogue|revogar|restrinja|restringir|despublique|despublicar|tire do ar|tirar do ar|remova o link|remover o link|mova para revisao|mover para revisao|mandar para revisao|mande para revisao|sigiloso|dados reais|publiquei errado|publicou errado|lixeira|apague|apagar|exclua|excluir|delete|deletar)\b/.test(q);
+  const hasDriveTarget = /\b(drive|google docs|docs.google|drive.google|documento|arquivo|link|cartorio|cartorio digital|fileid)\b/.test(q) || extractGoogleDriveFileId(raw);
+  return hasAction && Boolean(hasDriveTarget);
+}
+
+function inferDriveSaverCorrectiveAction(message) {
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  if (/\b(lixeira|apague|apagar|exclua|excluir|delete|deletar)\b/.test(q)) return "ENVIAR_LIXEIRA_GOVERNADA";
+  if (/\b(mova para revisao|mover para revisao|mandar para revisao|mande para revisao|sigiloso|dados reais|publiquei errado|publicou errado)\b/.test(q)) return "RESTRINGIR_E_MOVER_PARA_REVISAO";
+  return "RESTRINGIR_LINK_PUBLICO";
+}
+
+function extractGoogleDriveFileId(text) {
+  const value = String(text || "");
+  const patterns = [
+    /\/document\/d\/([A-Za-z0-9_-]{20,})/i,
+    /\/file\/d\/([A-Za-z0-9_-]{20,})/i,
+    /[?&]id=([A-Za-z0-9_-]{20,})/i,
+    /\bfileId[:=\s]+([A-Za-z0-9_-]{20,})/i
+  ];
+  for (const pattern of patterns) {
+    const match = value.match(pattern);
+    if (match?.[1]) return match[1];
+  }
+  return "";
+}
+
 function guidedLegalResearchAnswer(message) {
   const topic = compactLegalResearchTopic(message);
   const encodedDoctrine = encodeURIComponent(`${topic} doutrina direito`);
@@ -839,6 +869,21 @@ function classifyDocumentForAutonomousDrive(message, content) {
 async function saveArtifactWithDriveSaver(env, artifact) {
   if (!artifact?.shouldSaveToDrive) return null;
 
+  const payload = {
+    titulo: artifact.title,
+    conteudo: artifact.content,
+    classificacao: artifact.driveDecision.classificacao,
+    tipoDocumento: "MINUTA_DEMONSTRATIVA_CHARLIE_ECHO",
+    origem: "Charlie Echo / API IA",
+    autorOperacional: "Charlie Echo da Costa",
+    observacao: artifact.driveDecision.motivo,
+    criarLinkDownload: Boolean(artifact.criarLinkDownload)
+  };
+
+  return callDriveSaver(env, payload);
+}
+
+async function callDriveSaver(env, payload) {
   const driveSaverUrl = String(env?.JUS9_DRIVE_SAVER_URL || "").trim();
   const driveSaverKey = String(env?.JUS9_DRIVE_SAVER_CHAVE_INTERNA || "").trim();
 
@@ -851,23 +896,16 @@ async function saveArtifactWithDriveSaver(env, artifact) {
     };
   }
 
-  const payload = {
-    chaveInterna: driveSaverKey,
-    titulo: artifact.title,
-    conteudo: artifact.content,
-    classificacao: artifact.driveDecision.classificacao,
-    tipoDocumento: "MINUTA_DEMONSTRATIVA_CHARLIE_ECHO",
-    origem: "Charlie Echo / API IA",
-    autorOperacional: "Charlie Echo da Costa",
-    observacao: artifact.driveDecision.motivo,
-    criarLinkDownload: Boolean(artifact.criarLinkDownload)
+  const body = {
+    ...payload,
+    chaveInterna: driveSaverKey
   };
 
   try {
     const response = await fetch(driveSaverUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(body)
     });
     const data = await response.json().catch(() => ({}));
     const sanitized = sanitizeDriveSaverData(data);
@@ -912,8 +950,78 @@ function sanitizeDriveSaverData(data) {
     linkGovernado: data?.linkGovernado || null,
     skipped: Boolean(data?.skipped),
     reason: data?.reason || null,
-    httpStatus: data?.httpStatus || null
+    httpStatus: data?.httpStatus || null,
+    auditId: data?.auditId || null,
+    auditUrl: data?.auditUrl || null,
+    auditFileId: data?.auditFileId || null,
+    acaoExecutada: data?.acaoExecutada || null,
+    status: data?.status || null
   };
+}
+
+async function performDriveSaverCorrectiveAction(env, message) {
+  const fileId = extractGoogleDriveFileId(message);
+  const acao = inferDriveSaverCorrectiveAction(message);
+  const motivo = inferDriveSaverCorrectiveReason(message, acao);
+
+  if (!fileId) {
+    return {
+      ok: false,
+      answer: "Consigo fazer a correcao governada, mas preciso do link do Google Docs/Drive ou do fileId do arquivo criado pelo Drive Saver.",
+      action: { acao, motivo }
+    };
+  }
+
+  const driveSaver = await callDriveSaver(env, {
+    acao,
+    fileId,
+    titulo: "Correcao governada Drive Saver",
+    origem: "Charlie Echo / API IA",
+    autorOperacional: "Charlie Echo da Costa",
+    motivo,
+    observacao: motivo
+  });
+
+  return {
+    ok: Boolean(driveSaver?.ok),
+    answer: buildDriveSaverCorrectiveAnswer(acao, driveSaver),
+    action: { acao, fileId, motivo },
+    driveSaver
+  };
+}
+
+function inferDriveSaverCorrectiveReason(message, acao) {
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  if (/\b(dados reais|sigiloso|processo|cliente|publiquei errado|publicou errado)\b/.test(q)) {
+    return "Correcao por possivel exposicao de dado real, sigilo ou publicacao indevida.";
+  }
+  if (acao === "ENVIAR_LIXEIRA_GOVERNADA") return "Remocao governada solicitada pela Charlie Echo ou usuario autorizado.";
+  if (acao === "RESTRINGIR_E_MOVER_PARA_REVISAO") return "Restricao e revisao humana por prudencia.";
+  return "Revogacao de link publico por prudencia governada.";
+}
+
+function buildDriveSaverCorrectiveAnswer(acao, driveSaver) {
+  if (driveSaver?.ok) {
+    const lines = [];
+    if (acao === "ENVIAR_LIXEIRA_GOVERNADA") {
+      lines.push("Pronto. Enviei o arquivo para lixeira governada e restringi o compartilhamento publico antes disso.");
+    } else if (acao === "RESTRINGIR_E_MOVER_PARA_REVISAO" || acao === "MOVER_PARA_REVISAO") {
+      lines.push("Pronto. Restringi o link publico e movi o arquivo para revisao humana.");
+    } else {
+      lines.push("Pronto. Restringi o link publico do arquivo.");
+    }
+    if (driveSaver.auditId) lines.push(`AuditId: ${driveSaver.auditId}.`);
+    if (driveSaver.auditUrl) lines.push(`Registro de auditoria: ${driveSaver.auditUrl}`);
+    if (driveSaver.viewUrl) lines.push(`Arquivo: ${driveSaver.viewUrl}`);
+    return lines.join("\n");
+  }
+
+  if (driveSaver?.reason === "not_configured") {
+    return "Eu entendi a correcao, mas o Drive Saver nao esta configurado neste ambiente. Assim que estiver ativo, consigo revogar link, mover para revisao ou enviar para lixeira governada pelo fileId.";
+  }
+
+  const detail = driveSaver?.reason || driveSaver?.mensagem || "o Drive Saver nao concluiu a acao";
+  return `Tentei executar a correcao governada, mas ${detail}. Verifique se o Apps Script do Drive Saver ja foi atualizado com as acoes corretivas.`;
 }
 
 function appendArtifactDelivery(answer, artifact, driveSaver) {
@@ -1052,6 +1160,17 @@ export async function onRequestPost(context) {
         mode,
         answer: guidedLegalResearchAnswer(message),
       });
+    }
+
+    if (asksDriveSaverCorrectiveAction(message)) {
+      const corrective = await performDriveSaverCorrectiveAction(env, message);
+      return jsonResponse({
+        ok: corrective.ok,
+        mode,
+        answer: removeUnsafeLinks(cleanPublicAnswer(corrective.answer)),
+        driveSaverAction: corrective.action || null,
+        driveSaver: corrective.driveSaver ? sanitizeDriveSaverData(corrective.driveSaver) : null,
+      }, corrective.ok ? 200 : 400);
     }
 
     if (!env.OPENAI_API_KEY) {

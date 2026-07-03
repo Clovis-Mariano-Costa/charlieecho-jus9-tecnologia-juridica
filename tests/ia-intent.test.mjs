@@ -202,3 +202,58 @@ test("document download autonomously saves public demonstrative draft to Drive S
     globalThis.fetch = originalFetch;
   }
 });
+
+test("Drive Saver corrective action revokes public link without OpenAI", async () => {
+  const originalFetch = globalThis.fetch;
+  const fileId = "1WnIK_dAlLjD5dxo1JH5GaAP7Vt3TB9iwA93dic7Zck4";
+  globalThis.fetch = async (url, options = {}) => {
+    assert.equal(String(url), "https://drive-saver.test/exec");
+    const payload = JSON.parse(String(options.body || "{}"));
+    assert.equal(payload.chaveInterna, "internal-test-key");
+    assert.equal(payload.acao, "RESTRINGIR_LINK_PUBLICO");
+    assert.equal(payload.fileId, fileId);
+    assert.match(payload.motivo, /Revogacao de link publico/i);
+
+    return Response.json({
+      ok: true,
+      status: "LINK_PUBLICO_RESTRINGIDO",
+      mensagem: "Link publico revogado.",
+      fileId,
+      viewUrl: `https://docs.google.com/document/d/${fileId}/edit`,
+      auditId: "audit-123",
+      auditUrl: "https://docs.google.com/document/d/audit-123/edit",
+      acaoExecutada: "RESTRINGIR_LINK_PUBLICO"
+    });
+  };
+
+  try {
+    const response = await postIa(
+      `revogue o link publico deste documento https://docs.google.com/document/d/${fileId}/edit`,
+      {
+        JUS9_DRIVE_SAVER_URL: "https://drive-saver.test/exec",
+        JUS9_DRIVE_SAVER_CHAVE_INTERNA: "internal-test-key"
+      }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.match(body.answer, /Pronto\. Restringi o link publico/i);
+    assert.match(body.answer, /AuditId: audit-123/i);
+    assert.equal(body.driveSaverAction.acao, "RESTRINGIR_LINK_PUBLICO");
+    assert.equal(body.driveSaver.auditId, "audit-123");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("Drive Saver Apps Script declares governed corrective actions", async () => {
+  const code = await fs.readFile(new URL("../INTEGRACOES/JUS9_DRIVE_SAVER_MVP/Code.gs", import.meta.url), "utf8");
+
+  assert.match(code, /RESTRINGIR_LINK_PUBLICO/);
+  assert.match(code, /MOVER_PARA_REVISAO/);
+  assert.match(code, /ENVIAR_LIXEIRA_GOVERNADA/);
+  assert.match(code, /assertManagedDriveSaverFile_/);
+  assert.match(code, /fileBelongsToManagedDriveSaverFolder_/);
+  assert.match(code, /auditId/);
+});
