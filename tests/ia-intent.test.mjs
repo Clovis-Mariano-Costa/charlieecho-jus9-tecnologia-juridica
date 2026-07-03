@@ -118,3 +118,30 @@ test("document download post-processing avoids asking for real party data", asyn
     globalThis.fetch = originalFetch;
   }
 });
+
+test("document download post-processing replaces promise-only draft answer", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    assert.match(String(url), /api\.openai\.com/);
+    return Response.json({
+      output_text: "Posso preparar uma minuta de pensao alimenticia para voce. O documento sera revisado antes de ser disponibilizado. Gostaria de alguma informacao especifica?"
+    });
+  };
+
+  try {
+    const response = await postIa(
+      "quero link para donwload de uma minuta de pensao alimenticia",
+      { OPENAI_API_KEY: "test-key", JUS9_MODEL_DEFAULT: "test-model" }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.match(body.answer, /AO JUIZO DA VARA DE FAMILIA/i);
+    assert.match(body.answer, /\[NOME DO ALIMENTANDO\]/i);
+    assert.doesNotMatch(body.answer, /Posso preparar|disponibilizado|alguma informacao especifica/i);
+    assert.match(body.answer, /Download seguro/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});

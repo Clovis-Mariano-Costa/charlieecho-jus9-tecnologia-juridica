@@ -734,9 +734,10 @@ function ensureDownloadRequestNoHallucinatedLink(message, answer) {
     .join("\n")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
-  const asksForRealData = /\b(me informe|informe os detalhes|por favor, me informe|nome das partes|nomes das partes|valores propostos|frequencia dos pagamentos|frequência dos pagamentos|apos receber|após receber)\b/i.test(cleaned);
-  const lacksDocumentShape = !/\b(ao juizo|dos fatos|dos fundamentos|dos pedidos|requer|minuta|peticao|petição)\b/i.test(normalizeForIntent(cleaned));
-  const safeDocument = asksForRealData || (cleaned.length < 360 && lacksDocumentShape)
+  const asksForRealData = /\b(me informe|informe os detalhes|por favor, me informe|nome das partes|nomes das partes|valores propostos|valores|prazos|condicoes|condições|frequencia dos pagamentos|frequência dos pagamentos|alguma informacao especifica|alguma informação específica|clausula especifica|cláusula específica|apos receber|após receber)\b/i.test(cleaned);
+  const hasDocumentShape = /\b(ao juizo|dos fatos|dos fundamentos|dos pedidos|requer:|estrutura da minuta|fatos, fundamentos, pedidos|qualificacao|qualificação|fundamentacao|fundamentação)\b/i.test(normalizeForIntent(cleaned));
+  const isPromiseOnly = /\b(posso preparar|sera revisado|será revisado|disponibilizado|gostaria de|primeiro|antes de ser disponibilizado|entao disponibilizado|então disponibilizado)\b/i.test(cleaned);
+  const safeDocument = asksForRealData || !hasDocumentShape || isPromiseOnly
     ? demonstrativeDocumentDownloadScaffold(message)
     : cleaned;
 
