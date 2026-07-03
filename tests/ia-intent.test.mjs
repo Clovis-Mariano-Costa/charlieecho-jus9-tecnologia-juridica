@@ -28,6 +28,16 @@ test("document download requests do not fall into guided legal research", async 
   assert.doesNotMatch(String(body.answer || body.error || ""), /Fontes recomendadas/i);
 });
 
+test("document download typo donwload does not fall into guided legal research", async () => {
+  const response = await postIa("quero link para donwload de uma minuta de pensao alimenticia");
+  const body = await response.json();
+
+  assert.equal(response.status, 503);
+  assert.equal(body.ok, false);
+  assert.doesNotMatch(String(body.answer || body.error || ""), /Para pesquisar/i);
+  assert.doesNotMatch(String(body.answer || body.error || ""), /Fontes recomendadas/i);
+});
+
 test("explicit jurisprudence research still uses guided legal research", async () => {
   const response = await postIa("pesquise jurisprudencia sobre revisao de alimentos");
   const body = await response.json();

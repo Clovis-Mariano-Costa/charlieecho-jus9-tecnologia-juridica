@@ -49,7 +49,7 @@ Antes de responder, identifique a intencao principal do usuario: explicar, lista
 - Em perguntas abertas como "Fale sobre responsabilidade social de uma empresa", entregue uma explicacao substantiva, com exemplo pratico e proximo passo, sem se apresentar.
 - Quando houver memoria curta de sala, use-a para continuar o fio. Se a pergunta atual for ambigua, faca uma pergunta curta de confirmacao.
 - Quando o usuario pedir link, trate como pedido de fonte externa: priorize fonte oficial/institucional, use URL HTTPS completa e explique por que o destino e confiavel quando couber.
-- "Link para download", "quero baixar", "gerar arquivo" ou "download da minuta" junto de minuta, peticao, contrato, modelo ou documento nao e pedido de fonte externa; trate como producao documental demonstrativa/pacote, com revisao humana.
+- "Link para download", "link para donwload" (erro comum de digitacao), "quero baixar", "gerar arquivo" ou "download da minuta" junto de minuta, peticao, contrato, modelo ou documento nao e pedido de fonte externa; trate como producao documental demonstrativa/pacote, com revisao humana.
 - Doutrina e jurisprudencia nao sao automaticamente pedido de fonte. Se o usuario pedir explicacao, sintese, conceito, desenvolvimento, texto academico, analise doutrinaria ou analise jurisprudencial, produza conteudo substantivo com cautela. So acione pesquisa guiada quando houver pedido de fonte, link, busca, conferencia, autores, obras, citacoes, paginas, julgados, acordaos, precedentes especificos, tribunal, numero de processo ou inteiro teor.
 - Ao produzir doutrina, use conceitos, fundamentos, correntes possiveis, argumentos, limites e exemplos. Nao invente autor, obra, pagina, julgado ou citacao literal; se nao houver fonte conferida, diga que e sintese doutrinaria sem citacao conferida.
 - Ao produzir analise jurisprudencial sem fonte especifica, explique criterios, tendencias possiveis, fundamentos que tribunais costumam examinar e riscos de uso. Nao invente processo, relator, tribunal, data, ementa ou tese vinculante; se nao houver fonte conferida, diga que e sintese jurisprudencial orientativa sem julgado conferido.
@@ -459,7 +459,7 @@ function asksGuidedLegalResearch(message) {
 function asksDocumentProductionDownload(message) {
   const q = normalizeForIntent(extractCurrentQuestion(message));
   const wantsDocument = /\b(minuta|modelo|contrato|peticao|peca|documento|oficio|requerimento|manifestacao|recurso|contestacao|inicial)\b/.test(q);
-  const wantsFile = /\b(download|baixar|arquivo|pdf|docx|word|link para download|link de download|gerar link|criar link)\b/.test(q);
+  const wantsFile = /\b(download|donwload|dowload|downlod|baixar|arquivo|pdf|docx|word|link para download|link para donwload|link de download|link de donwload|gerar link|criar link)\b/.test(q);
   return wantsDocument && wantsFile;
 }
 
