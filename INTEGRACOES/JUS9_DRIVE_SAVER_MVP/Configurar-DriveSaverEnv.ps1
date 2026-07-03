@@ -36,20 +36,51 @@ function Set-EnvLine {
 
   $escapedName = [Regex]::Escape($Name)
   $found = $false
-  $next = foreach ($line in $Lines) {
+  $next = @(foreach ($line in $Lines) {
     if ($line -match "^\s*$escapedName\s*=") {
       $found = $true
       "$Name=$Value"
     } else {
       $line
     }
-  }
+  })
 
   if (-not $found) {
     $next += "$Name=$Value"
   }
 
   $next
+}
+
+function Normalize-EnvLines {
+  param(
+    [AllowEmptyCollection()]
+    [string[]]$Lines
+  )
+
+  $assignmentPattern = "(JUS9_DRIVE_SAVER_URL|JUS9_DRIVE_SAVER_CHAVE_INTERNA|JUS9_DRIVE_SAVER_API_TOKEN|JUS9_DRIVE_SAVER_ALLOWED_ORIGINS)="
+  $normalized = @()
+
+  foreach ($line in @($Lines)) {
+    $matches = [Regex]::Matches($line, $assignmentPattern)
+    if ($matches.Count -le 1) {
+      $normalized += $line
+      continue
+    }
+
+    for ($index = 0; $index -lt $matches.Count; $index++) {
+      $start = $matches[$index].Index
+      if ($index + 1 -lt $matches.Count) {
+        $end = $matches[$index + 1].Index
+      } else {
+        $end = $line.Length
+      }
+
+      $normalized += $line.Substring($start, $end - $start)
+    }
+  }
+
+  $normalized
 }
 
 function New-UrlSafeToken {
@@ -128,12 +159,14 @@ if ((Test-Path -LiteralPath $EnvPath) -and -not $Forcar) {
 
 $lines = @()
 if (Test-Path -LiteralPath $EnvPath) {
-  $lines = Get-Content -LiteralPath $EnvPath
+  $lines = @(Get-Content -LiteralPath $EnvPath)
 }
 
 if ($null -eq $lines) {
   $lines = @()
 }
+
+$lines = Normalize-EnvLines -Lines $lines
 
 $lines = Set-EnvLine -Lines $lines -Name "JUS9_DRIVE_SAVER_URL" -Value $DriveSaverUrl
 $lines = Set-EnvLine -Lines $lines -Name "JUS9_DRIVE_SAVER_CHAVE_INTERNA" -Value $driveKey
@@ -147,7 +180,7 @@ if (-not (Test-Path -LiteralPath $directory)) {
 
 $lines | Set-Content -LiteralPath $EnvPath -Encoding UTF8
 
-$savedLines = Get-Content -LiteralPath $EnvPath
+$savedLines = @(Get-Content -LiteralPath $EnvPath)
 $requiredNames = @(
   "JUS9_DRIVE_SAVER_URL",
   "JUS9_DRIVE_SAVER_CHAVE_INTERNA",
