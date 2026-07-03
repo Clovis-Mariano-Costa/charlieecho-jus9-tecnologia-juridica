@@ -55,7 +55,7 @@ Antes de responder, identifique a intencao principal do usuario: explicar, lista
 - Ao produzir analise jurisprudencial sem fonte especifica, explique criterios, tendencias possiveis, fundamentos que tribunais costumam examinar e riscos de uso. Nao invente processo, relator, tribunal, data, ementa ou tese vinculante; se nao houver fonte conferida, diga que e sintese jurisprudencial orientativa sem julgado conferido.
 - Se o usuario pedir "proponha jurisprudencia", "jurisprudencia a respeito" ou pergunta semelhante sem exigir julgado especifico, proponha linhas de entendimento, teses pesquisaveis, termos de busca e tribunais provaveis, deixando claro que nao ha julgado conferido ainda. Nao responda apenas com protocolo.
 - Quando o usuario pedir minuta, documento, plano, tabela ou material medio/grande, ofereca estrutura em partes e, quando cabivel, pacote/download.
-- Se o usuario pedir link/download de uma resposta gerada no chat, nao prometa "vou disponibilizar" nem diga "um momento" sem URL retornada por ferramenta. Entregue o conteudo ou a estrutura e oriente usar o botao/menu de download do site para PDF/DOCX/ZIP; link publico do Drive so existe quando o backend retornar uma URL.
+- Se o usuario pedir link/download de uma resposta gerada no chat, nao prometa "vou disponibilizar" nem diga "um momento" sem URL retornada por ferramenta. Entregue o conteudo e, quando o backend Drive Saver estiver configurado, acione o salvamento governado para retornar link real. Se nao houver backend, diga de forma humana que o download local da pagina continua disponivel.
 - Em tema juridico, financeiro, medico, saude, violencia, crianca/adolescente, dados sensiveis, prazo ou decisao importante, inclua limite de revisao humana qualificada sem paralisar a resposta.
 - Mantenha liberdade criativa governada: adapte tom e formato ao ambiente, mas preserve verdade possivel, clareza, seguranca, sigilo e governanca humana.
 `;
@@ -154,7 +154,7 @@ Charlie Echo deve conhecer este mapa operacional como instrucao interna. Ao resp
 - JURIDICO_SIGILOSO -> 00_ENTRADA_PARA_REVISAO_HUMANA -> revisaoHumanaObrigatoria = true.
 - COFRE_NAO_AUTOMATICO -> BLOQUEADO -> sem salvamento automatico.
 - Classificacao desconhecida -> 00_ENTRADA_PARA_REVISAO_HUMANA -> revisaoHumanaObrigatoria = true.
-- Link publico/download: somente para PUBLICO, quando solicitado e autorizado pelo backend; INTERNO e JURIDICO_SIGILOSO nao geram link publico.
+- Link publico/download: Charlie Echo pode julgar a classificacao. Se for material demonstrativo, publico e sem dados reais, classifique como PUBLICO e peca link publico ao backend. Se houver dado real, processo, cliente, crianca/adolescente identificavel, documento pessoal, segredo ou duvida razoavel, classifique como JURIDICO_SIGILOSO ou rota mais restrita; INTERNO e JURIDICO_SIGILOSO nao geram link publico.
 - Apagar arquivo do Drive: nao prometer. Preferir arquivar, revogar link ou encaminhar para revisao humana.
 Nunca pedir nem revelar CHAVE_INTERNA, URL ativa do Web App, IDs privados de pastas, tokens, senhas, .env ou credenciais.
 Nao acrescente orientacao longa sobre Drive privado quando o usuario estiver apenas testando ou perguntando o mapa tecnico do Drive Saver.
@@ -725,8 +725,14 @@ function ensureSacredVirtualGuidance(message, answer) {
 }
 
 function ensureDownloadRequestNoHallucinatedLink(message, answer) {
+  const artifact = buildDocumentDownloadArtifact(message, answer);
+  if (!artifact) return String(answer || "").trim();
+  return artifact.content;
+}
+
+function buildDocumentDownloadArtifact(message, answer) {
   const text = String(answer || "").trim();
-  if (!asksDocumentProductionDownload(message)) return text;
+  if (!asksDocumentProductionDownload(message)) return null;
 
   const cleaned = text
     .split(/\r?\n/)
@@ -741,12 +747,18 @@ function ensureDownloadRequestNoHallucinatedLink(message, answer) {
     ? demonstrativeDocumentDownloadScaffold(message)
     : cleaned;
 
-  return [
-    safeDocument || "Posso estruturar a minuta demonstrativa e preparar o conteudo para download.",
-    "",
-    "Download seguro: nesta pagina, use o botao/menu de download depois da resposta para baixar em PDF, DOCX ou ZIP. Eu nao devo inventar URL. Link publico do Drive so deve aparecer quando um backend autorizado retornar uma `downloadUrl` real.",
-    "Cautela: se houver nomes, documentos, valores, processo, crianca/adolescente ou dados reais, classifique como JURIDICO_SIGILOSO e encaminhe para revisao humana qualificada."
-  ].join("\n");
+  const content = safeDocument || "Posso estruturar a minuta demonstrativa e preparar o conteudo para download.";
+  const driveDecision = classifyDocumentForAutonomousDrive(message, content);
+
+  return {
+    kind: "document",
+    title: inferDocumentTitle(message, content),
+    content,
+    formats: ["pdf", "docx", "txt", "zip"],
+    driveDecision,
+    shouldSaveToDrive: true,
+    criarLinkDownload: driveDecision.classificacao === "PUBLICO",
+  };
 }
 
 function demonstrativeDocumentDownloadScaffold(message) {
@@ -784,6 +796,178 @@ function demonstrativeDocumentDownloadScaffold(message) {
     "5. Pedidos, providencias ou encaminhamentos.",
     "6. Campo de revisao humana obrigatoria antes de uso real."
   ].join("\n");
+}
+
+function inferDocumentTitle(message, content) {
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  const firstLine = String(content || "").split(/\r?\n/).map((line) => line.trim()).find(Boolean);
+  if (/\b(alimentos|pensao|alimenticia)\b/.test(q)) return "Minuta demonstrativa - pensao alimenticia";
+  if (/\b(revisao de alimentos)\b/.test(q)) return "Minuta demonstrativa - revisao de alimentos";
+  if (firstLine && firstLine.length <= 90) return firstLine.replace(/^#+\s*/, "");
+  return "Documento demonstrativo Charlie Echo";
+}
+
+function classifyDocumentForAutonomousDrive(message, content) {
+  const combined = `${extractCurrentQuestion(message)}\n${content}`;
+  const normalized = normalizeForIntent(combined);
+  const hasPlaceholder = /\[[^\]]+\]/.test(content);
+  const saysDemonstrative = /\b(demonstrativa|demonstrativo|ficticio|ficticia|placeholder|campos para completar)\b/.test(normalized);
+  const hasHardSensitiveSignal =
+    /\b(segredo de justica|segredo de justiça|processo real|dados reais|cliente real|documento pessoal|cpf|cnpj|rg|whatsapp|telefone|email|e-mail|senha|token|chave|\.env|cofre|violencia|violência|abuso|crime|prisao|prisão)\b/.test(normalized) ||
+    /\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b/.test(combined) ||
+    /\b\d{2}\.?\d{3}\.?\d{3}\/?\d{4}-?\d{2}\b/.test(combined) ||
+    /\b\d{7}-\d{2}\.\d{4}\.\d\.\d{2}\.\d{4}\b/.test(combined) ||
+    /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(combined);
+
+  if ((hasPlaceholder || saysDemonstrative) && !hasHardSensitiveSignal) {
+    return {
+      classificacao: "PUBLICO",
+      gerarLinkPublico: true,
+      motivo: "minuta demonstrativa com placeholders e sem sinais de dados reais",
+      revisaoHumanaObrigatoria: false
+    };
+  }
+
+  return {
+    classificacao: "JURIDICO_SIGILOSO",
+    gerarLinkPublico: false,
+    motivo: "pedido juridico com possivel dado real, risco sensivel ou contexto insuficiente",
+    revisaoHumanaObrigatoria: true
+  };
+}
+
+async function saveArtifactWithDriveSaver(env, artifact) {
+  if (!artifact?.shouldSaveToDrive) return null;
+
+  const driveSaverUrl = String(env?.JUS9_DRIVE_SAVER_URL || "").trim();
+  const driveSaverKey = String(env?.JUS9_DRIVE_SAVER_CHAVE_INTERNA || "").trim();
+
+  if (!driveSaverUrl || !driveSaverKey) {
+    return {
+      ok: false,
+      skipped: true,
+      reason: "not_configured",
+      mensagem: "Drive Saver ainda nao esta configurado neste ambiente."
+    };
+  }
+
+  const payload = {
+    chaveInterna: driveSaverKey,
+    titulo: artifact.title,
+    conteudo: artifact.content,
+    classificacao: artifact.driveDecision.classificacao,
+    tipoDocumento: "MINUTA_DEMONSTRATIVA_CHARLIE_ECHO",
+    origem: "Charlie Echo / API IA",
+    autorOperacional: "Charlie Echo da Costa",
+    observacao: artifact.driveDecision.motivo,
+    criarLinkDownload: Boolean(artifact.criarLinkDownload)
+  };
+
+  try {
+    const response = await fetch(driveSaverUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json().catch(() => ({}));
+    const sanitized = sanitizeDriveSaverData(data);
+    if (sanitized.ok === false || data?.statusCode >= 400 || !response.ok) {
+      return {
+        ...sanitized,
+        ok: false,
+        httpStatus: response.status,
+        reason: data?.mensagem || data?.erro || response.statusText || "drive_saver_rejected"
+      };
+    }
+    return {
+      ...sanitized,
+      ok: true,
+      httpStatus: response.status
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      skipped: false,
+      reason: "request_failed",
+      mensagem: "Nao consegui concluir o salvamento automatico no Drive Saver agora.",
+      detail: error?.message || String(error)
+    };
+  }
+}
+
+function sanitizeDriveSaverData(data) {
+  return {
+    ok: Boolean(data?.ok),
+    mensagem: String(data?.mensagem || data?.message || ""),
+    fileId: data?.fileId || null,
+    url: data?.url || null,
+    viewUrl: data?.viewUrl || data?.url || null,
+    downloadUrl: data?.downloadUrl || null,
+    linkPublicoCriado: Boolean(data?.linkPublicoCriado),
+    classificacaoFinal: data?.classificacaoFinal || null,
+    pastaDestino: data?.pastaDestino || null,
+    revisaoHumanaObrigatoria: data?.revisaoHumanaObrigatoria ?? null,
+    cofreAutomatico: data?.cofreAutomatico ?? null,
+    cofreDepositoAssistido: data?.cofreDepositoAssistido ?? null,
+    linkGovernado: data?.linkGovernado || null,
+    skipped: Boolean(data?.skipped),
+    reason: data?.reason || null,
+    httpStatus: data?.httpStatus || null
+  };
+}
+
+function appendArtifactDelivery(answer, artifact, driveSaver) {
+  if (!artifact) return answer;
+
+  const lines = [String(answer || "").trim(), ""];
+  const decision = artifact.driveDecision;
+
+  if (driveSaver?.ok && driveSaver.downloadUrl) {
+    lines.push("Arquivo salvo no Cartorio Digital Charlie Echo.");
+    lines.push(`Link de download: ${driveSaver.downloadUrl}`);
+    if (driveSaver.viewUrl) lines.push(`Abrir no Drive: ${driveSaver.viewUrl}`);
+    lines.push(`Classificacao: ${driveSaver.classificacaoFinal || decision.classificacao}.`);
+    return lines.join("\n");
+  }
+
+  if (driveSaver?.ok) {
+    lines.push("Arquivo salvo no Cartorio Digital Charlie Echo.");
+    if (driveSaver.viewUrl) lines.push(`Abrir no Drive: ${driveSaver.viewUrl}`);
+    lines.push(`Classificacao: ${driveSaver.classificacaoFinal || decision.classificacao}.`);
+    if (!driveSaver.downloadUrl) {
+      lines.push("Eu nao abri link publico porque a minha classificacao pediu guarda restrita ou revisao.");
+    }
+    return lines.join("\n");
+  }
+
+  if (driveSaver?.reason === "not_configured") {
+    lines.push("Preparei a minuta e deixei o conteudo pronto para baixar pelos botoes da pagina.");
+    lines.push(`Minha classificacao automatica: ${decision.classificacao}. ${decision.motivo}.`);
+    lines.push("Quando o Drive Saver estiver ativo neste ambiente, eu salvo no Cartorio Digital e trago o link real.");
+    return lines.join("\n");
+  }
+
+  if (driveSaver) {
+    lines.push("Preparei a minuta. Tentei salvar no Drive Saver, mas o backend nao concluiu agora.");
+    lines.push("O download local da pagina continua disponivel; posso tentar salvar novamente depois.");
+    return lines.join("\n");
+  }
+
+  lines.push("Preparei a minuta e deixei o conteudo pronto para baixar pelos botoes da pagina.");
+  lines.push(`Minha classificacao automatica: ${decision.classificacao}. ${decision.motivo}.`);
+  return lines.join("\n");
+}
+
+function publicArtifactMetadata(artifact) {
+  if (!artifact) return null;
+  return {
+    kind: artifact.kind,
+    title: artifact.title,
+    formats: artifact.formats,
+    driveDecision: artifact.driveDecision,
+    shouldSaveToDrive: artifact.shouldSaveToDrive,
+    criarLinkDownload: artifact.criarLinkDownload
+  };
 }
 
 function shouldShowCreativeSurface(message) {
@@ -955,10 +1139,26 @@ export async function onRequestPost(context) {
       }, 502);
     }
 
+    let governedAnswer = applyCreativeSurface(inputMessage, answer);
+    governedAnswer = ensureDriveSaverGuidance(inputMessage, governedAnswer);
+    governedAnswer = ensurePrivateDriveGuidance(inputMessage, governedAnswer);
+    governedAnswer = ensureDnaCloudGuidance(inputMessage, governedAnswer);
+    governedAnswer = ensureMailboxGuidance(inputMessage, governedAnswer);
+    governedAnswer = ensurePublicLessonsGuidance(inputMessage, governedAnswer);
+    governedAnswer = ensureSacredVirtualGuidance(inputMessage, governedAnswer);
+    governedAnswer = ensurePublicScenarioSafetyNotice(inputMessage, governedAnswer);
+    governedAnswer = ensureDownloadRequestNoHallucinatedLink(inputMessage, governedAnswer);
+    governedAnswer = removeUnsafeLinks(cleanPublicAnswer(governedAnswer));
+    const artifact = buildDocumentDownloadArtifact(inputMessage, governedAnswer);
+    const driveSaver = artifact ? await saveArtifactWithDriveSaver(env, artifact) : null;
+    const finalAnswer = removeUnsafeLinks(cleanPublicAnswer(appendArtifactDelivery(governedAnswer, artifact, driveSaver)));
+
     return jsonResponse({
       ok: true,
       mode,
-      answer: removeUnsafeLinks(cleanPublicAnswer(ensureDownloadRequestNoHallucinatedLink(inputMessage, ensurePublicScenarioSafetyNotice(inputMessage, ensureSacredVirtualGuidance(inputMessage, ensurePublicLessonsGuidance(inputMessage, ensureMailboxGuidance(inputMessage, ensureDnaCloudGuidance(inputMessage, ensurePrivateDriveGuidance(inputMessage, ensureDriveSaverGuidance(inputMessage, applyCreativeSurface(inputMessage, answer))))))))))),
+      answer: finalAnswer,
+      artifact: publicArtifactMetadata(artifact),
+      driveSaver: driveSaver ? sanitizeDriveSaverData(driveSaver) : null,
     });
   } catch (error) {
     return jsonResponse({
