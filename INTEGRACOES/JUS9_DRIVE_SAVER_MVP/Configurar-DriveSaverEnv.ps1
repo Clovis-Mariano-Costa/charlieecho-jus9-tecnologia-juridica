@@ -6,6 +6,8 @@ param(
   [switch]$Forcar
 )
 
+$ErrorActionPreference = "Stop"
+
 function ConvertFrom-SecureStringToPlainText {
   param(
     [Parameter(Mandatory = $true)]
@@ -24,7 +26,7 @@ function ConvertFrom-SecureStringToPlainText {
 
 function Set-EnvLine {
   param(
-    [Parameter(Mandatory = $true)]
+    [AllowEmptyCollection()]
     [string[]]$Lines,
     [Parameter(Mandatory = $true)]
     [string]$Name,
@@ -48,6 +50,24 @@ function Set-EnvLine {
   }
 
   $next
+}
+
+function New-UrlSafeToken {
+  param(
+    [int]$Bytes = 32
+  )
+
+  $apiTokenBytes = New-Object byte[] $Bytes
+  $rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+  try {
+    $rng.GetBytes($apiTokenBytes)
+  } finally {
+    if ($rng) {
+      $rng.Dispose()
+    }
+  }
+
+  [Convert]::ToBase64String($apiTokenBytes).TrimEnd("=").Replace("+", "-").Replace("/", "_")
 }
 
 $repoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..\..")).Path
@@ -74,9 +94,7 @@ if (-not $driveKey) {
 }
 
 if ($GerarApiToken) {
-  $apiTokenBytes = [byte[]]::new(32)
-  [System.Security.Cryptography.RandomNumberGenerator]::Fill($apiTokenBytes)
-  $apiToken = [Convert]::ToBase64String($apiTokenBytes).TrimEnd("=").Replace("+", "-").Replace("/", "_")
+  $apiToken = New-UrlSafeToken -Bytes 32
 } else {
   $secureApiToken = Read-Host -Prompt "JUS9_DRIVE_SAVER_API_TOKEN" -AsSecureString
   $apiToken = ConvertFrom-SecureStringToPlainText -SecureString $secureApiToken
@@ -93,6 +111,10 @@ if ((Test-Path -LiteralPath $EnvPath) -and -not $Forcar) {
 $lines = @()
 if (Test-Path -LiteralPath $EnvPath) {
   $lines = Get-Content -LiteralPath $EnvPath
+}
+
+if ($null -eq $lines) {
+  $lines = @()
 }
 
 $lines = Set-EnvLine -Lines $lines -Name "JUS9_DRIVE_SAVER_URL" -Value $DriveSaverUrl
