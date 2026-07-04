@@ -501,9 +501,14 @@ function asksDocumentProductionDownload(message) {
 function asksDriveSaverCorrectiveAction(message) {
   const raw = extractCurrentQuestion(message);
   const q = normalizeForIntent(raw);
-  const hasAction = /\b(revogue|revogar|restrinja|restringir|despublique|despublicar|tire do ar|tirar do ar|remova o link|remover o link|mova para revisao|mover para revisao|mandar para revisao|mande para revisao|sigiloso|dados reais|publiquei errado|publicou errado|lixeira|apague|apagar|exclua|excluir|delete|deletar)\b/.test(q);
-  const hasDriveTarget = /\b(drive|google docs|docs.google|drive.google|documento|arquivo|link|cartorio|cartorio digital|fileid)\b/.test(q) || extractGoogleDriveFileId(raw);
-  return hasAction && Boolean(hasDriveTarget);
+  const hasHardAction = /\b(revogue|revogar|restrinja|restringir|despublique|despublicar|tire do ar|tirar do ar|remova o link|remover o link|lixeira|apague|apagar|exclua|excluir|delete|deletar)\b/.test(q);
+  const hasReviewAction = /\b(mova para revisao|mover para revisao|mandar para revisao|mande para revisao|sigiloso|dados reais|publiquei errado|publicou errado)\b/.test(q);
+  const hasDriveIdentifier = Boolean(extractGoogleDriveFileId(raw)) || /https:\/\/(?:docs|drive)\.google\.com\/[^\s]+/i.test(raw);
+  const hasExplicitDriveContext = hasDriveIdentifier || /\b(drive|google docs|docs google|drive google|cartorio digital|fileid)\b/.test(q);
+  const hasVagueFileTarget = /\b(documento|arquivo|link)\b/.test(q);
+
+  if (hasHardAction && (hasExplicitDriveContext || hasVagueFileTarget)) return true;
+  return hasReviewAction && hasExplicitDriveContext;
 }
 
 function inferDriveSaverCorrectiveAction(message) {

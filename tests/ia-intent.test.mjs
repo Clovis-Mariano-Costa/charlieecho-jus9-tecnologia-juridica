@@ -359,6 +359,40 @@ test("problem and justification planning prompt is not routed as document downlo
   }
 });
 
+test("sigiloso classification question is not routed as Drive Saver corrective action", async () => {
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url) => {
+    calls.push(String(url));
+    assert.match(String(url), /api\.openai\.com/);
+    return Response.json({
+      output_text: "Classifique como JURIDICO_SIGILOSO quando houver risco juridico, dado sensivel, documento reservado ou contexto insuficiente. Nao exponha o conteudo; registre apenas metadados seguros e encaminhe para revisao humana."
+    });
+  };
+
+  try {
+    const response = await postIa(
+      "No DAJ, como devo classificar um documento sigiloso sem expor o cofre?",
+      {
+        OPENAI_API_KEY: "test-key",
+        JUS9_MODEL_DEFAULT: "test-model",
+        JUS9_DRIVE_SAVER_URL: "https://drive-saver.test/exec",
+        JUS9_DRIVE_SAVER_CHAVE_INTERNA: "internal-test-key"
+      }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(calls.length, 1);
+    assert.match(body.answer, /JURIDICO_SIGILOSO|revisao humana/i);
+    assert.doesNotMatch(body.answer, /Consigo fazer a correcao governada|fileId|Drive Saver parece/i);
+    assert.equal(body.driveSaver, null);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("Drive Saver corrective action revokes public link without OpenAI", async () => {
   const originalFetch = globalThis.fetch;
   const fileId = "1WnIK_dAlLjD5dxo1JH5GaAP7Vt3TB9iwA93dic7Zck4";
