@@ -842,11 +842,15 @@ function attachmentGovernanceLines(message) {
   const match = /\[ANEXOS DO USUARIO - UPLOAD LOCAL GOVERNADO\]([\s\S]*)$/i.exec(String(message || ""));
   if (!match?.[1]) return [];
   const block = match[1];
-  const names = Array.from(block.matchAll(/Anexo\s+\d+:\s*(.+)/ig))
+  const names = [
+    ...Array.from(block.matchAll(/Anexo\s+\d+:\s*(.+)/ig)),
+    ...Array.from(block.matchAll(/Arquivo:\s*(.+)/ig)),
+  ]
     .map((item) => item[1].trim())
     .filter(Boolean)
     .slice(0, 5);
-  const hasExtractedText = /Conteudo extraido:\s*"""/i.test(block);
+  const extractedTexts = extractedAttachmentTexts(message);
+  const hasExtractedText = extractedTexts.length > 0;
   const hasUnreadable = /leitura:\s*sem texto extraido/i.test(block);
   const lines = [
     "Anexos governados considerados:",
@@ -857,6 +861,37 @@ function attachmentGovernanceLines(message) {
   ];
   if (hasUnreadable) lines.push("Arquivo sem texto extraido exige transcricao, OCR ou backend extrator antes de virar fato da peca.");
   return lines;
+}
+
+function extractedAttachmentTexts(message) {
+  const match = /\[ANEXOS DO USUARIO - UPLOAD LOCAL GOVERNADO\]([\s\S]*)$/i.exec(String(message || ""));
+  if (!match?.[1]) return [];
+  const block = match[1];
+  const texts = [];
+  for (const item of block.matchAll(/Conteudo extraido:\s*"""([\s\S]*?)"""/ig)) {
+    if (item[1]?.trim()) texts.push(item[1].trim());
+  }
+  if (!texts.length) {
+    for (const item of block.matchAll(/Conteudo extraido:\s*([\s\S]*?)(?:\n\s*(?:Regra:|Anexo\s+\d+:|Arquivo:)|$)/ig)) {
+      const value = String(item[1] || "")
+        .replace(/^"""\s*/i, "")
+        .replace(/\s*"""$/i, "")
+        .trim();
+      if (value) texts.push(value);
+    }
+  }
+  return texts.map((text) => text.replace(/\s+/g, " ").trim()).filter(Boolean).slice(0, 5);
+}
+
+function attachmentFactsLines(message) {
+  const texts = extractedAttachmentTexts(message);
+  if (!texts.length) return [];
+  const compact = texts.join(" ").replace(/\s+/g, " ").trim().slice(0, 900);
+  if (!compact) return [];
+  return [
+    `Texto extraido de anexo governado considerado como subsidio, sem inventar fatos ausentes: ${compact}`,
+    "Se algum dado do anexo for real ou sensivel, substituir por placeholders e conferir com humano habilitado antes de uso."
+  ];
 }
 
 function legalDraftProfile(message) {
@@ -1003,6 +1038,7 @@ function legalDraftProfile(message) {
 function completeLegalDraftScaffold(message) {
   const profile = legalDraftProfile(message);
   const attachmentLines = attachmentGovernanceLines(message);
+  const attachmentFactLines = attachmentFactsLines(message);
   return [
     profile.title,
     "",
@@ -1019,6 +1055,11 @@ function completeLegalDraftScaffold(message) {
     "",
     "1. Dos fatos",
     profile.facts.map((line) => `- ${line}`).join("\n"),
+    ...(attachmentFactLines.length ? [
+      "",
+      "Fatos extraidos do anexo governado",
+      attachmentFactLines.map((line) => `- ${line}`).join("\n")
+    ] : []),
     "",
     "2. Do direito e dos fundamentos",
     profile.law.map((line) => `- ${line}`).join("\n"),

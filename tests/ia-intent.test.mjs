@@ -219,8 +219,49 @@ test("complete legal draft request acknowledges governed upload context", async 
     assert.match(body.answer, /Anexos governados considerados/i);
     assert.match(body.answer, /contrato-ficticio\.txt/i);
     assert.match(body.answer, /Usei somente o texto extraido como subsidio/i);
+    assert.match(body.answer, /Contrato ficticio com atraso de pagamento em tres parcelas demonstrativas/i);
+    assert.match(body.answer, /Fatos extraidos do anexo governado/i);
     assert.match(body.answer, /Minuta completa demonstrativa/i);
     assert.doesNotMatch(body.answer, /Vou analisar o anexo e preparar/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("complete legal draft reads loose governed attachment text", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    assert.match(String(url), /api\.openai\.com/);
+    return Response.json({
+      output_text: "Posso preparar depois de receber os dados."
+    });
+  };
+
+  try {
+    const message = [
+      "[PERGUNTA ATUAL]",
+      "redija uma peticao inicial completa usando somente o conteudo extraido do anexo",
+      "",
+      "[ANEXOS DO USUARIO - UPLOAD LOCAL GOVERNADO]",
+      "Arquivo: fatos.txt",
+      "Tipo: text/plain",
+      "Conteudo extraido:",
+      "Maria e Joao possuem um filho menor ficticio. Joao reduziu voluntariamente a contribuicao. Maria pede revisao dos alimentos com placeholders."
+    ].join("\n");
+
+    const response = await postIa(
+      message,
+      { OPENAI_API_KEY: "test-key", JUS9_MODEL_DEFAULT: "test-model" }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.match(body.answer, /fatos\.txt/i);
+    assert.match(body.answer, /Usei somente o texto extraido como subsidio/i);
+    assert.match(body.answer, /Maria e Joao possuem um filho menor ficticio/i);
+    assert.match(body.answer, /Fatos extraidos do anexo governado/i);
+    assert.doesNotMatch(body.answer, /Nao ha texto extraido suficiente/i);
   } finally {
     globalThis.fetch = originalFetch;
   }
