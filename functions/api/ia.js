@@ -429,13 +429,48 @@ function normalizeForIntent(value) {
   return String(value || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
+function textAfterLastMarker(value, markerPattern) {
+  const text = String(value || "");
+  const marker = new RegExp(markerPattern, "ig");
+  let lastIndex = -1;
+  let lastLength = 0;
+  for (const match of text.matchAll(marker)) {
+    lastIndex = match.index;
+    lastLength = match[0].length;
+  }
+  return lastIndex >= 0 ? text.slice(lastIndex + lastLength) : "";
+}
+
+function cleanCurrentIntentCandidate(value) {
+  return String(value || "")
+    .replace(/\n*\[ANEXOS DO USUARIO - UPLOAD LOCAL GOVERNADO\][\s\S]*$/i, "")
+    .replace(/\[CONFIGURACOES DO USUARIO\][\s\S]*?(?=\[[A-Z0-9 _-]+\]|Pergunta do usu(?:a|\u00e1)rio:|$)/ig, " ")
+    .replace(/\[RESUMO EXECUTIVO DA SALA\][\s\S]*?(?=\[[A-Z0-9 _-]+\]|Pergunta do usu(?:a|\u00e1)rio:|$)/ig, " ")
+    .replace(/\[HISTORICO RECENTE\][\s\S]*?(?=\[[A-Z0-9 _-]+\]|Pergunta do usu(?:a|\u00e1)rio:|$)/ig, " ")
+    .replace(/\[MEMORIA[^\]]*\][\s\S]*?(?=\[[A-Z0-9 _-]+\]|Pergunta do usu(?:a|\u00e1)rio:|$)/ig, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function currentUserIntentText(message) {
+  let text = String(message || "");
+  const current = textAfterLastMarker(text, "\\[PERGUNTA ATUAL\\]\\s*");
+  if (current) text = current;
+
+  const frontend = textAfterLastMarker(text, "Pergunta do usu(?:a|\\u00e1)rio:\\s*");
+  if (frontend) {
+    const nestedCurrent = textAfterLastMarker(frontend, "\\[PERGUNTA ATUAL\\]\\s*");
+    text = nestedCurrent || frontend;
+  }
+
+  const lateCurrent = textAfterLastMarker(text, "\\[PERGUNTA ATUAL\\]\\s*");
+  if (lateCurrent) text = lateCurrent;
+
+  return cleanCurrentIntentCandidate(text);
+}
+
 function extractCurrentQuestion(message) {
-  const text = String(message || "");
-  const current = /\[PERGUNTA ATUAL\]\s*([\s\S]+)$/i.exec(text);
-  if (current?.[1]) return current[1].replace(/\s+/g, " ").trim();
-  const frontend = /Pergunta do usuario:\s*([\s\S]+)$/i.exec(text);
-  if (frontend?.[1]) return frontend[1].replace(/\s+/g, " ").trim();
-  return text.replace(/\s+/g, " ").trim();
+  return currentUserIntentText(message);
 }
 
 function compactLegalResearchTopic(message) {
@@ -789,6 +824,7 @@ function buildDocumentDownloadArtifact(message, answer) {
 
   const content = safeDocument || "Posso estruturar a minuta demonstrativa e preparar o conteudo para download.";
   const driveDecision = classifyDocumentForAutonomousDrive(message, content);
+  const shouldSaveToDrive = shouldSaveDocumentArtifactToDrive(message, driveDecision);
 
   return {
     kind: "document",
@@ -796,8 +832,8 @@ function buildDocumentDownloadArtifact(message, answer) {
     content,
     formats: ["pdf", "docx", "txt", "zip"],
     driveDecision,
-    shouldSaveToDrive: true,
-    criarLinkDownload: driveDecision.classificacao === "PUBLICO",
+    shouldSaveToDrive,
+    criarLinkDownload: shouldSaveToDrive && driveDecision.classificacao === "PUBLICO",
   };
 }
 
@@ -874,6 +910,19 @@ function classifyDocumentForAutonomousDrive(message, content) {
     motivo: "pedido juridico com possivel dado real, risco sensivel ou contexto insuficiente",
     revisaoHumanaObrigatoria: true
   };
+}
+
+function shouldSaveDocumentArtifactToDrive(message, driveDecision) {
+  if (driveDecision?.classificacao === "COFRE_NAO_AUTOMATICO") return false;
+
+  const q = normalizeForIntent(currentUserIntentText(message));
+  const hasSaveVerb = /\b(salve|salvar|grave|gravar|guarde|guardar|registre|registrar|arquive|arquivar|publique|publicar)\b/.test(q);
+  const hasGovernedPlace = /\b(drive|google drive|cartorio digital|cartorio|drive saver|mini backend)\b/.test(q);
+  const wantsGovernedDriveLink = /\b(link publico do drive|link do drive|gerar link publico|criar link publico|abrir link publico|publicar no drive)\b/.test(q);
+  const wantsOnlyLocalDownload = /\b(download|donwload|dowload|downlod|baixar|pdf|docx|word|arquivo|link para download|link de download|link para donwload|link de donwload)\b/.test(q) && !hasGovernedPlace && !wantsGovernedDriveLink;
+
+  if (wantsOnlyLocalDownload) return false;
+  return (hasSaveVerb && hasGovernedPlace) || wantsGovernedDriveLink;
 }
 
 async function saveArtifactWithDriveSaver(env, artifact) {

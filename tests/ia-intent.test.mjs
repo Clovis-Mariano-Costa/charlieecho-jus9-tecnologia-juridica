@@ -146,7 +146,44 @@ test("document download post-processing replaces promise-only draft answer", asy
   }
 });
 
-test("document download autonomously saves public demonstrative draft to Drive Saver", async () => {
+test("document download does not automatically save public demonstrative draft to Drive Saver", async () => {
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url) => {
+    calls.push(String(url));
+    assert.match(String(url), /api\.openai\.com/);
+    return Response.json({
+      output_text: "Posso preparar uma minuta. Gostaria de alguma informacao especifica?"
+    });
+  };
+
+  try {
+    const response = await postIa(
+      "quero link para donwload de uma minuta de pensao alimenticia",
+      {
+        OPENAI_API_KEY: "test-key",
+        JUS9_MODEL_DEFAULT: "test-model",
+        JUS9_DRIVE_SAVER_URL: "https://drive-saver.test/exec",
+        JUS9_DRIVE_SAVER_CHAVE_INTERNA: "internal-test-key"
+      }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(calls.length, 1);
+    assert.match(body.answer, /botoes da pagina/i);
+    assert.doesNotMatch(body.answer, /Arquivo salvo no Cartorio Digital Charlie Echo/i);
+    assert.equal(body.artifact.driveDecision.classificacao, "PUBLICO");
+    assert.equal(body.artifact.shouldSaveToDrive, false);
+    assert.equal(body.artifact.criarLinkDownload, false);
+    assert.equal(body.driveSaver, null);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("explicit Cartorio Digital save request sends demonstrative draft to Drive Saver", async () => {
   const originalFetch = globalThis.fetch;
   const calls = [];
   globalThis.fetch = async (url, options = {}) => {
@@ -180,7 +217,7 @@ test("document download autonomously saves public demonstrative draft to Drive S
 
   try {
     const response = await postIa(
-      "quero link para donwload de uma minuta de pensao alimenticia",
+      "salve esta minuta ficticia de pensao alimenticia no Cartorio Digital Charlie Echo e gere link de download",
       {
         OPENAI_API_KEY: "test-key",
         JUS9_MODEL_DEFAULT: "test-model",
@@ -196,8 +233,127 @@ test("document download autonomously saves public demonstrative draft to Drive S
     assert.match(body.answer, /Arquivo salvo no Cartorio Digital Charlie Echo/i);
     assert.match(body.answer, /Link de download: https:\/\/docs\.google\.com\/document\/d\/drive-file-123\/export\?format=pdf/i);
     assert.equal(body.artifact.driveDecision.classificacao, "PUBLICO");
+    assert.equal(body.artifact.shouldSaveToDrive, true);
     assert.equal(body.artifact.criarLinkDownload, true);
     assert.equal(body.driveSaver.downloadUrl, "https://docs.google.com/document/d/drive-file-123/export?format=pdf");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("ordinary explanation does not become document artifact or Drive save", async () => {
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url) => {
+    calls.push(String(url));
+    assert.match(String(url), /api\.openai\.com/);
+    return Response.json({
+      output_text: "Responsabilidade social empresarial e o compromisso pratico da empresa com impactos sociais, ambientais, trabalhistas e comunitarios."
+    });
+  };
+
+  try {
+    const response = await postIa(
+      "O que e responsabilidade social de uma empresa?",
+      {
+        OPENAI_API_KEY: "test-key",
+        JUS9_MODEL_DEFAULT: "test-model",
+        JUS9_DRIVE_SAVER_URL: "https://drive-saver.test/exec",
+        JUS9_DRIVE_SAVER_CHAVE_INTERNA: "internal-test-key"
+      }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(calls.length, 1);
+    assert.equal(body.artifact, null);
+    assert.equal(body.driveSaver, null);
+    assert.match(body.answer, /Responsabilidade social empresarial/i);
+    assert.doesNotMatch(body.answer, /Minuta demonstrativa|Arquivo salvo no Cartorio Digital/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("current question wins over prior document download memory", async () => {
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url) => {
+    calls.push(String(url));
+    assert.match(String(url), /api\.openai\.com/);
+    return Response.json({
+      output_text: "Responsabilidade social empresarial envolve dever de cuidado, coerencia institucional e reducao de danos no ambiente em que a empresa atua."
+    });
+  };
+
+  try {
+    const contaminatedMessage = [
+      "[CONFIGURACOES DO USUARIO]",
+      "Ambiente profissional juridico.",
+      "",
+      "[RESUMO EXECUTIVO DA SALA]",
+      "Usuario pediu antes: faca uma minuta com link para download e salve no Drive.",
+      "Charlie respondeu antes: Minuta demonstrativa - documento solicitado. Arquivo salvo no Cartorio Digital Charlie Echo.",
+      "",
+      "[HISTORICO RECENTE]",
+      "Usuario: quero link para donwload de uma minuta de pensao alimenticia",
+      "Charlie Echo: Minuta demonstrativa - documento solicitado",
+      "",
+      "[PERGUNTA ATUAL]",
+      "Agora explique responsabilidade social empresarial."
+    ].join("\n");
+
+    const response = await postIa(
+      contaminatedMessage,
+      {
+        OPENAI_API_KEY: "test-key",
+        JUS9_MODEL_DEFAULT: "test-model",
+        JUS9_DRIVE_SAVER_URL: "https://drive-saver.test/exec",
+        JUS9_DRIVE_SAVER_CHAVE_INTERNA: "internal-test-key"
+      }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(calls.length, 1);
+    assert.equal(body.artifact, null);
+    assert.equal(body.driveSaver, null);
+    assert.match(body.answer, /Responsabilidade social empresarial/i);
+    assert.doesNotMatch(body.answer, /Minuta demonstrativa|Arquivo salvo no Cartorio Digital|botoes da pagina/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("problem and justification planning prompt is not routed as document download", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    assert.match(String(url), /api\.openai\.com/);
+    return Response.json({
+      output_text: "Problema e justificativa: organizar a dor do usuario, a evidencia do problema, o impacto esperado e os criterios de validacao do MVP."
+    });
+  };
+
+  try {
+    const response = await postIa(
+      "Problema e Justificativa do MVP DAJ: me ajude a organizar.",
+      {
+        OPENAI_API_KEY: "test-key",
+        JUS9_MODEL_DEFAULT: "test-model",
+        JUS9_DRIVE_SAVER_URL: "https://drive-saver.test/exec",
+        JUS9_DRIVE_SAVER_CHAVE_INTERNA: "internal-test-key"
+      }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(body.artifact, null);
+    assert.equal(body.driveSaver, null);
+    assert.match(body.answer, /Problema e justificativa/i);
+    assert.doesNotMatch(body.answer, /Minuta demonstrativa|Arquivo salvo no Cartorio Digital/i);
   } finally {
     globalThis.fetch = originalFetch;
   }
