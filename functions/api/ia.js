@@ -444,6 +444,9 @@ function textAfterLastMarker(value, markerPattern) {
 function cleanCurrentIntentCandidate(value) {
   return String(value || "")
     .replace(/\n*\[ANEXOS DO USUARIO - UPLOAD LOCAL GOVERNADO\][\s\S]*$/i, "")
+    .replace(/\n*\[(?:PERGUNTA ANTERIOR|RESPOSTA ANTERIOR|CONTEUDO_BASE_PARA_SALVAR|CONTEUDO BASE PARA SALVAR|RESPOSTA BASE)\][\s\S]*$/i, "")
+    .replace(/\n+Pergunta anterior:\s*[\s\S]*$/i, "")
+    .replace(/\n+Resposta anterior:\s*[\s\S]*$/i, "")
     .replace(/\[CONFIGURACOES DO USUARIO\][\s\S]*?(?=\[[A-Z0-9 _-]+\]|Pergunta do usu(?:a|\u00e1)rio:|$)/ig, " ")
     .replace(/\[RESUMO EXECUTIVO DA SALA\][\s\S]*?(?=\[[A-Z0-9 _-]+\]|Pergunta do usu(?:a|\u00e1)rio:|$)/ig, " ")
     .replace(/\[HISTORICO RECENTE\][\s\S]*?(?=\[[A-Z0-9 _-]+\]|Pergunta do usu(?:a|\u00e1)rio:|$)/ig, " ")
@@ -513,7 +516,10 @@ function asksDriveSaverCorrectiveAction(message) {
   const raw = extractCurrentQuestion(message);
   const q = normalizeForIntent(raw);
   const hasHardAction = /\b(revogue|revogar|restrinja|restringir|despublique|despublicar|tire do ar|tirar do ar|remova o link|remover o link|lixeira|apague|apagar|exclua|excluir|delete|deletar)\b/.test(q);
-  const hasReviewAction = /\b(mova para revisao|mover para revisao|mandar para revisao|mande para revisao|sigiloso|dados reais|publiquei errado|publicou errado)\b/.test(q);
+  const hasExplicitReviewMove = /\b(mova para revisao|mover para revisao|mandar para revisao|mande para revisao)\b/.test(q);
+  const hasPublicationProblem = /\b(publiquei errado|publicou errado)\b/.test(q);
+  const hasSensitivityCorrection = /\b(sigiloso|dados reais)\b/.test(q) && /\b(corrija|corrigir|correcao|restringir|restrinja|revogar|revogue|despublicar|despublique|tirar do ar|tire do ar|mover|mova|revisao)\b/.test(q);
+  const hasReviewAction = hasExplicitReviewMove || hasPublicationProblem || hasSensitivityCorrection;
   const hasDriveIdentifier = Boolean(extractGoogleDriveFileId(raw)) || /https:\/\/(?:docs|drive)\.google\.com\/[^\s]+/i.test(raw);
   const hasExplicitDriveContext = hasDriveIdentifier || /\b(drive|google docs|docs google|drive google|cartorio digital|fileid)\b/.test(q);
   const hasVagueFileTarget = /\b(documento|arquivo|link)\b/.test(q);

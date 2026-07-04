@@ -421,6 +421,79 @@ test("explicit Cartorio Digital save request sends demonstrative draft to Drive 
   }
 });
 
+test("portal save prompt with prior sigiloso answer is not corrective action", async () => {
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url, options = {}) => {
+    calls.push({ url: String(url), options });
+    if (String(url).includes("api.openai.com")) {
+      return Response.json({
+        output_text: [
+          "Minuta demonstrativa - pensao alimenticia",
+          "",
+          "AO JUIZO DA VARA DE FAMILIA DA COMARCA DE [CIDADE/UF]",
+          "",
+          "Dos fatos, dos fundamentos e dos pedidos com placeholders.",
+          "",
+          "Checklist de revisao humana obrigatoria."
+        ].join("\n")
+      });
+    }
+
+    assert.equal(String(url), "https://drive-saver.test/exec");
+    const payload = JSON.parse(String(options.body || "{}"));
+    assert.equal(payload.chaveInterna, "internal-test-key");
+    assert.equal(payload.classificacao, "JURIDICO_SIGILOSO");
+    assert.equal(payload.criarLinkDownload, false);
+    assert.match(payload.conteudo, /Minuta (?:completa )?demonstrativa/i);
+
+    return Response.json({
+      ok: true,
+      mensagem: "Documento salvo.",
+      fileId: "drive-portal-save-123",
+      viewUrl: "https://docs.google.com/document/d/drive-portal-save-123/edit",
+      downloadUrl: null,
+      linkPublicoCriado: false,
+      classificacaoFinal: "JURIDICO_SIGILOSO",
+      pastaDestino: "00_ENTRADA_PARA_REVISAO_HUMANA",
+      revisaoHumanaObrigatoria: true
+    });
+  };
+
+  try {
+    const response = await postIa(
+      [
+        "Salve esta minuta/documento no Cartorio Digital Charlie Echo e gere link de download se a classificacao governada permitir. Use a resposta anterior como conteudo-base, sem inventar dados reais.",
+        "",
+        "Pergunta anterior: quero link para donwload de uma minuta de pensao alimenticia",
+        "",
+        "Resposta anterior:",
+        "Minuta demonstrativa - pensao alimenticia",
+        "Minha classificacao automatica: JURIDICO_SIGILOSO. pedido juridico com possivel dado real, risco sensivel ou contexto insuficiente."
+      ].join("\n"),
+      {
+        OPENAI_API_KEY: "test-key",
+        JUS9_MODEL_DEFAULT: "test-model",
+        JUS9_DRIVE_SAVER_URL: "https://drive-saver.test/exec",
+        JUS9_DRIVE_SAVER_CHAVE_INTERNA: "internal-test-key"
+      }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(calls.length, 2);
+    assert.equal(body.driveSaverAction ?? null, null);
+    assert.equal(body.artifact.shouldSaveToDrive, true);
+    assert.equal(body.artifact.criarLinkDownload, false);
+    assert.equal(body.driveSaver.viewUrl, "https://docs.google.com/document/d/drive-portal-save-123/edit");
+    assert.equal(body.driveSaver.downloadUrl, null);
+    assert.doesNotMatch(body.answer, /preciso do link do Google Docs\/Drive|fileId/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("ordinary explanation does not become document artifact or Drive save", async () => {
   const originalFetch = globalThis.fetch;
   const calls = [];
