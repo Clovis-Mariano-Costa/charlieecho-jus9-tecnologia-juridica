@@ -267,7 +267,65 @@ test("complete legal draft reads loose governed attachment text", async () => {
   }
 });
 
-test("document download does not automatically save public demonstrative draft to Drive Saver", async () => {
+test("public demonstrative document download autonomously saves to Drive Saver", async () => {
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url, options = {}) => {
+    calls.push({ url: String(url), options });
+    if (String(url).includes("api.openai.com")) {
+      return Response.json({
+        output_text: "Posso preparar uma minuta. Gostaria de alguma informacao especifica?"
+      });
+    }
+
+    assert.equal(String(url), "https://drive-saver.test/exec");
+    const payload = JSON.parse(String(options.body || "{}"));
+    assert.equal(payload.chaveInterna, "internal-test-key");
+    assert.equal(payload.classificacao, "PUBLICO");
+    assert.equal(payload.criarLinkDownload, true);
+    assert.match(payload.conteudo, /ACAO DE ALIMENTOS/i);
+
+    return Response.json({
+      ok: true,
+      mensagem: "Documento salvo.",
+      fileId: "drive-auto-123",
+      viewUrl: "https://docs.google.com/document/d/drive-auto-123/edit",
+      downloadUrl: "https://docs.google.com/document/d/drive-auto-123/export?format=pdf",
+      linkPublicoCriado: true,
+      classificacaoFinal: "PUBLICO",
+      pastaDestino: "01_DOCUMENTOS_PUBLICOS_E_EDUCATIVOS",
+      revisaoHumanaObrigatoria: false,
+      cofreAutomatico: false
+    });
+  };
+
+  try {
+    const response = await postIa(
+      "quero link para donwload de uma minuta de pensao alimenticia",
+      {
+        OPENAI_API_KEY: "test-key",
+        JUS9_MODEL_DEFAULT: "test-model",
+        JUS9_DRIVE_SAVER_URL: "https://drive-saver.test/exec",
+        JUS9_DRIVE_SAVER_CHAVE_INTERNA: "internal-test-key"
+      }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(calls.length, 2);
+    assert.match(body.answer, /Arquivo salvo no Cartorio Digital Charlie Echo/i);
+    assert.match(body.answer, /Link de download: https:\/\/docs\.google\.com\/document\/d\/drive-auto-123\/export\?format=pdf/i);
+    assert.equal(body.artifact.driveDecision.classificacao, "PUBLICO");
+    assert.equal(body.artifact.shouldSaveToDrive, true);
+    assert.equal(body.artifact.criarLinkDownload, true);
+    assert.equal(body.driveSaver.downloadUrl, "https://docs.google.com/document/d/drive-auto-123/export?format=pdf");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("local-only document download opt-out does not save to Drive Saver", async () => {
   const originalFetch = globalThis.fetch;
   const calls = [];
   globalThis.fetch = async (url) => {
@@ -280,7 +338,7 @@ test("document download does not automatically save public demonstrative draft t
 
   try {
     const response = await postIa(
-      "quero link para donwload de uma minuta de pensao alimenticia",
+      "quero link para donwload de uma minuta de pensao alimenticia, sem salvar no Drive",
       {
         OPENAI_API_KEY: "test-key",
         JUS9_MODEL_DEFAULT: "test-model",

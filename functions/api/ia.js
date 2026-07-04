@@ -1222,9 +1222,11 @@ function shouldSaveDocumentArtifactToDrive(message, driveDecision) {
   const hasSaveVerb = /\b(salve|salvar|grave|gravar|guarde|guardar|registre|registrar|arquive|arquivar|publique|publicar)\b/.test(q);
   const hasGovernedPlace = /\b(drive|google drive|cartorio digital|cartorio|drive saver|mini backend)\b/.test(q);
   const wantsGovernedDriveLink = /\b(link publico do drive|link do drive|gerar link publico|criar link publico|abrir link publico|publicar no drive)\b/.test(q);
-  const wantsOnlyLocalDownload = /\b(download|donwload|dowload|downlod|baixar|pdf|docx|word|arquivo|link para download|link de download|link para donwload|link de donwload)\b/.test(q) && !hasGovernedPlace && !wantsGovernedDriveLink;
+  const wantsDownloadOrFile = /\b(download|donwload|dowload|downlod|baixar|pdf|docx|word|arquivo|link para download|link de download|link para donwload|link de donwload)\b/.test(q);
+  const explicitLocalOnly = /\b(sem salvar no drive|nao salvar no drive|não salvar no drive|nao grave no drive|não grave no drive|download local|baixar local|somente local|apenas local|sem cartorio|sem cartorio digital)\b/.test(q);
 
-  if (wantsOnlyLocalDownload) return false;
+  if (explicitLocalOnly) return false;
+  if (driveDecision?.classificacao === "PUBLICO" && (wantsDownloadOrFile || wantsGovernedDriveLink)) return true;
   return (hasSaveVerb && hasGovernedPlace) || wantsGovernedDriveLink;
 }
 
