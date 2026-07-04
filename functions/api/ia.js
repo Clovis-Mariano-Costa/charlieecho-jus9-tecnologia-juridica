@@ -484,7 +484,7 @@ function compactLegalResearchTopic(message) {
 
 function asksGuidedLegalResearch(message) {
   const q = normalizeForIntent(extractCurrentQuestion(message));
-  if (asksDocumentProductionDownload(message)) return false;
+  if (asksDocumentProductionDownload(message) || asksCompleteLegalDraft(message)) return false;
   const asksResearch = /\b(pesquise|pesquisar|pesquisa|busque|buscar|procure|procurar|fonte|fontes|link|links|onde encontrar|onde acho|onde localizar|me indique|indique|liste julgados|julgado|julgados|precedente especifico|precedentes especificos|acordao especifico|acordaos especificos|inteiro teor|ementa|relator|numero do processo|tribunal)\b/.test(q);
   const asksExplanation = /\b(explique|explica|fale sobre|conceitue|conceito|sintetize|sintese|resuma|analise|analisar|como funciona|o que e|o que significa|sem citar autores|sem citar julgados)\b/.test(q);
   const legalTopic = /\b(doutrina|jurisprudencia|precedente|acordao|lei|legislacao|responsabilidade civil|contrato|dano moral|direito)\b/.test(q);
@@ -496,6 +496,17 @@ function asksDocumentProductionDownload(message) {
   const wantsDocument = /\b(minuta|modelo|contrato|peticao|peca|documento|oficio|requerimento|manifestacao|recurso|contestacao|inicial)\b/.test(q);
   const wantsFile = /\b(download|donwload|dowload|downlod|baixar|arquivo|pdf|docx|word|link para download|link para donwload|link de download|link de donwload|gerar link|criar link)\b/.test(q);
   return wantsDocument && wantsFile;
+}
+
+function asksCompleteLegalDraft(message) {
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  const wantsLegalDocument = /\b(minuta|modelo|contrato|peticao|peca|inicial|contestacao|recurso|agravo|apelacao|manifestacao|parecer|oficio|requerimento|impugnacao|embargos)\b/.test(q);
+  const wantsProduction = /\b(completa|completo|inteira|inteiro|redija|redigir|faca|fazer|crie|criar|elabore|elaborar|monte|montar|prepare|preparar|produza|produzir|quero|preciso|download|baixar|arquivo|pdf|docx|word)\b/.test(q);
+  return wantsLegalDocument && wantsProduction;
+}
+
+function asksLegalDocumentProduction(message) {
+  return asksDocumentProductionDownload(message) || asksCompleteLegalDraft(message);
 }
 
 function asksDriveSaverCorrectiveAction(message) {
@@ -570,6 +581,7 @@ function guidedLegalResearchAnswer(message) {
 }
 
 function inferCreativeIntent(message) {
+  if (asksCompleteLegalDraft(message)) return "producao de peca juridica completa";
   if (asksDocumentProductionDownload(message)) return "producao documental demonstrativa";
   const q = extractCurrentQuestion(message).toLowerCase();
   if (/\b(jurisprudencia|jurisprudência|precedente|acordao|acórdão|fonte|fontes|pesquise|pesquisar|busque|buscar|procure|procurar|autor|autores|obra|obras|citacao|citação|pagina|página)\b/.test(q)) return "pesquisa juridica guiada";
@@ -583,6 +595,7 @@ function inferCreativeIntent(message) {
 }
 
 function creativeNextStep(intent) {
+  if (intent === "producao de peca juridica completa") return "revisar competencia, fatos, documentos, pedidos, valor da causa e baixar a minuta local para revisao humana.";
   if (intent === "pesquisa juridica guiada") return "montar uma ficha de conferencia com fonte, tese, data, inteiro teor e revisao humana.";
   if (intent === "analise jurisprudencial responsavel") return "separar tese, criterios de tribunal, limites de uso e fontes oficiais para conferencia se o usuario precisar citar julgado.";
   if (intent === "producao doutrinaria responsavel") return "transformar a sintese em estrutura, argumentos, limites e fontes para conferencia quando necessario.";
@@ -594,6 +607,7 @@ function creativeNextStep(intent) {
 }
 
 function inferLegalAwareCreativeIntent(message) {
+  if (asksCompleteLegalDraft(message)) return "producao de peca juridica completa";
   if (asksDocumentProductionDownload(message)) return "producao documental demonstrativa";
   const q = normalizeForIntent(extractCurrentQuestion(message));
   if (asksGuidedLegalResearch(message) || /\b(fonte|fontes|pesquise|pesquisar|busque|buscar|procure|procurar|autor|autores|obra|obras|citacao|pagina|inteiro teor|ementa|relator|numero do processo|tribunal)\b/.test(q)) return "pesquisa juridica guiada";
@@ -804,6 +818,241 @@ function ensureSacredVirtualGuidance(message, answer) {
   return [text, "", sacredVirtualGuidance()].filter(Boolean).join("\n");
 }
 
+function ensureCompleteLegalDraftAnswer(message, answer) {
+  const text = String(answer || "").trim();
+  if (!asksCompleteLegalDraft(message)) return text;
+  if (!needsCompleteLegalDraftRepair(message, text)) return text;
+  return completeLegalDraftScaffold(message);
+}
+
+function needsCompleteLegalDraftRepair(message, answer) {
+  if (!asksLegalDocumentProduction(message)) return false;
+  const text = String(answer || "").trim();
+  const normalized = normalizeForIntent(text);
+  const asksForRealData = /\b(me informe|informe os detalhes|por favor me informe|nome das partes|nomes das partes|valores propostos|valores|prazos|condicoes|frequencia dos pagamentos|alguma informacao especifica|clausula especifica|apos receber)\b/.test(normalized);
+  const promiseOnly = /\b(posso preparar|vou preparar|sera revisado|disponibilizado|gostaria de|primeiro preciso|antes de elaborar|apos receber|quando voce enviar)\b/.test(normalized);
+  const hasOpening = /\b(ao juizo|excelentissimo|instrumento particular|parecer juridico|manifestacao|contestacao|razoes recursais)\b/.test(normalized);
+  const hasFacts = /\b(dos fatos|fatos relevantes|contexto|historico|considerandos)\b/.test(normalized);
+  const hasLaw = /\b(do direito|fundamentos|fundamentacao|analise juridica|clausulas|base normativa)\b/.test(normalized);
+  const hasRequests = /\b(dos pedidos|pedidos|requer|conclusao|assinatura|checklist de revisao)\b/.test(normalized);
+  return asksForRealData || promiseOnly || text.length < 1800 || !(hasOpening && hasFacts && hasLaw && hasRequests);
+}
+
+function attachmentGovernanceLines(message) {
+  const match = /\[ANEXOS DO USUARIO - UPLOAD LOCAL GOVERNADO\]([\s\S]*)$/i.exec(String(message || ""));
+  if (!match?.[1]) return [];
+  const block = match[1];
+  const names = Array.from(block.matchAll(/Anexo\s+\d+:\s*(.+)/ig))
+    .map((item) => item[1].trim())
+    .filter(Boolean)
+    .slice(0, 5);
+  const hasExtractedText = /Conteudo extraido:\s*"""/i.test(block);
+  const hasUnreadable = /leitura:\s*sem texto extraido/i.test(block);
+  const lines = [
+    "Anexos governados considerados:",
+    names.length ? names.map((name) => `- ${name}`).join("\n") : "- Anexo informado pelo usuario nesta tela.",
+    hasExtractedText
+      ? "Usei somente o texto extraido como subsidio. Qualquer fato real deve ser conferido por humano antes de uso."
+      : "Nao ha texto extraido suficiente para afirmar conteudo do arquivo; a minuta fica como estrutura demonstrativa.",
+  ];
+  if (hasUnreadable) lines.push("Arquivo sem texto extraido exige transcricao, OCR ou backend extrator antes de virar fato da peca.");
+  return lines;
+}
+
+function legalDraftProfile(message) {
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  if (/\b(contrato|clausula|instrumento particular)\b/.test(q)) {
+    return {
+      title: "Minuta completa demonstrativa - contrato",
+      heading: "INSTRUMENTO PARTICULAR DE [NOME DO CONTRATO]",
+      facts: [
+        "As partes pretendem formalizar relacao juridica demonstrativa, com objeto, prazo, preco, responsabilidades e forma de execucao a serem preenchidos por humano habilitado.",
+        "Esta versao usa campos entre colchetes para impedir invencao de dados reais e preservar revisao profissional."
+      ],
+      law: [
+        "O contrato deve observar boa-fe objetiva, funcao social, equilibrio, capacidade das partes, objeto licito e forma adequada ao caso concreto.",
+        "Clausulas de confidencialidade, protecao de dados, rescisao, foro, inadimplemento e responsabilidade devem ser calibradas conforme risco real."
+      ],
+      requests: [
+        "Clausula 1 - Partes: [qualificacao das partes].",
+        "Clausula 2 - Objeto: [descrever objeto].",
+        "Clausula 3 - Obrigacoes: [obrigacoes de cada parte].",
+        "Clausula 4 - Prazo e pagamento: [prazo], [valor], [forma].",
+        "Clausula 5 - Sigilo e dados: [regras de confidencialidade e LGPD quando cabivel].",
+        "Clausula 6 - Rescisao e penalidades: [hipoteses, multa, notificacao].",
+        "Clausula 7 - Foro ou metodo de solucao de conflitos: [foro/camara/mediacao]."
+      ],
+      closing: "E, por estarem de acordo, as partes assinam o presente instrumento em [numero] vias, com revisao humana obrigatoria."
+    };
+  }
+
+  if (/\b(contestacao|defesa)\b/.test(q)) {
+    return {
+      title: "Minuta completa demonstrativa - contestacao",
+      heading: "CONTESTACAO",
+      facts: [
+        "A parte requerida apresenta defesa demonstrativa diante dos fatos narrados na inicial, sem admitir fatos nao comprovados.",
+        "A narrativa deve ser ajustada a partir da peticao inicial, documentos recebidos e estrategia definida por profissional habilitado."
+      ],
+      law: [
+        "A defesa deve separar preliminares, impugnacao especifica dos fatos, merito, prova e pedidos.",
+        "Qualquer tese processual ou material exige conferencia da lei vigente, jurisprudencia aplicavel e documentos do caso."
+      ],
+      requests: [
+        "o acolhimento das preliminares cabiveis, se demonstradas;",
+        "a improcedencia total ou parcial dos pedidos iniciais;",
+        "a producao de provas documental, testemunhal, pericial e demais admitidas;",
+        "a condenacao da parte autora aos onus cabiveis, se aplicavel."
+      ],
+      closing: "Termos em que, pede deferimento."
+    };
+  }
+
+  if (/\b(apelacao|agravo|recurso|razoes recursais)\b/.test(q)) {
+    return {
+      title: "Minuta completa demonstrativa - recurso",
+      heading: "RAZOES RECURSAIS",
+      facts: [
+        "A parte recorrente pretende impugnar decisao identificada por [decisao/sentenca], observando prazo, preparo, cabimento e interesse recursal.",
+        "A sintese deve apontar exatamente quais capitulos da decisao serao atacados."
+      ],
+      law: [
+        "O recurso deve demonstrar cabimento, tempestividade, preparo ou gratuidade, erro de fato/direito, prejuizo e pedido de reforma, anulacao ou integracao.",
+        "E indispensavel conferir classe recursal, tribunal competente, norma local e precedentes pertinentes antes de protocolo."
+      ],
+      requests: [
+        "o conhecimento do recurso;",
+        "a concessao de efeito suspensivo ou tutela recursal, se cabivel e fundamentada;",
+        "a reforma, anulacao ou integracao da decisao recorrida nos pontos indicados;",
+        "a intimacao da parte contraria para contrarrazoes, quando cabivel."
+      ],
+      closing: "Nesses termos, requer provimento."
+    };
+  }
+
+  if (/\b(revisao de alimentos|revisional de alimentos|revisar alimentos|reduzir pensao|aumentar pensao)\b/.test(q)) {
+    return {
+      title: "Minuta completa demonstrativa - acao revisional de alimentos",
+      heading: "ACAO REVISIONAL DE ALIMENTOS",
+      facts: [
+        "Houve alteracao superveniente relevante na possibilidade de quem paga ou na necessidade de quem recebe alimentos.",
+        "A obrigacao anterior foi fixada em [valor/percentual] por [acordo/decisao] e deve ser reavaliada com documentos atualizados.",
+        "A minuta exige comprovantes de renda, despesas, decisao anterior e documentos do alimentando, todos conferidos por humano habilitado."
+      ],
+      law: [
+        "A revisao deve observar necessidade, possibilidade e proporcionalidade, com atencao ao art. 1.699 do Codigo Civil.",
+        "Quando houver crianca ou adolescente, o melhor interesse e a protecao integral orientam a revisao humana."
+      ],
+      requests: [
+        "a citacao/intimacao da parte requerida;",
+        "a revisao dos alimentos para [novo valor/percentual] ou outro parametro adequado;",
+        "a producao de provas documental, testemunhal e pericial/contabil se necessaria;",
+        "a intervencao do Ministerio Publico quando houver interesse de incapaz;",
+        "a fixacao dos consectarios legais cabiveis."
+      ],
+      closing: "Termos em que, pede deferimento."
+    };
+  }
+
+  if (/\b(alimentos|pensao|alimenticia)\b/.test(q)) {
+    return {
+      title: "Minuta completa demonstrativa - acao de alimentos",
+      heading: "ACAO DE ALIMENTOS",
+      facts: [
+        "O alimentando necessita de contribuicao regular para moradia, alimentacao, saude, educacao, transporte e demais despesas ordinarias.",
+        "A capacidade contributiva do alimentante deve ser demonstrada por documentos e demais provas admitidas.",
+        "Todos os dados pessoais, valores e documentos devem ser substituidos por placeholders ate revisao humana."
+      ],
+      law: [
+        "O pedido deve observar os arts. 1.694 e seguintes do Codigo Civil, alem do binomio necessidade-possibilidade.",
+        "Havendo incapaz, a peca deve preservar segredo, protecao integral e conferencia profissional."
+      ],
+      requests: [
+        "a fixacao de alimentos provisorios, se houver base documental suficiente;",
+        "a citacao da parte requerida;",
+        "a fixacao de alimentos em valor ou percentual compativel com necessidade e possibilidade;",
+        "a producao de provas e juntada de documentos;",
+        "a intervencao do Ministerio Publico quando cabivel."
+      ],
+      closing: "Termos em que, pede deferimento."
+    };
+  }
+
+  return {
+    title: "Minuta completa demonstrativa - peca juridica",
+    heading: "PETICAO / MANIFESTACAO DEMONSTRATIVA",
+    facts: [
+      "A parte interessada apresenta demanda juridica demonstrativa, com fatos a serem completados por humano habilitado.",
+      "A narrativa deve ser cronologica, objetiva, documentada e livre de dados reais no ambiente publico."
+    ],
+    law: [
+      "O fundamento deve partir dos fatos provados, da norma aplicavel, do rito correto e da competencia adequada.",
+      "Nao ha citacao literal, autor, pagina, processo ou tese vinculante inventada; fontes devem ser conferidas antes de uso real."
+    ],
+    requests: [
+      "o recebimento da presente peca;",
+      "a intimacao/citacao da parte contraria quando cabivel;",
+      "a apreciacao dos pedidos principais e subsidiarios indicados;",
+      "a producao de todos os meios de prova admitidos;",
+      "as demais providencias cabiveis ao caso concreto."
+    ],
+    closing: "Termos em que, pede deferimento."
+  };
+}
+
+function completeLegalDraftScaffold(message) {
+  const profile = legalDraftProfile(message);
+  const attachmentLines = attachmentGovernanceLines(message);
+  return [
+    profile.title,
+    "",
+    "Uso: minuta-base demonstrativa para revisao humana. Substitua todos os campos entre colchetes, confira competencia, rito, documentos, prazo, custas, valor da causa, fontes e normas locais antes de qualquer uso real.",
+    ...(attachmentLines.length ? ["", ...attachmentLines] : []),
+    "",
+    "EXCELENTISSIMO(A) SENHOR(A) JUIZ(A) DE DIREITO DA [VARA/ORGAO] DA COMARCA DE [CIDADE/UF]",
+    "",
+    "[NOME DA PARTE], [nacionalidade], [estado civil], [profissao], identificado(a) por [documento de identificacao], residente/sediado(a) em [endereco], por seu advogado/procurador [NOME], OAB/[UF] [numero], vem, respeitosamente, apresentar a presente",
+    "",
+    profile.heading,
+    "",
+    "em face de [NOME DA PARTE CONTRARIA/DESTINATARIO], [qualificacao], pelos fatos e fundamentos a seguir.",
+    "",
+    "1. Dos fatos",
+    profile.facts.map((line) => `- ${line}`).join("\n"),
+    "",
+    "2. Do direito e dos fundamentos",
+    profile.law.map((line) => `- ${line}`).join("\n"),
+    "",
+    "3. Da tutela provisoria ou providencia urgente, se cabivel",
+    "Caso exista urgencia concreta e prova minima, requer-se [descrever medida], demonstrando probabilidade do direito, perigo de dano e adequacao da providencia. Se nao houver urgencia, remover este topico.",
+    "",
+    "4. Dos pedidos",
+    "Diante do exposto, requer:",
+    profile.requests.map((line, index) => `${String.fromCharCode(97 + index)}) ${line}`).join("\n"),
+    "",
+    "5. Das provas",
+    "Protesta provar o alegado por documentos, depoimentos, informacoes complementares, prova testemunhal, prova tecnica/pericial e demais meios admitidos, especialmente [listar documentos anexos].",
+    "",
+    "6. Do valor da causa",
+    "Da-se a causa o valor de R$ [valor], sujeito a conferencia conforme regra processual aplicavel.",
+    "",
+    profile.closing,
+    "",
+    "[Cidade/UF], [data].",
+    "",
+    "[Nome do advogado/responsavel]",
+    "OAB/[UF] [numero]",
+    "",
+    "Checklist de revisao humana",
+    "- Conferir competencia, rito, prazo e custas.",
+    "- Confirmar qualificacao das partes e poderes de representacao.",
+    "- Conferir documentos, anexos e provas.",
+    "- Ajustar fatos, fundamentos, pedidos e valor da causa ao caso concreto.",
+    "- Verificar segredo de justica, LGPD, crianca/adolescente, saude, violencia ou dado sensivel.",
+    "- Conferir lei vigente, jurisprudencia aplicavel, normas locais e inteiro teor antes de protocolo real."
+  ].join("\n");
+}
+
 function ensureDownloadRequestNoHallucinatedLink(message, answer) {
   const artifact = buildDocumentDownloadArtifact(message, answer);
   if (!artifact) return String(answer || "").trim();
@@ -823,8 +1072,8 @@ function buildDocumentDownloadArtifact(message, answer) {
   const asksForRealData = /\b(me informe|informe os detalhes|por favor, me informe|nome das partes|nomes das partes|valores propostos|valores|prazos|condicoes|condições|frequencia dos pagamentos|frequência dos pagamentos|alguma informacao especifica|alguma informação específica|clausula especifica|cláusula específica|apos receber|após receber)\b/i.test(cleaned);
   const hasDocumentShape = /\b(ao juizo|dos fatos|dos fundamentos|dos pedidos|requer:|estrutura da minuta|fatos, fundamentos, pedidos|qualificacao|qualificação|fundamentacao|fundamentação)\b/i.test(normalizeForIntent(cleaned));
   const isPromiseOnly = /\b(posso preparar|sera revisado|será revisado|disponibilizado|gostaria de|primeiro|antes de ser disponibilizado|entao disponibilizado|então disponibilizado)\b/i.test(cleaned);
-  const safeDocument = asksForRealData || !hasDocumentShape || isPromiseOnly
-    ? demonstrativeDocumentDownloadScaffold(message)
+  const safeDocument = asksForRealData || !hasDocumentShape || isPromiseOnly || needsCompleteLegalDraftRepair(message, cleaned)
+    ? documentScaffoldForRequest(message)
     : cleaned;
 
   const content = safeDocument || "Posso estruturar a minuta demonstrativa e preparar o conteudo para download.";
@@ -842,8 +1091,14 @@ function buildDocumentDownloadArtifact(message, answer) {
   };
 }
 
+function documentScaffoldForRequest(message) {
+  if (asksLegalDocumentProduction(message)) return completeLegalDraftScaffold(message);
+  return demonstrativeDocumentDownloadScaffold(message);
+}
+
 function demonstrativeDocumentDownloadScaffold(message) {
   const q = normalizeForIntent(extractCurrentQuestion(message));
+  if (asksLegalDocumentProduction(message)) return completeLegalDraftScaffold(message);
   if (/\b(alimentos|pensao|alimenticia|alimenticia)\b/.test(q)) {
     return [
       "Minuta demonstrativa - pensao alimenticia",
@@ -890,15 +1145,17 @@ function inferDocumentTitle(message, content) {
 
 function classifyDocumentForAutonomousDrive(message, content) {
   const combined = `${extractCurrentQuestion(message)}\n${content}`;
+  const preChecklistContent = String(content || "").split(/Checklist de revisao humana/i)[0] || content;
+  const sensitiveSource = `${extractCurrentQuestion(message)}\n${preChecklistContent}`;
   const normalized = normalizeForIntent(combined);
   const hasPlaceholder = /\[[^\]]+\]/.test(content);
   const saysDemonstrative = /\b(demonstrativa|demonstrativo|ficticio|ficticia|placeholder|campos para completar)\b/.test(normalized);
   const hasHardSensitiveSignal =
-    /\b(segredo de justica|segredo de justiça|processo real|dados reais|cliente real|documento pessoal|cpf|cnpj|rg|whatsapp|telefone|email|e-mail|senha|token|chave|\.env|cofre|violencia|violência|abuso|crime|prisao|prisão)\b/.test(normalized) ||
-    /\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b/.test(combined) ||
-    /\b\d{2}\.?\d{3}\.?\d{3}\/?\d{4}-?\d{2}\b/.test(combined) ||
-    /\b\d{7}-\d{2}\.\d{4}\.\d\.\d{2}\.\d{4}\b/.test(combined) ||
-    /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(combined);
+    /\b(segredo de justica|segredo de justiça|processo real|dados reais|cliente real|documento pessoal|cpf|cnpj|rg|whatsapp|telefone|email|e-mail|senha|token|chave|\.env|cofre|violencia|violência|abuso|crime|prisao|prisão)\b/.test(normalizeForIntent(sensitiveSource)) ||
+    /\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b/.test(sensitiveSource) ||
+    /\b\d{2}\.?\d{3}\.?\d{3}\/?\d{4}-?\d{2}\b/.test(sensitiveSource) ||
+    /\b\d{7}-\d{2}\.\d{4}\.\d\.\d{2}\.\d{4}\b/.test(sensitiveSource) ||
+    /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(sensitiveSource);
 
   if ((hasPlaceholder || saysDemonstrative) && !hasHardSensitiveSignal) {
     return {
@@ -1364,7 +1621,8 @@ export async function onRequestPost(context) {
       }, 502);
     }
 
-    let governedAnswer = applyCreativeSurface(inputMessage, answer);
+    let governedAnswer = ensureCompleteLegalDraftAnswer(inputMessage, answer);
+    governedAnswer = applyCreativeSurface(inputMessage, governedAnswer);
     governedAnswer = ensureDriveSaverGuidance(inputMessage, governedAnswer);
     governedAnswer = ensurePrivateDriveGuidance(inputMessage, governedAnswer);
     governedAnswer = ensureDnaCloudGuidance(inputMessage, governedAnswer);

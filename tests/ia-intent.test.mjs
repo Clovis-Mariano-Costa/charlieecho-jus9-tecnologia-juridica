@@ -80,7 +80,9 @@ test("document download post-processing removes hallucinated links", async () =>
 
     assert.equal(response.status, 200);
     assert.equal(body.ok, true);
-    assert.match(body.answer, /Estrutura da minuta/i);
+    assert.match(body.answer, /ACAO REVISIONAL DE ALIMENTOS/i);
+    assert.match(body.answer, /Dos fatos/i);
+    assert.match(body.answer, /Dos pedidos/i);
     assert.match(body.answer, /botoes da pagina/i);
     assert.doesNotMatch(body.answer, /example\.com|Um momento|vou gerar o link/i);
   } finally {
@@ -110,8 +112,8 @@ test("document download post-processing avoids asking for real party data", asyn
 
     assert.equal(response.status, 200);
     assert.equal(body.ok, true);
-    assert.match(body.answer, /AO JUIZO DA VARA DE FAMILIA/i);
-    assert.match(body.answer, /\[NOME DO ALIMENTANDO\]/i);
+    assert.match(body.answer, /ACAO DE ALIMENTOS/i);
+    assert.match(body.answer, /\[NOME DA PARTE\]/i);
     assert.doesNotMatch(body.answer, /me informe os detalhes|nome das partes|valores propostos/i);
     assert.match(body.answer, /botoes da pagina/i);
   } finally {
@@ -137,10 +139,88 @@ test("document download post-processing replaces promise-only draft answer", asy
 
     assert.equal(response.status, 200);
     assert.equal(body.ok, true);
-    assert.match(body.answer, /AO JUIZO DA VARA DE FAMILIA/i);
-    assert.match(body.answer, /\[NOME DO ALIMENTANDO\]/i);
+    assert.match(body.answer, /ACAO DE ALIMENTOS/i);
+    assert.match(body.answer, /Checklist de revisao humana/i);
     assert.doesNotMatch(body.answer, /Posso preparar|disponibilizado|alguma informacao especifica/i);
     assert.match(body.answer, /botoes da pagina/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("complete legal draft request returns full draft instead of promise", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    assert.match(String(url), /api\.openai\.com/);
+    return Response.json({
+      output_text: "Posso preparar uma peticao completa de revisao de alimentos. Primeiro preciso que voce informe os nomes das partes e valores."
+    });
+  };
+
+  try {
+    const response = await postIa(
+      "faca uma peticao completa de revisao de alimentos",
+      { OPENAI_API_KEY: "test-key", JUS9_MODEL_DEFAULT: "test-model" }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.match(body.answer, /ACAO REVISIONAL DE ALIMENTOS/i);
+    assert.match(body.answer, /Dos fatos/i);
+    assert.match(body.answer, /Do direito e dos fundamentos/i);
+    assert.match(body.answer, /Dos pedidos/i);
+    assert.match(body.answer, /Do valor da causa/i);
+    assert.match(body.answer, /Checklist de revisao humana/i);
+    assert.doesNotMatch(body.answer, /Primeiro preciso|nomes das partes|valores/i);
+    assert.equal(body.artifact, null);
+    assert.equal(body.driveSaver, null);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("complete legal draft request acknowledges governed upload context", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    assert.match(String(url), /api\.openai\.com/);
+    return Response.json({
+      output_text: "Vou analisar o anexo e preparar a peca depois."
+    });
+  };
+
+  try {
+    const message = [
+      "[PERGUNTA ATUAL]",
+      "redija uma peticao inicial completa de cobranca usando o anexo textual",
+      "",
+      "[ANEXOS DO USUARIO - UPLOAD LOCAL GOVERNADO]",
+      "Os arquivos abaixo foram selecionados pelo usuario nesta tela. Use apenas o texto extraido quando houver.",
+      "",
+      "Anexo 1: contrato-ficticio.txt",
+      "Tipo: text/plain | tamanho: 2 KB | leitura: texto extraido",
+      "Observacao: Texto local extraido pelo navegador.",
+      "Conteudo extraido:",
+      "\"\"\"",
+      "Contrato ficticio com atraso de pagamento em tres parcelas demonstrativas.",
+      "\"\"\"",
+      "",
+      "Regra: para PDF, DOCX, imagem ou arquivo sem texto extraido, peca transcricao, OCR ou backend extrator antes de usar o conteudo como fato."
+    ].join("\n");
+
+    const response = await postIa(
+      message,
+      { OPENAI_API_KEY: "test-key", JUS9_MODEL_DEFAULT: "test-model" }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.match(body.answer, /Anexos governados considerados/i);
+    assert.match(body.answer, /contrato-ficticio\.txt/i);
+    assert.match(body.answer, /Usei somente o texto extraido como subsidio/i);
+    assert.match(body.answer, /Minuta completa demonstrativa/i);
+    assert.doesNotMatch(body.answer, /Vou analisar o anexo e preparar/i);
   } finally {
     globalThis.fetch = originalFetch;
   }
@@ -199,7 +279,8 @@ test("explicit Cartorio Digital save request sends demonstrative draft to Drive 
     assert.equal(payload.chaveInterna, "internal-test-key");
     assert.equal(payload.classificacao, "PUBLICO");
     assert.equal(payload.criarLinkDownload, true);
-    assert.match(payload.conteudo, /AO JUIZO DA VARA DE FAMILIA/i);
+    assert.match(payload.conteudo, /ACAO DE ALIMENTOS/i);
+    assert.match(payload.conteudo, /Checklist de revisao humana/i);
 
     return Response.json({
       ok: true,
