@@ -304,6 +304,91 @@ test("complete legal draft reads loose governed attachment text", async () => {
   }
 });
 
+test("DAJ intake analysis creates governed report and saves it to Drive Saver", async () => {
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url, options = {}) => {
+    calls.push({ url: String(url), options });
+    if (String(url).includes("api.openai.com")) {
+      return Response.json({
+        output_text: "Vou analisar o DAJ e preparar um relatorio depois."
+      });
+    }
+
+    assert.equal(String(url), "https://drive-saver.test/exec");
+    const payload = JSON.parse(String(options.body || "{}"));
+    assert.equal(payload.chaveInterna, "internal-test-key");
+    assert.equal(payload.tipoDocumento, "RELATORIO_ANALISE_DAJ_CHARLIE_ECHO");
+    assert.equal(payload.classificacao, "JURIDICO_SIGILOSO");
+    assert.equal(payload.criarLinkDownload, false);
+    assert.match(payload.origem, /Governanca Operacional DAJ_ADVOGADOS/i);
+    assert.match(payload.conteudo, /Relatorio de analise DAJ - DAJ-2026-0004/i);
+    assert.match(payload.conteudo, /Perguntas de retorno ao cliente/i);
+    assert.match(payload.conteudo, /Proximos atos do DAJ/i);
+
+    return Response.json({
+      ok: true,
+      mensagem: "Relatorio salvo.",
+      fileId: "drive-daj-report-123",
+      viewUrl: "https://docs.google.com/document/d/drive-daj-report-123/edit",
+      downloadUrl: null,
+      linkPublicoCriado: false,
+      classificacaoFinal: "JURIDICO_SIGILOSO",
+      pastaDestino: "00_ENTRADA_PARA_REVISAO_HUMANA",
+      revisaoHumanaObrigatoria: true,
+      cofreAutomatico: false
+    });
+  };
+
+  try {
+    const message = [
+      "[PERGUNTA ATUAL]",
+      "Leia o DAJ recem-criado a partir do atendimento inicial demonstrativo e faca uma analise da Charlie Echo.",
+      "",
+      "[ATENDIMENTO INICIAL DO DAJ - RASCUNHO LOCAL]",
+      "DAJ previsto: DAJ-2026-0004.",
+      "Origem: Atendimento inicial demonstrativo.",
+      "Campos preenchidos/selecionados:",
+      "- Nome completo: Cliente Ficticio",
+      "- Contato principal: cliente.ficticio@example.com",
+      "- Area aparente: Familia",
+      "- Urgencia: Prazo proximo",
+      "- Nivel de sigilo: Restrito",
+      "- Relato livre do caso: Pessoa ficticia pede revisao de alimentos com documento pendente."
+    ].join("\n");
+
+    const response = await postIa(
+      message,
+      {
+        OPENAI_API_KEY: "test-key",
+        JUS9_MODEL_DEFAULT: "test-model",
+        JUS9_DRIVE_SAVER_URL: "https://drive-saver.test/exec",
+        JUS9_DRIVE_SAVER_CHAVE_INTERNA: "internal-test-key"
+      }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(calls.length, 2);
+    assert.equal(body.governance.operation, "analise_daj_governada");
+    assert.equal(body.governance.module.code, "DAJ");
+    assert.equal(body.governance.module.independent, true);
+    assert.equal(body.artifact.kind, "daj-analysis-report");
+    assert.equal(body.artifact.driveDecision.classificacao, "JURIDICO_SIGILOSO");
+    assert.equal(body.artifact.shouldSaveToDrive, true);
+    assert.equal(body.artifact.criarLinkDownload, false);
+    assert.match(body.answer, /Relatorio de analise DAJ - DAJ-2026-0004/i);
+    assert.match(body.answer, /Arquivo salvo no Cartorio Digital Charlie Echo/i);
+    assert.match(body.answer, /Abrir no Drive: https:\/\/docs\.google\.com\/document\/d\/drive-daj-report-123\/edit/i);
+    assert.doesNotMatch(body.answer, /Vou analisar o DAJ e preparar/i);
+    assert.equal(body.driveSaver.viewUrl, "https://docs.google.com/document/d/drive-daj-report-123/edit");
+    assert.equal(body.driveSaver.downloadUrl, null);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("public demonstrative document download autonomously saves to Drive Saver", async () => {
   const originalFetch = globalThis.fetch;
   const calls = [];

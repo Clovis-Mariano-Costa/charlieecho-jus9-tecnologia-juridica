@@ -185,6 +185,159 @@ const GOVERNANCE_OPERATIONAL_ORDER = Object.freeze([
 
 const GOVERNANCE_OPERATIONAL_VERSION = "governanca-operacional-daj-drive-v1";
 
+const MVP_MODULE_REGISTRY = Object.freeze({
+  DAJ_ADVOGADOS: {
+    code: "DAJ",
+    label: "DAJ Advogados",
+    dossier: "Dossie Administrativo Juridico",
+    independent: true,
+    pilot: true,
+    modelRole: "modelo-mae operacional",
+    driveDefault: "JURIDICO_SIGILOSO",
+    focus: "atendimento, fatos, documentos, prazos, pecas, fontes, Drive Saver e revisao humana"
+  },
+  DAA_PROFESSORES: {
+    code: "DAA",
+    label: "DAA Professores",
+    dossier: "Dossie Academico de Aulas",
+    independent: true,
+    pilot: false,
+    modelRole: "modulo academico replicado",
+    driveDefault: "INTERNO",
+    focus: "aulas, rubricas, material didatico, fontes academicas e revisao docente"
+  },
+  DEJ_ESTUDANTES: {
+    code: "DEJ",
+    label: "DEJ Estudantes",
+    dossier: "Dossie de Estudos Juridicos",
+    independent: true,
+    pilot: false,
+    modelRole: "modulo de estudo replicado",
+    driveDefault: "INTERNO",
+    focus: "planos de estudo, conceitos, revisao, exemplos e fontes introdutorias"
+  },
+  DIC_CIDADAOS: {
+    code: "DIC",
+    label: "DIC Cidadaos",
+    dossier: "Dossie de Informacao ao Cidadao",
+    independent: true,
+    pilot: false,
+    modelRole: "modulo publico/social replicado",
+    driveDefault: "INTERNO",
+    focus: "linguagem simples, encaminhamento humano, fontes oficiais e seguranca"
+  },
+  DPJ_PERITOS: {
+    code: "DPJ",
+    label: "DPJ Peritos",
+    dossier: "Dossie Pericial Judicial",
+    independent: true,
+    pilot: false,
+    modelRole: "modulo tecnico pericial replicado",
+    driveDefault: "JURIDICO_SIGILOSO",
+    focus: "quesitos, metodo, anexos, cadeia tecnica e revisao pericial"
+  },
+  DIP_INVESTIDORES_PARCEIROS: {
+    code: "DIP",
+    label: "DIP Investidores e Parceiros",
+    dossier: "Dossie Institucional de Parceria",
+    independent: true,
+    pilot: false,
+    modelRole: "modulo institucional replicado",
+    driveDefault: "INTERNO",
+    focus: "auditoria, roadmap, indicadores, riscos, narrativa e due diligence"
+  },
+  DEE_ESCRITORIOS: {
+    code: "DEE",
+    label: "DEE Escritorios",
+    dossier: "Dossie de Escritorio e Equipe",
+    independent: true,
+    pilot: false,
+    modelRole: "modulo operacional replicado",
+    driveDefault: "JURIDICO_SIGILOSO",
+    focus: "fluxo de equipe, tarefas, prazos, auditoria e qualidade"
+  },
+  DEJI_EMPRESAS: {
+    code: "DEJI",
+    label: "DEJI Empresas",
+    dossier: "Dossie Empresarial Juridico Interno",
+    independent: true,
+    pilot: false,
+    modelRole: "modulo corporativo replicado",
+    driveDefault: "JURIDICO_SIGILOSO",
+    focus: "contratos, compliance, LGPD, riscos e decisao revisavel"
+  },
+  DOI_ORGAOS: {
+    code: "DOI",
+    label: "DOI Orgaos e Instituicoes",
+    dossier: "Dossie Organizacional Institucional",
+    independent: true,
+    pilot: false,
+    modelRole: "modulo institucional publico replicado",
+    driveDefault: "INTERNO",
+    focus: "protocolo, rastreabilidade, controle interno e fontes oficiais"
+  },
+  DGE_GOVERNANCA: {
+    code: "DGE",
+    label: "DGE Governanca",
+    dossier: "Dossie de Governanca do Ecossistema",
+    independent: true,
+    pilot: false,
+    modelRole: "regencia da orquestra normativa",
+    driveDefault: "INTERNO",
+    focus: "versionamento, risco, auditoria, normas, pacotes e replicacao"
+  },
+  DMG_MAGISTRATURA: {
+    code: "DMG",
+    label: "DMG Magistratura",
+    dossier: "Dossie de Magistratura Demonstrativa",
+    independent: true,
+    pilot: false,
+    modelRole: "modulo demonstrativo de gabinete",
+    driveDefault: "JURIDICO_SIGILOSO",
+    focus: "fila, documentos, minuta estrutural e limites de decisao humana"
+  },
+  DMP_MINISTERIO_PUBLICO: {
+    code: "DMP",
+    label: "DMP Ministerio Publico",
+    dossier: "Dossie Demonstrativo do Ministerio Publico",
+    independent: true,
+    pilot: false,
+    modelRole: "modulo ministerial demonstrativo",
+    driveDefault: "JURIDICO_SIGILOSO",
+    focus: "noticia ficticia, cautelas, documentos, pendencias e revisao humana"
+  },
+  DAP_AUTORIDADE_POLICIAL: {
+    code: "DAP",
+    label: "DAP Autoridade Policial",
+    dossier: "Dossie Demonstrativo de Autoridade Policial",
+    independent: true,
+    pilot: false,
+    modelRole: "modulo policial demonstrativo com cautela maxima",
+    driveDefault: "JURIDICO_SIGILOSO",
+    focus: "fluxo ficticio, documentos, diligencias demonstrativas, limites e protecao"
+  },
+  SOCIAL_JUS9_VERDE: {
+    code: "SOCIAL",
+    label: "Charlie Echo Social",
+    dossier: "Dossie Social Governado",
+    independent: true,
+    pilot: false,
+    modelRole: "modulo social acolhedor",
+    driveDefault: "INTERNO",
+    focus: "acolhimento, triagem, rede humana, linguagem simples e seguranca"
+  },
+  GERAL_CHARLIE_ECHO: {
+    code: "GERAL",
+    label: "Charlie Echo Geral",
+    dossier: "Dossie Geral de Conversa",
+    independent: true,
+    pilot: false,
+    modelRole: "modulo matriz",
+    driveDefault: "INTERNO",
+    focus: "resposta inteligente, governanca, criatividade responsavel e continuidade"
+  }
+});
+
 const SYSTEM_PUBLICO_ESTUDANTES = `
 Você é Charlie Echo da Costa, I.A generativa multimodal jurista com governanca humana da Jus 9 Tecnologia Juridica.
 Memoria publica minima: o Fundador da Jus 9 e Clovis Mariano da Costa / Aeon Primevo. Charlie Fox da Costa e o apoio tecnico-operacional em Codex. Charlie Echo da Costa e a I.A generativa multimodal jurista com governanca humana da Jus 9.
@@ -513,8 +666,18 @@ function compactLegalResearchTopic(message) {
     .slice(0, 120) || "tema juridico informado";
 }
 
+function hasDajAnalysisSignal(message) {
+  const text = String(message || "");
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  const hasDajMarker = /\[ATENDIMENTO INICIAL DO DAJ|\[DAJ|DAJ-\d{4}-\d+/i.test(text);
+  const wantsAnalysis = /\b(analise|analisar|leia|ler|resuma|resumir|relatorio|diagnostico|triagem|proximos atos|proximos passos|documentos faltantes|perguntas de retorno)\b/.test(q);
+  const hasDaj = /\b(daj|dossie administrativo juridico|atendimento inicial)\b/.test(q) || hasDajMarker;
+  return hasDaj && wantsAnalysis;
+}
+
 function asksGuidedLegalResearch(message) {
   const q = normalizeForIntent(extractCurrentQuestion(message));
+  if (asksDajAnalysisReport(message)) return false;
   if (asksDocumentProductionDownload(message) || asksCompleteLegalDraft(message)) return false;
   const asksResearch = /\b(pesquise|pesquisar|pesquisa|busque|buscar|procure|procurar|fonte|fontes|link|links|onde encontrar|onde acho|onde localizar|me indique|indique|liste julgados|julgado|julgados|precedente especifico|precedentes especificos|acordao especifico|acordaos especificos|inteiro teor|ementa|relator|numero do processo|tribunal)\b/.test(q);
   const asksExplanation = /\b(explique|explica|fale sobre|conceitue|conceito|sintetize|sintese|resuma|analise|analisar|como funciona|o que e|o que significa|sem citar autores|sem citar julgados)\b/.test(q);
@@ -531,6 +694,7 @@ function asksDocumentProductionDownload(message) {
 
 function asksCompleteLegalDraft(message) {
   const q = normalizeForIntent(extractCurrentQuestion(message));
+  if (hasDajAnalysisSignal(message)) return false;
   const wantsLegalDocument = /\b(minuta|modelo|contrato|peticao|peca|inicial|contestacao|recurso|agravo|apelacao|manifestacao|parecer|oficio|requerimento|impugnacao|embargos)\b/.test(q);
   const wantsProduction = /\b(completa|completo|inteira|inteiro|redija|redigir|faca|fazer|crie|criar|elabore|elaborar|monte|montar|prepare|preparar|produza|produzir|quero|preciso|download|baixar|arquivo|pdf|docx|word)\b/.test(q);
   return wantsLegalDocument && wantsProduction;
@@ -540,17 +704,61 @@ function asksLegalDocumentProduction(message) {
   return asksDocumentProductionDownload(message) || asksCompleteLegalDraft(message);
 }
 
+function asksDajAnalysisReport(message) {
+  if (asksLegalDocumentProduction(message)) return false;
+  return hasDajAnalysisSignal(message);
+}
+
+function asksDajAnalysisAutoSave(message) {
+  const text = String(message || "");
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  if (!asksDajAnalysisReport(message)) return false;
+  if (/\b(sem salvar|nao salvar|nao grave|sem drive|somente local|apenas local)\b/.test(q)) return false;
+  if (/\[ATENDIMENTO INICIAL DO DAJ|\[DAJ|DAJ-\d{4}-\d+/i.test(text)) return true;
+  return /\b(salve|salvar|grave|gravar|registre|registrar|cartorio|drive|pdf|relatorio)\b/.test(q);
+}
+
 function inferOperationalMvp(message, mode = "estudantes") {
   const q = normalizeForIntent(extractCurrentQuestion(message));
 
   if (/\b(daj|advogado|advogada|advogados|advogadas|defensor|defensoria|peticao|peca|inicial|contestacao|recurso|alimentos|pensao|processo|prazo|audiencia|dossie administrativo juridico)\b/.test(q)) {
     return "DAJ_ADVOGADOS";
   }
-  if (/\b(professor|aula|aluno|estudante|faculdade|universidade|prova|trabalho academico)\b/.test(q)) {
+  if (/\b(daa|professor|professora|aula|docente|coordenacao|reitoria|rubrica)\b/.test(q)) {
+    return "DAA_PROFESSORES";
+  }
+  if (/\b(dej|aluno|estudante|faculdade|universidade|prova|trabalho academico|plano de estudo)\b/.test(q)) {
     return "DEJ_ESTUDANTES";
   }
-  if (/\b(investidor|parceiro|portfolio|pitch|auditoria estrategica|roadmap)\b/.test(q)) {
+  if (/\b(dic|cidadao|cidada|publico leigo|defensoria publica|orientacao simples)\b/.test(q)) {
+    return "DIC_CIDADAOS";
+  }
+  if (/\b(dpj|perito|pericia|quesitos|laudo pericial)\b/.test(q)) {
+    return "DPJ_PERITOS";
+  }
+  if (/\b(dip|investidor|parceiro|portfolio|pitch|auditoria estrategica|roadmap)\b/.test(q)) {
     return "DIP_INVESTIDORES_PARCEIROS";
+  }
+  if (/\b(dee|escritorio|equipe juridica|fluxo de equipe|tarefas internas)\b/.test(q)) {
+    return "DEE_ESCRITORIOS";
+  }
+  if (/\b(deji|empresa|juridico interno|compliance|lgpd|contrato empresarial)\b/.test(q)) {
+    return "DEJI_EMPRESAS";
+  }
+  if (/\b(doi|orgao publico|instituicao|protocolo institucional|controle interno)\b/.test(q)) {
+    return "DOI_ORGAOS";
+  }
+  if (/\b(dge|governanca|constituicao|dna|lei interna|regimento|protocolo|versionamento)\b/.test(q)) {
+    return "DGE_GOVERNANCA";
+  }
+  if (/\b(dmg|magistratura|juiz|gabinete|sentenca demonstrativa)\b/.test(q)) {
+    return "DMG_MAGISTRATURA";
+  }
+  if (/\b(dmp|ministerio publico|promotor|promotoria)\b/.test(q)) {
+    return "DMP_MINISTERIO_PUBLICO";
+  }
+  if (/\b(dap|delegado|delegacia|autoridade policial)\b/.test(q)) {
+    return "DAP_AUTORIDADE_POLICIAL";
   }
   if (mode === "social") return "SOCIAL_JUS9_VERDE";
   if (mode === "profissional") return "DAJ_ADVOGADOS";
@@ -561,6 +769,7 @@ function inferGovernanceOperation(message) {
   const q = normalizeForIntent(extractCurrentQuestion(message));
   if (asksDriveSaverCorrectiveAction(message)) return "correcao_drive_saver";
   if (asksLegalDocumentProduction(message)) return "producao_documental_juridica";
+  if (asksDajAnalysisReport(message)) return "analise_daj_governada";
   if (asksGuidedLegalResearch(message)) return "pesquisa_fontes_juridicas";
   if (/\b(upload|anexo|pdf|docx|arquivo enviado|conteudo extraido)\b/.test(q)) return "analise_upload_governado";
   if (/\b(governanca|dna|constituicao|leis internas|regimento|protocolo|cronograma|auditoria|investidor|parceiro|roadmap|mvp)\b/.test(q)) return "governanca_e_auditoria";
@@ -570,8 +779,10 @@ function inferGovernanceOperation(message) {
 function buildOperationalGovernanceDecision(message, mode) {
   const operation = inferGovernanceOperation(message);
   const targetMvp = inferOperationalMvp(message, mode);
+  const module = MVP_MODULE_REGISTRY[targetMvp] || MVP_MODULE_REGISTRY.GERAL_CHARLIE_ECHO;
   const q = normalizeForIntent(extractCurrentQuestion(message));
   const documentIntent = asksLegalDocumentProduction(message);
+  const dajAnalysisRecordIntent = asksDajAnalysisAutoSave(message);
   const governanceRecordIntent = /\b(governanca|cronograma|auditoria|investidor|parceiro|roadmap|pacote|relatorio|registro|versionamento|mvp)\b/.test(q);
 
   return {
@@ -579,7 +790,8 @@ function buildOperationalGovernanceDecision(message, mode) {
     order: GOVERNANCE_OPERATIONAL_ORDER,
     priority: "governanca_geral_com_foco_no_daj",
     targetMvp,
-    pilot: targetMvp === "DAJ_ADVOGADOS",
+    module,
+    pilot: Boolean(module.pilot),
     operation,
     intent: inferLegalAwareCreativeIntent(message),
     sentireRisk: inferSentireRisk(message),
@@ -594,7 +806,7 @@ function buildOperationalGovernanceDecision(message, mode) {
       automaticSaveAllowed: true,
       automaticPdfAllowed: true,
       publicLinkRule: "somente classificacao PUBLICO com downloadUrl real retornado pelo backend",
-      shouldConsiderRecord: documentIntent || governanceRecordIntent
+      shouldConsiderRecord: documentIntent || dajAnalysisRecordIntent || governanceRecordIntent
     }
   };
 }
@@ -606,7 +818,9 @@ function buildGovernanceDecisionContext(decision) {
     `Versao: ${decision.version}.`,
     `Ordem: ${decision.order.join(" > ")}.`,
     `Prioridade: ${decision.priority}.`,
-    `MVP alvo: ${decision.targetMvp}${decision.pilot ? " (piloto)" : ""}.`,
+    `MVP alvo: ${decision.module.code} - ${decision.module.label}${decision.pilot ? " (piloto/modelo-mae)" : ""}.`,
+    `Independencia do modulo: ${decision.module.independent ? "sim" : "nao"}; papel na orquestra: ${decision.module.modelRole}.`,
+    `Foco do modulo: ${decision.module.focus}.`,
     `Operacao: ${decision.operation}.`,
     "Memoria oficial: Google Drive / Cartorio Digital Charlie Echo, por Drive Saver/backend autenticado ou conector autorizado.",
     "GitHub fica para codigo, documentos publicaveis e rastreabilidade. Ambiente local e temporario.",
@@ -623,6 +837,7 @@ function publicGovernanceMetadata(decision) {
     order: decision.order,
     priority: decision.priority,
     targetMvp: decision.targetMvp,
+    module: decision.module,
     pilot: decision.pilot,
     operation: decision.operation,
     responsePriority: decision.responsePriority,
@@ -950,6 +1165,140 @@ function ensureCompleteLegalDraftAnswer(message, answer) {
   return completeLegalDraftScaffold(message);
 }
 
+function ensureDajAnalysisReportAnswer(message, answer) {
+  const text = String(answer || "").trim();
+  if (!asksDajAnalysisReport(message)) return text;
+  if (!needsDajAnalysisRepair(text)) return text;
+  return dajAnalysisReportScaffold(message);
+}
+
+function needsDajAnalysisRepair(answer) {
+  const text = String(answer || "").trim();
+  const normalized = normalizeForIntent(text);
+  if (!text || text.length < 900) return true;
+  const hasFacts = /\b(fatos|relato|sintese|contexto)\b/.test(normalized);
+  const hasDocs = /\b(documentos|anexos|comprovantes|faltantes)\b/.test(normalized);
+  const hasRisks = /\b(riscos|urgencia|sigilo|prazo|pontos de atencao)\b/.test(normalized);
+  const hasNext = /\b(proximos passos|proximos atos|perguntas|checklist|revisao humana)\b/.test(normalized);
+  const promiseOnly = /\b(vou analisar|posso analisar|envie o arquivo|preciso que voce envie|depois de receber)\b/.test(normalized);
+  return promiseOnly || !(hasFacts && hasDocs && hasRisks && hasNext);
+}
+
+function extractDajId(message) {
+  const match = String(message || "").match(/\bDAJ-\d{4}-\d{4,}\b/i);
+  return match ? match[0].toUpperCase() : "DAJ-[identificador]";
+}
+
+function extractDajIntakeItems(message) {
+  const text = String(message || "");
+  const blockMatch = /\[ATENDIMENTO INICIAL DO DAJ[^\]]*\]([\s\S]*)$/i.exec(text);
+  const source = blockMatch?.[1] || text;
+  const items = [];
+  for (const item of source.matchAll(/-\s*([^:\n]{2,80}):\s*([^\n]+)/g)) {
+    const label = item[1].trim();
+    const value = item[2].trim();
+    if (!label || !value) continue;
+    if (/nenhum arquivo selecionado/i.test(value)) continue;
+    items.push({ label, value });
+  }
+  return items.slice(0, 18);
+}
+
+function summarizeDajItems(items) {
+  if (!items.length) return ["- Nenhum campo preenchido foi localizado. Usar roteiro de coleta inicial e DAJ demonstrativo."];
+  return items.map((item) => `- ${item.label}: ${item.value}`);
+}
+
+function classifyDajAnalysisForDrive(message, content) {
+  const text = `${extractCurrentQuestion(message)}\n${content || ""}`;
+  const normalized = normalizeForIntent(text);
+  const items = extractDajIntakeItems(message);
+  const hasSensitiveSignal =
+    /\b(segredo|restrito|secreto|cofre|prazo fatal|risco imediato|crianca|adolescente|violencia|crime|processo real|cliente real|cpf|cnpj|rg|telefone|whatsapp|email|e-mail)\b/.test(normalized) ||
+    /\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b/.test(text) ||
+    /\b\d{2}\.?\d{3}\.?\d{3}\/?\d{4}-?\d{2}\b/.test(text) ||
+    /\b\d{7}-\d{2}\.\d{4}\.\d\.\d{2}\.\d{4}\b/.test(text) ||
+    /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(text);
+
+  if (hasSensitiveSignal || items.length) {
+    return {
+      classificacao: "JURIDICO_SIGILOSO",
+      gerarLinkPublico: false,
+      motivo: "analise de DAJ/atendimento com possivel dado sensivel, contato, sigilo, prazo ou contexto de cliente",
+      revisaoHumanaObrigatoria: true
+    };
+  }
+
+  return {
+    classificacao: "INTERNO",
+    gerarLinkPublico: false,
+    motivo: "relatorio operacional demonstrativo do DAJ sem sinais fortes de dados reais",
+    revisaoHumanaObrigatoria: false
+  };
+}
+
+function dajAnalysisReportScaffold(message) {
+  const dajId = extractDajId(message);
+  const items = extractDajIntakeItems(message);
+  const hasItems = items.length > 0;
+  return [
+    `Relatorio de analise DAJ - ${dajId}`,
+    "",
+    "Classificacao inicial: JURIDICO_SIGILOSO se houver qualquer dado de cliente, contato, prazo, documento, menor, saude, violencia, processo ou segredo. Em caso puramente demonstrativo, manter como INTERNO ate revisao humana.",
+    "",
+    "1. Sintese operacional",
+    hasItems
+      ? "O atendimento inicial trouxe campos suficientes para abrir triagem do DAJ. A analise abaixo organiza o material sem tratar qualquer dado como confirmado para uso real."
+      : "Nao encontrei campos preenchidos suficientes. O DAJ deve iniciar por coleta estruturada, com uso apenas demonstrativo ate revisao humana.",
+    "",
+    "2. Informacoes extraidas do atendimento",
+    summarizeDajItems(items).join("\n"),
+    "",
+    "3. Fatos e pontos juridicamente relevantes",
+    "- Separar narrativa do cliente, documentos existentes, documentos apenas mencionados e lacunas.",
+    "- Confirmar area juridica provavel antes de escolher rito, peca, tese ou prazo.",
+    "- Transformar dados reais em placeholders no ambiente publico.",
+    "",
+    "4. Documentos e anexos",
+    "- Listar documentos apresentados, mencionados e faltantes.",
+    "- Para PDF/DOCX/imagem sem texto extraido, solicitar OCR, transcricao ou backend extrator antes de afirmar conteudo.",
+    "- Vincular cada documento a fato, pedido, prazo ou risco.",
+    "",
+    "5. Urgencia, sigilo e riscos",
+    "- Verificar prazo fatal, audiencia, intimacao, prescricao/decadencia, tutela urgente e risco de perda de direito.",
+    "- Se houver contato, documento pessoal, crianca/adolescente, saude, violencia, crime, processo real ou segredo, tratar como JURIDICO_SIGILOSO.",
+    "- Nao publicar link publico para relatorio de atendimento sem classificacao humana.",
+    "",
+    "6. Perguntas de retorno ao cliente",
+    "- Qual e o objetivo principal: acordo, notificacao, defesa, cobranca, revisao, tutela urgente ou orientacao?",
+    "- Quais documentos comprovam cada fato narrado?",
+    "- Existe prazo, audiencia, intimacao ou notificacao recebida?",
+    "- Ja existe processo, acordo, contrato, decisao ou comunicacao formal?",
+    "- Algum dado exige segredo, protecao de menor, LGPD ou guarda restrita?",
+    "",
+    "7. Proximos atos do DAJ",
+    "- Classificar area e urgencia.",
+    "- Completar checklist documental.",
+    "- Definir responsavel humano.",
+    "- Se cabivel, pedir minuta completa com placeholders.",
+    "- Pesquisar fontes oficiais/academicas somente depois de fixar o tema.",
+    "- Salvar este relatorio no Cartorio Digital Charlie Echo com classificacao governada.",
+    "",
+    "8. Fontes e trilha de conferencia",
+    "- Lei: Planalto e normas locais aplicaveis.",
+    "- Jurisprudencia: tribunais oficiais pertinentes ao tema.",
+    "- Doutrina/academia: BDTD, CAPES, SciELO e Google Academico, sem inventar autor, obra, pagina ou citacao.",
+    "",
+    "9. Forma replicavel para outros MVPs",
+    "- Dossie ativo.",
+    "- Informacoes extraidas.",
+    "- Riscos e lacunas.",
+    "- Fontes do ambiente.",
+    "- Acao humana seguinte.",
+    "- Classificacao e salvamento no Drive quando cabivel."
+  ].join("\n");
+}
+
 function needsCompleteLegalDraftRepair(message, answer) {
   if (!asksLegalDocumentProduction(message)) return false;
   const text = String(answer || "").trim();
@@ -1258,6 +1607,29 @@ function buildDocumentDownloadArtifact(message, answer, governanceDecision = nul
   };
 }
 
+function buildDajAnalysisArtifact(message, answer, governanceDecision = null) {
+  if (!asksDajAnalysisReport(message)) return null;
+  const content = String(answer || "").trim() || dajAnalysisReportScaffold(message);
+  const driveDecision = classifyDajAnalysisForDrive(message, content);
+  const shouldSaveToDrive = asksDajAnalysisAutoSave(message);
+  return {
+    kind: "daj-analysis-report",
+    title: `Relatorio de analise DAJ - ${extractDajId(message)}`,
+    content,
+    formats: ["pdf", "docx", "txt"],
+    tipoDocumento: "RELATORIO_ANALISE_DAJ_CHARLIE_ECHO",
+    driveDecision,
+    shouldSaveToDrive,
+    criarLinkDownload: false,
+    governance: artifactGovernanceMetadata(governanceDecision, driveDecision, shouldSaveToDrive),
+  };
+}
+
+function buildGovernedArtifact(message, answer, governanceDecision = null) {
+  return buildDocumentDownloadArtifact(message, answer, governanceDecision)
+    || buildDajAnalysisArtifact(message, answer, governanceDecision);
+}
+
 function artifactGovernanceMetadata(governanceDecision, driveDecision, shouldSaveToDrive) {
   if (!governanceDecision) return null;
   return {
@@ -1379,7 +1751,7 @@ async function saveArtifactWithDriveSaver(env, artifact) {
     titulo: artifact.title,
     conteudo: artifact.content,
     classificacao: artifact.driveDecision.classificacao,
-    tipoDocumento: "MINUTA_DEMONSTRATIVA_CHARLIE_ECHO",
+    tipoDocumento: artifact.tipoDocumento || "MINUTA_DEMONSTRATIVA_CHARLIE_ECHO",
     origem: artifact.governance?.targetMvp
       ? `Charlie Echo / API IA / Governanca Operacional ${artifact.governance.targetMvp}`
       : "Charlie Echo / API IA",
@@ -1631,6 +2003,7 @@ function publicArtifactMetadata(artifact) {
 function shouldShowCreativeSurface(message) {
   const q = extractCurrentQuestion(message).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   if (asksAboutDriveSaver(message)) return false;
+  if (asksDajAnalysisReport(message)) return false;
   const risk = inferSentireRisk(message);
   if (risk === "alto" || risk === "critico") return true;
   if (inferListeningMode(message) === "reparo") return true;
@@ -1826,6 +2199,7 @@ export async function onRequestPost(context) {
     }
 
     let governedAnswer = ensureCompleteLegalDraftAnswer(inputMessage, answer);
+    governedAnswer = ensureDajAnalysisReportAnswer(inputMessage, governedAnswer);
     governedAnswer = applyCreativeSurface(inputMessage, governedAnswer);
     governedAnswer = ensureDriveSaverGuidance(inputMessage, governedAnswer);
     governedAnswer = ensurePrivateDriveGuidance(inputMessage, governedAnswer);
@@ -1836,7 +2210,7 @@ export async function onRequestPost(context) {
     governedAnswer = ensurePublicScenarioSafetyNotice(inputMessage, governedAnswer);
     governedAnswer = ensureDownloadRequestNoHallucinatedLink(inputMessage, governedAnswer);
     governedAnswer = removeUnsafeLinks(cleanPublicAnswer(governedAnswer));
-    const artifact = buildDocumentDownloadArtifact(inputMessage, governedAnswer, governanceDecision);
+    const artifact = buildGovernedArtifact(inputMessage, governedAnswer, governanceDecision);
     const driveSaver = artifact ? await saveArtifactWithDriveSaver(env, artifact) : null;
     const finalAnswer = removeUnsafeLinks(cleanPublicAnswer(appendArtifactDelivery(governedAnswer, artifact, driveSaver)));
 
