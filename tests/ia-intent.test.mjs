@@ -24,6 +24,8 @@ test("document download requests do not fall into guided legal research", async 
 
   assert.equal(response.status, 503);
   assert.equal(body.ok, false);
+  assert.equal(body.governance.targetMvp, "DAJ_ADVOGADOS");
+  assert.equal(body.governance.driveMemory.official, true);
   assert.doesNotMatch(String(body.answer || body.error || ""), /Para pesquisar/i);
   assert.doesNotMatch(String(body.answer || body.error || ""), /Fontes recomendadas/i);
 });
@@ -44,8 +46,43 @@ test("explicit jurisprudence research still uses guided legal research", async (
 
   assert.equal(response.status, 200);
   assert.equal(body.ok, true);
+  assert.equal(body.governance.targetMvp, "DAJ_ADVOGADOS");
+  assert.equal(body.governance.driveMemory.official, true);
   assert.match(body.answer, /Para pesquisar/i);
   assert.match(body.answer, /Jurisprudencia - trilha segura/i);
+});
+
+test("legal explanation with sources calls the model instead of guided protocol", async () => {
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url, options = {}) => {
+    calls.push({ url: String(url), options });
+    assert.match(String(url), /api\.openai\.com/);
+    const payload = JSON.parse(String(options.body || "{}"));
+    assert.match(payload.input, /\[GOVERNANCA OPERACIONAL ATIVA\]/);
+    assert.match(payload.input, /\[PERGUNTA ATUAL\]\nFale sobre o direito de propriedade citando fontes/i);
+    return Response.json({
+      output_text: "O direito de propriedade envolve usar, gozar, dispor e reivindicar o bem, com funcao social e limites legais. Fontes para conferencia: Constituicao Federal, Codigo Civil e jurisprudencia oficial."
+    });
+  };
+
+  try {
+    const response = await postIa(
+      "Fale sobre o direito de propriedade citando fontes",
+      { OPENAI_API_KEY: "test-key", JUS9_MODEL_DEFAULT: "test-model" }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(calls.length, 1);
+    assert.equal(body.governance.targetMvp, "DAJ_ADVOGADOS");
+    assert.equal(body.governance.operation, "resposta_inteligente");
+    assert.match(body.answer, /direito de propriedade/i);
+    assert.doesNotMatch(body.answer, /Para pesquisar doutrina e jurisprudencia/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
 
 test("download prompt forbids empty link promises", async () => {
@@ -283,6 +320,8 @@ test("public demonstrative document download autonomously saves to Drive Saver",
     assert.equal(payload.chaveInterna, "internal-test-key");
     assert.equal(payload.classificacao, "PUBLICO");
     assert.equal(payload.criarLinkDownload, true);
+    assert.match(payload.origem, /Governanca Operacional DAJ_ADVOGADOS/i);
+    assert.match(payload.observacao, /Memoria operacional oficial: Google Drive \/ Cartorio Digital Charlie Echo/i);
     assert.match(payload.conteudo, /ACAO DE ALIMENTOS/i);
 
     return Response.json({
@@ -319,6 +358,9 @@ test("public demonstrative document download autonomously saves to Drive Saver",
     assert.equal(body.artifact.driveDecision.classificacao, "PUBLICO");
     assert.equal(body.artifact.shouldSaveToDrive, true);
     assert.equal(body.artifact.criarLinkDownload, true);
+    assert.equal(body.artifact.governance.targetMvp, "DAJ_ADVOGADOS");
+    assert.equal(body.artifact.governance.memoryDestination, "Google Drive / Cartorio Digital Charlie Echo");
+    assert.equal(body.governance.driveMemory.automaticPdfAllowed, true);
     assert.equal(body.driveSaver.downloadUrl, "https://docs.google.com/document/d/drive-auto-123/export?format=pdf");
   } finally {
     globalThis.fetch = originalFetch;

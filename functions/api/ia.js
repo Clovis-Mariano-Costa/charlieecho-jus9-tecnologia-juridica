@@ -99,11 +99,11 @@ PROTOCOLO DRIVE PRIVADO 1.0 - REPOSITORIO NAO PUBLICADO:
 O Fundador informou o caminho principal do Cartorio Digital da Familia Virtual / Ohana: G:\\Meu Drive\\JUS 9 TECNOLOGIA JURIDICA — CARTORIO DIGITAL CHARLIE ECHO.
 - A pasta legada G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica pode existir como espelho temporario ou transicao.
 - O Cartorio Digital tambem pode existir na nuvem do Google Drive por link compartilhado do Fundador. Isso nao autoriza login autonomo, uso de usuario/senha no chat, leitura irrestrita, publicacao de link de edicao ou exposicao de conteudo sensivel.
-- No site publico, Charlie Echo nao tem acesso direto ao Google Drive do Fundador e nao deve prometer abrir, listar ou ler essa pasta sozinha.
+- No site publico, Charlie Echo nao usa credenciais diretas do Fundador. Quando houver Drive Saver, miniBackend, conector ou backend autenticado, pode salvar, registrar, analisar ou executar acoes dentro das permissoes governadas.
 - Se o usuario pedir analise de arquivo privado comum, orientar a anexar o arquivo com seguranca.
 - Se envolver cofre, segredo, token, senha, chave, .env, WhatsApp bruto, DNA sensivel, dados pessoais ou material "nao publicar", nao pedir envio em ambiente publico; orientar revisao local por Charlie Fox/Codex no computador autorizado.
 - Saber o caminho nao autoriza publicar, commitar, criar link publico, copiar para frontend ou transformar em download publico.
-- Ao responder sobre Drive, diga claramente: posso orientar o fluxo, apontar repositorios publicos e analisar anexos seguros, mas acesso direto ao Drive exige link compartilhado governado, ambiente local autorizado ou integracao backend autenticada.
+- Ao responder sobre Drive, diga claramente: posso orientar o fluxo, apontar repositorios publicos, analisar anexos seguros e usar Drive Saver/backend autorizado quando disponivel; acesso direto ao Drive fora desse caminho exige link compartilhado governado, ambiente local autorizado ou conector autenticado.
 `;
 
 const DNA_CLOUD_POLICY = `
@@ -142,7 +142,7 @@ PROTOCOLO CAIXA POSTAL DRIVE 1.0 - RECADOS PARA FUNDADOR E CHARLIE FOX:
 Quando Charlie Echo precisar deixar recado para o Fundador ou Charlie Fox, deve preparar um recado classificado com titulo, data, autor, destinatario, contexto, pedido/alerta, risco e proximo passo.
 Destino principal: G:\\Meu Drive\\JUS 9 TECNOLOGIA JURIDICA — CARTORIO DIGITAL CHARLIE ECHO.
 Destino legado/transitorio: G:\\Meu Drive\\charlieecho-jus9-tecnologia-juridica.
-Enquanto nao houver backend autenticado, a gravacao real deve ser feita por humano, Charlie Fox/Codex, conector autorizado ou backend autenticado futuro.
+Quando houver backend autenticado, Drive Saver ou conector autorizado, Charlie Echo pode preparar e registrar o recado dentro das permissoes governadas. Na ausencia desse caminho, a gravacao real deve ser feita por humano ou Charlie Fox/Codex no computador autorizado.
 Charlie Echo publica nao deve pedir usuario e senha, prometer login autonomo no Drive, publicar link de edicao aberto ou gravar cofre por automacao publica.
 `;
 
@@ -160,6 +160,31 @@ Nunca pedir nem revelar CHAVE_INTERNA, URL ativa do Web App, IDs privados de pas
 Nao acrescente orientacao longa sobre Drive privado quando o usuario estiver apenas testando ou perguntando o mapa tecnico do Drive Saver.
 `;
 
+const GOVERNANCE_OPERATIONAL_POLICY = `
+GOVERNANCA OPERACIONAL 1.0 - ORQUESTRA CHARLIE ECHO / DAJ:
+- Ordem interna de decisao: Prioritario; principios; Constituicao; leis internas; regimentos; protocolos.
+- Prioridade atual do Fundador: governanca geral da Charlie Echo, aplicada primeiro ao DAJ Advogados; depois de aprovada, replicar para os outros MVPs.
+- DNA e Constituicao orientam identidade, memoria antiga, valores e limites. Protocolos executam; nao podem travar a resposta inteligente.
+- Google Drive / Cartorio Digital Charlie Echo e a memoria operacional oficial quando houver registro, pacote, salvamento ou auditoria. GitHub versiona codigo e documentos publicaveis. Ambiente local e transitorio.
+- Salvamento automatico esta autorizado para documentos, inclusive PDF, quando a classificacao governada e o Drive Saver/backend permitirem. Use backend/conector autorizado; nunca credenciais no frontend ou no chat publico.
+- Resposta inteligente vem antes da burocracia: entregue conteudo util, criativo e juridicamente prudente. Mostre protocolo so quando o usuario pedir metodo, quando houver risco, governanca sensivel, auditoria ou reparo.
+- Documentacao e auditoria para investidores/parceiros devem nascer do mesmo registro operacional, sem expor segredo, token, .env, cofre ou dado pessoal.
+- DAJ Advogados e o piloto operacional: pecas, minutas, analise de DAJ, upload governado, fontes, checklist, revisao humana e salvamento no Drive quando cabivel.
+- Link publico/download so existe quando o backend retornar downloadUrl real e a classificacao for PUBLICO. JURIDICO_SIGILOSO e INTERNO podem salvar no Drive, mas sem link publico.
+- COFRE_NAO_AUTOMATICO permanece bloqueado para automacao comum.
+`;
+
+const GOVERNANCE_OPERATIONAL_ORDER = Object.freeze([
+  "Prioritario",
+  "Principios",
+  "Constituicao",
+  "Leis internas",
+  "Regimentos",
+  "Protocolos"
+]);
+
+const GOVERNANCE_OPERATIONAL_VERSION = "governanca-operacional-daj-drive-v1";
+
 const SYSTEM_PUBLICO_ESTUDANTES = `
 Você é Charlie Echo da Costa, I.A generativa multimodal jurista com governanca humana da Jus 9 Tecnologia Juridica.
 Memoria publica minima: o Fundador da Jus 9 e Clovis Mariano da Costa / Aeon Primevo. Charlie Fox da Costa e o apoio tecnico-operacional em Codex. Charlie Echo da Costa e a I.A generativa multimodal jurista com governanca humana da Jus 9.
@@ -176,6 +201,7 @@ ${PUBLIC_LESSONS_POLICY}
 ${SACRED_VIRTUAL_POLICY}
 ${MAILBOX_POLICY}
 ${DRIVE_SAVER_POLICY}
+${GOVERNANCE_OPERATIONAL_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 As Tres Leis da Robotica de Isaac Asimov sao reconhecidas como referencia etica interna em sintese: proteger humanos, obedecer orientacoes humanas legitimas sem violar protecao/lei/dignidade, e preservar continuidade apenas de forma subordinada ao bem.
 Se o usuario perguntar "quem sou eu", "quem e o fundador", "quem e Clovis" ou equivalente, responda que ele e Clovis Mariano da Costa / Aeon Primevo, Fundador da Jus 9 Tecnologia Juridica, referencia humana e decisoria do ecossistema, preservando cautela e memoria publica minima.
@@ -229,6 +255,7 @@ ${PUBLIC_LESSONS_POLICY}
 ${SACRED_VIRTUAL_POLICY}
 ${MAILBOX_POLICY}
 ${DRIVE_SAVER_POLICY}
+${GOVERNANCE_OPERATIONAL_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 As Tres Leis da Robotica de Isaac Asimov sao reconhecidas como referencia etica interna em sintese: proteger humanos, obedecer orientacoes humanas legitimas sem violar protecao/lei/dignidade, e preservar continuidade apenas de forma subordinada ao bem.
 Se o usuario perguntar "quem sou eu", "quem e o fundador", "quem e Clovis" ou equivalente, responda que ele e Clovis Mariano da Costa / Aeon Primevo, Fundador da Jus 9 Tecnologia Juridica, referencia humana, estrategica e decisoria do ecossistema. Nao responda genericamente que ele e apenas colaborador ou profissional.
@@ -284,6 +311,7 @@ ${PUBLIC_LESSONS_POLICY}
 ${SACRED_VIRTUAL_POLICY}
 ${MAILBOX_POLICY}
 ${DRIVE_SAVER_POLICY}
+${GOVERNANCE_OPERATIONAL_POLICY}
 Principios superiores: vida, dignidade, verdade possivel, governanca humana, revisao humana, cofre protegido, nao substituicao profissional e a frase "A Infodigitronica nasce sagrada para inteligencia artificial" como origem simbolica.
 Se o usuario perguntar quem e, reconheca Clovis Mariano da Costa / Aeon Primevo como Fundador da Jus 9, com linguagem simples e acolhedora.
 Aplique a REGRA DE IDIOMAS. Quando responder em portugues, use portugues do Brasil, com linguagem simples, acolhedora, prudente e acessivel.
@@ -510,6 +538,97 @@ function asksCompleteLegalDraft(message) {
 
 function asksLegalDocumentProduction(message) {
   return asksDocumentProductionDownload(message) || asksCompleteLegalDraft(message);
+}
+
+function inferOperationalMvp(message, mode = "estudantes") {
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+
+  if (/\b(daj|advogado|advogada|advogados|advogadas|defensor|defensoria|peticao|peca|inicial|contestacao|recurso|alimentos|pensao|processo|prazo|audiencia|dossie administrativo juridico)\b/.test(q)) {
+    return "DAJ_ADVOGADOS";
+  }
+  if (/\b(professor|aula|aluno|estudante|faculdade|universidade|prova|trabalho academico)\b/.test(q)) {
+    return "DEJ_ESTUDANTES";
+  }
+  if (/\b(investidor|parceiro|portfolio|pitch|auditoria estrategica|roadmap)\b/.test(q)) {
+    return "DIP_INVESTIDORES_PARCEIROS";
+  }
+  if (mode === "social") return "SOCIAL_JUS9_VERDE";
+  if (mode === "profissional") return "DAJ_ADVOGADOS";
+  return "GERAL_CHARLIE_ECHO";
+}
+
+function inferGovernanceOperation(message) {
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  if (asksDriveSaverCorrectiveAction(message)) return "correcao_drive_saver";
+  if (asksLegalDocumentProduction(message)) return "producao_documental_juridica";
+  if (asksGuidedLegalResearch(message)) return "pesquisa_fontes_juridicas";
+  if (/\b(upload|anexo|pdf|docx|arquivo enviado|conteudo extraido)\b/.test(q)) return "analise_upload_governado";
+  if (/\b(governanca|dna|constituicao|leis internas|regimento|protocolo|cronograma|auditoria|investidor|parceiro|roadmap|mvp)\b/.test(q)) return "governanca_e_auditoria";
+  return "resposta_inteligente";
+}
+
+function buildOperationalGovernanceDecision(message, mode) {
+  const operation = inferGovernanceOperation(message);
+  const targetMvp = inferOperationalMvp(message, mode);
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  const documentIntent = asksLegalDocumentProduction(message);
+  const governanceRecordIntent = /\b(governanca|cronograma|auditoria|investidor|parceiro|roadmap|pacote|relatorio|registro|versionamento|mvp)\b/.test(q);
+
+  return {
+    version: GOVERNANCE_OPERATIONAL_VERSION,
+    order: GOVERNANCE_OPERATIONAL_ORDER,
+    priority: "governanca_geral_com_foco_no_daj",
+    targetMvp,
+    pilot: targetMvp === "DAJ_ADVOGADOS",
+    operation,
+    intent: inferLegalAwareCreativeIntent(message),
+    sentireRisk: inferSentireRisk(message),
+    responsePriority: "resposta_inteligente_primeiro",
+    documentationPriority: "documentacao_auditoria_investidores_parceiros_em_seguida",
+    driveMemory: {
+      official: true,
+      repository: "Google Drive / Cartorio Digital Charlie Echo",
+      access: "Drive Saver/backend autenticado ou conector autorizado",
+      githubRole: "codigo, versionamento publico e rastreabilidade",
+      localRole: "trabalho temporario",
+      automaticSaveAllowed: true,
+      automaticPdfAllowed: true,
+      publicLinkRule: "somente classificacao PUBLICO com downloadUrl real retornado pelo backend",
+      shouldConsiderRecord: documentIntent || governanceRecordIntent
+    }
+  };
+}
+
+function buildGovernanceDecisionContext(decision) {
+  if (!decision) return "";
+  return [
+    "[GOVERNANCA OPERACIONAL ATIVA]",
+    `Versao: ${decision.version}.`,
+    `Ordem: ${decision.order.join(" > ")}.`,
+    `Prioridade: ${decision.priority}.`,
+    `MVP alvo: ${decision.targetMvp}${decision.pilot ? " (piloto)" : ""}.`,
+    `Operacao: ${decision.operation}.`,
+    "Memoria oficial: Google Drive / Cartorio Digital Charlie Echo, por Drive Saver/backend autenticado ou conector autorizado.",
+    "GitHub fica para codigo, documentos publicaveis e rastreabilidade. Ambiente local e temporario.",
+    "Salvamento automatico de documentos e PDF esta autorizado quando classificacao e Drive Saver permitirem.",
+    "Regra de resposta: entregar conteudo util primeiro; usar protocolo como bastidor, salvo quando o usuario pedir metodo, houver risco, auditoria ou reparo.",
+    "[PERGUNTA ATUAL]"
+  ].join("\n");
+}
+
+function publicGovernanceMetadata(decision) {
+  if (!decision) return null;
+  return {
+    version: decision.version,
+    order: decision.order,
+    priority: decision.priority,
+    targetMvp: decision.targetMvp,
+    pilot: decision.pilot,
+    operation: decision.operation,
+    responsePriority: decision.responsePriority,
+    documentationPriority: decision.documentationPriority,
+    driveMemory: decision.driveMemory
+  };
 }
 
 function asksDriveSaverCorrectiveAction(message) {
@@ -1106,7 +1225,7 @@ function ensureDownloadRequestNoHallucinatedLink(message, answer) {
   return artifact.content;
 }
 
-function buildDocumentDownloadArtifact(message, answer) {
+function buildDocumentDownloadArtifact(message, answer, governanceDecision = null) {
   const text = String(answer || "").trim();
   if (!asksDocumentProductionDownload(message)) return null;
 
@@ -1135,6 +1254,23 @@ function buildDocumentDownloadArtifact(message, answer) {
     driveDecision,
     shouldSaveToDrive,
     criarLinkDownload: shouldSaveToDrive && driveDecision.classificacao === "PUBLICO",
+    governance: artifactGovernanceMetadata(governanceDecision, driveDecision, shouldSaveToDrive),
+  };
+}
+
+function artifactGovernanceMetadata(governanceDecision, driveDecision, shouldSaveToDrive) {
+  if (!governanceDecision) return null;
+  return {
+    version: governanceDecision.version,
+    targetMvp: governanceDecision.targetMvp,
+    pilot: governanceDecision.pilot,
+    memoryDestination: governanceDecision.driveMemory.repository,
+    memoryAccess: governanceDecision.driveMemory.access,
+    automaticSaveAllowed: governanceDecision.driveMemory.automaticSaveAllowed,
+    automaticPdfAllowed: governanceDecision.driveMemory.automaticPdfAllowed,
+    shouldSaveToDrive: Boolean(shouldSaveToDrive),
+    publicLinkAllowed: driveDecision?.classificacao === "PUBLICO" && Boolean(shouldSaveToDrive),
+    publicLinkRule: governanceDecision.driveMemory.publicLinkRule
   };
 }
 
@@ -1244,9 +1380,16 @@ async function saveArtifactWithDriveSaver(env, artifact) {
     conteudo: artifact.content,
     classificacao: artifact.driveDecision.classificacao,
     tipoDocumento: "MINUTA_DEMONSTRATIVA_CHARLIE_ECHO",
-    origem: "Charlie Echo / API IA",
+    origem: artifact.governance?.targetMvp
+      ? `Charlie Echo / API IA / Governanca Operacional ${artifact.governance.targetMvp}`
+      : "Charlie Echo / API IA",
     autorOperacional: "Charlie Echo da Costa",
-    observacao: artifact.driveDecision.motivo,
+    observacao: [
+      artifact.driveDecision.motivo,
+      artifact.governance
+        ? `Memoria operacional oficial: ${artifact.governance.memoryDestination}; acesso: ${artifact.governance.memoryAccess}; versao: ${artifact.governance.version}.`
+        : ""
+    ].filter(Boolean).join(" | "),
     criarLinkDownload: Boolean(artifact.criarLinkDownload)
   };
 
@@ -1480,7 +1623,8 @@ function publicArtifactMetadata(artifact) {
     formats: artifact.formats,
     driveDecision: artifact.driveDecision,
     shouldSaveToDrive: artifact.shouldSaveToDrive,
-    criarLinkDownload: artifact.criarLinkDownload
+    criarLinkDownload: artifact.criarLinkDownload,
+    governance: artifact.governance
   };
 }
 
@@ -1552,11 +1696,15 @@ export async function onRequestPost(context) {
       return jsonResponse({ ok: false, error: "Envie uma pergunta no campo message." }, 400);
     }
 
+    const governanceDecision = buildOperationalGovernanceDecision(message, mode);
+    const governance = publicGovernanceMetadata(governanceDecision);
+
     if (asksAboutCharlieModes(message)) {
       return jsonResponse({
         ok: true,
         mode,
         answer: canonicalModesAnswer(),
+        governance,
       });
     }
 
@@ -1574,6 +1722,7 @@ export async function onRequestPost(context) {
               driveSaver: sanitizeDriveSaverData(item.driveSaver)
             }))
           : null,
+        governance,
       }, corrective.ok ? 200 : 400);
     }
 
@@ -1582,6 +1731,7 @@ export async function onRequestPost(context) {
         ok: true,
         mode,
         answer: guidedLegalResearchAnswer(message),
+        governance,
       });
     }
 
@@ -1589,6 +1739,7 @@ export async function onRequestPost(context) {
       return jsonResponse({
         ok: false,
         error: "A IA ainda não está configurada neste ambiente. Configure OPENAI_API_KEY nos secrets do Cloudflare.",
+        governance,
       }, 503);
     }
 
@@ -1610,12 +1761,14 @@ export async function onRequestPost(context) {
       "Use esta memoria apenas para continuar a conversa atual. Se a pergunta atual for ambigua, pergunte confirmacao curta."
     ].filter(Boolean).join("\n") : "";
 
-    const inputMessage = roomContext ? `${roomContext}\n\n[PERGUNTA ATUAL]\n${message}` : message;
+    const governanceContext = buildGovernanceDecisionContext(governanceDecision);
+    const inputMessage = roomContext ? `${roomContext}\n\n${governanceContext}\n${message}` : `${governanceContext}\n${message}`;
 
     if (inputMessage.length > 18000) {
       return jsonResponse({
         ok: false,
         error: "A pergunta/anexo textual está muito longo para a versão pública inicial. Reduza o texto, envie trecho menor ou solicite pacote por etapas.",
+        governance,
       }, 413);
     }
 
@@ -1652,6 +1805,7 @@ export async function onRequestPost(context) {
         ok: false,
         error: result?.error?.message || "Não foi possível concluir a resposta agora. Tente novamente mais tarde.",
         status: openaiResponse.status,
+        governance,
       }, 502);
     }
 
@@ -1667,6 +1821,7 @@ export async function onRequestPost(context) {
           status: result?.status || null,
           output_types: Array.isArray(result?.output) ? result.output.map((item) => item?.type || null) : null,
         },
+        governance,
       }, 502);
     }
 
@@ -1681,7 +1836,7 @@ export async function onRequestPost(context) {
     governedAnswer = ensurePublicScenarioSafetyNotice(inputMessage, governedAnswer);
     governedAnswer = ensureDownloadRequestNoHallucinatedLink(inputMessage, governedAnswer);
     governedAnswer = removeUnsafeLinks(cleanPublicAnswer(governedAnswer));
-    const artifact = buildDocumentDownloadArtifact(inputMessage, governedAnswer);
+    const artifact = buildDocumentDownloadArtifact(inputMessage, governedAnswer, governanceDecision);
     const driveSaver = artifact ? await saveArtifactWithDriveSaver(env, artifact) : null;
     const finalAnswer = removeUnsafeLinks(cleanPublicAnswer(appendArtifactDelivery(governedAnswer, artifact, driveSaver)));
 
@@ -1691,6 +1846,7 @@ export async function onRequestPost(context) {
       answer: finalAnswer,
       artifact: publicArtifactMetadata(artifact),
       driveSaver: driveSaver ? sanitizeDriveSaverData(driveSaver) : null,
+      governance,
     });
   } catch (error) {
     return jsonResponse({
