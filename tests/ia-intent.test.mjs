@@ -381,6 +381,7 @@ test("DAJ intake analysis creates governed report and saves it to Drive Saver", 
     assert.match(body.answer, /Relatorio de analise DAJ - DAJ-2026-0004/i);
     assert.match(body.answer, /Arquivo salvo no Cartorio Digital Charlie Echo/i);
     assert.match(body.answer, /Abrir no Drive: https:\/\/docs\.google\.com\/document\/d\/drive-daj-report-123\/edit/i);
+    assert.doesNotMatch(body.answer, /Mapa operacional do JUS9_DRIVE_SAVER_MVP/i);
     assert.doesNotMatch(body.answer, /Vou analisar o DAJ e preparar/i);
     assert.equal(body.driveSaver.viewUrl, "https://docs.google.com/document/d/drive-daj-report-123/edit");
     assert.equal(body.driveSaver.downloadUrl, null);

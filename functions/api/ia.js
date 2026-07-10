@@ -1110,6 +1110,7 @@ function ensurePrivateDriveGuidance(message, answer) {
 
 function ensureDriveSaverGuidance(message, answer) {
   const text = String(answer || "").trim();
+  if (asksDajAnalysisReport(message)) return text;
   if (!asksAboutDriveSaver(message)) return text;
   const hasPublic = /01_DOCUMENTOS_PUBLICOS_E_EDUCATIVOS/.test(text);
   const hasInternal = /02_DOCUMENTOS_INTERNOS_JUS9/.test(text);
