@@ -93,6 +93,71 @@ test("download prompt forbids empty link promises", async () => {
   assert.match(apiHandler, /link real/i);
 });
 
+test("user memory and MVP instrument sync saves to Drive Saver without OpenAI", async () => {
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url, options = {}) => {
+    calls.push({ url: String(url), options });
+    assert.equal(String(url), "https://drive-saver.test/exec");
+    const payload = JSON.parse(String(options.body || "{}"));
+
+    assert.equal(payload.chaveInterna, "internal-test-key");
+    assert.equal(payload.classificacao, "INTERNO");
+    assert.equal(payload.tipoDocumento, "MEMORIA_USUARIO_INSTRUMENTO_CHARLIE_ECHO");
+    assert.equal(payload.criarLinkDownload, false);
+    assert.match(payload.titulo, /Memoria de usuario e instrumento MVP/i);
+    assert.match(payload.conteudo, /\[MEMORIA DO USUARIO CONFIGURAVEL\]/i);
+    assert.match(payload.conteudo, /\[PAINEL DO INSTRUMENTO MVP\]/i);
+    assert.match(payload.conteudo, /senha: \[REDACTED\]/i);
+    assert.doesNotMatch(payload.conteudo, /ultra-secreta/i);
+
+    return Response.json({
+      ok: true,
+      mensagem: "Memoria registrada.",
+      fileId: "memory-config-123",
+      viewUrl: "https://docs.google.com/document/d/memory-config-123/edit",
+      linkPublicoCriado: false,
+      classificacaoFinal: "INTERNO",
+      pastaDestino: "02_MEMORIA_OPERACIONAL_INTERNA",
+      revisaoHumanaObrigatoria: false
+    });
+  };
+
+  try {
+    const response = await postIa(
+      [
+        "OPERACAO_INTERNA: SINCRONIZAR_MEMORIA_USUARIO_INSTRUMENTO",
+        "[SINCRONIZAR_MEMORIA_USUARIO_INSTRUMENTO]",
+        "MVP: DAJ",
+        "[MEMORIA DO USUARIO CONFIGURAVEL]",
+        "Como chamar o usuario: Clovis.",
+        "senha: ultra-secreta",
+        "[PAINEL DO INSTRUMENTO MVP]",
+        "Instrumento: DAJ - IA Profissional Jurista."
+      ].join("\n"),
+      {
+        JUS9_DRIVE_SAVER_URL: "https://drive-saver.test/exec",
+        JUS9_DRIVE_SAVER_CHAVE_INTERNA: "internal-test-key"
+      }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(calls.length, 1);
+    assert.equal(body.governance.operation, "memoria_usuario_instrumento");
+    assert.equal(body.artifact.kind, "user-memory-instrument-config");
+    assert.equal(body.artifact.driveDecision.classificacao, "INTERNO");
+    assert.equal(body.artifact.shouldSaveToDrive, true);
+    assert.equal(body.artifact.criarLinkDownload, false);
+    assert.match(body.answer, /Memoria de usuario e instrumento do MVP registrada/i);
+    assert.equal(body.driveSaver.viewUrl, "https://docs.google.com/document/d/memory-config-123/edit");
+    assert.equal(body.driveSaver.downloadUrl, null);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("document download post-processing removes hallucinated links", async () => {
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async (url) => {

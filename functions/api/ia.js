@@ -718,6 +718,10 @@ function asksDajAnalysisAutoSave(message) {
   return /\b(salve|salvar|grave|gravar|registre|registrar|cartorio|drive|pdf|relatorio)\b/.test(q);
 }
 
+function asksUserMemoryInstrumentSync(message) {
+  return /\[SINCRONIZAR_MEMORIA_USUARIO_INSTRUMENTO\]|OPERACAO_INTERNA:\s*SINCRONIZAR_MEMORIA_USUARIO_INSTRUMENTO/i.test(String(message || ""));
+}
+
 function inferOperationalMvp(message, mode = "estudantes") {
   const q = normalizeForIntent(extractCurrentQuestion(message));
 
@@ -767,6 +771,7 @@ function inferOperationalMvp(message, mode = "estudantes") {
 
 function inferGovernanceOperation(message) {
   const q = normalizeForIntent(extractCurrentQuestion(message));
+  if (asksUserMemoryInstrumentSync(message)) return "memoria_usuario_instrumento";
   if (asksDriveSaverCorrectiveAction(message)) return "correcao_drive_saver";
   if (asksLegalDocumentProduction(message)) return "producao_documental_juridica";
   if (asksDajAnalysisReport(message)) return "analise_daj_governada";
@@ -781,6 +786,7 @@ function buildOperationalGovernanceDecision(message, mode) {
   const targetMvp = inferOperationalMvp(message, mode);
   const module = MVP_MODULE_REGISTRY[targetMvp] || MVP_MODULE_REGISTRY.GERAL_CHARLIE_ECHO;
   const q = normalizeForIntent(extractCurrentQuestion(message));
+  const userMemoryRecordIntent = asksUserMemoryInstrumentSync(message);
   const documentIntent = asksLegalDocumentProduction(message);
   const dajAnalysisRecordIntent = asksDajAnalysisAutoSave(message);
   const governanceRecordIntent = /\b(governanca|cronograma|auditoria|investidor|parceiro|roadmap|pacote|relatorio|registro|versionamento|mvp)\b/.test(q);
@@ -806,7 +812,7 @@ function buildOperationalGovernanceDecision(message, mode) {
       automaticSaveAllowed: true,
       automaticPdfAllowed: true,
       publicLinkRule: "somente classificacao PUBLICO com downloadUrl real retornado pelo backend",
-      shouldConsiderRecord: documentIntent || dajAnalysisRecordIntent || governanceRecordIntent
+      shouldConsiderRecord: userMemoryRecordIntent || documentIntent || dajAnalysisRecordIntent || governanceRecordIntent
     }
   };
 }
@@ -1626,9 +1632,52 @@ function buildDajAnalysisArtifact(message, answer, governanceDecision = null) {
   };
 }
 
+function sanitizeUserMemorySyncContent(message) {
+  return String(message || "")
+    .replace(/\r/g, "")
+    .replace(/(<script[\s\S]*?<\/script>|javascript:)/gi, "[conteudo removido]")
+    .replace(/\b(senha|password|token|api[_ -]?key|chave(?: interna)?|secret|segredo)\s*[:=]\s*[^\n]+/gi, "$1: [REDACTED]")
+    .replace(/\n{4,}/g, "\n\n\n")
+    .trim()
+    .slice(0, 9000);
+}
+
+function buildUserMemoryInstrumentArtifact(message, governanceDecision = null) {
+  if (!asksUserMemoryInstrumentSync(message)) return null;
+  const driveDecision = {
+    classificacao: "INTERNO",
+    gerarLinkPublico: false,
+    motivo: "memoria configuravel de usuario e painel de instrumento do MVP",
+    revisaoHumanaObrigatoria: false
+  };
+  const moduleCode = governanceDecision?.module?.code || governanceDecision?.targetMvp || "MVP";
+  const content = [
+    "Registro governado de memoria de usuario e instrumento MVP",
+    "",
+    "Finalidade: persistir configuracoes editaveis pelo usuario e calibragem do instrumento do MVP no Cartorio Digital Charlie Echo.",
+    "Regra: este registro nao e prova de fato real, credencial, segredo, autorizacao juridica ou permissao para expor dados.",
+    "Classificacao: INTERNO. Link publico: nao.",
+    "",
+    sanitizeUserMemorySyncContent(message)
+  ].join("\n").trim();
+
+  return {
+    kind: "user-memory-instrument-config",
+    title: `Memoria de usuario e instrumento MVP - ${moduleCode}`,
+    content,
+    formats: ["txt", "json", "pdf"],
+    tipoDocumento: "MEMORIA_USUARIO_INSTRUMENTO_CHARLIE_ECHO",
+    driveDecision,
+    shouldSaveToDrive: true,
+    criarLinkDownload: false,
+    governance: artifactGovernanceMetadata(governanceDecision, driveDecision, true),
+  };
+}
+
 function buildGovernedArtifact(message, answer, governanceDecision = null) {
   return buildDocumentDownloadArtifact(message, answer, governanceDecision)
-    || buildDajAnalysisArtifact(message, answer, governanceDecision);
+    || buildDajAnalysisArtifact(message, answer, governanceDecision)
+    || buildUserMemoryInstrumentArtifact(message, governanceDecision);
 }
 
 function artifactGovernanceMetadata(governanceDecision, driveDecision, shouldSaveToDrive) {
@@ -1988,6 +2037,23 @@ function appendArtifactDelivery(answer, artifact, driveSaver) {
   return lines.join("\n");
 }
 
+function userMemoryInstrumentSyncAnswer(driveSaver) {
+  if (driveSaver?.ok) {
+    const lines = ["Memoria de usuario e instrumento do MVP registrada no Cartorio Digital Charlie Echo."];
+    if (driveSaver.viewUrl) lines.push(`Abrir no Drive: ${driveSaver.viewUrl}`);
+    lines.push(`Classificacao: ${driveSaver.classificacaoFinal || "INTERNO"}.`);
+    lines.push("Link publico: nao criado.");
+    return lines.join("\n");
+  }
+
+  if (driveSaver?.reason === "not_configured") {
+    return "Memoria salva no painel local. O registro oficial no Google Drive ficara pendente ate o Drive Saver estar configurado neste ambiente.";
+  }
+
+  const detail = driveSaver?.reason || driveSaver?.mensagem || "o Drive Saver nao concluiu agora";
+  return `Memoria salva no painel local. Tentei registrar no Cartorio Digital, mas ${detail}.`;
+}
+
 function publicArtifactMetadata(artifact) {
   if (!artifact) return null;
   return {
@@ -2072,6 +2138,19 @@ export async function onRequestPost(context) {
 
     const governanceDecision = buildOperationalGovernanceDecision(message, mode);
     const governance = publicGovernanceMetadata(governanceDecision);
+
+    if (asksUserMemoryInstrumentSync(message)) {
+      const artifact = buildUserMemoryInstrumentArtifact(message, governanceDecision);
+      const driveSaver = artifact ? await saveArtifactWithDriveSaver(env, artifact) : null;
+      return jsonResponse({
+        ok: true,
+        mode,
+        answer: removeUnsafeLinks(cleanPublicAnswer(userMemoryInstrumentSyncAnswer(driveSaver))),
+        artifact: publicArtifactMetadata(artifact),
+        driveSaver: driveSaver ? sanitizeDriveSaverData(driveSaver) : null,
+        governance,
+      });
+    }
 
     if (asksAboutCharlieModes(message)) {
       return jsonResponse({
