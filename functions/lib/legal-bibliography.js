@@ -1,4 +1,4 @@
-export const LEGAL_BIBLIOGRAPHY_CATALOG_VERSION = "catalogo-bibliografico-juridico-v1";
+export const LEGAL_BIBLIOGRAPHY_CATALOG_VERSION = "catalogo-bibliografico-juridico-v2";
 
 export const LEGAL_BIBLIOGRAPHY_CATALOG = Object.freeze([
   {
@@ -100,6 +100,148 @@ export const LEGAL_BIBLIOGRAPHY_CATALOG = Object.freeze([
       {
         label: "LexML - registro Russel 2006",
         url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2006%3B000859343"
+      }
+    ]
+  },
+  {
+    id: "curso_direito_constitucional_positivo",
+    kind: "obra",
+    title: "Curso de direito constitucional positivo",
+    authors: ["Jose Afonso da Silva"],
+    area: "Direito Constitucional",
+    aliases: [
+      "curso de direito constitucional positivo",
+      "direito constitucional positivo",
+      "jose afonso direito constitucional",
+      "curso constitucional positivo"
+    ],
+    verifiedSummary:
+      "Obra brasileira classica de Direito Constitucional, especialmente associada a teoria constitucional, direitos fundamentais, organizacao do Estado e leitura sistematica da Constituicao.",
+    caution:
+      "Ha muitas edicoes atualizadas por emendas constitucionais. Nao informar edicao, pagina ou texto literal sem conferir o exemplar usado.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2000%3B000563561"
+      }
+    ]
+  },
+  {
+    id: "curso_direito_civil_brasileiro",
+    kind: "obra",
+    title: "Curso de direito civil brasileiro",
+    authors: ["Maria Helena Diniz"],
+    area: "Direito Civil",
+    aliases: [
+      "curso de direito civil brasileiro",
+      "direito civil brasileiro maria helena diniz",
+      "maria helena diniz curso de direito civil",
+      "curso civil brasileiro"
+    ],
+    verifiedSummary:
+      "Colecao brasileira de Direito Civil com tratamento sistematico de temas centrais do Codigo Civil e da doutrina civilista.",
+    caution:
+      "A obra possui volumes e diversas edicoes. Nao indicar volume, pagina, citacao literal ou atualizacao legislativa especifica sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A1997%3B000184787"
+      }
+    ]
+  },
+  {
+    id: "instituicoes_direito_civil",
+    kind: "obra",
+    title: "Instituicoes de direito civil",
+    authors: ["Caio Mario da Silva Pereira"],
+    area: "Direito Civil",
+    aliases: [
+      "instituicoes de direito civil",
+      "instituicoes direito civil",
+      "caio mario instituicoes de direito civil",
+      "caio mario direito civil"
+    ],
+    verifiedSummary:
+      "Obra civilista brasileira de referencia, organizada em volumes e associada a abordagem institucional do Direito Civil.",
+    caution:
+      "Ha volumes, edicoes e atualizacoes por outros juristas. Nao atribuir revisao, volume, pagina ou trecho literal sem fonte do exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2017%3B001085986"
+      }
+    ]
+  },
+  {
+    id: "tratado_direito_penal_bitencourt",
+    kind: "obra",
+    title: "Tratado de direito penal",
+    authors: ["Cezar Roberto Bitencourt"],
+    area: "Direito Penal",
+    aliases: [
+      "tratado de direito penal",
+      "bitencourt tratado de direito penal",
+      "cezar bitencourt tratado",
+      "cezar roberto bitencourt direito penal"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito Penal em volumes, com tratamento sistematico de parte geral, parte especial e temas penais correlatos.",
+    caution:
+      "Ha multiplos volumes e edicoes. Nao indicar volume, pagina, tese especifica ou atualizacao legislativa sem verificar o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2015%3B001054890"
+      }
+    ]
+  },
+  {
+    id: "curso_direito_processual_civil_didier",
+    kind: "obra",
+    title: "Curso de direito processual civil",
+    authors: ["Fredie Didier Jr."],
+    area: "Direito Processual Civil",
+    aliases: [
+      "curso de direito processual civil",
+      "fredie didier curso de direito processual civil",
+      "curso processo civil fredie didier",
+      "didier curso processual civil"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Processo Civil em volumes, com tratamento sistematico de teoria geral, procedimento, recursos, precedentes, execucao e temas correlatos.",
+    caution:
+      "Alguns volumes possuem coautores. Nao indicar volume, coautor, pagina, edicao ou tese especifica sem conferir o registro ou exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2021%3B001188090"
+      },
+      {
+        label: "LexML - volume especifico",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2006%3B000850010"
+      }
+    ]
+  },
+  {
+    id: "manual_direito_processual_civil_daniel_neves",
+    kind: "obra",
+    title: "Manual de direito processual civil",
+    authors: ["Daniel Amorim Assumpcao Neves"],
+    area: "Direito Processual Civil",
+    aliases: [
+      "manual de direito processual civil",
+      "manual direito processual civil",
+      "daniel amorim assumpcao neves manual",
+      "daniel amorim manual de direito processual civil"
+    ],
+    verifiedSummary:
+      "Manual brasileiro de Processo Civil, geralmente em volume unico, voltado a exposicao sistematica e atualizada do CPC.",
+    caution:
+      "Ha edicoes por ano e formato de volume unico. Nao afirmar pagina, edicao ou citacao literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2016%3B001079152"
       }
     ]
   }

@@ -182,10 +182,16 @@ assert(apiHandler.includes("asksGuidedLegalResearch"), "salvaguarda deterministi
 assert(apiHandler.includes("Eu nao vou inventar autor, obra, pagina, citacao literal ou julgado"), "limite deterministico contra fontes inventadas ausente");
 assert(apiHandler.includes("BIBLIOGRAPHIC_VERIFICATION_POLICY"), "politica de verificacao bibliografica ausente");
 assert(apiHandler.includes("findVerifiedLegalBibliographyEntry"), "catalogo bibliografico verificado nao esta conectado a API");
-assert(legalBibliography.includes("catalogo-bibliografico-juridico-v1"), "versao do catalogo bibliografico ausente");
+assert(legalBibliography.includes("catalogo-bibliografico-juridico-v2"), "versao v2 do catalogo bibliografico ausente");
 assert(legalBibliography.includes("Juarez Cirino dos Santos"), "obra do fato punivel ausente do catalogo");
 assert(legalBibliography.includes("Hans Kelsen"), "Teoria pura do direito ausente do catalogo");
 assert(legalBibliography.includes("Cesare Beccaria"), "Dos delitos e das penas ausente do catalogo");
+assert(legalBibliography.includes("Jose Afonso da Silva"), "Curso de direito constitucional positivo ausente do catalogo");
+assert(legalBibliography.includes("Maria Helena Diniz"), "Curso de direito civil brasileiro ausente do catalogo");
+assert(legalBibliography.includes("Caio Mario da Silva Pereira"), "Instituicoes de direito civil ausente do catalogo");
+assert(legalBibliography.includes("Cezar Roberto Bitencourt"), "Tratado de direito penal ausente do catalogo");
+assert(legalBibliography.includes("Fredie Didier Jr."), "Curso de direito processual civil ausente do catalogo");
+assert(legalBibliography.includes("Daniel Amorim Assumpcao Neves"), "Manual de direito processual civil ausente do catalogo");
 assert(browserScript.includes("Analise jurisprudencial orientativa"), "fallback local de jurisprudencia substantiva ausente");
 assert(browserScript.includes("Sintese doutrinaria orientativa"), "fallback local de doutrina substantiva ausente");
 assert(!apiHandler.includes("jurisprudencia|jurisprudência|doutrina|fonte|fontes|pesquise|pesquisar"), "doutrina voltou a ser gatilho automatico de pesquisa guiada");

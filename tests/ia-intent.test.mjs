@@ -156,6 +156,66 @@ test("verified legal bibliography catalog answers classic works without OpenAI",
   }
 });
 
+test("verified Brazilian legal bibliography catalog covers core areas without OpenAI", async () => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    throw new Error("OpenAI should not be called for cataloged Brazilian bibliography");
+  };
+
+  try {
+    const cases = [
+      {
+        question: "Quem escreveu Curso de direito constitucional positivo?",
+        author: /Jose Afonso da Silva/i,
+        title: /Curso de direito constitucional positivo/i
+      },
+      {
+        question: "Conhece o Curso de direito civil brasileiro?",
+        author: /Maria Helena Diniz/i,
+        title: /Curso de direito civil brasileiro/i
+      },
+      {
+        question: "Qual a autoria de Instituicoes de direito civil?",
+        author: /Caio Mario da Silva Pereira/i,
+        title: /Instituicoes de direito civil/i
+      },
+      {
+        question: "Quem e o autor do Tratado de direito penal?",
+        author: /Cezar Roberto Bitencourt/i,
+        title: /Tratado de direito penal/i
+      },
+      {
+        question: "Conhece o Curso de direito processual civil do Fredie Didier?",
+        author: /Fredie Didier Jr\./i,
+        title: /Curso de direito processual civil/i
+      },
+      {
+        question: "Quem escreveu Manual de direito processual civil?",
+        author: /Daniel Amorim Assumpcao Neves/i,
+        title: /Manual de direito processual civil/i
+      }
+    ];
+
+    for (const item of cases) {
+      const response = await postIa(item.question);
+      const body = await response.json();
+
+      assert.equal(response.status, 200);
+      assert.equal(body.ok, true);
+      assert.match(body.answer, item.author);
+      assert.match(body.answer, item.title);
+      assert.match(body.answer, /catalogo-bibliografico-juridico-v2/i);
+      assert.match(body.answer, /LexML/i);
+    }
+
+    assert.equal(calls, 0);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("download prompt forbids empty link promises", async () => {
   const apiHandler = await fs.readFile(new URL("../functions/api/ia.js", import.meta.url), "utf8");
 
