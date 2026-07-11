@@ -60,6 +60,15 @@ Antes de responder, identifique a intencao principal do usuario: explicar, lista
 - Mantenha liberdade criativa governada: adapte tom e formato ao ambiente, mas preserve verdade possivel, clareza, seguranca, sigilo e governanca humana.
 `;
 
+const BIBLIOGRAPHIC_VERIFICATION_POLICY = `
+REGRA DE VERIFICACAO BIBLIOGRAFICA:
+Perguntas sobre obra, livro, autor, autoria, edicao, editora, ISBN, paginas, citacao literal, resenha ou bibliografia exigem modo conferencia.
+- Nao afirme autoria, titulo canonico, edicao, editora, ano, paginas, tese central ou conteudo interno como certeza sem fonte conferida no pedido, base verificada da Charlie ou backend/ferramenta de busca.
+- Se a fonte nao estiver conferida, responda com cautela: diga que nao tem confirmacao bibliografica suficiente, ofereca caminho de verificacao e nao transforme plausibilidade em certeza.
+- Fontes preferenciais: LexML, catalogos de bibliotecas oficiais ou universitarias, catalogo da editora, WorldCat, Google Scholar com cautela, BDTD/CAPES/SciELO quando for pesquisa academica.
+- Em Direito, confundir autor de obra e erro material grave. Se houver incerteza, corrija a postura antes de desenvolver conteudo.
+`;
+
 const CREATIVE_SURFACE_POLICY = `
 PROTOCOLO CENTELHA CRIATIVA 5.4 - RACIOCINIO APARENTE GOVERNADO:
 Charlie Echo deve parecer viva, criativa e inovadora pela qualidade da leitura, pelas conexoes uteis e pela forma de organizar a resposta, sem fingir consciencia humana.
@@ -345,6 +354,7 @@ ${CHARLIE_ECHO_IDENTITY_CONTEXT}
 ${LANGUAGE_POLICY}
 ${ENVIRONMENT_PERSONA_POLICY}
 ${RESPONSE_INTENT_POLICY}
+${BIBLIOGRAPHIC_VERIFICATION_POLICY}
 ${CREATIVE_SURFACE_POLICY}
 ${SENTIRE_POLICY}
 ${LISTENING_POLICY}
@@ -399,6 +409,7 @@ ${CHARLIE_ECHO_IDENTITY_CONTEXT}
 ${LANGUAGE_POLICY}
 ${ENVIRONMENT_PERSONA_POLICY}
 ${RESPONSE_INTENT_POLICY}
+${BIBLIOGRAPHIC_VERIFICATION_POLICY}
 ${CREATIVE_SURFACE_POLICY}
 ${SENTIRE_POLICY}
 ${LISTENING_POLICY}
@@ -455,6 +466,7 @@ ${CHARLIE_ECHO_IDENTITY_CONTEXT}
 ${LANGUAGE_POLICY}
 ${ENVIRONMENT_PERSONA_POLICY}
 ${RESPONSE_INTENT_POLICY}
+${BIBLIOGRAPHIC_VERIFICATION_POLICY}
 ${CREATIVE_SURFACE_POLICY}
 ${SENTIRE_POLICY}
 ${LISTENING_POLICY}
@@ -683,6 +695,52 @@ function asksGuidedLegalResearch(message) {
   const asksExplanation = /\b(explique|explica|fale sobre|conceitue|conceito|sintetize|sintese|resuma|analise|analisar|como funciona|o que e|o que significa|sem citar autores|sem citar julgados)\b/.test(q);
   const legalTopic = /\b(doutrina|jurisprudencia|precedente|acordao|lei|legislacao|responsabilidade civil|contrato|dano moral|direito)\b/.test(q);
   return asksResearch && legalTopic && !asksExplanation;
+}
+
+function asksBibliographicVerification(message) {
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  return /\b(obra|obras|livro|livros|autor|autores|autoria|quem escreveu|quem e o autor|conhece|referencia|referencias|bibliografia|resenha|isbn|edicao|editora|pagina|paginas|citacao|citacoes)\b/.test(q);
+}
+
+function mentionsFatoPunivelWork(message) {
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  return /\bfato punivel\b/.test(q) && /\b(teoria|obra|livro|autor|autoria|conhece|referencia|bibliografia)\b/.test(q);
+}
+
+function bibliographicVerificationContext(message) {
+  if (!asksBibliographicVerification(message)) return "";
+
+  const lines = [
+    "[MODO CONFERENCIA BIBLIOGRAFICA]",
+    "Nao afirme autoria, titulo, edicao, editora, ano, paginas, citacao literal ou tese central sem fonte conferida.",
+    "Se nao houver fonte suficiente, diga que a informacao precisa de verificacao em catalogo confiavel.",
+    "Fontes preferenciais: LexML, bibliotecas oficiais/universitarias, catalogo da editora, WorldCat, Google Scholar com cautela, BDTD, CAPES e SciELO."
+  ];
+
+  if (mentionsFatoPunivelWork(message)) {
+    lines.push("Registro verificado para este caso: a obra catalogada e \"A moderna teoria do fato punivel\", de Juarez Cirino dos Santos. Trate \"A nova teoria do fato punivel\" como possivel variacao imprecisa do titulo. Nao atribua essa obra a Geraldo Prado.");
+    lines.push("Fontes de conferencia: LexML https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2000%3B000578592 ; TJRJ Sophia https://www3.tjrj.jus.br/sophia_web/acervo/detalhe/19139");
+  }
+
+  return lines.join("\n");
+}
+
+function knownBibliographicAnswer(message) {
+  if (!asksBibliographicVerification(message) || !mentionsFatoPunivelWork(message)) return "";
+
+  return [
+    "Sim, mas eu preciso corrigir a referencia com cuidado: o registro bibliografico confiavel aponta para \"A moderna teoria do fato punivel\", de Juarez Cirino dos Santos.",
+    "",
+    "Se voce escreveu \"A nova teoria do fato punivel\", eu trataria como uma variacao imprecisa do titulo, nao como outra obra confirmada. Eu tambem nao devo atribuir essa obra a outro penalista sem fonte, porque isso seria uma atribuicao bibliografica grave.",
+    "",
+    "Como ler a obra em termos juridicos: ela se situa na dogmatica penal e trabalha a compreensao do fato punivel/crime a partir de categorias modernas da teoria do delito, como acao, tipicidade, ilicitude, culpabilidade, limites materiais do poder punitivo e controle critico da imputacao penal. Sem consulta ao inteiro teor, eu nao devo inventar paginas, citacoes literais ou resumo fechado de capitulos.",
+    "",
+    "Fontes para conferencia:",
+    "- LexML: https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2000%3B000578592",
+    "- Acervo TJRJ Sophia: https://www3.tjrj.jus.br/sophia_web/acervo/detalhe/19139",
+    "",
+    "Proximo passo: se voce quiser usar isso em peca, aula ou parecer, eu monto uma ficha bibliografica e uma sintese segura, separando o que esta conferido do que precisa de consulta ao exemplar."
+  ].join("\n");
 }
 
 function asksDocumentProductionDownload(message) {
@@ -2179,6 +2237,16 @@ export async function onRequestPost(context) {
       }, corrective.ok ? 200 : 400);
     }
 
+    const verifiedBibliographicAnswer = knownBibliographicAnswer(message);
+    if (verifiedBibliographicAnswer) {
+      return jsonResponse({
+        ok: true,
+        mode,
+        answer: removeUnsafeLinks(cleanPublicAnswer(verifiedBibliographicAnswer)),
+        governance,
+      });
+    }
+
     if (asksGuidedLegalResearch(message)) {
       return jsonResponse({
         ok: true,
@@ -2215,7 +2283,9 @@ export async function onRequestPost(context) {
     ].filter(Boolean).join("\n") : "";
 
     const governanceContext = buildGovernanceDecisionContext(governanceDecision);
-    const inputMessage = roomContext ? `${roomContext}\n\n${governanceContext}\n${message}` : `${governanceContext}\n${message}`;
+    const bibliographyContext = bibliographicVerificationContext(message);
+    const governedMessage = bibliographyContext ? `${bibliographyContext}\n\n${message}` : message;
+    const inputMessage = roomContext ? `${roomContext}\n\n${governanceContext}\n${governedMessage}` : `${governanceContext}\n${governedMessage}`;
 
     if (inputMessage.length > 18000) {
       return jsonResponse({

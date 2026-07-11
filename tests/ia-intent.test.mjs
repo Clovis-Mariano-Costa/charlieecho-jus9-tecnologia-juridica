@@ -85,6 +85,44 @@ test("legal explanation with sources calls the model instead of guided protocol"
   }
 });
 
+test("known bibliographic work corrects authorship instead of hallucinating author", async () => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    throw new Error("OpenAI should not be called for verified bibliographic correction");
+  };
+
+  try {
+    const response = await postIa("Conhece a obra: A nova teoria do fato punivel?");
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(calls, 0);
+    assert.match(body.answer, /Juarez Cirino dos Santos/i);
+    assert.match(body.answer, /A moderna teoria do fato punivel/i);
+    assert.match(body.answer, /LexML/i);
+    assert.doesNotMatch(body.answer, /Geraldo Prado/i);
+
+    const portalWrappedResponse = await postIa([
+      "Contexto publico demonstrativo da Jus 9 Tecnologia Juridica.",
+      "[REGRA BIBLIOGRAFICA DE NAO ALUCINACAO]",
+      "Caso especifico verificado: A moderna teoria do fato punivel, de Juarez Cirino dos Santos.",
+      "Pergunta do usuario: Conhece a obra: A nova teoria do fato punivel?"
+    ].join("\n"));
+    const portalWrappedBody = await portalWrappedResponse.json();
+
+    assert.equal(portalWrappedResponse.status, 200);
+    assert.equal(portalWrappedBody.ok, true);
+    assert.equal(calls, 0);
+    assert.match(portalWrappedBody.answer, /Juarez Cirino dos Santos/i);
+    assert.doesNotMatch(portalWrappedBody.answer, /Geraldo Prado/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("download prompt forbids empty link promises", async () => {
   const apiHandler = await fs.readFile(new URL("../functions/api/ia.js", import.meta.url), "utf8");
 
