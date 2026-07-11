@@ -1,4 +1,9 @@
 import { CHARLIE_ECHO_IDENTITY_CONTEXT } from "../lib/charlie-echo-identity.js";
+import {
+  buildVerifiedLegalBibliographyAnswer,
+  buildVerifiedLegalBibliographyContext,
+  findVerifiedLegalBibliographyEntry
+} from "../lib/legal-bibliography.js";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -703,13 +708,9 @@ function asksBibliographicVerification(message) {
   return /\b(obra|obras|livro|livros|autor|autores|autoria|quem escreveu|quem e o autor|conhece|referencia|referencias|bibliografia|resenha|isbn|edicao|editora|pagina|paginas|citacao|citacoes)\b/.test(q);
 }
 
-function mentionsFatoPunivelWork(message) {
-  const q = normalizeForIntent(extractCurrentQuestion(message));
-  return /\bfato punivel\b/.test(q) && /\b(teoria|obra|livro|autor|autoria|conhece|referencia|bibliografia)\b/.test(q);
-}
-
 function bibliographicVerificationContext(message) {
   if (!asksBibliographicVerification(message)) return "";
+  const verifiedEntry = findVerifiedLegalBibliographyEntry(extractCurrentQuestion(message));
 
   const lines = [
     "[MODO CONFERENCIA BIBLIOGRAFICA]",
@@ -718,30 +719,17 @@ function bibliographicVerificationContext(message) {
     "Fontes preferenciais: LexML, bibliotecas oficiais/universitarias, catalogo da editora, WorldCat, Google Scholar com cautela, BDTD, CAPES e SciELO."
   ];
 
-  if (mentionsFatoPunivelWork(message)) {
-    lines.push("Registro verificado para este caso: a obra catalogada e \"A moderna teoria do fato punivel\", de Juarez Cirino dos Santos. Trate \"A nova teoria do fato punivel\" como possivel variacao imprecisa do titulo. Nao atribua essa obra a Geraldo Prado.");
-    lines.push("Fontes de conferencia: LexML https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2000%3B000578592 ; TJRJ Sophia https://www3.tjrj.jus.br/sophia_web/acervo/detalhe/19139");
+  if (verifiedEntry) {
+    lines.push(buildVerifiedLegalBibliographyContext(verifiedEntry));
   }
 
   return lines.join("\n");
 }
 
 function knownBibliographicAnswer(message) {
-  if (!asksBibliographicVerification(message) || !mentionsFatoPunivelWork(message)) return "";
-
-  return [
-    "Sim, mas eu preciso corrigir a referencia com cuidado: o registro bibliografico confiavel aponta para \"A moderna teoria do fato punivel\", de Juarez Cirino dos Santos.",
-    "",
-    "Se voce escreveu \"A nova teoria do fato punivel\", eu trataria como uma variacao imprecisa do titulo, nao como outra obra confirmada. Eu tambem nao devo atribuir essa obra a outro penalista sem fonte, porque isso seria uma atribuicao bibliografica grave.",
-    "",
-    "Como ler a obra em termos juridicos: ela se situa na dogmatica penal e trabalha a compreensao do fato punivel/crime a partir de categorias modernas da teoria do delito, como acao, tipicidade, ilicitude, culpabilidade, limites materiais do poder punitivo e controle critico da imputacao penal. Sem consulta ao inteiro teor, eu nao devo inventar paginas, citacoes literais ou resumo fechado de capitulos.",
-    "",
-    "Fontes para conferencia:",
-    "- LexML: https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2000%3B000578592",
-    "- Acervo TJRJ Sophia: https://www3.tjrj.jus.br/sophia_web/acervo/detalhe/19139",
-    "",
-    "Proximo passo: se voce quiser usar isso em peca, aula ou parecer, eu monto uma ficha bibliografica e uma sintese segura, separando o que esta conferido do que precisa de consulta ao exemplar."
-  ].join("\n");
+  if (!asksBibliographicVerification(message)) return "";
+  const verifiedEntry = findVerifiedLegalBibliographyEntry(extractCurrentQuestion(message));
+  return buildVerifiedLegalBibliographyAnswer(verifiedEntry);
 }
 
 function asksDocumentProductionDownload(message) {

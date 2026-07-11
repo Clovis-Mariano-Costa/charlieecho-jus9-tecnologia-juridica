@@ -144,6 +144,7 @@ await runLiveCase(
 const browserScript = await fs.readFile(new URL("../assets/js/charlie-ia-pages.js", import.meta.url), "utf8");
 const apiHandler = await fs.readFile(new URL("../functions/api/ia.js", import.meta.url), "utf8");
 const downloadHandler = await fs.readFile(new URL("../functions/api/gerar-download.js", import.meta.url), "utf8");
+const legalBibliography = await fs.readFile(new URL("../functions/lib/legal-bibliography.js", import.meta.url), "utf8");
 const apiCall = browserScript.indexOf("callCharlieApi(msg, 'profissional', status");
 const apiAnswer = browserScript.indexOf("if(apiAnswer) return answer(apiAnswer)", apiCall);
 const localFallback = browserScript.indexOf("if(localAnswer)", apiAnswer);
@@ -179,6 +180,12 @@ assert(apiHandler.includes("Se o usuario pedir \"proponha jurisprudencia\""), "r
 assert(apiHandler.includes("producao doutrinaria responsavel"), "intencao de producao doutrinaria ausente");
 assert(apiHandler.includes("asksGuidedLegalResearch"), "salvaguarda deterministica de pesquisa juridica ausente");
 assert(apiHandler.includes("Eu nao vou inventar autor, obra, pagina, citacao literal ou julgado"), "limite deterministico contra fontes inventadas ausente");
+assert(apiHandler.includes("BIBLIOGRAPHIC_VERIFICATION_POLICY"), "politica de verificacao bibliografica ausente");
+assert(apiHandler.includes("findVerifiedLegalBibliographyEntry"), "catalogo bibliografico verificado nao esta conectado a API");
+assert(legalBibliography.includes("catalogo-bibliografico-juridico-v1"), "versao do catalogo bibliografico ausente");
+assert(legalBibliography.includes("Juarez Cirino dos Santos"), "obra do fato punivel ausente do catalogo");
+assert(legalBibliography.includes("Hans Kelsen"), "Teoria pura do direito ausente do catalogo");
+assert(legalBibliography.includes("Cesare Beccaria"), "Dos delitos e das penas ausente do catalogo");
 assert(browserScript.includes("Analise jurisprudencial orientativa"), "fallback local de jurisprudencia substantiva ausente");
 assert(browserScript.includes("Sintese doutrinaria orientativa"), "fallback local de doutrina substantiva ausente");
 assert(!apiHandler.includes("jurisprudencia|jurisprudência|doutrina|fonte|fontes|pesquise|pesquisar"), "doutrina voltou a ser gatilho automatico de pesquisa guiada");

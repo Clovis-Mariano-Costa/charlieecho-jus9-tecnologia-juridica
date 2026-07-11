@@ -102,6 +102,7 @@ test("known bibliographic work corrects authorship instead of hallucinating auth
     assert.equal(calls, 0);
     assert.match(body.answer, /Juarez Cirino dos Santos/i);
     assert.match(body.answer, /A moderna teoria do fato punivel/i);
+    assert.match(body.answer, /catalogo interno/i);
     assert.match(body.answer, /LexML/i);
     assert.doesNotMatch(body.answer, /Geraldo Prado/i);
 
@@ -118,6 +119,38 @@ test("known bibliographic work corrects authorship instead of hallucinating auth
     assert.equal(calls, 0);
     assert.match(portalWrappedBody.answer, /Juarez Cirino dos Santos/i);
     assert.doesNotMatch(portalWrappedBody.answer, /Geraldo Prado/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("verified legal bibliography catalog answers classic works without OpenAI", async () => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    throw new Error("OpenAI should not be called for cataloged bibliography");
+  };
+
+  try {
+    const kelsenResponse = await postIa("Quem escreveu Teoria pura do direito?");
+    const kelsenBody = await kelsenResponse.json();
+
+    assert.equal(kelsenResponse.status, 200);
+    assert.equal(kelsenBody.ok, true);
+    assert.match(kelsenBody.answer, /Hans Kelsen/i);
+    assert.match(kelsenBody.answer, /Teoria pura do direito/i);
+    assert.match(kelsenBody.answer, /LexML/i);
+
+    const beccariaResponse = await postIa("Conhece a obra Dos delitos e das penas?");
+    const beccariaBody = await beccariaResponse.json();
+
+    assert.equal(beccariaResponse.status, 200);
+    assert.equal(beccariaBody.ok, true);
+    assert.match(beccariaBody.answer, /Cesare Beccaria/i);
+    assert.match(beccariaBody.answer, /Dos delitos e das penas/i);
+    assert.match(beccariaBody.answer, /catalogo interno/i);
+    assert.equal(calls, 0);
   } finally {
     globalThis.fetch = originalFetch;
   }
