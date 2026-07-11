@@ -206,7 +206,97 @@ test("verified Brazilian legal bibliography catalog covers core areas without Op
       assert.equal(body.ok, true);
       assert.match(body.answer, item.author);
       assert.match(body.answer, item.title);
-      assert.match(body.answer, /catalogo-bibliografico-juridico-v2/i);
+      assert.match(body.answer, /catalogo-bibliografico-juridico-v3/i);
+      assert.match(body.answer, /LexML/i);
+    }
+
+    assert.equal(calls, 0);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("verified legal bibliography catalog v3 covers practical DAJ areas without OpenAI", async () => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    throw new Error("OpenAI should not be called for cataloged practical bibliography");
+  };
+
+  try {
+    const cases = [
+      {
+        question: "Quem escreveu Curso de direito constitucional contemporaneo?",
+        author: /Luis Roberto Barroso/i,
+        title: /Curso de direito constitucional contemporaneo/i
+      },
+      {
+        question: "Conhece Direito constitucional esquematizado?",
+        author: /Pedro Lenza/i,
+        title: /Direito constitucional esquematizado/i
+      },
+      {
+        question: "Quem escreveu Manual de direito civil?",
+        author: /Flavio Tartuce/i,
+        title: /Manual de direito civil/i
+      },
+      {
+        question: "Qual a autoria do Novo curso de direito civil?",
+        author: /Pablo Stolze Gagliano/i,
+        title: /Novo curso de direito civil/i
+      },
+      {
+        question: "Conhece o Curso de direito penal de Rogerio Greco?",
+        author: /Rogerio Greco/i,
+        title: /Curso de direito penal/i
+      },
+      {
+        question: "Quem escreveu Introducao critica ao direito penal brasileiro?",
+        author: /Nilo Batista/i,
+        title: /Introducao critica ao direito penal brasileiro/i
+      },
+      {
+        question: "Quem escreveu Novo curso de processo civil?",
+        author: /Luiz Guilherme Marinoni/i,
+        title: /Novo curso de processo civil/i
+      },
+      {
+        question: "Conhece Codigo de processo civil comentado de Nelson Nery?",
+        author: /Nelson Nery Junior/i,
+        title: /Codigo de processo civil comentado/i
+      },
+      {
+        question: "Quem escreveu Manual de direito das familias?",
+        author: /Maria Berenice Dias/i,
+        title: /Manual de direito das familias/i
+      },
+      {
+        question: "Qual a autoria de Direito civil: direito de familia?",
+        author: /Carlos Roberto Goncalves/i,
+        title: /Direito civil: direito de familia/i
+      },
+      {
+        question: "Conhece Manual de direito do consumidor?",
+        author: /Antonio Herman V\. Benjamin/i,
+        title: /Manual de direito do consumidor/i
+      },
+      {
+        question: "Quem escreveu Curso de direito do consumidor?",
+        author: /Rizzatto Nunes/i,
+        title: /Curso de direito do consumidor/i
+      }
+    ];
+
+    for (const item of cases) {
+      const response = await postIa(item.question);
+      const body = await response.json();
+
+      assert.equal(response.status, 200);
+      assert.equal(body.ok, true);
+      assert.match(body.answer, item.author);
+      assert.match(body.answer, item.title);
+      assert.match(body.answer, /catalogo-bibliografico-juridico-v3/i);
       assert.match(body.answer, /LexML/i);
     }
 

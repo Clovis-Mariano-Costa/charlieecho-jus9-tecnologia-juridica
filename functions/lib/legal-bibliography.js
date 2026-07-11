@@ -1,4 +1,4 @@
-export const LEGAL_BIBLIOGRAPHY_CATALOG_VERSION = "catalogo-bibliografico-juridico-v2";
+export const LEGAL_BIBLIOGRAPHY_CATALOG_VERSION = "catalogo-bibliografico-juridico-v3";
 
 export const LEGAL_BIBLIOGRAPHY_CATALOG = Object.freeze([
   {
@@ -242,6 +242,283 @@ export const LEGAL_BIBLIOGRAPHY_CATALOG = Object.freeze([
       {
         label: "LexML",
         url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2016%3B001079152"
+      }
+    ]
+  },
+  {
+    id: "curso_direito_constitucional_contemporaneo",
+    kind: "obra",
+    title: "Curso de direito constitucional contemporaneo",
+    authors: ["Luis Roberto Barroso"],
+    area: "Direito Constitucional",
+    aliases: [
+      "curso de direito constitucional contemporaneo",
+      "direito constitucional contemporaneo",
+      "barroso direito constitucional contemporaneo",
+      "luis roberto barroso curso de direito constitucional"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito Constitucional voltada a conceitos fundamentais, neoconstitucionalismo, jurisdicao constitucional e construcao do modelo constitucional contemporaneo.",
+    caution:
+      "Ha edicoes e tiragens distintas. Nao indicar pagina, edicao, ano especifico ou citacao literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2010%3B000875081"
+      }
+    ]
+  },
+  {
+    id: "direito_constitucional_esquematizado",
+    kind: "obra",
+    title: "Direito constitucional esquematizado",
+    authors: ["Pedro Lenza"],
+    area: "Direito Constitucional",
+    aliases: [
+      "direito constitucional esquematizado",
+      "pedro lenza direito constitucional",
+      "lenza constitucional esquematizado",
+      "constitucional esquematizado"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito Constitucional em formato sistematico/esquematizado, frequentemente usada para estudo, revisao e consulta de temas constitucionais.",
+    caution:
+      "Ha muitas edicoes atualizadas por emendas constitucionais. Nao afirmar pagina, edicao ou atualizacao legislativa sem consulta ao exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2011%3B000901380"
+      }
+    ]
+  },
+  {
+    id: "manual_direito_civil_tartuce",
+    kind: "obra",
+    title: "Manual de direito civil",
+    authors: ["Flavio Tartuce"],
+    area: "Direito Civil",
+    aliases: [
+      "manual de direito civil",
+      "flavio tartuce manual de direito civil",
+      "tartuce manual de direito civil",
+      "manual direito civil tartuce"
+    ],
+    verifiedSummary:
+      "Manual brasileiro de Direito Civil em volume unico, com tratamento sistematico de parte geral, obrigacoes, contratos, responsabilidade, coisas, familia e sucessoes.",
+    caution:
+      "A obra possui edicoes anuais e atualizacoes legislativas/doutrinarias. Nao indicar pagina, edicao ou trecho literal sem verificar o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2018%3B001135799"
+      }
+    ]
+  },
+  {
+    id: "novo_curso_direito_civil_stolze_pamplona",
+    kind: "obra",
+    title: "Novo curso de direito civil",
+    authors: ["Pablo Stolze Gagliano", "Rodolfo Pamplona Filho"],
+    area: "Direito Civil",
+    aliases: [
+      "novo curso de direito civil",
+      "pablo stolze novo curso de direito civil",
+      "rodolfo pamplona novo curso de direito civil",
+      "stolze e pamplona direito civil",
+      "stolze pamplona novo curso"
+    ],
+    verifiedSummary:
+      "Colecao brasileira de Direito Civil organizada em volumes, com abordagem didatica e sistematica dos principais campos civilistas.",
+    caution:
+      "A colecao possui volumes, edicoes e eventuais subtitulos por materia. Nao indicar volume, pagina ou citacao literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2012%3B000928847"
+      }
+    ]
+  },
+  {
+    id: "curso_direito_penal_greco",
+    kind: "obra",
+    title: "Curso de direito penal",
+    authors: ["Rogerio Greco"],
+    area: "Direito Penal",
+    aliases: [
+      "curso de direito penal",
+      "rogerio greco curso de direito penal",
+      "greco curso de direito penal",
+      "curso direito penal greco"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito Penal em volumes, voltada a parte geral e parte especial, com uso frequente em estudo e pratica penal.",
+    caution:
+      "Ha volumes, edicoes e atualizacoes. Nao indicar volume, pagina, tese especifica ou citacao literal sem verificar o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2003%3B000760819"
+      }
+    ]
+  },
+  {
+    id: "introducao_critica_direito_penal_brasileiro",
+    kind: "obra",
+    title: "Introducao critica ao direito penal brasileiro",
+    authors: ["Nilo Batista"],
+    area: "Direito Penal / criminologia critica",
+    aliases: [
+      "introducao critica ao direito penal brasileiro",
+      "introducao critica direito penal brasileiro",
+      "nilo batista introducao critica",
+      "nilo batista direito penal brasileiro"
+    ],
+    verifiedSummary:
+      "Obra brasileira de leitura critica do Direito Penal, associada a limites do poder punitivo, seletividade e fundamentos politico-criminais.",
+    caution:
+      "Nao converter sintese critica em citacao literal. Para pagina, edicao, prefacio ou trecho, confira o exemplar usado.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A1999%3B000216277"
+      }
+    ]
+  },
+  {
+    id: "novo_curso_processo_civil_marinoni_arenhart_mitidiero",
+    kind: "obra",
+    title: "Novo curso de processo civil",
+    authors: ["Luiz Guilherme Marinoni", "Sergio Cruz Arenhart", "Daniel Mitidiero"],
+    area: "Direito Processual Civil",
+    aliases: [
+      "novo curso de processo civil",
+      "marinoni novo curso de processo civil",
+      "arenhart mitidiero novo curso de processo civil",
+      "marinoni arenhart mitidiero processo civil"
+    ],
+    verifiedSummary:
+      "Colecao brasileira de Processo Civil em volumes, com tratamento sistematico do CPC e de temas como tutela dos direitos, cognicao, execucao e recursos.",
+    caution:
+      "Ha volumes e edicoes relacionadas ao CPC/2015. Nao indicar pagina, volume ou tese especifica sem verificar o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2017%3B001086238"
+      }
+    ]
+  },
+  {
+    id: "codigo_processo_civil_comentado_nery",
+    kind: "obra",
+    title: "Codigo de processo civil comentado",
+    authors: ["Nelson Nery Junior", "Rosa Maria de Andrade Nery"],
+    area: "Direito Processual Civil",
+    aliases: [
+      "codigo de processo civil comentado",
+      "cpc comentado nery",
+      "nelson nery codigo de processo civil comentado",
+      "nery e rosa maria codigo de processo civil"
+    ],
+    verifiedSummary:
+      "Obra brasileira de comentarios ao Codigo de Processo Civil, organizada artigo a artigo e voltada a consulta doutrinaria e jurisprudencial.",
+    caution:
+      "As edicoes acompanham alteracoes legislativas e atualizacoes jurisprudenciais. Nao afirmar pagina, edicao ou comentario literal sem consultar o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2020%3B001179144"
+      }
+    ]
+  },
+  {
+    id: "manual_direito_familias_maria_berenice",
+    kind: "obra",
+    title: "Manual de direito das familias",
+    authors: ["Maria Berenice Dias"],
+    area: "Direito de Familia",
+    aliases: [
+      "manual de direito das familias",
+      "manual direito das familias",
+      "maria berenice dias manual de direito das familias",
+      "maria berenice direito das familias"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito de Familia, com abordagem sistematica de entidades familiares, parentalidade, alimentos, guarda, regimes patrimoniais e temas correlatos.",
+    caution:
+      "Ha edicoes anteriores e posteriores ao CPC/2015. Nao indicar pagina, edicao ou texto literal sem verificar o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2016%3B001057063"
+      }
+    ]
+  },
+  {
+    id: "direito_civil_direito_familia_goncalves",
+    kind: "obra",
+    title: "Direito civil: direito de familia",
+    authors: ["Carlos Roberto Goncalves"],
+    area: "Direito de Familia",
+    aliases: [
+      "direito civil direito de familia",
+      "carlos roberto goncalves direito de familia",
+      "goncalves direito de familia",
+      "direito de familia carlos roberto goncalves"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito Civil dedicada ao Direito de Familia, com tratamento de casamento, uniao estavel, filiacao, alimentos, guarda e institutos familiares.",
+    caution:
+      "O autor tambem possui colecao ampla de Direito Civil Brasileiro. Nao confundir volume, serie, edicao ou pagina sem conferir o registro/exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A1998%3B000573696"
+      }
+    ]
+  },
+  {
+    id: "manual_direito_consumidor_benjamin_marques_bessa",
+    kind: "obra",
+    title: "Manual de direito do consumidor",
+    authors: ["Antonio Herman V. Benjamin", "Claudia Lima Marques", "Leonardo Roscoe Bessa"],
+    area: "Direito do Consumidor",
+    aliases: [
+      "manual de direito do consumidor",
+      "benjamin claudia marques bessa manual de direito do consumidor",
+      "claudia lima marques manual de direito do consumidor",
+      "herman benjamin manual direito consumidor"
+    ],
+    verifiedSummary:
+      "Manual brasileiro de Direito do Consumidor, com tratamento de principios, relacao de consumo, responsabilidade, vicios, praticas comerciais e tutela coletiva/individual.",
+    caution:
+      "Ha edicoes e coautorias especificas. Nao indicar pagina, capitulo, edicao ou citacao literal sem verificar o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2008%3B000799646"
+      }
+    ]
+  },
+  {
+    id: "curso_direito_consumidor_rizzatto",
+    kind: "obra",
+    title: "Curso de direito do consumidor",
+    authors: ["Rizzatto Nunes"],
+    area: "Direito do Consumidor",
+    aliases: [
+      "curso de direito do consumidor",
+      "rizzatto nunes curso de direito do consumidor",
+      "rizzatto direito do consumidor",
+      "curso direito consumidor rizzatto"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito do Consumidor, voltada a estudo sistematico do CDC, principios, responsabilidade, contratos e praticas de consumo.",
+    caution:
+      "Ha edicoes com exercicios e atualizacoes. Nao indicar pagina, edicao, exercicio ou citacao literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2014%3B001002424"
       }
     ]
   }
