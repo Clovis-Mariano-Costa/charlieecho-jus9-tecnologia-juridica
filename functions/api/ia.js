@@ -1506,7 +1506,7 @@ function ensureActiveLegalCitationPageLimit(message, answer, searchRequired) {
   const q = normalizeForIntent(extractCurrentQuestion(message));
   if (!/\b(pagina|paginas|pagina exata|doutrina e pagina|doutrina com pagina)\b/.test(q)) return text;
   const normalized = normalizeForIntent(text);
-  const hasPageNumber = /\b(p\.|pp\.|pagina|paginas|fl\.|fls\.)\s*(?:n[.oº]?\s*)?\d{1,5}\b/i.test(text);
+  const hasPageNumber = /\b(p\.|pp\.|pagina|paginas|fl\.|fls\.)\s*(?:n[.oº]?\s*)?[:.]?\s*\d{1,5}\b/i.test(normalized);
   if (hasPageNumber || /nao (?:ha|encontrei|localizei).*pagina verificavel/i.test(normalized)) return text;
   text = text.replace(/com autores,\s*obras,\s*p[aá]ginas?/i, "com autores, obras e fontes consultadas");
   return [
