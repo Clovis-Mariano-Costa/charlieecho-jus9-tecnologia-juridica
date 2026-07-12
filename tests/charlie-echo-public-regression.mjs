@@ -210,9 +210,12 @@ assert(apiHandler.includes("knownJurisprudenceWorkProduct"), "produtos jurisprud
 assert(apiHandler.includes("PESQUISA JURIDICA ATIVA 1.0"), "politica de pesquisa juridica ativa ausente");
 assert(apiHandler.includes("asksActiveLegalCitationResearch"), "detector de citacao/doutrina com pagina ausente");
 assert(apiHandler.includes("activeLegalResearchContext"), "contexto de pesquisa ativa ausente");
-assert(apiHandler.includes("activeLegalWebSearchTool"), "ferramenta web_search juridica ausente");
+assert(apiHandler.includes("callOpenAiActiveLegalSearch"), "chamada de busca juridica ativa ausente");
+assert(apiHandler.includes("activeLegalChatSearchModel"), "modelo de busca juridica ativa ausente");
 assert(apiHandler.includes("appendWebSearchSources"), "fontes consultadas pela busca nao sao anexadas");
-assert(apiHandler.includes('openaiRequestBody.tool_choice = "required"'), "web_search obrigatorio nao esta sendo exigido");
+assert(apiHandler.includes("https://api.openai.com/v1/chat/completions"), "endpoint de busca ativa nao esta conectado");
+assert(apiHandler.includes("web_search_options"), "opcoes de busca web nao estao conectadas");
+assert(apiHandler.includes("gpt-5-search-api"), "modelo padrao de busca ativa ausente");
 assert(apiHandler.includes("pesquisa_citacao_doutrinaria_ativa"), "operacao de citacao doutrinaria ativa ausente");
 assert(legalBibliography.includes("catalogo-bibliografico-juridico-v6"), "versao v6 do catalogo bibliografico ausente");
 assert(legalBibliography.includes("Juarez Cirino dos Santos"), "obra do fato punivel ausente do catalogo");

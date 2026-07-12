@@ -578,7 +578,7 @@ function pickTextFromChatCompletions(result) {
   return "";
 }
 
-function extractUrlCitationsFromResponsesApi(result) {
+function extractUrlCitationsFromOpenAiResult(result) {
   const citations = [];
   const seen = new Set();
 
@@ -607,15 +607,14 @@ function extractUrlCitationsFromResponsesApi(result) {
     }
   }
 
-  visit(result?.output);
-  visit(result?.sources);
+  visit(result);
   return citations.slice(0, 8);
 }
 
 function appendWebSearchSources(answer, result, searchRequired) {
   const text = String(answer || "").trim();
   if (!searchRequired) return text;
-  const citations = extractUrlCitationsFromResponsesApi(result);
+  const citations = extractUrlCitationsFromOpenAiResult(result);
   if (!citations.length) {
     return [
       text,
@@ -631,6 +630,51 @@ function appendWebSearchSources(answer, result, searchRequired) {
     "Fontes consultadas pela busca:",
     ...missing.map((citation) => `- ${citation.title}: ${citation.url}`)
   ].join("\n");
+}
+
+function activeLegalChatSearchModel(env) {
+  const candidates = [
+    env?.JUS9_MODEL_CHAT_SEARCH,
+    env?.JUS9_MODEL_SEARCH,
+    env?.JUS9_MODEL_WEB_SEARCH,
+  ].map((model) => String(model || "").trim()).filter(Boolean);
+  return candidates.find((model) => /search/i.test(model)) || "gpt-5-search-api";
+}
+
+async function callOpenAiActiveLegalSearch(env, instructions, inputMessage) {
+  const requestBody = {
+    model: activeLegalChatSearchModel(env),
+    web_search_options: {},
+    messages: [
+      {
+        role: "system",
+        content: [
+          instructions,
+          "",
+          "[BUSCA WEB JURIDICA ATIVA]",
+          "Voce deve pesquisar antes de responder. Nao substitua a busca por lista generica de fontes.",
+          "Priorize fontes oficiais, institucionais ou academicas: Planalto, STF, STJ, TST, tribunais, LexML, BDTD, SciELO, CAPES e repositorios universitarios.",
+          "Se nao houver pagina verificavel, diga que nao ha pagina confirmada no retorno e ofereca ficha de verificacao. Nunca invente autor, obra, pagina ou trecho literal."
+        ].join("\n")
+      },
+      {
+        role: "user",
+        content: inputMessage,
+      }
+    ],
+  };
+
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestBody),
+  });
+
+  const result = await response.json().catch(() => null);
+  return { response, result };
 }
 
 function isSafePublicHttpsUrl(rawUrl) {
@@ -2441,6 +2485,44 @@ function cleanPublicAnswer(answer) {
     .trim();
 }
 
+async function buildGovernedIaSuccessResponse({
+  env,
+  mode,
+  inputMessage,
+  answer,
+  result,
+  searchRequired,
+  governanceDecision,
+  governance,
+}) {
+  let governedAnswer = appendWebSearchSources(answer, result, searchRequired);
+  governedAnswer = ensureActiveLegalCitationResearchAnswer(inputMessage, governedAnswer, searchRequired);
+  governedAnswer = ensureCompleteLegalDraftAnswer(inputMessage, governedAnswer);
+  governedAnswer = ensureDajAnalysisReportAnswer(inputMessage, governedAnswer);
+  governedAnswer = applyCreativeSurface(inputMessage, governedAnswer);
+  governedAnswer = ensureDriveSaverGuidance(inputMessage, governedAnswer);
+  governedAnswer = ensurePrivateDriveGuidance(inputMessage, governedAnswer);
+  governedAnswer = ensureDnaCloudGuidance(inputMessage, governedAnswer);
+  governedAnswer = ensureMailboxGuidance(inputMessage, governedAnswer);
+  governedAnswer = ensurePublicLessonsGuidance(inputMessage, governedAnswer);
+  governedAnswer = ensureSacredVirtualGuidance(inputMessage, governedAnswer);
+  governedAnswer = ensurePublicScenarioSafetyNotice(inputMessage, governedAnswer);
+  governedAnswer = ensureDownloadRequestNoHallucinatedLink(inputMessage, governedAnswer);
+  governedAnswer = removeUnsafeLinks(cleanPublicAnswer(governedAnswer));
+  const artifact = buildGovernedArtifact(inputMessage, governedAnswer, governanceDecision);
+  const driveSaver = artifact ? await saveArtifactWithDriveSaver(env, artifact) : null;
+  const finalAnswer = removeUnsafeLinks(cleanPublicAnswer(appendArtifactDelivery(governedAnswer, artifact, driveSaver)));
+
+  return jsonResponse({
+    ok: true,
+    mode,
+    answer: finalAnswer,
+    artifact: publicArtifactMetadata(artifact),
+    driveSaver: driveSaver ? sanitizeDriveSaverData(driveSaver) : null,
+    governance,
+  });
+}
+
 export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: corsHeaders });
 }
@@ -2624,20 +2706,53 @@ export async function onRequestPost(context) {
       : mode === "social"
         ? (env.JUS9_MODEL_SOCIAL || env.JUS9_MODEL_DEFAULT || "gpt-4o-mini")
         : (env.JUS9_MODEL_ESTUDANTES || env.JUS9_MODEL_DEFAULT || "gpt-4o-mini");
-    const responseModel = searchRequired
-      ? (env.JUS9_MODEL_WEB_SEARCH || env.JUS9_MODEL_SEARCH || "gpt-4.1-mini")
-      : model;
+
+    if (searchRequired) {
+      const { response: searchResponse, result: searchResult } = await callOpenAiActiveLegalSearch(env, instructions, inputMessage);
+
+      if (!searchResponse.ok) {
+        return jsonResponse({
+          ok: false,
+          error: searchResult?.error?.message || "Nao foi possivel concluir a pesquisa ativa agora. Tente novamente mais tarde.",
+          status: searchResponse.status,
+          governance,
+        }, 502);
+      }
+
+      const searchAnswer = pickTextFromChatCompletions(searchResult) || pickTextFromResponsesApi(searchResult);
+
+      if (!searchAnswer) {
+        return jsonResponse({
+          ok: false,
+          error: "A API de busca respondeu, mas nao trouxe texto em formato reconhecido. Verifique o modelo de busca configurado.",
+          debug: {
+            response_id: searchResult?.id || null,
+            object: searchResult?.object || null,
+            choices: Array.isArray(searchResult?.choices) ? searchResult.choices.length : null,
+          },
+          governance,
+        }, 502);
+      }
+
+      return await buildGovernedIaSuccessResponse({
+        env,
+        mode,
+        inputMessage,
+        answer: searchAnswer,
+        result: searchResult,
+        searchRequired,
+        governanceDecision,
+        governance,
+      });
+    }
+
     const openaiRequestBody = {
-      model: responseModel,
+      model,
       instructions,
       input: inputMessage,
       store: false,
-      max_output_tokens: searchRequired ? 1600 : mode === "profissional" ? 1200 : mode === "social" ? 700 : 900,
+      max_output_tokens: mode === "profissional" ? 1200 : mode === "social" ? 700 : 900,
     };
-    if (searchRequired) {
-      openaiRequestBody.tools = [activeLegalWebSearchTool()];
-      openaiRequestBody.tool_choice = "required";
-    }
 
     const openaiResponse = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
@@ -2675,30 +2790,14 @@ export async function onRequestPost(context) {
       }, 502);
     }
 
-    let governedAnswer = appendWebSearchSources(answer, result, searchRequired);
-    governedAnswer = ensureActiveLegalCitationResearchAnswer(inputMessage, governedAnswer, searchRequired);
-    governedAnswer = ensureCompleteLegalDraftAnswer(inputMessage, governedAnswer);
-    governedAnswer = ensureDajAnalysisReportAnswer(inputMessage, governedAnswer);
-    governedAnswer = applyCreativeSurface(inputMessage, governedAnswer);
-    governedAnswer = ensureDriveSaverGuidance(inputMessage, governedAnswer);
-    governedAnswer = ensurePrivateDriveGuidance(inputMessage, governedAnswer);
-    governedAnswer = ensureDnaCloudGuidance(inputMessage, governedAnswer);
-    governedAnswer = ensureMailboxGuidance(inputMessage, governedAnswer);
-    governedAnswer = ensurePublicLessonsGuidance(inputMessage, governedAnswer);
-    governedAnswer = ensureSacredVirtualGuidance(inputMessage, governedAnswer);
-    governedAnswer = ensurePublicScenarioSafetyNotice(inputMessage, governedAnswer);
-    governedAnswer = ensureDownloadRequestNoHallucinatedLink(inputMessage, governedAnswer);
-    governedAnswer = removeUnsafeLinks(cleanPublicAnswer(governedAnswer));
-    const artifact = buildGovernedArtifact(inputMessage, governedAnswer, governanceDecision);
-    const driveSaver = artifact ? await saveArtifactWithDriveSaver(env, artifact) : null;
-    const finalAnswer = removeUnsafeLinks(cleanPublicAnswer(appendArtifactDelivery(governedAnswer, artifact, driveSaver)));
-
-    return jsonResponse({
-      ok: true,
+    return await buildGovernedIaSuccessResponse({
+      env,
       mode,
-      answer: finalAnswer,
-      artifact: publicArtifactMetadata(artifact),
-      driveSaver: driveSaver ? sanitizeDriveSaverData(driveSaver) : null,
+      inputMessage,
+      answer,
+      result,
+      searchRequired,
+      governanceDecision,
       governance,
     });
   } catch (error) {

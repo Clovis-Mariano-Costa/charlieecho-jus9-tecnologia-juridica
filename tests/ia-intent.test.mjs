@@ -123,32 +123,30 @@ test("doctrinal citation with theme requires active web search and visible consu
   const calls = [];
   globalThis.fetch = async (url, options = {}) => {
     calls.push({ url: String(url), options });
-    assert.match(String(url), /api\.openai\.com/);
+    assert.match(String(url), /api\.openai\.com\/v1\/chat\/completions/);
     const payload = JSON.parse(String(options.body || "{}"));
     assert.equal(payload.model, "test-search-model");
-    assert.equal(payload.tool_choice, "required");
-    assert.equal(payload.tools?.[0]?.type, "web_search");
-    assert.match(payload.input, /\[PESQUISA JURIDICA ATIVA OBRIGATORIA\]/);
-    assert.match(payload.input, /direito propriedade/i);
-    assert.ok(payload.tools[0].filters.allowed_domains.includes("bdtd.ibict.br"));
-    assert.ok(payload.tools[0].filters.allowed_domains.includes("scielo.br"));
+    assert.deepEqual(payload.web_search_options, {});
+    assert.equal(payload.messages?.[0]?.role, "system");
+    assert.equal(payload.messages?.[1]?.role, "user");
+    assert.match(payload.messages[0].content, /BUSCA WEB JURIDICA ATIVA/i);
+    assert.match(payload.messages[1].content, /\[PESQUISA JURIDICA ATIVA OBRIGATORIA\]/);
+    assert.match(payload.messages[1].content, /direito propriedade/i);
     return Response.json({
-      output: [
+      choices: [
         {
-          type: "message",
-          content: [
-            {
-              type: "output_text",
-              text: "Sobre direito de propriedade, a fonte localizada permite trabalhar a funcao social como limite constitucional ao uso individual do bem. Nao ha pagina exata confirmada neste retorno.",
-              annotations: [
-                {
-                  type: "url_citation",
+          message: {
+            content: "Sobre direito de propriedade, a fonte localizada permite trabalhar a funcao social como limite constitucional ao uso individual do bem. Nao ha pagina exata confirmada neste retorno.",
+            annotations: [
+              {
+                type: "url_citation",
+                url_citation: {
                   title: "BDTD - busca sobre direito de propriedade",
                   url: "https://bdtd.ibict.br/vufind/Search/Results?lookfor=direito%20de%20propriedade"
                 }
-              ]
-            }
-          ]
+              }
+            ]
+          }
         }
       ]
     });
@@ -157,7 +155,7 @@ test("doctrinal citation with theme requires active web search and visible consu
   try {
     const response = await postIa(
       "forneca citacao com doutrina e pagina sobre direito de propriedade",
-      { OPENAI_API_KEY: "test-key", JUS9_MODEL_WEB_SEARCH: "test-search-model", JUS9_MODEL_DEFAULT: "test-model" }
+      { OPENAI_API_KEY: "test-key", JUS9_MODEL_CHAT_SEARCH: "test-search-model", JUS9_MODEL_DEFAULT: "test-model" }
     );
     const body = await response.json();
 
