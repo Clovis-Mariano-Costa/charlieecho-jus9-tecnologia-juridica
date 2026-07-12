@@ -641,7 +641,7 @@ function activeLegalChatSearchModel(env) {
   return candidates.find((model) => /search/i.test(model)) || "gpt-5-search-api";
 }
 
-async function callOpenAiActiveLegalSearch(env, instructions, inputMessage) {
+async function callOpenAiActiveLegalSearch(env, _instructions, inputMessage) {
   const requestBody = {
     model: activeLegalChatSearchModel(env),
     web_search_options: {},
@@ -649,8 +649,6 @@ async function callOpenAiActiveLegalSearch(env, instructions, inputMessage) {
       {
         role: "system",
         content: [
-          instructions,
-          "",
           "[BUSCA WEB JURIDICA ATIVA]",
           "Voce deve pesquisar antes de responder. Nao substitua a busca por lista generica de fontes.",
           "Priorize fontes oficiais, institucionais ou academicas: Planalto, STF, STJ, TST, tribunais, LexML, BDTD, SciELO, CAPES e repositorios universitarios.",
@@ -878,6 +876,23 @@ function activeLegalResearchContext(message) {
     "Antes de responder, use ferramenta de busca autorizada quando disponivel. Nao responda apenas indicando LexML, BDTD, SciELO, CAPES ou Google Scholar para o usuario pesquisar.",
     "Entregue: 1) resposta substantiva; 2) citacao literal curta ou ideia doutrinaria somente se verificavel; 3) pagina apenas quando a fonte trouxer paginacao; 4) URL; 5) tipo e confianca da fonte; 6) limite de uso e revisao humana.",
     "Se a busca nao localizar pagina verificavel, diga isso claramente e ofereca ficha de verificacao com os resultados encontrados. Nao invente autor, obra, pagina ou trecho."
+  ].join("\n");
+}
+
+function activeLegalSearchInput(message, governanceDecision) {
+  const question = extractCurrentQuestion(message).slice(0, 1600);
+  const topic = activeLegalCitationTopic(message) || compactLegalResearchTopic(message);
+  const moduleName = governanceDecision?.module?.name || governanceDecision?.targetMvp || "Charlie Echo";
+  return [
+    "[PESQUISA JURIDICA ATIVA OBRIGATORIA]",
+    `Modulo: ${moduleName}.`,
+    `Operacao: ${governanceDecision?.operation || "pesquisa_citacao_doutrinaria_ativa"}.`,
+    `Tema/recorte: ${topic}.`,
+    "",
+    "Pergunta atual do usuario:",
+    question,
+    "",
+    "Tarefa: pesquise antes de responder e entregue uma resposta substantiva com fonte verificavel. Se houver pagina, informe; se nao houver pagina no retorno, diga isso claramente. Nao entregue apenas lista de sites para o usuario pesquisar."
   ].join("\n");
 }
 
@@ -2708,7 +2723,8 @@ export async function onRequestPost(context) {
         : (env.JUS9_MODEL_ESTUDANTES || env.JUS9_MODEL_DEFAULT || "gpt-4o-mini");
 
     if (searchRequired) {
-      const { response: searchResponse, result: searchResult } = await callOpenAiActiveLegalSearch(env, instructions, inputMessage);
+      const searchInputMessage = activeLegalSearchInput(message, governanceDecision);
+      const { response: searchResponse, result: searchResult } = await callOpenAiActiveLegalSearch(env, instructions, searchInputMessage);
 
       if (!searchResponse.ok) {
         return jsonResponse({
