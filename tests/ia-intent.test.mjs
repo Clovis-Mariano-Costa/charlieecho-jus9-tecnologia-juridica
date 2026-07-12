@@ -165,6 +165,7 @@ test("doctrinal citation with theme requires active web search and visible consu
     assert.equal(body.governance.operation, "pesquisa_citacao_doutrinaria_ativa");
     assert.match(body.answer, /direito de propriedade/i);
     assert.match(body.answer, /Fontes consultadas pela busca/i);
+    assert.match(body.answer, /Limite de pagina/i);
     assert.match(body.answer, /https:\/\/bdtd\.ibict\.br/i);
     assert.doesNotMatch(body.answer, /Aqui estao algumas opcoes de fontes/i);
   } finally {

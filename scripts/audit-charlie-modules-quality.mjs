@@ -69,6 +69,7 @@ for (const token of [
   'activeLegalResearchContext',
   'callOpenAiActiveLegalSearch',
   'activeLegalChatSearchModel',
+  'ensureActiveLegalCitationPageLimit',
   'appendWebSearchSources',
   'https://api.openai.com/v1/chat/completions',
   'web_search_options',

@@ -212,6 +212,7 @@ assert(apiHandler.includes("asksActiveLegalCitationResearch"), "detector de cita
 assert(apiHandler.includes("activeLegalResearchContext"), "contexto de pesquisa ativa ausente");
 assert(apiHandler.includes("callOpenAiActiveLegalSearch"), "chamada de busca juridica ativa ausente");
 assert(apiHandler.includes("activeLegalChatSearchModel"), "modelo de busca juridica ativa ausente");
+assert(apiHandler.includes("ensureActiveLegalCitationPageLimit"), "trava de pagina verificavel ausente");
 assert(apiHandler.includes("appendWebSearchSources"), "fontes consultadas pela busca nao sao anexadas");
 assert(apiHandler.includes("https://api.openai.com/v1/chat/completions"), "endpoint de busca ativa nao esta conectado");
 assert(apiHandler.includes("web_search_options"), "opcoes de busca web nao estao conectadas");

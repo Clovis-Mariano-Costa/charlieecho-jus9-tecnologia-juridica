@@ -1500,6 +1500,22 @@ function ensureActiveLegalCitationResearchAnswer(message, answer, searchRequired
   return activeLegalCitationResearchRepairAnswer(message);
 }
 
+function ensureActiveLegalCitationPageLimit(message, answer, searchRequired) {
+  let text = String(answer || "").trim();
+  if (!searchRequired || !asksActiveLegalCitationResearch(message)) return text;
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  if (!/\b(pagina|paginas|pagina exata|doutrina e pagina|doutrina com pagina)\b/.test(q)) return text;
+  const normalized = normalizeForIntent(text);
+  const hasPageNumber = /\b(p\.|pp\.|pagina|paginas|fl\.|fls\.)\s*(?:n[.oº]?\s*)?\d{1,5}\b/i.test(text);
+  if (hasPageNumber || /nao (?:ha|encontrei|localizei).*pagina verificavel/i.test(normalized)) return text;
+  text = text.replace(/com autores,\s*obras,\s*p[aá]ginas?/i, "com autores, obras e fontes consultadas");
+  return [
+    text,
+    "",
+    "Limite de pagina: a busca ativa retornou fonte util, mas nao trouxe numero de pagina verificavel neste retorno. Para pagina exata, envie o PDF/DOCX/obra paginada ou indique a edicao desejada; eu nao devo inventar pagina."
+  ].join("\n");
+}
+
 function ensureDajAnalysisReportAnswer(message, answer) {
   const text = String(answer || "").trim();
   if (!asksDajAnalysisReport(message)) return text;
@@ -2512,6 +2528,7 @@ async function buildGovernedIaSuccessResponse({
 }) {
   let governedAnswer = appendWebSearchSources(answer, result, searchRequired);
   governedAnswer = ensureActiveLegalCitationResearchAnswer(inputMessage, governedAnswer, searchRequired);
+  governedAnswer = ensureActiveLegalCitationPageLimit(inputMessage, governedAnswer, searchRequired);
   governedAnswer = ensureCompleteLegalDraftAnswer(inputMessage, governedAnswer);
   governedAnswer = ensureDajAnalysisReportAnswer(inputMessage, governedAnswer);
   governedAnswer = applyCreativeSurface(inputMessage, governedAnswer);
