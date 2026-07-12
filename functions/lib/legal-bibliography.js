@@ -1,4 +1,4 @@
-export const LEGAL_BIBLIOGRAPHY_CATALOG_VERSION = "catalogo-bibliografico-juridico-v3";
+export const LEGAL_BIBLIOGRAPHY_CATALOG_VERSION = "catalogo-bibliografico-juridico-v4";
 
 export const LEGAL_BIBLIOGRAPHY_CATALOG = Object.freeze([
   {
@@ -521,6 +521,351 @@ export const LEGAL_BIBLIOGRAPHY_CATALOG = Object.freeze([
         url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2014%3B001002424"
       }
     ]
+  },
+  {
+    id: "direito_processual_penal_aury",
+    kind: "obra",
+    title: "Direito processual penal",
+    authors: ["Aury Lopes Jr."],
+    area: "Direito Processual Penal",
+    aliases: [
+      "direito processual penal",
+      "aury lopes direito processual penal",
+      "aury lopes jr direito processual penal",
+      "processual penal aury lopes"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Processo Penal com leitura sistematica do processo penal constitucional, garantias, jurisdicao, prova, prisao, medidas cautelares e recursos.",
+    caution:
+      "Ha muitas edicoes e alteracoes legislativas/processuais. Nao indicar pagina, edicao, tese especifica ou citacao literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2015%3B001025999"
+      }
+    ]
+  },
+  {
+    id: "manual_processo_penal_nucci",
+    kind: "obra",
+    title: "Manual de processo penal",
+    authors: ["Guilherme de Souza Nucci"],
+    area: "Direito Processual Penal",
+    aliases: [
+      "manual de processo penal",
+      "nucci manual de processo penal",
+      "guilherme de souza nucci manual de processo penal",
+      "manual processo penal nucci"
+    ],
+    verifiedSummary:
+      "Manual brasileiro de Processo Penal voltado a exposicao sistematica do procedimento penal, sujeitos processuais, provas, medidas cautelares, recursos e execucao penal quando aplicavel.",
+    caution:
+      "Nao confundir com outros livros do autor, como codigo comentado ou manual de processo penal e execucao penal. Confira edicao, pagina e escopo antes de citar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2021%3B001213743"
+      }
+    ]
+  },
+  {
+    id: "processo_penal_tourinho",
+    kind: "obra",
+    title: "Processo penal",
+    authors: ["Fernando da Costa Tourinho Filho"],
+    area: "Direito Processual Penal",
+    aliases: [
+      "processo penal tourinho",
+      "tourinho filho processo penal",
+      "fernando da costa tourinho filho processo penal",
+      "processo penal fernando tourinho"
+    ],
+    verifiedSummary:
+      "Obra brasileira classica de Processo Penal, em volumes, associada a estudo tradicional de inquerito, acao penal, jurisdicao, prova, recursos e institutos processuais.",
+    caution:
+      "Ha edicoes historicas e volumes distintos. Nao atribuir pagina, volume, edicao ou posicao atualizada sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A1975%3B000017214"
+      }
+    ]
+  },
+  {
+    id: "curso_direito_trabalho_godinho",
+    kind: "obra",
+    title: "Curso de direito do trabalho",
+    authors: ["Mauricio Godinho Delgado"],
+    area: "Direito do Trabalho",
+    aliases: [
+      "curso de direito do trabalho",
+      "mauricio godinho delgado curso de direito do trabalho",
+      "godinho curso de direito do trabalho",
+      "curso direito trabalho godinho"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito do Trabalho com abordagem sistematica de contrato de trabalho, sujeitos, jornada, remuneracao, principios trabalhistas, direito coletivo e instituicoes laborais.",
+    caution:
+      "As edicoes acompanham reformas e alteracoes legislativas. Nao indicar pagina, edicao, ano ou entendimento especifico sem verificar o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2020%3B001187555"
+      }
+    ]
+  },
+  {
+    id: "direito_trabalho_volia",
+    kind: "obra",
+    title: "Direito do trabalho",
+    authors: ["Volia Bomfim Cassar"],
+    area: "Direito do Trabalho",
+    aliases: [
+      "direito do trabalho volia",
+      "volia bomfim cassar direito do trabalho",
+      "volia direito do trabalho",
+      "direito trabalho volia cassar"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito do Trabalho voltada a relacao de emprego, direitos trabalhistas, reforma trabalhista, principios e institutos individuais/coletivos.",
+    caution:
+      "O titulo tambem existe em obras de outros autores. Use a autoria para desambiguar e nao informe pagina, edicao ou trecho literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2017%3B001107858"
+      }
+    ]
+  },
+  {
+    id: "direito_trabalho_sergio_pinto",
+    kind: "obra",
+    title: "Direito do trabalho",
+    authors: ["Sergio Pinto Martins"],
+    area: "Direito do Trabalho",
+    aliases: [
+      "direito do trabalho sergio pinto martins",
+      "sergio pinto martins direito do trabalho",
+      "sergio pinto direito do trabalho",
+      "direito trabalho sergio pinto"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito do Trabalho com exposicao sistematica dos institutos trabalhistas, contrato de trabalho, direitos sociais, jornada, remuneracao e temas correlatos.",
+    caution:
+      "O titulo e generico e tambem aparece em outras obras. Desambiguar pela autoria antes de responder com certeza; confira edicao e pagina antes de citar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2002%3B000642746"
+      }
+    ]
+  },
+  {
+    id: "curso_direito_administrativo_celso",
+    kind: "obra",
+    title: "Curso de direito administrativo",
+    authors: ["Celso Antonio Bandeira de Mello"],
+    area: "Direito Administrativo",
+    aliases: [
+      "curso de direito administrativo",
+      "celso antonio bandeira de mello curso de direito administrativo",
+      "bandeira de mello curso de direito administrativo",
+      "curso direito administrativo celso bandeira"
+    ],
+    verifiedSummary:
+      "Obra brasileira classica de Direito Administrativo, associada a regime juridico-administrativo, principios, poderes administrativos, atos, servicos publicos e controle da Administracao.",
+    caution:
+      "Ha muitas edicoes e atualizacoes constitucionais. Nao indicar pagina, edicao ou trecho literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2019%3B001145029"
+      }
+    ]
+  },
+  {
+    id: "direito_administrativo_di_pietro",
+    kind: "obra",
+    title: "Direito administrativo",
+    authors: ["Maria Sylvia Zanella Di Pietro"],
+    area: "Direito Administrativo",
+    aliases: [
+      "direito administrativo maria sylvia zanella di pietro",
+      "maria sylvia zanella di pietro direito administrativo",
+      "di pietro direito administrativo",
+      "direito administrativo di pietro"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito Administrativo com tratamento de principios, organizacao administrativa, atos, poderes, licitacoes, contratos, servidores, bens publicos e controle.",
+    caution:
+      "O titulo e generico e exige desambiguacao pela autoria. Nao indicar pagina, edicao ou trecho literal sem verificar o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2009%3B000858517"
+      }
+    ]
+  },
+  {
+    id: "direito_administrativo_brasileiro_hely",
+    kind: "obra",
+    title: "Direito administrativo brasileiro",
+    authors: ["Hely Lopes Meirelles"],
+    area: "Direito Administrativo",
+    aliases: [
+      "direito administrativo brasileiro",
+      "hely lopes meirelles direito administrativo brasileiro",
+      "hely direito administrativo brasileiro",
+      "direito administrativo brasileiro hely"
+    ],
+    verifiedSummary:
+      "Obra brasileira classica de Direito Administrativo, historicamente associada a conceitos de administracao publica, atos administrativos, licitacoes, contratos, servidores e poderes administrativos.",
+    caution:
+      "A obra possui edicoes historicas e atualizacoes posteriores. Nao atribuir pagina, edicao, atualizador ou trecho literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2002%3B000617225"
+      }
+    ]
+  },
+  {
+    id: "curso_direito_tributario_hugo",
+    kind: "obra",
+    title: "Curso de direito tributario",
+    authors: ["Hugo de Brito Machado"],
+    area: "Direito Tributario",
+    aliases: [
+      "curso de direito tributario hugo de brito machado",
+      "hugo de brito machado curso de direito tributario",
+      "hugo machado curso de direito tributario",
+      "curso tributario hugo de brito"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito Tributario com tratamento de sistema tributario, competencia, obrigacao, credito, lancamento, administracao tributaria e garantias do contribuinte.",
+    caution:
+      "O titulo tambem existe em obras de outros autores. Desambiguar pela autoria e nao indicar pagina, edicao ou citacao literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A1978%3B000033855"
+      }
+    ]
+  },
+  {
+    id: "curso_direito_tributario_paulo_barros",
+    kind: "obra",
+    title: "Curso de direito tributario",
+    authors: ["Paulo de Barros Carvalho"],
+    area: "Direito Tributario",
+    aliases: [
+      "curso de direito tributario paulo de barros carvalho",
+      "paulo de barros carvalho curso de direito tributario",
+      "paulo de barros curso de direito tributario",
+      "curso tributario paulo de barros"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito Tributario associada a abordagem teorica e sistematica da norma tributaria, regra-matriz de incidencia, obrigacao tributaria e sistema constitucional tributario.",
+    caution:
+      "O titulo tambem existe em obras de outros autores. Desambiguar pela autoria antes de responder e conferir exemplar para edicao, pagina ou citacao literal.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2000%3B000591321"
+      }
+    ]
+  },
+  {
+    id: "curso_direito_constitucional_tributario_carrazza",
+    kind: "obra",
+    title: "Curso de direito constitucional tributario",
+    authors: ["Roque Antonio Carrazza"],
+    area: "Direito Tributario / Direito Constitucional Tributario",
+    aliases: [
+      "curso de direito constitucional tributario",
+      "roque antonio carrazza curso de direito constitucional tributario",
+      "carrazza constitucional tributario",
+      "curso constitucional tributario carrazza"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito Constitucional Tributario voltada a principios constitucionais tributarios, competencias, limitacoes ao poder de tributar e sistema constitucional tributario.",
+    caution:
+      "Ha muitas edicoes atualizadas por emendas constitucionais. Nao indicar pagina, edicao ou citacao literal sem verificar o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2017%3B001087719"
+      }
+    ]
+  },
+  {
+    id: "curso_direito_comercial_fabio_ulhoa",
+    kind: "obra",
+    title: "Curso de direito comercial: direito de empresa",
+    authors: ["Fabio Ulhoa Coelho"],
+    area: "Direito Empresarial / Direito Comercial",
+    aliases: [
+      "curso de direito comercial",
+      "curso de direito comercial fabio ulhoa coelho",
+      "fabio ulhoa coelho curso de direito comercial",
+      "fabio ulhoa direito de empresa"
+    ],
+    verifiedSummary:
+      "Colecao brasileira de Direito Comercial/Empresarial, associada a teoria da empresa, sociedades, titulos de credito, contratos empresariais, falencia e recuperacao.",
+    caution:
+      "O titulo generico tambem aparece em obras de outros autores. Desambiguar pela autoria; nao indicar volume, pagina ou trecho literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2000%3B000579481"
+      }
+    ]
+  },
+  {
+    id: "curso_direito_empresarial_tomazette",
+    kind: "obra",
+    title: "Curso de direito empresarial",
+    authors: ["Marlon Tomazette"],
+    area: "Direito Empresarial",
+    aliases: [
+      "curso de direito empresarial",
+      "marlon tomazette curso de direito empresarial",
+      "tomazette curso de direito empresarial",
+      "curso empresarial tomazette"
+    ],
+    verifiedSummary:
+      "Colecao brasileira de Direito Empresarial, com tratamento de teoria geral, direito societario, titulos de credito, contratos empresariais, falencia e recuperacao.",
+    caution:
+      "A colecao possui volumes e edicoes. Nao indicar volume, pagina, edicao ou citacao literal sem verificar o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2018%3B001129857"
+      }
+    ]
+  },
+  {
+    id: "curso_direito_comercial_requiao",
+    kind: "obra",
+    title: "Curso de direito comercial",
+    authors: ["Rubens Requiao"],
+    area: "Direito Empresarial / Direito Comercial",
+    aliases: [
+      "curso de direito comercial rubens requiao",
+      "rubens requiao curso de direito comercial",
+      "requiao curso de direito comercial",
+      "curso comercial requiao"
+    ],
+    verifiedSummary:
+      "Obra brasileira classica de Direito Comercial, em volumes, associada a empresa, comerciante/empresario, sociedades, titulos de credito e institutos comerciais.",
+    caution:
+      "Ha edicoes revistas e atualizadas por terceiros. Nao indicar volume, edicao, pagina, atualizador ou trecho literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2008%3B000827044"
+      }
+    ]
   }
 ]);
 
@@ -534,22 +879,77 @@ export function normalizeBibliographicText(value) {
     .trim();
 }
 
+const AUTHOR_NAME_STOP_TOKENS = new Set(["de", "da", "do", "dos", "das", "e", "jr", "junior", "filho", "neto"]);
+
+function getAuthorNeedles(entry) {
+  const needles = new Set();
+
+  for (const author of entry.authors || []) {
+    const normalized = normalizeBibliographicText(author);
+    if (normalized) needles.add(normalized);
+
+    const tokens = normalized
+      .split(" ")
+      .filter((token) => token.length > 2 && !AUTHOR_NAME_STOP_TOKENS.has(token));
+    if (tokens.length >= 2) needles.add(tokens.slice(-2).join(" "));
+
+    const last = tokens.at(-1);
+    if (last && last.length >= 5) needles.add(last);
+  }
+
+  return [...needles].filter(Boolean);
+}
+
 export function findVerifiedLegalBibliographyEntry(value) {
   const q = normalizeBibliographicText(value);
   if (!q) return null;
 
-  for (const entry of LEGAL_BIBLIOGRAPHY_CATALOG) {
+  const matches = [];
+
+  LEGAL_BIBLIOGRAPHY_CATALOG.forEach((entry, entryIndex) => {
     const candidates = [entry.title, ...(entry.aliases || [])]
       .map(normalizeBibliographicText)
       .filter(Boolean)
       .sort((a, b) => b.length - a.length);
 
-    if (candidates.some((candidate) => q.includes(candidate))) {
-      return entry;
-    }
+    const matchedCandidate = candidates.find((candidate) => q.includes(candidate));
+    if (!matchedCandidate) return;
+
+    const authorNeedles = getAuthorNeedles(entry);
+    const authorScore = authorNeedles.some((needle) => q.includes(needle)) ? 1 : 0;
+    const exactTitleScore = matchedCandidate === normalizeBibliographicText(entry.title) ? 1 : 0;
+
+    matches.push({
+      entry,
+      entryIndex,
+      candidate: matchedCandidate,
+      authorScore,
+      exactTitleScore,
+      candidateLength: matchedCandidate.length
+    });
+  });
+
+  if (!matches.length) return null;
+
+  matches.sort((a, b) =>
+    (b.authorScore - a.authorScore) ||
+    (b.candidateLength - a.candidateLength) ||
+    (b.exactTitleScore - a.exactTitleScore) ||
+    (a.entryIndex - b.entryIndex)
+  );
+
+  const [best, second] = matches;
+  if (
+    second &&
+    !best.authorScore &&
+    !second.authorScore &&
+    best.candidate === second.candidate &&
+    best.candidateLength === second.candidateLength
+  ) {
+    return null;
   }
 
-  return null;
+  return best.entry;
 }
 
 export function buildVerifiedLegalBibliographyAnswer(entry) {

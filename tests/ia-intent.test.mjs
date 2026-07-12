@@ -3,6 +3,7 @@ import fs from "node:fs/promises";
 import test from "node:test";
 
 const { onRequestPost } = await import("../functions/api/ia.js");
+const { findVerifiedLegalBibliographyEntry } = await import("../functions/lib/legal-bibliography.js");
 
 async function postIa(message, env = {}) {
   return onRequestPost({
@@ -206,7 +207,7 @@ test("verified Brazilian legal bibliography catalog covers core areas without Op
       assert.equal(body.ok, true);
       assert.match(body.answer, item.author);
       assert.match(body.answer, item.title);
-      assert.match(body.answer, /catalogo-bibliografico-juridico-v3/i);
+      assert.match(body.answer, /catalogo-bibliografico-juridico-v4/i);
       assert.match(body.answer, /LexML/i);
     }
 
@@ -216,7 +217,7 @@ test("verified Brazilian legal bibliography catalog covers core areas without Op
   }
 });
 
-test("verified legal bibliography catalog v3 covers practical DAJ areas without OpenAI", async () => {
+test("verified legal bibliography catalog preserves v3 practical DAJ areas without OpenAI", async () => {
   const originalFetch = globalThis.fetch;
   let calls = 0;
   globalThis.fetch = async () => {
@@ -296,7 +297,139 @@ test("verified legal bibliography catalog v3 covers practical DAJ areas without 
       assert.equal(body.ok, true);
       assert.match(body.answer, item.author);
       assert.match(body.answer, item.title);
-      assert.match(body.answer, /catalogo-bibliografico-juridico-v3/i);
+      assert.match(body.answer, /catalogo-bibliografico-juridico-v4/i);
+      assert.match(body.answer, /LexML/i);
+    }
+
+    assert.equal(calls, 0);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("bibliographic selector prefers author-specific matches and avoids ambiguous generic titles", () => {
+  assert.equal(
+    findVerifiedLegalBibliographyEntry("Conhece Curso de direito tributario de Paulo de Barros Carvalho?")?.authors[0],
+    "Paulo de Barros Carvalho"
+  );
+  assert.equal(
+    findVerifiedLegalBibliographyEntry("Conhece Curso de direito tributario de Hugo de Brito Machado?")?.authors[0],
+    "Hugo de Brito Machado"
+  );
+  assert.equal(
+    findVerifiedLegalBibliographyEntry("Conhece Direito do trabalho de Sergio Pinto Martins?")?.authors[0],
+    "Sergio Pinto Martins"
+  );
+  assert.equal(
+    findVerifiedLegalBibliographyEntry("Conhece Direito do trabalho de Volia Bomfim Cassar?")?.authors[0],
+    "Volia Bomfim Cassar"
+  );
+  assert.equal(
+    findVerifiedLegalBibliographyEntry("Quem escreveu Curso de direito tributario?"),
+    null
+  );
+  assert.equal(
+    findVerifiedLegalBibliographyEntry("Quem escreveu Direito do trabalho?"),
+    null
+  );
+});
+
+test("verified legal bibliography catalog v4 covers litigation-adjacent areas without OpenAI", async () => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    throw new Error("OpenAI should not be called for cataloged v4 bibliography");
+  };
+
+  try {
+    const cases = [
+      {
+        question: "Quem escreveu Direito processual penal de Aury Lopes Jr?",
+        author: /Aury Lopes Jr\./i,
+        title: /Direito processual penal/i
+      },
+      {
+        question: "Conhece Manual de processo penal de Guilherme de Souza Nucci?",
+        author: /Guilherme de Souza Nucci/i,
+        title: /Manual de processo penal/i
+      },
+      {
+        question: "Quem escreveu Processo penal de Tourinho Filho?",
+        author: /Fernando da Costa Tourinho Filho/i,
+        title: /Processo penal/i
+      },
+      {
+        question: "Conhece o Curso de direito do trabalho de Mauricio Godinho Delgado?",
+        author: /Mauricio Godinho Delgado/i,
+        title: /Curso de direito do trabalho/i
+      },
+      {
+        question: "Quem escreveu Direito do trabalho de Volia Bomfim Cassar?",
+        author: /Volia Bomfim Cassar/i,
+        title: /Direito do trabalho/i
+      },
+      {
+        question: "Quem escreveu Direito do trabalho de Sergio Pinto Martins?",
+        author: /Sergio Pinto Martins/i,
+        title: /Direito do trabalho/i
+      },
+      {
+        question: "Quem escreveu Curso de direito administrativo de Celso Antonio Bandeira de Mello?",
+        author: /Celso Antonio Bandeira de Mello/i,
+        title: /Curso de direito administrativo/i
+      },
+      {
+        question: "Conhece Direito administrativo de Maria Sylvia Zanella Di Pietro?",
+        author: /Maria Sylvia Zanella Di Pietro/i,
+        title: /Direito administrativo/i
+      },
+      {
+        question: "Quem escreveu Direito administrativo brasileiro?",
+        author: /Hely Lopes Meirelles/i,
+        title: /Direito administrativo brasileiro/i
+      },
+      {
+        question: "Quem escreveu Curso de direito tributario de Hugo de Brito Machado?",
+        author: /Hugo de Brito Machado/i,
+        title: /Curso de direito tributario/i
+      },
+      {
+        question: "Conhece Curso de direito tributario de Paulo de Barros Carvalho?",
+        author: /Paulo de Barros Carvalho/i,
+        title: /Curso de direito tributario/i
+      },
+      {
+        question: "Quem escreveu Curso de direito constitucional tributario?",
+        author: /Roque Antonio Carrazza/i,
+        title: /Curso de direito constitucional tributario/i
+      },
+      {
+        question: "Conhece Curso de direito comercial de Fabio Ulhoa Coelho?",
+        author: /Fabio Ulhoa Coelho/i,
+        title: /Curso de direito comercial/i
+      },
+      {
+        question: "Quem escreveu Curso de direito empresarial de Marlon Tomazette?",
+        author: /Marlon Tomazette/i,
+        title: /Curso de direito empresarial/i
+      },
+      {
+        question: "Conhece Curso de direito comercial de Rubens Requiao?",
+        author: /Rubens Requiao/i,
+        title: /Curso de direito comercial/i
+      }
+    ];
+
+    for (const item of cases) {
+      const response = await postIa(item.question);
+      const body = await response.json();
+
+      assert.equal(response.status, 200);
+      assert.equal(body.ok, true);
+      assert.match(body.answer, item.author);
+      assert.match(body.answer, item.title);
+      assert.match(body.answer, /catalogo-bibliografico-juridico-v4/i);
       assert.match(body.answer, /LexML/i);
     }
 
