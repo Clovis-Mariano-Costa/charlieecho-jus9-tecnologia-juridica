@@ -20,6 +20,7 @@ Corrigir a resposta da Charlie Echo quando o usuario pede citacao, doutrina e pa
 - Fontes/citacoes retornadas pela busca anexadas de forma visivel na resposta.
 - Guarda contra resposta generica do tipo "procure nestas fontes".
 - Trava deterministica para declarar limite quando o usuario pede pagina e a busca nao retorna numero de pagina verificavel.
+- Pagina aproximada, estimada ou provavel nao pode ser tratada como pagina verificavel.
 
 ## Limites
 

@@ -136,7 +136,7 @@ test("doctrinal citation with theme requires active web search and visible consu
       choices: [
         {
           message: {
-            content: "Sobre direito de propriedade, a fonte localizada permite trabalhar a funcao social como limite constitucional ao uso individual do bem. Nao ha pagina exata confirmada neste retorno.",
+            content: "Sobre direito de propriedade, a fonte localizada permite trabalhar a funcao social como limite constitucional ao uso individual do bem. Ha apenas indicativo aproximado de pagina neste retorno.",
             annotations: [
               {
                 type: "url_citation",
@@ -166,6 +166,7 @@ test("doctrinal citation with theme requires active web search and visible consu
     assert.match(body.answer, /direito de propriedade/i);
     assert.match(body.answer, /Fontes consultadas pela busca/i);
     assert.match(body.answer, /Limite de pagina/i);
+    assert.match(body.answer, /pagina aproximada.*nao deve ser tratada como pagina verificavel/i);
     assert.match(body.answer, /https:\/\/bdtd\.ibict\.br/i);
     assert.doesNotMatch(body.answer, /Aqui estao algumas opcoes de fontes/i);
   } finally {

@@ -1507,6 +1507,14 @@ function ensureActiveLegalCitationPageLimit(message, answer, searchRequired) {
   if (!/\b(pagina|paginas|pagina exata|doutrina e pagina|doutrina com pagina)\b/.test(q)) return text;
   const normalized = normalizeForIntent(text);
   const hasPageNumber = /\b(p\.|pp\.|pagina|paginas|fl\.|fls\.)\s*(?:n[.oº]?\s*)?[:.]?\s*\d{1,5}\b/i.test(normalized);
+  const hasApproximatePage = /\b(pagina|paginas|indicativo|numero)\b.{0,80}\b(aproximad\w*|estimad\w*|provavel)\b|\b(aproximad\w*|estimad\w*|provavel)\b.{0,80}\b(pagina|paginas|indicativo|numero)\b/i.test(normalized);
+  if (hasApproximatePage) {
+    return [
+      text,
+      "",
+      "Limite de pagina: pagina aproximada, estimada ou provavel nao deve ser tratada como pagina verificavel. Use apenas os itens com pagina exata conferivel; nos demais, marque como fonte util sem pagina confirmada."
+    ].join("\n");
+  }
   if (hasPageNumber || /nao (?:ha|encontrei|localizei).*pagina verificavel/i.test(normalized)) return text;
   text = text.replace(/com autores,\s*obras,\s*p[aá]ginas?/i, "com autores, obras e fontes consultadas");
   return [
