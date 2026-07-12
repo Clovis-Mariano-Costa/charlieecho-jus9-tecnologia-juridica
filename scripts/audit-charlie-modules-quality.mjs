@@ -64,6 +64,12 @@ const apiHandler = read('functions/api/ia.js');
 for (const token of [
   'PROTOCOLO SENTIRE 1.0',
   'PROTOCOLO ENTRELINHAS 1.0',
+  'PESQUISA JURIDICA ATIVA 1.0',
+  'asksActiveLegalCitationResearch',
+  'activeLegalResearchContext',
+  'activeLegalWebSearchTool',
+  'appendWebSearchSources',
+  'tool_choice = "required"',
   'Escuta:',
   'Sentire: risco',
   'applyCreativeSurface',

@@ -94,6 +94,86 @@ test("legal explanation with sources calls the model instead of guided protocol"
   }
 });
 
+test("doctrinal citation without theme asks for minimum research scope", async () => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    throw new Error("OpenAI should not be called without minimum citation topic");
+  };
+
+  try {
+    const response = await postIa("forneca citacao com doutrina e pagina");
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(calls, 0);
+    assert.equal(body.governance.operation, "pesquisa_citacao_precisa_recorte");
+    assert.match(body.answer, /preciso de um recorte minimo/i);
+    assert.match(body.answer, /tema juridico|obra ou autor|PDF\/DOCX/i);
+    assert.doesNotMatch(body.answer, /Aqui estao algumas opcoes de fontes/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("doctrinal citation with theme requires active web search and visible consulted source", async () => {
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url, options = {}) => {
+    calls.push({ url: String(url), options });
+    assert.match(String(url), /api\.openai\.com/);
+    const payload = JSON.parse(String(options.body || "{}"));
+    assert.equal(payload.model, "test-search-model");
+    assert.equal(payload.tool_choice, "required");
+    assert.equal(payload.tools?.[0]?.type, "web_search");
+    assert.match(payload.input, /\[PESQUISA JURIDICA ATIVA OBRIGATORIA\]/);
+    assert.match(payload.input, /direito propriedade/i);
+    assert.ok(payload.tools[0].filters.allowed_domains.includes("bdtd.ibict.br"));
+    assert.ok(payload.tools[0].filters.allowed_domains.includes("scielo.br"));
+    return Response.json({
+      output: [
+        {
+          type: "message",
+          content: [
+            {
+              type: "output_text",
+              text: "Sobre direito de propriedade, a fonte localizada permite trabalhar a funcao social como limite constitucional ao uso individual do bem. Nao ha pagina exata confirmada neste retorno.",
+              annotations: [
+                {
+                  type: "url_citation",
+                  title: "BDTD - busca sobre direito de propriedade",
+                  url: "https://bdtd.ibict.br/vufind/Search/Results?lookfor=direito%20de%20propriedade"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    });
+  };
+
+  try {
+    const response = await postIa(
+      "forneca citacao com doutrina e pagina sobre direito de propriedade",
+      { OPENAI_API_KEY: "test-key", JUS9_MODEL_WEB_SEARCH: "test-search-model", JUS9_MODEL_DEFAULT: "test-model" }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(calls.length, 1);
+    assert.equal(body.governance.operation, "pesquisa_citacao_doutrinaria_ativa");
+    assert.match(body.answer, /direito de propriedade/i);
+    assert.match(body.answer, /Fontes consultadas pela busca/i);
+    assert.match(body.answer, /https:\/\/bdtd\.ibict\.br/i);
+    assert.doesNotMatch(body.answer, /Aqui estao algumas opcoes de fontes/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("known bibliographic work corrects authorship instead of hallucinating author", async () => {
   const originalFetch = globalThis.fetch;
   let calls = 0;

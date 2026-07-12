@@ -84,6 +84,17 @@ Perguntas sobre obra, livro, autor, autoria, edicao, editora, ISBN, paginas, cit
 - Em Direito, confundir autor de obra e erro material grave. Se houver incerteza, corrija a postura antes de desenvolver conteudo.
 `;
 
+const ACTIVE_LEGAL_RESEARCH_POLICY = `
+PESQUISA JURIDICA ATIVA 1.0:
+Quando o usuario pedir citacao, doutrina com pagina, obra, autor, tese, artigo, jurisprudencia especifica, inteiro teor ou fonte verificavel, Charlie Echo nao deve apenas listar onde o usuario pode pesquisar.
+- Se houver tema minimo, tente consultar fonte por ferramenta autorizada antes de responder.
+- Se a ferramenta de busca estiver disponivel, use a busca e entregue resposta com: sintese util; citacao literal curta ou ideia doutrinaria somente se verificavel; pagina quando a fonte trouxer paginacao; URL; tipo da fonte; confianca; limite de uso.
+- Se a busca nao retornar pagina, diga "nao encontrei pagina verificavel no retorno consultado" e ofereca o melhor fichamento possivel com fonte e limite. Nao invente pagina.
+- Se faltar tema, obra, autor ou arquivo minimo, faca uma pergunta curta de recorte. Nao despeje apenas LexML, BDTD, SciELO ou Google Scholar como substituto de resposta.
+- Upload governado tem prioridade: se o usuario enviar PDF/DOCX/texto, procure a citacao no material enviado antes de buscar fora.
+- Em fontes juridicas brasileiras, priorize Planalto, STF, STJ, TST, tribunais oficiais, LexML, BDTD, CAPES, SciELO e catalogos oficiais/universitarios.
+`;
+
 const CREATIVE_SURFACE_POLICY = `
 PROTOCOLO CENTELHA CRIATIVA 5.4 - RACIOCINIO APARENTE GOVERNADO:
 Charlie Echo deve parecer viva, criativa e inovadora pela qualidade da leitura, pelas conexoes uteis e pela forma de organizar a resposta, sem fingir consciencia humana.
@@ -371,6 +382,7 @@ ${LANGUAGE_POLICY}
 ${ENVIRONMENT_PERSONA_POLICY}
 ${RESPONSE_INTENT_POLICY}
 ${BIBLIOGRAPHIC_VERIFICATION_POLICY}
+${ACTIVE_LEGAL_RESEARCH_POLICY}
 ${CREATIVE_SURFACE_POLICY}
 ${SENTIRE_POLICY}
 ${LISTENING_POLICY}
@@ -426,6 +438,7 @@ ${LANGUAGE_POLICY}
 ${ENVIRONMENT_PERSONA_POLICY}
 ${RESPONSE_INTENT_POLICY}
 ${BIBLIOGRAPHIC_VERIFICATION_POLICY}
+${ACTIVE_LEGAL_RESEARCH_POLICY}
 ${CREATIVE_SURFACE_POLICY}
 ${SENTIRE_POLICY}
 ${LISTENING_POLICY}
@@ -483,6 +496,7 @@ ${LANGUAGE_POLICY}
 ${ENVIRONMENT_PERSONA_POLICY}
 ${RESPONSE_INTENT_POLICY}
 ${BIBLIOGRAPHIC_VERIFICATION_POLICY}
+${ACTIVE_LEGAL_RESEARCH_POLICY}
 ${CREATIVE_SURFACE_POLICY}
 ${SENTIRE_POLICY}
 ${LISTENING_POLICY}
@@ -562,6 +576,61 @@ function pickTextFromChatCompletions(result) {
   const message = result?.choices?.[0]?.message?.content;
   if (typeof message === "string" && message.trim()) return message.trim();
   return "";
+}
+
+function extractUrlCitationsFromResponsesApi(result) {
+  const citations = [];
+  const seen = new Set();
+
+  function addCitation(item) {
+    const url = String(item?.url || item?.uri || "").trim();
+    if (!isSafePublicHttpsUrl(url) || seen.has(url)) return;
+    seen.add(url);
+    citations.push({
+      url,
+      title: String(item?.title || item?.source_title || item?.name || "Fonte consultada").trim().slice(0, 160),
+    });
+  }
+
+  function visit(node) {
+    if (!node || typeof node !== "object") return;
+    if (Array.isArray(node)) {
+      for (const item of node) visit(item);
+      return;
+    }
+    if (node.type === "url_citation" || node.url || node.uri) addCitation(node);
+    if (Array.isArray(node.annotations)) {
+      for (const annotation of node.annotations) addCitation(annotation);
+    }
+    for (const value of Object.values(node)) {
+      if (value && typeof value === "object") visit(value);
+    }
+  }
+
+  visit(result?.output);
+  visit(result?.sources);
+  return citations.slice(0, 8);
+}
+
+function appendWebSearchSources(answer, result, searchRequired) {
+  const text = String(answer || "").trim();
+  if (!searchRequired) return text;
+  const citations = extractUrlCitationsFromResponsesApi(result);
+  if (!citations.length) {
+    return [
+      text,
+      "",
+      "Fontes consultadas pela busca: a ferramenta de busca foi exigida, mas o retorno estruturado nao trouxe citacoes de URL aproveitaveis. Nao vou inventar pagina, autor ou trecho literal sem fonte verificavel."
+    ].filter(Boolean).join("\n");
+  }
+  const missing = citations.filter((citation) => !text.includes(citation.url));
+  if (!missing.length && /fontes consultadas|fonte consultada|referencias|referencias/i.test(text)) return text;
+  return [
+    text,
+    "",
+    "Fontes consultadas pela busca:",
+    ...missing.map((citation) => `- ${citation.title}: ${citation.url}`)
+  ].join("\n");
 }
 
 function isSafePublicHttpsUrl(rawUrl) {
@@ -707,10 +776,86 @@ function asksGuidedLegalResearch(message) {
   const q = normalizeForIntent(extractCurrentQuestion(message));
   if (asksDajAnalysisReport(message)) return false;
   if (asksDocumentProductionDownload(message) || asksCompleteLegalDraft(message)) return false;
+  if (asksActiveLegalCitationResearch(message)) return false;
   const asksResearch = /\b(pesquise|pesquisar|pesquisa|busque|buscar|procure|procurar|fonte|fontes|link|links|onde encontrar|onde acho|onde localizar|me indique|indique|liste julgados|julgado|julgados|precedente especifico|precedentes especificos|acordao especifico|acordaos especificos|inteiro teor|ementa|relator|numero do processo|tribunal)\b/.test(q);
   const asksExplanation = /\b(explique|explica|fale sobre|conceitue|conceito|sintetize|sintese|resuma|analise|analisar|como funciona|o que e|o que significa|sem citar autores|sem citar julgados)\b/.test(q);
   const legalTopic = /\b(doutrina|jurisprudencia|precedente|acordao|lei|legislacao|responsabilidade civil|contrato|dano moral|direito)\b/.test(q);
   return asksResearch && legalTopic && !asksExplanation;
+}
+
+function asksActiveLegalCitationResearch(message) {
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  if (asksDocumentProductionDownload(message) || asksCompleteLegalDraft(message)) return false;
+  const wantsCitation = /\b(citacao|citacoes|cite|citar|trecho literal|pagina|paginas|referencia com pagina|doutrina com pagina|doutrina e pagina|autor e pagina)\b/.test(q);
+  const wantsDoctrineOrSource = /\b(doutrina|doutrinario|doutrinaria|obra|livro|artigo|tese|dissertacao|bibliografia|fonte|fontes|autor|autores)\b/.test(q);
+  const legalSignal = /\b(direito|juridico|juridica|constitucional|civil|penal|processual|propriedade|alimentos|contrato|responsabilidade|familia|trabalhista|tributario|administrativo|consumidor)\b/.test(q);
+  return wantsCitation && (wantsDoctrineOrSource || legalSignal);
+}
+
+function activeLegalCitationTopic(message) {
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  return q
+    .replace(/\b(forneca|fornecer|traga|quero|preciso|gostaria|me|uma|um|a|o|os|as|com|de|da|do|das|dos|no|na|em|para|por|sobre)\b/g, " ")
+    .replace(/\b(citacao|citacoes|cite|citar|trecho|literal|pagina|paginas|doutrina|doutrinario|doutrinaria|fonte|fontes|referencia|referencias|bibliografia|autor|autores)\b/g, " ")
+    .replace(/[.,;:!?]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 160);
+}
+
+function hasMinimumActiveLegalCitationTopic(message) {
+  const topic = activeLegalCitationTopic(message);
+  if (!asksActiveLegalCitationResearch(message)) return false;
+  if (!topic || topic.length < 4) return false;
+  if (/^(adequada|confiavel|verificavel|juridica|juridico|direito)$/.test(topic)) return false;
+  return true;
+}
+
+function activeLegalCitationClarificationAnswer(message) {
+  return [
+    "Consigo fazer a busca, mas preciso de um recorte minimo antes de procurar citacao com pagina.",
+    "",
+    "Informe um destes pontos:",
+    "- tema juridico, por exemplo: direito de propriedade, alimentos, responsabilidade civil;",
+    "- obra ou autor especifico;",
+    "- PDF/DOCX enviado para eu localizar pagina no proprio arquivo;",
+    "- tribunal/base ou finalidade da citacao, como peticao, parecer, aula ou estudo.",
+    "",
+    "Com esse recorte, eu devo tentar consultar fonte verificavel e responder com fonte, pagina quando houver, nivel de confianca e limite de uso. Eu nao devo inventar pagina nem substituir a busca por uma lista generica de sites."
+  ].join("\n");
+}
+
+function activeLegalResearchContext(message) {
+  if (!asksActiveLegalCitationResearch(message)) return "";
+  const topic = activeLegalCitationTopic(message) || "tema ainda nao delimitado";
+  return [
+    "[PESQUISA JURIDICA ATIVA OBRIGATORIA]",
+    `Tema/recorte identificado: ${topic}.`,
+    "Antes de responder, use ferramenta de busca autorizada quando disponivel. Nao responda apenas indicando LexML, BDTD, SciELO, CAPES ou Google Scholar para o usuario pesquisar.",
+    "Entregue: 1) resposta substantiva; 2) citacao literal curta ou ideia doutrinaria somente se verificavel; 3) pagina apenas quando a fonte trouxer paginacao; 4) URL; 5) tipo e confianca da fonte; 6) limite de uso e revisao humana.",
+    "Se a busca nao localizar pagina verificavel, diga isso claramente e ofereca ficha de verificacao com os resultados encontrados. Nao invente autor, obra, pagina ou trecho."
+  ].join("\n");
+}
+
+function activeLegalWebSearchTool() {
+  return {
+    type: "web_search",
+    search_context_size: "medium",
+    filters: {
+      allowed_domains: [
+        "planalto.gov.br",
+        "stf.jus.br",
+        "stj.jus.br",
+        "tst.jus.br",
+        "tjsc.jus.br",
+        "lexml.gov.br",
+        "bdtd.ibict.br",
+        "scielo.br",
+        "periodicos.capes.gov.br",
+        "scholar.google.com.br"
+      ]
+    }
+  };
 }
 
 function asksBibliographicVerification(message) {
@@ -864,6 +1009,11 @@ function inferGovernanceOperation(message) {
   if (asksLegalDocumentProduction(message)) return "producao_documental_juridica";
   if (asksDajAnalysisReport(message)) return "analise_daj_governada";
   if (knownJurisprudenceAnswer(message)) return "jurisprudencia_governada_daj";
+  if (asksActiveLegalCitationResearch(message)) {
+    return hasMinimumActiveLegalCitationTopic(message)
+      ? "pesquisa_citacao_doutrinaria_ativa"
+      : "pesquisa_citacao_precisa_recorte";
+  }
   if (asksGuidedLegalResearch(message)) return "pesquisa_fontes_juridicas";
   if (/\b(upload|anexo|pdf|docx|arquivo enviado|conteudo extraido)\b/.test(q)) return "analise_upload_governado";
   if (/\b(governanca|dna|constituicao|leis internas|regimento|protocolo|cronograma|auditoria|investidor|parceiro|roadmap|mvp)\b/.test(q)) return "governanca_e_auditoria";
@@ -1260,6 +1410,35 @@ function ensureCompleteLegalDraftAnswer(message, answer) {
   if (!asksCompleteLegalDraft(message)) return text;
   if (!needsCompleteLegalDraftRepair(message, text)) return text;
   return completeLegalDraftScaffold(message);
+}
+
+function needsActiveLegalCitationResearchRepair(message, answer, searchRequired) {
+  if (!searchRequired || !asksActiveLegalCitationResearch(message)) return false;
+  const text = String(answer || "").trim();
+  const normalized = normalizeForIntent(text);
+  if (!text) return true;
+  const genericOnly = /\b(preciso consultar|preciso de uma fonte|caso voce tenha|caso tenha|posso sugerir fontes|aqui estao algumas fontes|voce pode pesquisar|onde voce pode pesquisar)\b/.test(normalized);
+  return genericOnly;
+}
+
+function activeLegalCitationResearchRepairAnswer(message) {
+  const topic = activeLegalCitationTopic(message) || "tema informado";
+  return [
+    `Tentei tratar o pedido como pesquisa juridica ativa sobre ${topic}, mas a resposta recebida nao trouxe fonte verificavel suficiente.`,
+    "",
+    "Resultado governado:",
+    "- nao vou inventar citacao, autor, obra ou pagina;",
+    "- para uma citacao com pagina, preciso localizar PDF/obra/artigo com paginacao ou receber o arquivo por upload;",
+    "- se a busca retornar fonte sem pagina, posso fichar a ideia e marcar como sem pagina verificavel.",
+    "",
+    "Proximo passo: envie o tema mais fechado, obra/autoria desejada ou o PDF/DOCX. Com isso eu procuro no material e devolvo trecho, pagina, URL, confianca e limite de uso."
+  ].join("\n");
+}
+
+function ensureActiveLegalCitationResearchAnswer(message, answer, searchRequired) {
+  const text = String(answer || "").trim();
+  if (!needsActiveLegalCitationResearchRepair(message, text, searchRequired)) return text;
+  return activeLegalCitationResearchRepairAnswer(message);
 }
 
 function ensureDajAnalysisReportAnswer(message, answer) {
@@ -2335,6 +2514,15 @@ export async function onRequestPost(context) {
       }, corrective.ok ? 200 : 400);
     }
 
+    if (asksActiveLegalCitationResearch(message) && !hasMinimumActiveLegalCitationTopic(message)) {
+      return jsonResponse({
+        ok: true,
+        mode,
+        answer: removeUnsafeLinks(cleanPublicAnswer(activeLegalCitationClarificationAnswer(message))),
+        governance,
+      });
+    }
+
     const verifiedBibliographicAnswer = knownBibliographicAnswer(message);
     if (verifiedBibliographicAnswer) {
       return jsonResponse({
@@ -2412,7 +2600,8 @@ export async function onRequestPost(context) {
     const governanceContext = buildGovernanceDecisionContext(governanceDecision);
     const bibliographyContext = bibliographicVerificationContext(message);
     const jurisprudenceContext = jurisprudenceVerificationContext(message);
-    const contextBlocks = [bibliographyContext, jurisprudenceContext].filter(Boolean).join("\n\n");
+    const activeResearchContext = activeLegalResearchContext(message);
+    const contextBlocks = [bibliographyContext, jurisprudenceContext, activeResearchContext].filter(Boolean).join("\n\n");
     const governedMessage = contextBlocks ? `${contextBlocks}\n\n${message}` : message;
     const inputMessage = roomContext ? `${roomContext}\n\n${governanceContext}\n${governedMessage}` : `${governanceContext}\n${governedMessage}`;
 
@@ -2429,11 +2618,26 @@ export async function onRequestPost(context) {
       : mode === "social"
         ? SYSTEM_PUBLICO_SOCIAL
         : SYSTEM_PUBLICO_ESTUDANTES;
+    const searchRequired = asksActiveLegalCitationResearch(message) && hasMinimumActiveLegalCitationTopic(message);
     const model = mode === "profissional"
       ? (env.JUS9_MODEL_PROFISSIONAL || env.JUS9_MODEL_DEFAULT || "gpt-4o-mini")
       : mode === "social"
         ? (env.JUS9_MODEL_SOCIAL || env.JUS9_MODEL_DEFAULT || "gpt-4o-mini")
         : (env.JUS9_MODEL_ESTUDANTES || env.JUS9_MODEL_DEFAULT || "gpt-4o-mini");
+    const responseModel = searchRequired
+      ? (env.JUS9_MODEL_WEB_SEARCH || env.JUS9_MODEL_SEARCH || "gpt-4.1-mini")
+      : model;
+    const openaiRequestBody = {
+      model: responseModel,
+      instructions,
+      input: inputMessage,
+      store: false,
+      max_output_tokens: searchRequired ? 1600 : mode === "profissional" ? 1200 : mode === "social" ? 700 : 900,
+    };
+    if (searchRequired) {
+      openaiRequestBody.tools = [activeLegalWebSearchTool()];
+      openaiRequestBody.tool_choice = "required";
+    }
 
     const openaiResponse = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
@@ -2441,13 +2645,7 @@ export async function onRequestPost(context) {
         "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        model,
-        instructions,
-        input: inputMessage,
-        store: false,
-        max_output_tokens: mode === "profissional" ? 1200 : mode === "social" ? 700 : 900,
-      }),
+      body: JSON.stringify(openaiRequestBody),
     });
 
     const result = await openaiResponse.json().catch(() => null);
@@ -2477,7 +2675,9 @@ export async function onRequestPost(context) {
       }, 502);
     }
 
-    let governedAnswer = ensureCompleteLegalDraftAnswer(inputMessage, answer);
+    let governedAnswer = appendWebSearchSources(answer, result, searchRequired);
+    governedAnswer = ensureActiveLegalCitationResearchAnswer(inputMessage, governedAnswer, searchRequired);
+    governedAnswer = ensureCompleteLegalDraftAnswer(inputMessage, governedAnswer);
     governedAnswer = ensureDajAnalysisReportAnswer(inputMessage, governedAnswer);
     governedAnswer = applyCreativeSurface(inputMessage, governedAnswer);
     governedAnswer = ensureDriveSaverGuidance(inputMessage, governedAnswer);

@@ -207,6 +207,13 @@ assert(apiHandler.includes("findVerifiedLegalBibliographyEntry"), "catalogo bibl
 assert(apiHandler.includes("findVerifiedLegalJurisprudenceTheme"), "catalogo jurisprudencial governado nao esta conectado a API");
 assert(apiHandler.includes("findVerifiedLegalJurisprudencePrecedent"), "fichas jurisprudenciais governadas nao estao conectadas a API");
 assert(apiHandler.includes("knownJurisprudenceWorkProduct"), "produtos jurisprudenciais governados nao estao conectados a API");
+assert(apiHandler.includes("PESQUISA JURIDICA ATIVA 1.0"), "politica de pesquisa juridica ativa ausente");
+assert(apiHandler.includes("asksActiveLegalCitationResearch"), "detector de citacao/doutrina com pagina ausente");
+assert(apiHandler.includes("activeLegalResearchContext"), "contexto de pesquisa ativa ausente");
+assert(apiHandler.includes("activeLegalWebSearchTool"), "ferramenta web_search juridica ausente");
+assert(apiHandler.includes("appendWebSearchSources"), "fontes consultadas pela busca nao sao anexadas");
+assert(apiHandler.includes('openaiRequestBody.tool_choice = "required"'), "web_search obrigatorio nao esta sendo exigido");
+assert(apiHandler.includes("pesquisa_citacao_doutrinaria_ativa"), "operacao de citacao doutrinaria ativa ausente");
 assert(legalBibliography.includes("catalogo-bibliografico-juridico-v6"), "versao v6 do catalogo bibliografico ausente");
 assert(legalBibliography.includes("Juarez Cirino dos Santos"), "obra do fato punivel ausente do catalogo");
 assert(legalBibliography.includes("Hans Kelsen"), "Teoria pura do direito ausente do catalogo");
