@@ -110,6 +110,13 @@ await runLiveCase(
 );
 
 await runLiveCase(
+  "jurisprudencia-governada-alimentos",
+  "Pesquise jurisprudencia sobre revisao de alimentos.",
+  [/catalogo-jurisprudencial-daj-v1/i, /Alimentos, revisao e execucao/i, /Sumula 309/i],
+  [/Para pesquisar/i, /Google Academico/i],
+);
+
+await runLiveCase(
   "deji-revisao-contrato",
   "No DEJI, crie um roteiro de revisao de contrato empresarial ficticio.",
   [/contrato|contratual/i, /risco|clausula|cláusula|revisao humana|revisão humana/i],
@@ -145,6 +152,7 @@ const browserScript = await fs.readFile(new URL("../assets/js/charlie-ia-pages.j
 const apiHandler = await fs.readFile(new URL("../functions/api/ia.js", import.meta.url), "utf8");
 const downloadHandler = await fs.readFile(new URL("../functions/api/gerar-download.js", import.meta.url), "utf8");
 const legalBibliography = await fs.readFile(new URL("../functions/lib/legal-bibliography.js", import.meta.url), "utf8");
+const legalJurisprudence = await fs.readFile(new URL("../functions/lib/legal-jurisprudence.js", import.meta.url), "utf8");
 const apiCall = browserScript.indexOf("callCharlieApi(msg, 'profissional', status");
 const apiAnswer = browserScript.indexOf("if(apiAnswer) return answer(apiAnswer)", apiCall);
 const localFallback = browserScript.indexOf("if(localAnswer)", apiAnswer);
@@ -182,6 +190,7 @@ assert(apiHandler.includes("asksGuidedLegalResearch"), "salvaguarda deterministi
 assert(apiHandler.includes("Eu nao vou inventar autor, obra, pagina, citacao literal ou julgado"), "limite deterministico contra fontes inventadas ausente");
 assert(apiHandler.includes("BIBLIOGRAPHIC_VERIFICATION_POLICY"), "politica de verificacao bibliografica ausente");
 assert(apiHandler.includes("findVerifiedLegalBibliographyEntry"), "catalogo bibliografico verificado nao esta conectado a API");
+assert(apiHandler.includes("findVerifiedLegalJurisprudenceTheme"), "catalogo jurisprudencial governado nao esta conectado a API");
 assert(legalBibliography.includes("catalogo-bibliografico-juridico-v6"), "versao v6 do catalogo bibliografico ausente");
 assert(legalBibliography.includes("Juarez Cirino dos Santos"), "obra do fato punivel ausente do catalogo");
 assert(legalBibliography.includes("Hans Kelsen"), "Teoria pura do direito ausente do catalogo");
@@ -243,6 +252,13 @@ assert(legalBibliography.includes("Laura Schertel Mendes"), "Privacidade/proteca
 assert(legalBibliography.includes("Patricia Peck Pinheiro"), "Advocacia digital ausente do catalogo");
 assert(legalBibliography.includes("Wolfgang Hoffmann-Riem"), "IA e regulacao juridica ausente do catalogo");
 assert(legalBibliography.includes("Marcela Mattiuzzo"), "Discriminacao algoritmica ausente do catalogo");
+assert(legalJurisprudence.includes("catalogo-jurisprudencial-daj-v1"), "versao v1 do catalogo jurisprudencial DAJ ausente");
+assert(legalJurisprudence.includes("Direito de propriedade e funcao social"), "tema propriedade/funcao social ausente do catalogo jurisprudencial");
+assert(legalJurisprudence.includes("Alimentos, revisao e execucao"), "tema alimentos/revisao/execucao ausente do catalogo jurisprudencial");
+assert(legalJurisprudence.includes("Responsabilidade civil, dano material, dano moral e nexo causal"), "tema responsabilidade civil ausente do catalogo jurisprudencial");
+assert(legalJurisprudence.includes("Consumidor, bancos, fraudes e fortuito interno"), "tema consumidor/bancos/fraudes ausente do catalogo jurisprudencial");
+assert(legalJurisprudence.includes("LGPD, vazamento de dados e responsabilidade por tratamento irregular"), "tema LGPD/vazamento ausente do catalogo jurisprudencial");
+assert(legalJurisprudence.includes("Tutela coletiva, acao civil publica e direitos difusos"), "tema tutela coletiva ausente do catalogo jurisprudencial");
 assert(browserScript.includes("Analise jurisprudencial orientativa"), "fallback local de jurisprudencia substantiva ausente");
 assert(browserScript.includes("Sintese doutrinaria orientativa"), "fallback local de doutrina substantiva ausente");
 assert(!apiHandler.includes("jurisprudencia|jurisprudência|doutrina|fonte|fontes|pesquise|pesquisar"), "doutrina voltou a ser gatilho automatico de pesquisa guiada");

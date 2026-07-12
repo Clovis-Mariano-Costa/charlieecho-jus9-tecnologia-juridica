@@ -4,6 +4,11 @@ import {
   buildVerifiedLegalBibliographyContext,
   findVerifiedLegalBibliographyEntry
 } from "../lib/legal-bibliography.js";
+import {
+  buildVerifiedLegalJurisprudenceAnswer,
+  buildVerifiedLegalJurisprudenceContext,
+  findVerifiedLegalJurisprudenceTheme
+} from "../lib/legal-jurisprudence.js";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -732,6 +737,16 @@ function knownBibliographicAnswer(message) {
   return buildVerifiedLegalBibliographyAnswer(verifiedEntry);
 }
 
+function jurisprudenceVerificationContext(message) {
+  const verifiedEntry = findVerifiedLegalJurisprudenceTheme(extractCurrentQuestion(message));
+  return buildVerifiedLegalJurisprudenceContext(verifiedEntry);
+}
+
+function knownJurisprudenceAnswer(message) {
+  const verifiedEntry = findVerifiedLegalJurisprudenceTheme(extractCurrentQuestion(message));
+  return buildVerifiedLegalJurisprudenceAnswer(verifiedEntry);
+}
+
 function asksDocumentProductionDownload(message) {
   const q = normalizeForIntent(extractCurrentQuestion(message));
   const wantsDocument = /\b(minuta|modelo|contrato|peticao|peca|documento|oficio|requerimento|manifestacao|recurso|contestacao|inicial)\b/.test(q);
@@ -822,6 +837,7 @@ function inferGovernanceOperation(message) {
   if (asksDriveSaverCorrectiveAction(message)) return "correcao_drive_saver";
   if (asksLegalDocumentProduction(message)) return "producao_documental_juridica";
   if (asksDajAnalysisReport(message)) return "analise_daj_governada";
+  if (knownJurisprudenceAnswer(message)) return "jurisprudencia_governada_daj";
   if (asksGuidedLegalResearch(message)) return "pesquisa_fontes_juridicas";
   if (/\b(upload|anexo|pdf|docx|arquivo enviado|conteudo extraido)\b/.test(q)) return "analise_upload_governado";
   if (/\b(governanca|dna|constituicao|leis internas|regimento|protocolo|cronograma|auditoria|investidor|parceiro|roadmap|mvp)\b/.test(q)) return "governanca_e_auditoria";
@@ -2236,6 +2252,16 @@ export async function onRequestPost(context) {
       });
     }
 
+    const verifiedJurisprudenceAnswer = knownJurisprudenceAnswer(message);
+    if (verifiedJurisprudenceAnswer) {
+      return jsonResponse({
+        ok: true,
+        mode,
+        answer: removeUnsafeLinks(cleanPublicAnswer(verifiedJurisprudenceAnswer)),
+        governance,
+      });
+    }
+
     if (asksGuidedLegalResearch(message)) {
       return jsonResponse({
         ok: true,
@@ -2273,7 +2299,9 @@ export async function onRequestPost(context) {
 
     const governanceContext = buildGovernanceDecisionContext(governanceDecision);
     const bibliographyContext = bibliographicVerificationContext(message);
-    const governedMessage = bibliographyContext ? `${bibliographyContext}\n\n${message}` : message;
+    const jurisprudenceContext = jurisprudenceVerificationContext(message);
+    const contextBlocks = [bibliographyContext, jurisprudenceContext].filter(Boolean).join("\n\n");
+    const governedMessage = contextBlocks ? `${contextBlocks}\n\n${message}` : message;
     const inputMessage = roomContext ? `${roomContext}\n\n${governanceContext}\n${governedMessage}` : `${governanceContext}\n${governedMessage}`;
 
     if (inputMessage.length > 18000) {

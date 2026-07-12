@@ -4,6 +4,7 @@ import test from "node:test";
 
 const { onRequestPost } = await import("../functions/api/ia.js");
 const { findVerifiedLegalBibliographyEntry } = await import("../functions/lib/legal-bibliography.js");
+const { findVerifiedLegalJurisprudenceTheme } = await import("../functions/lib/legal-jurisprudence.js");
 
 async function postIa(message, env = {}) {
   return onRequestPost({
@@ -41,16 +42,20 @@ test("document download typo donwload does not fall into guided legal research",
   assert.doesNotMatch(String(body.answer || body.error || ""), /Fontes recomendadas/i);
 });
 
-test("explicit jurisprudence research still uses guided legal research", async () => {
+test("cataloged jurisprudence research uses governed DAJ thesis instead of generic protocol", async () => {
   const response = await postIa("pesquise jurisprudencia sobre revisao de alimentos");
   const body = await response.json();
 
   assert.equal(response.status, 200);
   assert.equal(body.ok, true);
   assert.equal(body.governance.targetMvp, "DAJ_ADVOGADOS");
+  assert.equal(body.governance.operation, "jurisprudencia_governada_daj");
   assert.equal(body.governance.driveMemory.official, true);
-  assert.match(body.answer, /Para pesquisar/i);
-  assert.match(body.answer, /Jurisprudencia - trilha segura/i);
+  assert.match(body.answer, /catalogo-jurisprudencial-daj-v1/i);
+  assert.match(body.answer, /Alimentos, revisao e execucao/i);
+  assert.match(body.answer, /Sumula 309/i);
+  assert.doesNotMatch(body.answer, /Para pesquisar/i);
+  assert.doesNotMatch(body.answer, /Jurisprudencia - trilha segura/i);
 });
 
 test("legal explanation with sources calls the model instead of guided protocol", async () => {
@@ -639,6 +644,91 @@ test("verified legal bibliography catalog v6 covers collective evidence data and
       assert.match(body.answer, item.title);
       assert.match(body.answer, /catalogo-bibliografico-juridico-v6/i);
       assert.match(body.answer, item.source);
+    }
+
+    assert.equal(calls, 0);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("jurisprudence selector covers governed DAJ themes and avoids generic titles", () => {
+  assert.equal(
+    findVerifiedLegalJurisprudenceTheme("pesquise jurisprudencia sobre revisao de alimentos")?.id,
+    "alimentos_revisao_execucao"
+  );
+  assert.equal(
+    findVerifiedLegalJurisprudenceTheme("quero julgados sobre golpe do boleto e banco")?.id,
+    "consumidor_bancos_fraudes"
+  );
+  assert.equal(
+    findVerifiedLegalJurisprudenceTheme("fale sobre direito de propriedade citando fontes"),
+    null
+  );
+  assert.equal(
+    findVerifiedLegalJurisprudenceTheme("explique responsabilidade civil sem citar julgados"),
+    null
+  );
+});
+
+test("verified DAJ jurisprudence catalog v1 covers priority themes without OpenAI", async () => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    throw new Error("OpenAI should not be called for cataloged DAJ jurisprudence");
+  };
+
+  try {
+    const cases = [
+      {
+        question: "Pesquise jurisprudencia sobre direito de propriedade e funcao social",
+        theme: /Direito de propriedade e funcao social/i,
+        expected: [/Constituicao Federal/i, /STF - Pesquisa de jurisprudencia/i]
+      },
+      {
+        question: "Pesquise jurisprudencia sobre revisao de alimentos",
+        theme: /Alimentos, revisao e execucao/i,
+        expected: [/CPC - execucao de alimentos/i, /STJ - Sumula 309/i]
+      },
+      {
+        question: "Liste julgados sobre responsabilidade civil e dano moral",
+        theme: /Responsabilidade civil, dano material, dano moral e nexo causal/i,
+        expected: [/Codigo Civil/i, /STJ - Sumula 37/i]
+      },
+      {
+        question: "Quero precedentes sobre fraude bancaria e fortuito interno",
+        theme: /Consumidor, bancos, fraudes e fortuito interno/i,
+        expected: [/STJ - Sumula 297/i, /STJ - Sumula 479/i]
+      },
+      {
+        question: "Pesquise jurisprudencia de LGPD sobre vazamento de dados",
+        theme: /LGPD, vazamento de dados e responsabilidade por tratamento irregular/i,
+        expected: [/LGPD - Lei 13\.709/i, /ANPD - portal oficial/i]
+      },
+      {
+        question: "Quero jurisprudencia sobre tutela coletiva e acao civil publica",
+        theme: /Tutela coletiva, acao civil publica e direitos difusos/i,
+        expected: [/Lei da Acao Civil Publica/i, /CDC - tutela coletiva/i]
+      }
+    ];
+
+    for (const item of cases) {
+      const response = await postIa(item.question);
+      const body = await response.json();
+
+      assert.equal(response.status, 200);
+      assert.equal(body.ok, true);
+      assert.equal(body.governance.operation, "jurisprudencia_governada_daj");
+      assert.match(body.answer, /catalogo-jurisprudencial-daj-v1/i);
+      assert.match(body.answer, item.theme);
+      assert.match(body.answer, /Teses pesquisaveis, sem inventar julgado/i);
+      assert.match(body.answer, /Fontes oficiais para conferencia/i);
+      assert.doesNotMatch(body.answer, /Para pesquisar/i);
+      assert.doesNotMatch(body.answer, /Jurisprudencia - trilha segura/i);
+      for (const expected of item.expected) {
+        assert.match(body.answer, expected);
+      }
     }
 
     assert.equal(calls, 0);
