@@ -207,7 +207,7 @@ test("verified Brazilian legal bibliography catalog covers core areas without Op
       assert.equal(body.ok, true);
       assert.match(body.answer, item.author);
       assert.match(body.answer, item.title);
-      assert.match(body.answer, /catalogo-bibliografico-juridico-v5/i);
+      assert.match(body.answer, /catalogo-bibliografico-juridico-v6/i);
       assert.match(body.answer, /LexML/i);
     }
 
@@ -297,7 +297,7 @@ test("verified legal bibliography catalog preserves v3 practical DAJ areas witho
       assert.equal(body.ok, true);
       assert.match(body.answer, item.author);
       assert.match(body.answer, item.title);
-      assert.match(body.answer, /catalogo-bibliografico-juridico-v5/i);
+      assert.match(body.answer, /catalogo-bibliografico-juridico-v6/i);
       assert.match(body.answer, /LexML/i);
     }
 
@@ -445,7 +445,7 @@ test("verified legal bibliography catalog v4 covers litigation-adjacent areas wi
       assert.equal(body.ok, true);
       assert.match(body.answer, item.author);
       assert.match(body.answer, item.title);
-      assert.match(body.answer, /catalogo-bibliografico-juridico-v5/i);
+      assert.match(body.answer, /catalogo-bibliografico-juridico-v6/i);
       assert.match(body.answer, /LexML/i);
     }
 
@@ -535,8 +535,110 @@ test("verified legal bibliography catalog v5 covers previdenciario ambiental con
       assert.equal(body.ok, true);
       assert.match(body.answer, item.author);
       assert.match(body.answer, item.title);
-      assert.match(body.answer, /catalogo-bibliografico-juridico-v5/i);
+      assert.match(body.answer, /catalogo-bibliografico-juridico-v6/i);
       assert.match(body.answer, /LexML/i);
+    }
+
+    assert.equal(calls, 0);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("verified legal bibliography catalog v6 covers collective evidence data and digital law without OpenAI", async () => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    throw new Error("OpenAI should not be called for cataloged v6 bibliography");
+  };
+
+  try {
+    const cases = [
+      {
+        question: "Quem escreveu A defesa dos interesses difusos em juizo?",
+        author: /Hugo Nigro Mazzilli/i,
+        title: /A defesa dos interesses difusos em juizo/i,
+        source: /LexML/i
+      },
+      {
+        question: "Conhece Acesso a ordem juridica justa de Kazuo Watanabe?",
+        author: /Kazuo Watanabe/i,
+        title: /Acesso a ordem juridica justa/i,
+        source: /LexML/i
+      },
+      {
+        question: "Conhece Codigo brasileiro de defesa do consumidor comentado pelos autores do anteprojeto?",
+        author: /Ada Pellegrini Grinover/i,
+        title: /Codigo brasileiro de defesa do consumidor comentado pelos autores do anteprojeto/i,
+        source: /GEN Juridico/i
+      },
+      {
+        question: "Quem escreveu A prova de Michele Taruffo?",
+        author: /Michele Taruffo/i,
+        title: /A prova/i,
+        source: /LexML/i
+      },
+      {
+        question: "Conhece Prova e verdade no direito?",
+        author: /Jordi Ferrer Beltran/i,
+        title: /Prova e verdade no direito/i,
+        source: /LexML/i
+      },
+      {
+        question: "Quem escreveu Argumentacao juridica e teoria do direito?",
+        author: /Neil MacCormick/i,
+        title: /Argumentacao juridica e teoria do direito/i,
+        source: /LexML/i
+      },
+      {
+        question: "Quem escreveu Protecao de dados pessoais: a funcao e os limites do consentimento?",
+        author: /Bruno Ricardo Bioni/i,
+        title: /Protecao de dados pessoais: a funcao e os limites do consentimento/i,
+        source: /LexML/i
+      },
+      {
+        question: "Conhece Da privacidade a protecao de dados pessoais?",
+        author: /Danilo Doneda/i,
+        title: /Da privacidade a protecao de dados pessoais/i,
+        source: /LexML/i
+      },
+      {
+        question: "Quem escreveu Privacidade, protecao de dados e defesa do consumidor?",
+        author: /Laura Schertel Mendes/i,
+        title: /Privacidade, protecao de dados e defesa do consumidor/i,
+        source: /LexML/i
+      },
+      {
+        question: "Quem escreveu Advocacia digital?",
+        author: /Patricia Peck Pinheiro/i,
+        title: /Advocacia digital/i,
+        source: /LexML/i
+      },
+      {
+        question: "Conhece Inteligencia artificial como oportunidade para a regulacao juridica?",
+        author: /Wolfgang Hoffmann-Riem/i,
+        title: /Inteligencia artificial como oportunidade para a regulacao juridica/i,
+        source: /LexML - Direito Publico/i
+      },
+      {
+        question: "Quem escreveu Discriminacao algoritmica?",
+        author: /Laura Schertel Mendes/i,
+        title: /Discriminacao algoritmica: conceito, fundamento legal e tipologia/i,
+        source: /LexML - Direito Publico/i
+      }
+    ];
+
+    for (const item of cases) {
+      const response = await postIa(item.question);
+      const body = await response.json();
+
+      assert.equal(response.status, 200);
+      assert.equal(body.ok, true);
+      assert.match(body.answer, item.author);
+      assert.match(body.answer, item.title);
+      assert.match(body.answer, /catalogo-bibliografico-juridico-v6/i);
+      assert.match(body.answer, item.source);
     }
 
     assert.equal(calls, 0);

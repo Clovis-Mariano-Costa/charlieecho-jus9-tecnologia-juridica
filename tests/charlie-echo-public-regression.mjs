@@ -182,7 +182,7 @@ assert(apiHandler.includes("asksGuidedLegalResearch"), "salvaguarda deterministi
 assert(apiHandler.includes("Eu nao vou inventar autor, obra, pagina, citacao literal ou julgado"), "limite deterministico contra fontes inventadas ausente");
 assert(apiHandler.includes("BIBLIOGRAPHIC_VERIFICATION_POLICY"), "politica de verificacao bibliografica ausente");
 assert(apiHandler.includes("findVerifiedLegalBibliographyEntry"), "catalogo bibliografico verificado nao esta conectado a API");
-assert(legalBibliography.includes("catalogo-bibliografico-juridico-v5"), "versao v5 do catalogo bibliografico ausente");
+assert(legalBibliography.includes("catalogo-bibliografico-juridico-v6"), "versao v6 do catalogo bibliografico ausente");
 assert(legalBibliography.includes("Juarez Cirino dos Santos"), "obra do fato punivel ausente do catalogo");
 assert(legalBibliography.includes("Hans Kelsen"), "Teoria pura do direito ausente do catalogo");
 assert(legalBibliography.includes("Cesare Beccaria"), "Dos delitos e das penas ausente do catalogo");
@@ -231,6 +231,18 @@ assert(legalBibliography.includes("Paulo Bonavides"), "Curso de direito constitu
 assert(legalBibliography.includes("Judith Martins-Costa"), "A boa-fe no direito privado ausente do catalogo");
 assert(legalBibliography.includes("Sergio Cavalieri Filho"), "Programa de responsabilidade civil ausente do catalogo");
 assert(legalBibliography.includes("Arnaldo Rizzardo"), "Contratos de Arnaldo Rizzardo ausente do catalogo");
+assert(legalBibliography.includes("Hugo Nigro Mazzilli"), "A defesa dos interesses difusos em juizo ausente do catalogo");
+assert(legalBibliography.includes("Kazuo Watanabe"), "Acesso a ordem juridica justa ausente do catalogo");
+assert(legalBibliography.includes("Ada Pellegrini Grinover"), "Codigo brasileiro de defesa do consumidor comentado ausente do catalogo");
+assert(legalBibliography.includes("Michele Taruffo"), "A prova ausente do catalogo");
+assert(legalBibliography.includes("Jordi Ferrer Beltran"), "Prova e verdade no direito ausente do catalogo");
+assert(legalBibliography.includes("Neil MacCormick"), "Argumentacao juridica e teoria do direito ausente do catalogo");
+assert(legalBibliography.includes("Bruno Ricardo Bioni"), "Protecao de dados pessoais de Bioni ausente do catalogo");
+assert(legalBibliography.includes("Danilo Doneda"), "Da privacidade a protecao de dados pessoais ausente do catalogo");
+assert(legalBibliography.includes("Laura Schertel Mendes"), "Privacidade/protecao de dados ou discriminacao algoritmica ausente do catalogo");
+assert(legalBibliography.includes("Patricia Peck Pinheiro"), "Advocacia digital ausente do catalogo");
+assert(legalBibliography.includes("Wolfgang Hoffmann-Riem"), "IA e regulacao juridica ausente do catalogo");
+assert(legalBibliography.includes("Marcela Mattiuzzo"), "Discriminacao algoritmica ausente do catalogo");
 assert(browserScript.includes("Analise jurisprudencial orientativa"), "fallback local de jurisprudencia substantiva ausente");
 assert(browserScript.includes("Sintese doutrinaria orientativa"), "fallback local de doutrina substantiva ausente");
 assert(!apiHandler.includes("jurisprudencia|jurisprudência|doutrina|fonte|fontes|pesquise|pesquisar"), "doutrina voltou a ser gatilho automatico de pesquisa guiada");

@@ -1,4 +1,4 @@
-export const LEGAL_BIBLIOGRAPHY_CATALOG_VERSION = "catalogo-bibliografico-juridico-v5";
+export const LEGAL_BIBLIOGRAPHY_CATALOG_VERSION = "catalogo-bibliografico-juridico-v6";
 
 export const LEGAL_BIBLIOGRAPHY_CATALOG = Object.freeze([
   {
@@ -1145,6 +1145,296 @@ export const LEGAL_BIBLIOGRAPHY_CATALOG = Object.freeze([
         url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2018%3B001113533"
       }
     ]
+  },
+  {
+    id: "defesa_interesses_difusos_mazzilli",
+    kind: "obra",
+    title: "A defesa dos interesses difusos em juizo",
+    authors: ["Hugo Nigro Mazzilli"],
+    area: "Processo Coletivo / Tutela Coletiva",
+    aliases: [
+      "a defesa dos interesses difusos em juizo",
+      "defesa dos interesses difusos em juizo",
+      "mazzilli interesses difusos",
+      "hugo nigro mazzilli defesa dos interesses difusos",
+      "interesses difusos em juizo"
+    ],
+    verifiedSummary:
+      "Obra brasileira de referencia em tutela de interesses difusos, coletivos e individuais homogeneos, com registros em acervos institucionais.",
+    caution:
+      "Ha varias edicoes, subtitulos e atualizacoes. Nao indicar edicao, pagina, subtitulo completo ou citacao literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A1988%3B000097857"
+      }
+    ]
+  },
+  {
+    id: "acesso_ordem_juridica_justa_watanabe",
+    kind: "obra",
+    title: "Acesso a ordem juridica justa",
+    authors: ["Kazuo Watanabe"],
+    area: "Processo Coletivo / Acesso a Justica",
+    aliases: [
+      "acesso a ordem juridica justa",
+      "acesso a justica kazuo watanabe",
+      "kazuo watanabe acesso a ordem juridica justa",
+      "ordem juridica justa"
+    ],
+    verifiedSummary:
+      "Obra de Kazuo Watanabe sobre acesso a justica, meios consensuais, processos coletivos e atualizacao do conceito de ordem juridica justa.",
+    caution:
+      "Nao reduzir a obra a uma tese isolada nem inventar paginas, edicao ou trechos literais sem consulta ao exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2019%3B001137517"
+      }
+    ]
+  },
+  {
+    id: "codigo_brasileiro_defesa_consumidor_anteprojeto",
+    kind: "obra_coletiva",
+    title: "Codigo brasileiro de defesa do consumidor comentado pelos autores do anteprojeto",
+    authors: [
+      "Ada Pellegrini Grinover",
+      "Antonio Herman V. Benjamin",
+      "Claudia Lima Marques",
+      "Daniel Roberto Fink",
+      "Jose Geraldo Brito Filomeno",
+      "Kazuo Watanabe",
+      "Nelson Nery Junior",
+      "Roberto Pfeiffer",
+      "Zelmo Denari"
+    ],
+    area: "Direito do Consumidor / Processo Coletivo",
+    aliases: [
+      "codigo brasileiro de defesa do consumidor comentado pelos autores do anteprojeto",
+      "cdc comentado pelos autores do anteprojeto",
+      "codigo de defesa do consumidor comentado pelos autores do anteprojeto",
+      "autores do anteprojeto do cdc",
+      "ada pellegrini codigo brasileiro de defesa do consumidor",
+      "kazuo watanabe codigo brasileiro de defesa do consumidor"
+    ],
+    verifiedSummary:
+      "Obra coletiva brasileira associada aos comentarios ao CDC por autores ligados ao anteprojeto e a atualizacoes consumeristas, incluindo processo coletivo.",
+    caution:
+      "A composicao de autores e colaboradores pode variar conforme a edicao. Tratar como obra coletiva e conferir a edicao antes de citar paginas, coordenacao ou participacao especifica.",
+    sources: [
+      {
+        label: "GEN Juridico",
+        url: "https://blog.grupogen.com.br/juridico/areas-de-interesse/consumidor/codigo-brasileiro-de-defesa-do-consumidor-comentado-pelos-autores-do-anteprojeto-conheca/"
+      }
+    ]
+  },
+  {
+    id: "a_prova_taruffo",
+    kind: "obra",
+    title: "A prova",
+    authors: ["Michele Taruffo"],
+    area: "Prova / Teoria do Processo",
+    aliases: [
+      "a prova michele taruffo",
+      "michele taruffo a prova",
+      "taruffo a prova",
+      "obra a prova taruffo"
+    ],
+    verifiedSummary:
+      "Obra de teoria da prova associada a fundamentos, funcao e racionalidade da prova no processo.",
+    caution:
+      "O titulo isolado e generico. Preferir resposta quando houver autoria ou contexto; nao inventar tradutor, pagina, edicao ou citacao literal sem verificar o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2014%3B001029626"
+      }
+    ]
+  },
+  {
+    id: "prova_verdade_direito_ferrer",
+    kind: "obra",
+    title: "Prova e verdade no direito",
+    authors: ["Jordi Ferrer Beltran"],
+    area: "Prova / Teoria da Decisao",
+    aliases: [
+      "prova e verdade no direito",
+      "jordi ferrer beltran prova e verdade no direito",
+      "ferrer beltran prova e verdade",
+      "jordi ferrer prova e verdade"
+    ],
+    verifiedSummary:
+      "Obra sobre relacao entre prova, verdade e enunciados probatorios no direito, relevante para raciocinio probatorio e teoria da decisao.",
+    caution:
+      "Nao transformar a referencia em citacao literal ou pagina sem consulta ao exemplar e a edicao traduzida.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2017%3B001108727"
+      }
+    ]
+  },
+  {
+    id: "argumentacao_juridica_maccormick",
+    kind: "obra",
+    title: "Argumentacao juridica e teoria do direito",
+    authors: ["Neil MacCormick"],
+    area: "Argumentacao Juridica / Teoria do Direito",
+    aliases: [
+      "argumentacao juridica e teoria do direito",
+      "neil maccormick argumentacao juridica e teoria do direito",
+      "maccormick argumentacao juridica",
+      "argumentacao juridica maccormick"
+    ],
+    verifiedSummary:
+      "Obra de teoria do direito e argumentacao juridica sobre justificacao, coerencia, consequencialismo e limites da razao pratica no direito.",
+    caution:
+      "Ha edicoes e traducoes. Nao indicar pagina, termo tecnico traduzido ou trecho literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2006%3B000756655"
+      }
+    ]
+  },
+  {
+    id: "protecao_dados_pessoais_bioni",
+    kind: "obra",
+    title: "Protecao de dados pessoais: a funcao e os limites do consentimento",
+    authors: ["Bruno Ricardo Bioni"],
+    area: "LGPD / Protecao de Dados",
+    aliases: [
+      "protecao de dados pessoais a funcao e os limites do consentimento",
+      "protecao de dados pessoais",
+      "bruno bioni protecao de dados pessoais",
+      "bruno ricardo bioni protecao de dados pessoais",
+      "limites do consentimento bioni"
+    ],
+    verifiedSummary:
+      "Obra brasileira de protecao de dados pessoais centrada na funcao, nos limites e na reavaliacao juridica do consentimento.",
+    caution:
+      "O titulo curto pode ser generico. Conferir edicao antes de afirmar paginas, prefacio, apresentacao ou atualizacao legislativa especifica.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2019%3B001142886"
+      }
+    ]
+  },
+  {
+    id: "privacidade_protecao_dados_doneda",
+    kind: "obra",
+    title: "Da privacidade a protecao de dados pessoais",
+    authors: ["Danilo Doneda"],
+    area: "LGPD / Privacidade / Protecao de Dados",
+    aliases: [
+      "da privacidade a protecao de dados pessoais",
+      "privacidade a protecao de dados pessoais",
+      "danilo doneda privacidade protecao de dados",
+      "doneda da privacidade a protecao de dados pessoais"
+    ],
+    verifiedSummary:
+      "Obra brasileira sobre a evolucao da tutela da privacidade para a protecao de dados pessoais e seus fundamentos juridicos.",
+    caution:
+      "Ha edicoes com subtitulo e atualizacoes ligadas a LGPD. Nao citar pagina, subtitulo completo ou tese especifica sem fonte do exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2021%3B001203055"
+      }
+    ]
+  },
+  {
+    id: "privacidade_protecao_dados_consumidor_laura",
+    kind: "obra",
+    title: "Privacidade, protecao de dados e defesa do consumidor",
+    authors: ["Laura Schertel Mendes"],
+    area: "LGPD / Direito do Consumidor",
+    aliases: [
+      "privacidade protecao de dados e defesa do consumidor",
+      "privacidade, protecao de dados e defesa do consumidor",
+      "laura schertel mendes privacidade protecao de dados",
+      "laura schertel defesa do consumidor dados"
+    ],
+    verifiedSummary:
+      "Obra brasileira sobre privacidade, protecao de dados e defesa do consumidor, com enfoque em linhas gerais de novo direito fundamental.",
+    caution:
+      "Nao indicar pagina, edicao ou formulacao literal sem consulta ao exemplar catalogado.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2014%3B001000971"
+      }
+    ]
+  },
+  {
+    id: "advocacia_digital_patricia_peck",
+    kind: "obra",
+    title: "Advocacia digital",
+    authors: ["Patricia Peck Pinheiro", "Henrique Rocha"],
+    area: "Direito Digital / Advocacia / Tecnologia",
+    aliases: [
+      "advocacia digital",
+      "patricia peck advocacia digital",
+      "patricia peck pinheiro advocacia digital",
+      "henrique rocha advocacia digital"
+    ],
+    verifiedSummary:
+      "Obra sobre direito digital aplicado a pratica da advocacia, responsabilidade na rede, ODRs, modelos digitais e inteligencia artificial no direito.",
+    caution:
+      "Nao indicar pagina, modelo pratico ou trecho literal sem verificar a edicao e o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2018%3B001137155"
+      }
+    ]
+  },
+  {
+    id: "inteligencia_artificial_regulacao_hoffmann_riem",
+    kind: "artigo",
+    title: "Inteligencia artificial como oportunidade para a regulacao juridica",
+    authors: ["Wolfgang Hoffmann-Riem"],
+    area: "Direito Digital / Inteligencia Artificial / Regulacao",
+    aliases: [
+      "inteligencia artificial como oportunidade para a regulacao juridica",
+      "wolfgang hoffmann riem inteligencia artificial regulacao juridica",
+      "wolfgang hoffman riem inteligencia artificial regulacao juridica",
+      "hoffmann riem inteligencia artificial regulacao"
+    ],
+    verifiedSummary:
+      "Artigo registrado em periodico juridico sobre inteligencia artificial como tema de oportunidade e desafio para a regulacao juridica.",
+    caution:
+      "Tratar como artigo, nao como livro. Nao inventar conclusoes, pagina ou traducao literal sem conferir o periodico.",
+    sources: [
+      {
+        label: "LexML - Direito Publico",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Arevista%3A2003%3B000679365"
+      }
+    ]
+  },
+  {
+    id: "discriminacao_algoritmica_mendes_mattiuzzo",
+    kind: "artigo",
+    title: "Discriminacao algoritmica: conceito, fundamento legal e tipologia",
+    authors: ["Laura Schertel Mendes", "Marcela Mattiuzzo"],
+    area: "Direito Digital / Protecao de Dados / Discriminacao Algoritmica",
+    aliases: [
+      "discriminacao algoritmica conceito fundamento legal e tipologia",
+      "discriminacao algoritmica",
+      "laura schertel mendes marcela mattiuzzo discriminacao algoritmica",
+      "mendes mattiuzzo discriminacao algoritmica"
+    ],
+    verifiedSummary:
+      "Artigo sobre conceito, fundamento legal e tipologia da discriminacao algoritmica, relevante para protecao de dados, IA e vieses decisorios.",
+    caution:
+      "Tratar como artigo. Nao citar paginas, tipologias especificas ou conclusoes literais sem verificar o periodico.",
+    sources: [
+      {
+        label: "LexML - Direito Publico",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Arevista%3A2003%3B000679365"
+      }
+    ]
   }
 ]);
 
@@ -1177,6 +1467,12 @@ function getAuthorNeedles(entry) {
   }
 
   return [...needles].filter(Boolean);
+}
+
+function getEntryKindLabel(entry) {
+  if (entry?.kind === "artigo") return "Texto";
+  if (entry?.kind === "obra_coletiva") return "Obra coletiva";
+  return "Obra";
 }
 
 export function findVerifiedLegalBibliographyEntry(value) {
@@ -1238,11 +1534,12 @@ export function buildVerifiedLegalBibliographyAnswer(entry) {
 
   const sourceLines = (entry.sources || [])
     .map((source) => `- ${source.label}: ${source.url}`);
+  const kindLabel = getEntryKindLabel(entry);
 
   return [
     `Encontrei uma ficha bibliografica governada no catalogo interno (${LEGAL_BIBLIOGRAPHY_CATALOG_VERSION}).`,
     "",
-    `Obra: ${entry.title}.`,
+    `${kindLabel}: ${entry.title}.`,
     `Autoria: ${entry.authors.join("; ")}.`,
     `Area: ${entry.area}.`,
     "",
@@ -1267,7 +1564,7 @@ export function buildVerifiedLegalBibliographyContext(entry) {
   return [
     "[CATALOGO BIBLIOGRAFICO JURIDICO VERIFICADO]",
     `Versao: ${LEGAL_BIBLIOGRAPHY_CATALOG_VERSION}.`,
-    `Obra: ${entry.title}.`,
+    `${getEntryKindLabel(entry)}: ${entry.title}.`,
     `Autoria: ${entry.authors.join("; ")}.`,
     `Area: ${entry.area}.`,
     `Leitura segura: ${entry.verifiedSummary}`,
