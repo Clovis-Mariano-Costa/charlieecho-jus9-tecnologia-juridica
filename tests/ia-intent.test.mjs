@@ -207,7 +207,7 @@ test("verified Brazilian legal bibliography catalog covers core areas without Op
       assert.equal(body.ok, true);
       assert.match(body.answer, item.author);
       assert.match(body.answer, item.title);
-      assert.match(body.answer, /catalogo-bibliografico-juridico-v4/i);
+      assert.match(body.answer, /catalogo-bibliografico-juridico-v5/i);
       assert.match(body.answer, /LexML/i);
     }
 
@@ -297,7 +297,7 @@ test("verified legal bibliography catalog preserves v3 practical DAJ areas witho
       assert.equal(body.ok, true);
       assert.match(body.answer, item.author);
       assert.match(body.answer, item.title);
-      assert.match(body.answer, /catalogo-bibliografico-juridico-v4/i);
+      assert.match(body.answer, /catalogo-bibliografico-juridico-v5/i);
       assert.match(body.answer, /LexML/i);
     }
 
@@ -325,11 +325,27 @@ test("bibliographic selector prefers author-specific matches and avoids ambiguou
     "Volia Bomfim Cassar"
   );
   assert.equal(
+    findVerifiedLegalBibliographyEntry("Conhece Curso de direito constitucional de Gilmar Mendes?")?.authors[0],
+    "Gilmar Ferreira Mendes"
+  );
+  assert.equal(
+    findVerifiedLegalBibliographyEntry("Conhece Curso de direito constitucional de Paulo Bonavides?")?.authors[0],
+    "Paulo Bonavides"
+  );
+  assert.equal(
     findVerifiedLegalBibliographyEntry("Quem escreveu Curso de direito tributario?"),
     null
   );
   assert.equal(
     findVerifiedLegalBibliographyEntry("Quem escreveu Direito do trabalho?"),
+    null
+  );
+  assert.equal(
+    findVerifiedLegalBibliographyEntry("Quem escreveu Curso de direito constitucional?"),
+    null
+  );
+  assert.equal(
+    findVerifiedLegalBibliographyEntry("Quem escreveu Contratos?"),
     null
   );
 });
@@ -429,7 +445,97 @@ test("verified legal bibliography catalog v4 covers litigation-adjacent areas wi
       assert.equal(body.ok, true);
       assert.match(body.answer, item.author);
       assert.match(body.answer, item.title);
-      assert.match(body.answer, /catalogo-bibliografico-juridico-v4/i);
+      assert.match(body.answer, /catalogo-bibliografico-juridico-v5/i);
+      assert.match(body.answer, /LexML/i);
+    }
+
+    assert.equal(calls, 0);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("verified legal bibliography catalog v5 covers previdenciario ambiental constitutional and civil depth without OpenAI", async () => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    throw new Error("OpenAI should not be called for cataloged v5 bibliography");
+  };
+
+  try {
+    const cases = [
+      {
+        question: "Quem escreveu Curso de direito e processo previdenciario?",
+        author: /Frederico Amado/i,
+        title: /Curso de direito e processo previdenciario/i
+      },
+      {
+        question: "Conhece Direito processual previdenciario de Savaris?",
+        author: /Jose Antonio Savaris/i,
+        title: /Direito processual previdenciario/i
+      },
+      {
+        question: "Quem escreveu Comentarios a Lei de beneficios da previdencia social?",
+        author: /Daniel Machado da Rocha/i,
+        title: /Comentarios a Lei de beneficios da previdencia social/i
+      },
+      {
+        question: "Conhece Direito ambiental brasileiro?",
+        author: /Paulo Affonso Leme Machado/i,
+        title: /Direito ambiental brasileiro/i
+      },
+      {
+        question: "Quem escreveu Direito do ambiente de Edis Milare?",
+        author: /Edis Milare/i,
+        title: /Direito do ambiente/i
+      },
+      {
+        question: "Conhece Manual de direito ambiental de Romeu Thome?",
+        author: /Romeu Thome/i,
+        title: /Manual de direito ambiental/i
+      },
+      {
+        question: "Quem escreveu A eficacia dos direitos fundamentais?",
+        author: /Ingo Wolfgang Sarlet/i,
+        title: /A eficacia dos direitos fundamentais/i
+      },
+      {
+        question: "Conhece Curso de direito constitucional de Gilmar Mendes?",
+        author: /Gilmar Ferreira Mendes/i,
+        title: /Curso de direito constitucional/i
+      },
+      {
+        question: "Quem escreveu Curso de direito constitucional de Paulo Bonavides?",
+        author: /Paulo Bonavides/i,
+        title: /Curso de direito constitucional/i
+      },
+      {
+        question: "Quem escreveu A boa-fe no direito privado?",
+        author: /Judith Martins-Costa/i,
+        title: /A boa-fe no direito privado/i
+      },
+      {
+        question: "Conhece Programa de responsabilidade civil de Cavalieri?",
+        author: /Sergio Cavalieri Filho/i,
+        title: /Programa de responsabilidade civil/i
+      },
+      {
+        question: "Quem escreveu Contratos de Arnaldo Rizzardo?",
+        author: /Arnaldo Rizzardo/i,
+        title: /Contratos/i
+      }
+    ];
+
+    for (const item of cases) {
+      const response = await postIa(item.question);
+      const body = await response.json();
+
+      assert.equal(response.status, 200);
+      assert.equal(body.ok, true);
+      assert.match(body.answer, item.author);
+      assert.match(body.answer, item.title);
+      assert.match(body.answer, /catalogo-bibliografico-juridico-v5/i);
       assert.match(body.answer, /LexML/i);
     }
 

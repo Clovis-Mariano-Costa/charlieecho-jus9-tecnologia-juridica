@@ -182,7 +182,7 @@ assert(apiHandler.includes("asksGuidedLegalResearch"), "salvaguarda deterministi
 assert(apiHandler.includes("Eu nao vou inventar autor, obra, pagina, citacao literal ou julgado"), "limite deterministico contra fontes inventadas ausente");
 assert(apiHandler.includes("BIBLIOGRAPHIC_VERIFICATION_POLICY"), "politica de verificacao bibliografica ausente");
 assert(apiHandler.includes("findVerifiedLegalBibliographyEntry"), "catalogo bibliografico verificado nao esta conectado a API");
-assert(legalBibliography.includes("catalogo-bibliografico-juridico-v4"), "versao v4 do catalogo bibliografico ausente");
+assert(legalBibliography.includes("catalogo-bibliografico-juridico-v5"), "versao v5 do catalogo bibliografico ausente");
 assert(legalBibliography.includes("Juarez Cirino dos Santos"), "obra do fato punivel ausente do catalogo");
 assert(legalBibliography.includes("Hans Kelsen"), "Teoria pura do direito ausente do catalogo");
 assert(legalBibliography.includes("Cesare Beccaria"), "Dos delitos e das penas ausente do catalogo");
@@ -219,6 +219,18 @@ assert(legalBibliography.includes("Roque Antonio Carrazza"), "Curso de direito c
 assert(legalBibliography.includes("Fabio Ulhoa Coelho"), "Curso de direito comercial de Fabio Ulhoa ausente do catalogo");
 assert(legalBibliography.includes("Marlon Tomazette"), "Curso de direito empresarial ausente do catalogo");
 assert(legalBibliography.includes("Rubens Requiao"), "Curso de direito comercial de Requiao ausente do catalogo");
+assert(legalBibliography.includes("Frederico Amado"), "Curso de direito e processo previdenciario ausente do catalogo");
+assert(legalBibliography.includes("Jose Antonio Savaris"), "Direito processual previdenciario ausente do catalogo");
+assert(legalBibliography.includes("Daniel Machado da Rocha"), "Comentarios a Lei de beneficios ausente do catalogo");
+assert(legalBibliography.includes("Paulo Affonso Leme Machado"), "Direito ambiental brasileiro ausente do catalogo");
+assert(legalBibliography.includes("Edis Milare"), "Direito do ambiente ausente do catalogo");
+assert(legalBibliography.includes("Romeu Thome"), "Manual de direito ambiental ausente do catalogo");
+assert(legalBibliography.includes("Ingo Wolfgang Sarlet"), "A eficacia dos direitos fundamentais ausente do catalogo");
+assert(legalBibliography.includes("Gilmar Ferreira Mendes"), "Curso de direito constitucional de Gilmar Mendes ausente do catalogo");
+assert(legalBibliography.includes("Paulo Bonavides"), "Curso de direito constitucional de Paulo Bonavides ausente do catalogo");
+assert(legalBibliography.includes("Judith Martins-Costa"), "A boa-fe no direito privado ausente do catalogo");
+assert(legalBibliography.includes("Sergio Cavalieri Filho"), "Programa de responsabilidade civil ausente do catalogo");
+assert(legalBibliography.includes("Arnaldo Rizzardo"), "Contratos de Arnaldo Rizzardo ausente do catalogo");
 assert(browserScript.includes("Analise jurisprudencial orientativa"), "fallback local de jurisprudencia substantiva ausente");
 assert(browserScript.includes("Sintese doutrinaria orientativa"), "fallback local de doutrina substantiva ausente");
 assert(!apiHandler.includes("jurisprudencia|jurisprudência|doutrina|fonte|fontes|pesquise|pesquisar"), "doutrina voltou a ser gatilho automatico de pesquisa guiada");

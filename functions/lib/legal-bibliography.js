@@ -1,4 +1,4 @@
-export const LEGAL_BIBLIOGRAPHY_CATALOG_VERSION = "catalogo-bibliografico-juridico-v4";
+export const LEGAL_BIBLIOGRAPHY_CATALOG_VERSION = "catalogo-bibliografico-juridico-v5";
 
 export const LEGAL_BIBLIOGRAPHY_CATALOG = Object.freeze([
   {
@@ -866,6 +866,285 @@ export const LEGAL_BIBLIOGRAPHY_CATALOG = Object.freeze([
         url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2008%3B000827044"
       }
     ]
+  },
+  {
+    id: "curso_direito_processo_previdenciario_amado",
+    kind: "obra",
+    title: "Curso de direito e processo previdenciario",
+    authors: ["Frederico Amado"],
+    area: "Direito Previdenciario / Processo Previdenciario",
+    aliases: [
+      "curso de direito e processo previdenciario",
+      "frederico amado curso de direito e processo previdenciario",
+      "curso previdenciario frederico amado",
+      "direito e processo previdenciario amado"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito Previdenciario e Processo Previdenciario com tratamento de seguridade social, beneficios, custeio, processo administrativo/judicial e revisoes.",
+    caution:
+      "Ha edicoes extensas e atualizadas por reformas previdenciarias. Nao indicar pagina, edicao, tese especifica ou citacao literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2014%3B001001631"
+      }
+    ]
+  },
+  {
+    id: "direito_processual_previdenciario_savaris",
+    kind: "obra",
+    title: "Direito processual previdenciario",
+    authors: ["Jose Antonio Savaris"],
+    area: "Direito Processual Previdenciario",
+    aliases: [
+      "direito processual previdenciario",
+      "jose antonio savaris direito processual previdenciario",
+      "savaris direito processual previdenciario",
+      "processual previdenciario savaris"
+    ],
+    verifiedSummary:
+      "Obra brasileira voltada ao processo previdenciario, com enfoque em acesso a beneficios, prova, coisa julgada, revisao, processo justo e peculiaridades da tutela previdenciaria.",
+    caution:
+      "Nao confundir com artigos ou obras coletivas sobre coisa julgada previdenciaria. Confira edicao, pagina e trecho antes de citar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2009%3B000861791"
+      }
+    ]
+  },
+  {
+    id: "comentarios_lei_beneficios_previdencia_rocha_baltazar",
+    kind: "obra",
+    title: "Comentarios a Lei de beneficios da previdencia social",
+    authors: ["Daniel Machado da Rocha", "Jose Paulo Baltazar Junior"],
+    area: "Direito Previdenciario",
+    aliases: [
+      "comentarios a lei de beneficios da previdencia social",
+      "comentarios lei de beneficios previdencia social",
+      "daniel machado da rocha comentarios a lei de beneficios",
+      "jose paulo baltazar comentarios a lei de beneficios",
+      "lei de beneficios da previdencia social rocha baltazar"
+    ],
+    verifiedSummary:
+      "Obra brasileira de comentarios a Lei de Beneficios da Previdencia Social, associada a analise artigo a artigo, beneficios do RGPS e interpretacao previdenciaria.",
+    caution:
+      "Ha edicoes com atualizacoes legislativas e coautoria. Nao indicar artigo comentado, pagina, edicao ou citacao literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2017%3B001087640"
+      }
+    ]
+  },
+  {
+    id: "direito_ambiental_brasileiro_paulo_affonso",
+    kind: "obra",
+    title: "Direito ambiental brasileiro",
+    authors: ["Paulo Affonso Leme Machado"],
+    area: "Direito Ambiental",
+    aliases: [
+      "direito ambiental brasileiro",
+      "paulo affonso leme machado direito ambiental brasileiro",
+      "paulo affonso direito ambiental brasileiro",
+      "direito ambiental brasileiro paulo affonso"
+    ],
+    verifiedSummary:
+      "Obra brasileira classica de Direito Ambiental, com tratamento de politica ambiental, responsabilidade, instrumentos preventivos, recursos naturais e protecao juridica do meio ambiente.",
+    caution:
+      "Ha muitas edicoes e atualizacoes legislativas. Nao indicar pagina, edicao ou trecho literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2001%3B000592754"
+      }
+    ]
+  },
+  {
+    id: "direito_ambiente_milare",
+    kind: "obra",
+    title: "Direito do ambiente",
+    authors: ["Edis Milare"],
+    area: "Direito Ambiental",
+    aliases: [
+      "direito do ambiente",
+      "edis milare direito do ambiente",
+      "milare direito do ambiente",
+      "direito do ambiente edis milare"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito Ambiental com abordagem ampla de doutrina, gestao ambiental, instrumentos juridicos, jurisprudencia e protecao ambiental.",
+    caution:
+      "O subtitulo e o escopo variam por edicao. Nao indicar pagina, edicao, glossario ou trecho literal sem consultar o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2001%3B000600569"
+      }
+    ]
+  },
+  {
+    id: "manual_direito_ambiental_romeu_thome",
+    kind: "obra",
+    title: "Manual de direito ambiental",
+    authors: ["Romeu Thome"],
+    area: "Direito Ambiental",
+    aliases: [
+      "manual de direito ambiental",
+      "romeu thome manual de direito ambiental",
+      "manual direito ambiental romeu thome",
+      "direito ambiental romeu thome"
+    ],
+    verifiedSummary:
+      "Manual brasileiro de Direito Ambiental, voltado a estudo sistematico de principios, instrumentos, responsabilidade ambiental, licenciamento, unidades de conservacao e tutela ambiental.",
+    caution:
+      "Ha edicoes e atualizacoes. Nao indicar pagina, edicao ou citacao literal sem verificar o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2019%3B001143830"
+      }
+    ]
+  },
+  {
+    id: "eficacia_direitos_fundamentais_sarlet",
+    kind: "obra",
+    title: "A eficacia dos direitos fundamentais",
+    authors: ["Ingo Wolfgang Sarlet"],
+    area: "Direito Constitucional / Direitos Fundamentais",
+    aliases: [
+      "a eficacia dos direitos fundamentais",
+      "eficacia dos direitos fundamentais",
+      "ingo wolfgang sarlet eficacia dos direitos fundamentais",
+      "sarlet direitos fundamentais"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito Constitucional sobre teoria, dimensoes, eficacia, aplicabilidade e regime juridico dos direitos fundamentais.",
+    caution:
+      "Ha edicoes revistas e ampliadas. Nao indicar pagina, edicao, classificacao especifica ou citacao literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2018%3B001116898"
+      }
+    ]
+  },
+  {
+    id: "curso_direito_constitucional_mendes_gonet",
+    kind: "obra",
+    title: "Curso de direito constitucional",
+    authors: ["Gilmar Ferreira Mendes", "Paulo Gustavo Gonet Branco"],
+    area: "Direito Constitucional",
+    aliases: [
+      "curso de direito constitucional gilmar mendes",
+      "gilmar ferreira mendes curso de direito constitucional",
+      "paulo gustavo gonet branco curso de direito constitucional",
+      "gilmar mendes paulo gonet curso constitucional",
+      "mendes gonet curso de direito constitucional"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito Constitucional com tratamento sistematico de teoria da Constituicao, direitos fundamentais, organizacao do Estado, controle de constitucionalidade e jurisdicao constitucional.",
+    caution:
+      "O titulo tambem existe em obras de outros autores. Desambiguar pela autoria; nao indicar pagina, edicao ou citacao literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2021%3B001187748"
+      }
+    ]
+  },
+  {
+    id: "curso_direito_constitucional_bonavides",
+    kind: "obra",
+    title: "Curso de direito constitucional",
+    authors: ["Paulo Bonavides"],
+    area: "Direito Constitucional",
+    aliases: [
+      "curso de direito constitucional paulo bonavides",
+      "paulo bonavides curso de direito constitucional",
+      "bonavides curso de direito constitucional",
+      "curso constitucional bonavides"
+    ],
+    verifiedSummary:
+      "Obra brasileira classica de Direito Constitucional, associada a teoria constitucional, poder constituinte, principios, direitos fundamentais e evolucao do constitucionalismo.",
+    caution:
+      "O titulo e generico e exige desambiguacao pela autoria. Nao indicar pagina, edicao ou trecho literal sem verificar o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2007%3B000789960"
+      }
+    ]
+  },
+  {
+    id: "boa_fe_direito_privado_judith",
+    kind: "obra",
+    title: "A boa-fe no direito privado",
+    authors: ["Judith Martins-Costa"],
+    area: "Direito Civil / Contratos / Boa-fe objetiva",
+    aliases: [
+      "a boa fe no direito privado",
+      "boa fe no direito privado",
+      "judith martins costa boa fe no direito privado",
+      "judith martins costa boa fe"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito Privado sobre boa-fe objetiva, criterios de aplicacao, deveres anexos, comportamento contraditorio e funcao normativa da boa-fe.",
+    caution:
+      "Ha edicoes e reimpressoes. Nao indicar pagina, criterio especifico ou citacao literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2000%3B000578098"
+      }
+    ]
+  },
+  {
+    id: "programa_responsabilidade_civil_cavalieri",
+    kind: "obra",
+    title: "Programa de responsabilidade civil",
+    authors: ["Sergio Cavalieri Filho"],
+    area: "Direito Civil / Responsabilidade Civil",
+    aliases: [
+      "programa de responsabilidade civil",
+      "sergio cavalieri filho programa de responsabilidade civil",
+      "cavalieri programa de responsabilidade civil",
+      "responsabilidade civil cavalieri"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Responsabilidade Civil com abordagem de ato ilicito, dano, nexo causal, culpa, risco, responsabilidade objetiva, excludentes e reparacao.",
+    caution:
+      "Ha edicoes atualizadas. Nao indicar pagina, edicao, tese especifica ou citacao literal sem verificar o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2008%3B000807778"
+      }
+    ]
+  },
+  {
+    id: "contratos_arnaldo_rizzardo",
+    kind: "obra",
+    title: "Contratos",
+    authors: ["Arnaldo Rizzardo"],
+    area: "Direito Civil / Contratos",
+    requiresAuthorMatch: true,
+    aliases: [
+      "contratos arnaldo rizzardo",
+      "arnaldo rizzardo contratos",
+      "contratos lei 10406 arnaldo rizzardo",
+      "contratos direito civil arnaldo rizzardo"
+    ],
+    verifiedSummary:
+      "Obra brasileira de Direito Civil dedicada a contratos, com abordagem de teoria geral, contratos tipicos, efeitos, inadimplemento, revisao e institutos correlatos.",
+    caution:
+      "O titulo isolado e generico. Responder com certeza apenas quando houver autoria ou contexto suficiente; nao indicar pagina, edicao ou citacao literal sem conferir o exemplar.",
+    sources: [
+      {
+        label: "LexML",
+        url: "https://www.lexml.gov.br/urn/urn%3Alex%3Abr%3Arede.virtual.bibliotecas%3Alivro%3A2018%3B001113533"
+      }
+    ]
   }
 ]);
 
@@ -939,6 +1218,8 @@ export function findVerifiedLegalBibliographyEntry(value) {
   );
 
   const [best, second] = matches;
+  if (best.entry.requiresAuthorMatch && !best.authorScore) return null;
+
   if (
     second &&
     !best.authorScore &&
