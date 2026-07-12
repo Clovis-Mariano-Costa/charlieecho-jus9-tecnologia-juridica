@@ -1,4 +1,5 @@
 export const LEGAL_JURISPRUDENCE_CATALOG_VERSION = "catalogo-jurisprudencial-daj-v1";
+export const LEGAL_JURISPRUDENCE_PRECEDENTS_VERSION = "fichas-jurisprudenciais-daj-v1";
 
 export const LEGAL_JURISPRUDENCE_THEMES = Object.freeze([
   {
@@ -281,6 +282,351 @@ export const LEGAL_JURISPRUDENCE_THEMES = Object.freeze([
   }
 ]);
 
+export const LEGAL_JURISPRUDENCE_PRECEDENTS = Object.freeze([
+  {
+    id: "resp_2052228_df_operacoes_fora_perfil",
+    themeId: "consumidor_bancos_fraudes",
+    theme: "Consumidor, bancos, fraudes e fortuito interno",
+    title: "Banco deve identificar e impedir operacoes que destoam do perfil do cliente",
+    court: "STJ",
+    caseNumber: "REsp 2.052.228/DF",
+    panel: "Terceira Turma",
+    rapporteur: "Ministra Nancy Andrighi",
+    sourceDate: "Noticia STJ de 30/10/2023",
+    aliases: [
+      "resp 2052228",
+      "resp 2 052 228",
+      "resp 2052228 df",
+      "transacoes fora do perfil",
+      "operacoes fora do perfil",
+      "operacoes que destoam do perfil",
+      "dever de identificar transacoes fora do perfil",
+      "emprestimo por estelionatario",
+      "idosa banco operacao fora do perfil"
+    ],
+    holding:
+      "A ficha segura e que a instituicao financeira deve desenvolver mecanismos capazes de identificar e impedir movimentacoes incompativeis com o historico do consumidor; a falha pode configurar defeito do servico e responsabilidade objetiva.",
+    useInDaj:
+      "Util para tese de fraude bancaria, emprestimo nao reconhecido, transacao atipica, consumidor vulneravel e fortuito interno.",
+    caution:
+      "Conferir inteiro teor, historico de operacoes, comunicacoes ao banco, perfil do consumidor e eventual excludente antes de citar em peca real.",
+    sources: [
+      {
+        label: "STJ - noticia oficial do REsp 2.052.228",
+        url: "https://www.stj.jus.br/sites/portalp/Paginas/Comunicacao/Noticias/2023/30102023-Para-evitar-fraudes--banco-tem-o-dever-de-identificar-e-impedir-transacoes-que-destoam-do-perfil-do-cliente.aspx"
+      },
+      {
+        label: "CDC - Lei 8.078/1990",
+        url: "https://www.planalto.gov.br/ccivil_03/leis/l8078compilado.htm"
+      },
+      {
+        label: "STJ - Sumula 479",
+        url: "https://arquivocidadao.stj.jus.br/index.php/sumula-479-2"
+      }
+    ]
+  },
+  {
+    id: "resp_2077278_sp_golpe_boleto_vazamento",
+    themeId: "lgpd_vazamento_dados",
+    theme: "LGPD, vazamento de dados e responsabilidade por tratamento irregular",
+    title: "Banco responde por vazamento de dados que viabiliza golpe do boleto",
+    court: "STJ",
+    caseNumber: "REsp 2.077.278/SP",
+    panel: "Terceira Turma",
+    rapporteur: "Ministra Nancy Andrighi",
+    sourceDate: "Noticia STJ de 24/10/2023; julgado em 03/10/2023 e DJe 09/10/2023 conforme Pesquisa Pronta do STJ",
+    aliases: [
+      "resp 2077278",
+      "resp 2 077 278",
+      "resp 2077278 sp",
+      "golpe do boleto",
+      "vazamento de dados bancarios",
+      "dados pessoais bancarios",
+      "tratamento irregular dados bancarios",
+      "boleto falso dados bancarios",
+      "lgpd golpe do boleto"
+    ],
+    holding:
+      "A ficha segura e que o banco pode responder por vazamento de dados sigilosos vinculados a operacao bancaria usados no golpe do boleto; dado publico isolado nao basta, e o nexo com o tratamento bancario deve ser demonstrado.",
+    useInDaj:
+      "Util para LGPD, consumidor bancario, boleto falso, tratamento irregular, origem dos dados, nexo causal e artigo 44 da LGPD.",
+    caution:
+      "Nao presumir dano ou responsabilidade automatica. Separar dados publicos de dados bancarios sigilosos e conferir prova do nexo causal.",
+    sources: [
+      {
+        label: "STJ - noticia oficial do REsp 2.077.278",
+        url: "https://www.stj.jus.br/sites/portalp/Paginas/Comunicacao/Noticias/2023/24102023-Banco-responde-por-vazamento-de-dados-que-resultou-em-aplicacao-do-%E2%80%9Cgolpe-do-boleto%E2%80%9D-contra-cliente.aspx"
+      },
+      {
+        label: "STJ - Pesquisa Pronta sobre vazamento de dados de instituicao financeira",
+        url: "https://www.stj.jus.br/sites/portalp/Paginas/Comunicacao/Noticias/2023/07122023-Pesquisa-Pronta-destaca-responsabilidade-por-vazamento-de-dados-de-instituicao-financeira-.aspx"
+      },
+      {
+        label: "LGPD - Lei 13.709/2018",
+        url: "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"
+      }
+    ]
+  },
+  {
+    id: "resp_2222059_resp_2229519_falsa_central",
+    themeId: "consumidor_bancos_fraudes",
+    theme: "Consumidor, bancos, fraudes e fortuito interno",
+    title: "Bancos e instituicoes de pagamento podem responder por falhas que viabilizam golpe da falsa central",
+    court: "STJ",
+    caseNumber: "REsp 2.222.059 e REsp 2.229.519",
+    panel: "Terceira Turma",
+    rapporteur: "Ministro Ricardo Villas Boas Cueva",
+    sourceDate: "Noticia STJ de 21/10/2025",
+    aliases: [
+      "resp 2222059",
+      "resp 2 222 059",
+      "resp 2229519",
+      "resp 2 229 519",
+      "golpe da falsa central",
+      "falsa central",
+      "instituicoes de pagamento",
+      "instituicao de pagamento",
+      "falha que viabiliza falsa central"
+    ],
+    holding:
+      "A ficha segura e que bancos e instituicoes de pagamento podem responder quando falhas de seguranca, protecao de dados ou identificacao de operacoes suspeitas permitem o golpe da falsa central.",
+    useInDaj:
+      "Util para fraudes digitais, engenharia social, transacao fora do padrao, instituicao de pagamento, CDC e dever de seguranca.",
+    caution:
+      "Verificar se houve defeito do servico e se o consumidor assumiu conscientemente risco anormal; a responsabilidade depende da prova do caso.",
+    sources: [
+      {
+        label: "STJ - noticia oficial sobre REsp 2.222.059 e REsp 2.229.519",
+        url: "https://www.stj.jus.br/sites/portalp/Paginas/Comunicacao/Noticias/2025/21102025-Bancos-e-instituicoes-de-pagamento-devem-indenizar-clientes-por-falhas-que-viabilizam-golpe-da-falsa-central.aspx"
+      },
+      {
+        label: "CDC - Lei 8.078/1990",
+        url: "https://www.planalto.gov.br/ccivil_03/leis/l8078compilado.htm"
+      },
+      {
+        label: "STJ - Sumula 479",
+        url: "https://arquivocidadao.stj.jus.br/index.php/sumula-479-2"
+      }
+    ]
+  },
+  {
+    id: "resp_2220333_falha_seguranca_culpa_concorrente",
+    themeId: "consumidor_bancos_fraudes",
+    theme: "Consumidor, bancos, fraudes e fortuito interno",
+    title: "Falha de seguranca bancaria pode afastar alegacao de culpa concorrente do consumidor",
+    court: "STJ",
+    caseNumber: "REsp 2.220.333",
+    panel: "Terceira Turma",
+    rapporteur: "Ministro Ricardo Villas Boas Cueva",
+    sourceDate: "Noticia STJ de 13/11/2025",
+    aliases: [
+      "resp 2220333",
+      "resp 2 220 333",
+      "culpa concorrente golpe banco",
+      "falha de seguranca banco culpa concorrente",
+      "mao fantasma",
+      "acesso remoto",
+      "golpe acesso remoto banco"
+    ],
+    holding:
+      "A ficha segura e que, havendo falha de seguranca bancaria na validacao de operacoes suspeitas, nao se presume culpa concorrente do consumidor sem prova de assuncao consciente de risco.",
+    useInDaj:
+      "Util para impugnar defesa generica de culpa exclusiva ou concorrente quando ha transacao atipica e falha de seguranca bancaria.",
+    caution:
+      "Conferir a conduta concreta do consumidor, alertas recebidos, padrao das operacoes e medidas de autenticacao antes de usar.",
+    sources: [
+      {
+        label: "STJ - noticia oficial do REsp 2.220.333",
+        url: "https://www.stj.jus.br/sites/portalp/Paginas/Comunicacao/Noticias/2025/13112025-Falha-de-seguranca-do-banco-afasta-alegacao-de-culpa-concorrente-do-consumidor-em-caso-de-golpe.aspx"
+      },
+      {
+        label: "CDC - Lei 8.078/1990",
+        url: "https://www.planalto.gov.br/ccivil_03/leis/l8078compilado.htm"
+      }
+    ]
+  },
+  {
+    id: "resp_2001086_cdc_capital_giro",
+    themeId: "consumidor_bancos_fraudes",
+    theme: "Consumidor, bancos, fraudes e fortuito interno",
+    title: "CDC nao se aplica automaticamente a emprestimo para capital de giro",
+    court: "STJ",
+    caseNumber: "REsp 2.001.086",
+    panel: "Terceira Turma",
+    rapporteur: "Ministra Nancy Andrighi",
+    sourceDate: "Noticia STJ de 16/02/2023",
+    aliases: [
+      "resp 2001086",
+      "resp 2 001 086",
+      "capital de giro",
+      "cdc nao se aplica capital de giro",
+      "emprestimo para atividade empresarial",
+      "credito para atividade produtiva",
+      "vulnerabilidade capital de giro"
+    ],
+    holding:
+      "A ficha segura e que o CDC nao incide automaticamente sobre emprestimo destinado a capital de giro ou atividade empresarial, salvo demonstracao de vulnerabilidade e enquadramento juridico adequado.",
+    useInDaj:
+      "Util para triagem de contratos bancarios empresariais, distincao entre destinatario final e insumo produtivo, e prova de vulnerabilidade.",
+    caution:
+      "Nao afastar CDC sem examinar porte, vulnerabilidade tecnica/economica/informacional, finalidade do credito e provas contratuais.",
+    sources: [
+      {
+        label: "STJ - noticia oficial do REsp 2.001.086",
+        url: "https://www.stj.jus.br/sites/portalp/Paginas/Comunicacao/Noticias/2023/16022023-CDC-nao-se-aplica-a-contratos-de-emprestimo-para-capital-de-giro.aspx"
+      },
+      {
+        label: "CDC - Lei 8.078/1990",
+        url: "https://www.planalto.gov.br/ccivil_03/leis/l8078compilado.htm"
+      }
+    ]
+  },
+  {
+    id: "resp_2029511_passagem_forcada_possuidor",
+    themeId: "propriedade_funcao_social",
+    theme: "Direito de propriedade e funcao social",
+    title: "Possuidor de imovel encravado tem direito a passagem forcada",
+    court: "STJ",
+    caseNumber: "REsp 2.029.511",
+    panel: "Terceira Turma",
+    rapporteur: "Ministra Nancy Andrighi",
+    sourceDate: "Noticia STJ de 06/06/2023",
+    aliases: [
+      "resp 2029511",
+      "resp 2 029 511",
+      "passagem forcada possuidor",
+      "imovel encravado",
+      "funcao social propriedade posse",
+      "funcao social da posse",
+      "passagem forcada imovel encravado"
+    ],
+    holding:
+      "A ficha segura e que o possuidor de imovel encravado pode pleitear passagem forcada, com leitura do artigo 1.285 do Codigo Civil orientada pela funcao social e economica da propriedade e da posse.",
+    useInDaj:
+      "Util para propriedade, posse, passagem forcada, vizinhanca, abuso no exercicio do direito e funcao social.",
+    caution:
+      "Conferir encravamento real, rota menos onerosa, indenizacao, posse qualificada e peculiaridades locais antes de usar.",
+    sources: [
+      {
+        label: "STJ - noticia oficial do REsp 2.029.511",
+        url: "https://www.stj.jus.br/sites/portalp/Paginas/Comunicacao/Noticias/2023/06062023-Possuidor-de-imovel-encravado-tem-direito-a-passagem-forcada.aspx"
+      },
+      {
+        label: "Codigo Civil - art. 1.285",
+        url: "https://www.planalto.gov.br/ccivil_03/leis/2002/l10406compilada.htm"
+      }
+    ]
+  },
+  {
+    id: "stj_alimentos_prisao_sem_risco_subsistencia",
+    themeId: "alimentos_revisao_execucao",
+    theme: "Alimentos, revisao e execucao",
+    title: "Prisao de devedor de alimentos pode ser revogada se ausente risco a subsistencia da alimentanda",
+    court: "STJ",
+    caseNumber: "Processo em segredo de justica",
+    panel: "Terceira Turma",
+    rapporteur: "Ministro Marco Aurelio Bellizze",
+    sourceDate: "Noticia STJ de 26/10/2023",
+    aliases: [
+      "prisao devedor alimentos falta risco subsistencia",
+      "prisao de devedor de alimentos por falta de risco a subsistencia",
+      "prisao de devedor de alimentos falta de risco a subsistencia",
+      "falta de risco a subsistencia da alimentanda",
+      "revoga prisao alimentos risco subsistencia",
+      "alimentanda maior formada direito socia empresa",
+      "execucao de alimentos sem risco subsistencia",
+      "prisao civil alimentos risco subsistencia"
+    ],
+    holding:
+      "A ficha segura e que a prisao civil por alimentos exige necessidade atual ligada a subsistencia; se ausente esse risco, pode ser afastada, sem impedir que a execucao pode prosseguir pelo rito expropriatorio.",
+    useInDaj:
+      "Util para avaliar proporcionalidade da prisao civil, maioridade, autonomia economica, subsistencia e alternativa de expropriacao.",
+    caution:
+      "O processo tramita em segredo de justica. Nao inventar numero; citar apenas a noticia oficial ou buscar precedente conferido equivalente.",
+    sources: [
+      {
+        label: "STJ - noticia oficial sobre prisao civil por alimentos e subsistencia",
+        url: "https://www.stj.jus.br/sites/portalp/Paginas/Comunicacao/Noticias/2023/26102023-Terceira-Turma-revoga-prisao-de-devedor-de-alimentos-por-falta-de-risco-a-subsistencia-da-alimentanda.aspx"
+      },
+      {
+        label: "CPC - execucao de alimentos e art. 528",
+        url: "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13105.htm"
+      }
+    ]
+  },
+  {
+    id: "stj_alimentos_penhora_prestacoes_vencidas",
+    themeId: "alimentos_revisao_execucao",
+    theme: "Alimentos, revisao e execucao",
+    title: "Execucao de alimentos pelo rito da penhora permite incluir prestacoes vencidas no curso do processo",
+    court: "STJ",
+    caseNumber: "Processo em segredo de justica",
+    panel: "Quarta Turma",
+    rapporteur: "Ministro Antonio Carlos Ferreira",
+    sourceDate: "Noticia STJ de 27/10/2023",
+    aliases: [
+      "rito da penhora prestacoes vencidas no curso",
+      "execucao de alimentos rito da penhora parcelas vencidas",
+      "prestacoes vencidas no curso do processo alimentos",
+      "alimentos penhora parcelas vencidas no curso",
+      "execucao alimentos penhora prestacoes futuras"
+    ],
+    holding:
+      "A ficha segura e que, no rito da penhora, a execucao de alimentos pode incluir prestacoes vencidas durante o processo, em leitura sistematica que evita nova acao ou uso desnecessario do rito da prisao.",
+    useInDaj:
+      "Util para atualizacao de debito alimentar, economia processual, rito expropriatorio e distincao entre penhora e prisao.",
+    caution:
+      "O processo tramita em segredo de justica. Nao inventar numero; conferir atualizacao do entendimento antes de citar.",
+    sources: [
+      {
+        label: "STJ - noticia oficial sobre execucao de alimentos pelo rito da penhora",
+        url: "https://www.stj.jus.br/sites/portalp/Paginas/Comunicacao/Noticias/2023/27102023-Execucao-de-alimentos-pelo-rito-da-penhora-permite-inclusao-de-prestacoes-vencidas-no-curso-do-processo.aspx"
+      },
+      {
+        label: "CPC - execucao de alimentos e art. 528",
+        url: "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13105.htm"
+      }
+    ]
+  },
+  {
+    id: "resp_1955899_execucao_sentenca_coletiva_associacao",
+    themeId: "tutela_coletiva_consumidor",
+    theme: "Tutela coletiva, acao civil publica e direitos difusos",
+    title: "Execucao de sentenca coletiva por associacao autora e subsidiaria e condicionada",
+    court: "STJ",
+    caseNumber: "REsp 1.955.899",
+    panel: "Terceira Turma",
+    rapporteur: "Ministra Nancy Andrighi",
+    sourceDate: "Noticia STJ de 17/08/2022",
+    aliases: [
+      "resp 1955899",
+      "resp 1 955 899",
+      "execucao sentenca coletiva associacao",
+      "execucao de sentenca coletiva pela associacao autora",
+      "direitos individuais homogeneos associacao autora",
+      "fluid recovery",
+      "artigo 100 cdc",
+      "art 100 cdc"
+    ],
+    holding:
+      "A ficha segura e que a associacao autora da acao civil publica pode promover cumprimento coletivo de sentenca de direitos individuais homogeneos, mas sua legitimidade e subsidiaria e condicionada ao artigo 100 do CDC.",
+    useInDaj:
+      "Util para tutela coletiva do consumidor, execucao coletiva, habilitacao de beneficiarios, fluid recovery e legitimidade subsidiaria.",
+    caution:
+      "Conferir legitimidade ativa, estatuto, abrangencia subjetiva, numero de habilitados e compatibilidade com a gravidade do dano.",
+    sources: [
+      {
+        label: "STJ - noticia oficial do REsp 1.955.899",
+        url: "https://www.stj.jus.br/sites/portalp/Paginas/Comunicacao/Noticias/17082022-Execucao-de-sentenca-coletiva-de-direitos-individuais-homogeneos-pela-associacao-autora-e-sujeita-a-condicoes.aspx"
+      },
+      {
+        label: "CDC - tutela coletiva do consumidor",
+        url: "https://www.planalto.gov.br/ccivil_03/leis/l8078compilado.htm"
+      }
+    ]
+  }
+]);
+
 export function normalizeJurisprudenceText(value) {
   return String(value || "")
     .toLowerCase()
@@ -327,6 +673,103 @@ export function findVerifiedLegalJurisprudenceTheme(value) {
   );
 
   return matches[0].entry;
+}
+
+function hasSpecificPrecedentSignal(value) {
+  const q = normalizeJurisprudenceText(value);
+  if (!q) return false;
+  if (!hasJurisprudenceIntent(q) && !/\b(resp|aresp|rhc|hc|agint|agrg|eresp|sumula|tema|ementa|inteiro teor|relator|relatora|processo|acordao|ficha)\b/.test(q)) return false;
+  return true;
+}
+
+export function findVerifiedLegalJurisprudencePrecedent(value) {
+  const q = normalizeJurisprudenceText(value);
+  if (!q || !hasSpecificPrecedentSignal(q)) return null;
+
+  const matches = [];
+
+  LEGAL_JURISPRUDENCE_PRECEDENTS.forEach((entry, entryIndex) => {
+    const candidates = [
+      entry.caseNumber,
+      entry.title,
+      entry.rapporteur,
+      ...(entry.aliases || [])
+    ]
+      .map(normalizeJurisprudenceText)
+      .filter(Boolean)
+      .sort((a, b) => b.length - a.length);
+
+    const matchedCandidate = candidates.find((candidate) => q.includes(candidate));
+    if (!matchedCandidate) return;
+
+    matches.push({
+      entry,
+      entryIndex,
+      candidateLength: matchedCandidate.length
+    });
+  });
+
+  if (!matches.length) return null;
+
+  matches.sort((a, b) =>
+    (b.candidateLength - a.candidateLength) ||
+    (a.entryIndex - b.entryIndex)
+  );
+
+  return matches[0].entry;
+}
+
+export function buildVerifiedLegalJurisprudencePrecedentAnswer(entry) {
+  if (!entry) return "";
+
+  const sourceLines = (entry.sources || []).map((source) => `- ${source.label}: ${source.url}`);
+
+  return [
+    `Encontrei uma ficha jurisprudencial governada (${LEGAL_JURISPRUDENCE_PRECEDENTS_VERSION}).`,
+    "",
+    `Tema DAJ: ${entry.theme}.`,
+    `Ficha: ${entry.title}.`,
+    `Tribunal: ${entry.court}.`,
+    `Processo/referencia: ${entry.caseNumber}.`,
+    `Orgao julgador: ${entry.panel}.`,
+    `Relatoria: ${entry.rapporteur}.`,
+    `Fonte-base: ${entry.sourceDate}.`,
+    "",
+    `Tese governada: ${entry.holding}`,
+    "",
+    `Uso no DAJ: ${entry.useInDaj}`,
+    "",
+    "Fontes oficiais para conferencia:",
+    ...sourceLines,
+    "",
+    `Limite: ${entry.caution}`,
+    "",
+    "Proximo passo: posso transformar esta ficha em argumento de peticao, checklist probatorio ou quadro comparativo, mantendo revisao humana antes de uso real."
+  ].join("\n");
+}
+
+export function buildVerifiedLegalJurisprudencePrecedentContext(entry) {
+  if (!entry) return "";
+
+  const sources = (entry.sources || [])
+    .map((source) => `${source.label} ${source.url}`)
+    .join(" ; ");
+
+  return [
+    "[FICHA JURISPRUDENCIAL DAJ GOVERNADA]",
+    `Versao: ${LEGAL_JURISPRUDENCE_PRECEDENTS_VERSION}.`,
+    `Tema DAJ: ${entry.theme}.`,
+    `Ficha: ${entry.title}.`,
+    `Tribunal: ${entry.court}.`,
+    `Processo/referencia: ${entry.caseNumber}.`,
+    `Orgao julgador: ${entry.panel}.`,
+    `Relatoria: ${entry.rapporteur}.`,
+    `Fonte-base: ${entry.sourceDate}.`,
+    `Tese governada: ${entry.holding}`,
+    `Uso no DAJ: ${entry.useInDaj}`,
+    `Limite: ${entry.caution}`,
+    `Fontes: ${sources}`
+  ].join("\n");
 }
 
 export function buildVerifiedLegalJurisprudenceAnswer(entry) {

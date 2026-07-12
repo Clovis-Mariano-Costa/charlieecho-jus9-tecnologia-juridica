@@ -7,6 +7,9 @@ import {
 import {
   buildVerifiedLegalJurisprudenceAnswer,
   buildVerifiedLegalJurisprudenceContext,
+  buildVerifiedLegalJurisprudencePrecedentAnswer,
+  buildVerifiedLegalJurisprudencePrecedentContext,
+  findVerifiedLegalJurisprudencePrecedent,
   findVerifiedLegalJurisprudenceTheme
 } from "../lib/legal-jurisprudence.js";
 
@@ -738,13 +741,21 @@ function knownBibliographicAnswer(message) {
 }
 
 function jurisprudenceVerificationContext(message) {
-  const verifiedEntry = findVerifiedLegalJurisprudenceTheme(extractCurrentQuestion(message));
-  return buildVerifiedLegalJurisprudenceContext(verifiedEntry);
+  const currentQuestion = extractCurrentQuestion(message);
+  const verifiedPrecedent = findVerifiedLegalJurisprudencePrecedent(currentQuestion);
+  const verifiedTheme = findVerifiedLegalJurisprudenceTheme(currentQuestion);
+  return [
+    buildVerifiedLegalJurisprudencePrecedentContext(verifiedPrecedent),
+    buildVerifiedLegalJurisprudenceContext(verifiedTheme)
+  ].filter(Boolean).join("\n\n");
 }
 
 function knownJurisprudenceAnswer(message) {
-  const verifiedEntry = findVerifiedLegalJurisprudenceTheme(extractCurrentQuestion(message));
-  return buildVerifiedLegalJurisprudenceAnswer(verifiedEntry);
+  const currentQuestion = extractCurrentQuestion(message);
+  const verifiedPrecedent = findVerifiedLegalJurisprudencePrecedent(currentQuestion);
+  if (verifiedPrecedent) return buildVerifiedLegalJurisprudencePrecedentAnswer(verifiedPrecedent);
+  const verifiedTheme = findVerifiedLegalJurisprudenceTheme(currentQuestion);
+  return buildVerifiedLegalJurisprudenceAnswer(verifiedTheme);
 }
 
 function asksDocumentProductionDownload(message) {

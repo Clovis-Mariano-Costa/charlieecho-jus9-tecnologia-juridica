@@ -4,7 +4,10 @@ import test from "node:test";
 
 const { onRequestPost } = await import("../functions/api/ia.js");
 const { findVerifiedLegalBibliographyEntry } = await import("../functions/lib/legal-bibliography.js");
-const { findVerifiedLegalJurisprudenceTheme } = await import("../functions/lib/legal-jurisprudence.js");
+const {
+  findVerifiedLegalJurisprudencePrecedent,
+  findVerifiedLegalJurisprudenceTheme
+} = await import("../functions/lib/legal-jurisprudence.js");
 
 async function postIa(message, env = {}) {
   return onRequestPost({
@@ -671,6 +674,25 @@ test("jurisprudence selector covers governed DAJ themes and avoids generic title
   );
 });
 
+test("jurisprudence precedent selector covers verified DAJ fiches", () => {
+  assert.equal(
+    findVerifiedLegalJurisprudencePrecedent("Conhece o REsp 2.052.228 sobre transacoes fora do perfil?")?.id,
+    "resp_2052228_df_operacoes_fora_perfil"
+  );
+  assert.equal(
+    findVerifiedLegalJurisprudencePrecedent("quero julgado do golpe do boleto com vazamento de dados bancarios")?.id,
+    "resp_2077278_sp_golpe_boleto_vazamento"
+  );
+  assert.equal(
+    findVerifiedLegalJurisprudencePrecedent("julgado passagem forcada possuidor imovel encravado")?.id,
+    "resp_2029511_passagem_forcada_possuidor"
+  );
+  assert.equal(
+    findVerifiedLegalJurisprudencePrecedent("explique responsabilidade civil sem citar julgados"),
+    null
+  );
+});
+
 test("verified DAJ jurisprudence catalog v1 covers priority themes without OpenAI", async () => {
   const originalFetch = globalThis.fetch;
   let calls = 0;
@@ -724,6 +746,67 @@ test("verified DAJ jurisprudence catalog v1 covers priority themes without OpenA
       assert.match(body.answer, item.theme);
       assert.match(body.answer, /Teses pesquisaveis, sem inventar julgado/i);
       assert.match(body.answer, /Fontes oficiais para conferencia/i);
+      assert.doesNotMatch(body.answer, /Para pesquisar/i);
+      assert.doesNotMatch(body.answer, /Jurisprudencia - trilha segura/i);
+      for (const expected of item.expected) {
+        assert.match(body.answer, expected);
+      }
+    }
+
+    assert.equal(calls, 0);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("verified DAJ jurisprudence precedent fiches v1 cover specific STJ cases without OpenAI", async () => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    throw new Error("OpenAI should not be called for verified DAJ jurisprudence fiches");
+  };
+
+  try {
+    const cases = [
+      {
+        question: "Ficha jurisprudencial do REsp 2.052.228 sobre transacoes fora do perfil",
+        expected: [/fichas-jurisprudenciais-daj-v1/i, /REsp 2\.052\.228\/DF/i, /Nancy Andrighi/i, /perfil do cliente|fora do perfil/i]
+      },
+      {
+        question: "Ficha do REsp 2.077.278 sobre golpe do boleto e vazamento de dados",
+        expected: [/REsp 2\.077\.278\/SP/i, /LGPD|artigo 44/i, /Nancy Andrighi/i]
+      },
+      {
+        question: "Quero precedente do golpe da falsa central em instituicao de pagamento",
+        expected: [/REsp 2\.222\.059/i, /instituicoes de pagamento/i, /Villas Boas Cueva/i]
+      },
+      {
+        question: "Julgado REsp 2.029.511 passagem forcada possuidor imovel encravado",
+        expected: [/REsp 2\.029\.511/i, /passagem forcada/i, /funcao social/i]
+      },
+      {
+        question: "Julgado sobre prisao de devedor de alimentos por falta de risco a subsistencia",
+        expected: [/Processo em segredo de justica/i, /Marco Aurelio Bellizze/i, /execucao pode prosseguir/i]
+      },
+      {
+        question: "Conhece o REsp 1.955.899 sobre execucao de sentenca coletiva por associacao?",
+        expected: [/REsp 1\.955\.899/i, /artigo 100 do CDC|CDC/i, /subsidiaria/i]
+      },
+      {
+        question: "CDC se aplica a emprestimo para capital de giro? cite o REsp 2.001.086",
+        expected: [/REsp 2\.001\.086/i, /capital de giro/i, /CDC nao se aplica|CDC nao incide/i]
+      }
+    ];
+
+    for (const item of cases) {
+      const response = await postIa(item.question);
+      const body = await response.json();
+
+      assert.equal(response.status, 200);
+      assert.equal(body.ok, true);
+      assert.equal(body.governance.operation, "jurisprudencia_governada_daj");
+      assert.match(body.answer, /fichas-jurisprudenciais-daj-v1/i);
       assert.doesNotMatch(body.answer, /Para pesquisar/i);
       assert.doesNotMatch(body.answer, /Jurisprudencia - trilha segura/i);
       for (const expected of item.expected) {

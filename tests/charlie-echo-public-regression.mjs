@@ -117,6 +117,13 @@ await runLiveCase(
 );
 
 await runLiveCase(
+  "jurisprudencia-ficha-resp-2077278",
+  "Ficha jurisprudencial do REsp 2.077.278 sobre golpe do boleto e vazamento de dados.",
+  [/fichas-jurisprudenciais-daj-v1/i, /REsp 2\.077\.278\/SP/i, /Nancy Andrighi/i, /LGPD|artigo 44/i],
+  [/Para pesquisar/i, /Google Academico/i],
+);
+
+await runLiveCase(
   "deji-revisao-contrato",
   "No DEJI, crie um roteiro de revisao de contrato empresarial ficticio.",
   [/contrato|contratual/i, /risco|clausula|cláusula|revisao humana|revisão humana/i],
@@ -191,6 +198,7 @@ assert(apiHandler.includes("Eu nao vou inventar autor, obra, pagina, citacao lit
 assert(apiHandler.includes("BIBLIOGRAPHIC_VERIFICATION_POLICY"), "politica de verificacao bibliografica ausente");
 assert(apiHandler.includes("findVerifiedLegalBibliographyEntry"), "catalogo bibliografico verificado nao esta conectado a API");
 assert(apiHandler.includes("findVerifiedLegalJurisprudenceTheme"), "catalogo jurisprudencial governado nao esta conectado a API");
+assert(apiHandler.includes("findVerifiedLegalJurisprudencePrecedent"), "fichas jurisprudenciais governadas nao estao conectadas a API");
 assert(legalBibliography.includes("catalogo-bibliografico-juridico-v6"), "versao v6 do catalogo bibliografico ausente");
 assert(legalBibliography.includes("Juarez Cirino dos Santos"), "obra do fato punivel ausente do catalogo");
 assert(legalBibliography.includes("Hans Kelsen"), "Teoria pura do direito ausente do catalogo");
@@ -253,12 +261,21 @@ assert(legalBibliography.includes("Patricia Peck Pinheiro"), "Advocacia digital 
 assert(legalBibliography.includes("Wolfgang Hoffmann-Riem"), "IA e regulacao juridica ausente do catalogo");
 assert(legalBibliography.includes("Marcela Mattiuzzo"), "Discriminacao algoritmica ausente do catalogo");
 assert(legalJurisprudence.includes("catalogo-jurisprudencial-daj-v1"), "versao v1 do catalogo jurisprudencial DAJ ausente");
+assert(legalJurisprudence.includes("fichas-jurisprudenciais-daj-v1"), "versao v1 das fichas jurisprudenciais DAJ ausente");
 assert(legalJurisprudence.includes("Direito de propriedade e funcao social"), "tema propriedade/funcao social ausente do catalogo jurisprudencial");
 assert(legalJurisprudence.includes("Alimentos, revisao e execucao"), "tema alimentos/revisao/execucao ausente do catalogo jurisprudencial");
 assert(legalJurisprudence.includes("Responsabilidade civil, dano material, dano moral e nexo causal"), "tema responsabilidade civil ausente do catalogo jurisprudencial");
 assert(legalJurisprudence.includes("Consumidor, bancos, fraudes e fortuito interno"), "tema consumidor/bancos/fraudes ausente do catalogo jurisprudencial");
 assert(legalJurisprudence.includes("LGPD, vazamento de dados e responsabilidade por tratamento irregular"), "tema LGPD/vazamento ausente do catalogo jurisprudencial");
 assert(legalJurisprudence.includes("Tutela coletiva, acao civil publica e direitos difusos"), "tema tutela coletiva ausente do catalogo jurisprudencial");
+assert(legalJurisprudence.includes("REsp 2.052.228/DF"), "ficha REsp 2.052.228 ausente");
+assert(legalJurisprudence.includes("REsp 2.077.278/SP"), "ficha REsp 2.077.278 ausente");
+assert(legalJurisprudence.includes("REsp 2.222.059"), "ficha REsp 2.222.059 ausente");
+assert(legalJurisprudence.includes("REsp 2.220.333"), "ficha REsp 2.220.333 ausente");
+assert(legalJurisprudence.includes("REsp 2.001.086"), "ficha REsp 2.001.086 ausente");
+assert(legalJurisprudence.includes("REsp 2.029.511"), "ficha REsp 2.029.511 ausente");
+assert(legalJurisprudence.includes("Processo em segredo de justica"), "fichas de alimentos em segredo de justica ausentes");
+assert(legalJurisprudence.includes("REsp 1.955.899"), "ficha REsp 1.955.899 ausente");
 assert(browserScript.includes("Analise jurisprudencial orientativa"), "fallback local de jurisprudencia substantiva ausente");
 assert(browserScript.includes("Sintese doutrinaria orientativa"), "fallback local de doutrina substantiva ausente");
 assert(!apiHandler.includes("jurisprudencia|jurisprudência|doutrina|fonte|fontes|pesquise|pesquisar"), "doutrina voltou a ser gatilho automatico de pesquisa guiada");

@@ -35,6 +35,8 @@ Este indice lista documentos publicos ou sanitizados da governanca da Charlie Ec
 - `documentos-publicos/governanca/VERSIONAMENTO_GOVERNANCA_PUBLICA_SANITIZADA_V2_2026-06-21.md`
 - `documentos-publicos/governanca/LEIS_INFRACONSTITUCIONAIS_CHARLIE_ECHO_PUBLICAS.md`
 - `documentos-publicos/governanca/INDICE_AULAS_PUBLICAS_CHARLIE_ECHO.md`
+- `documentos-publicos/governanca/CATALOGO_JURISPRUDENCIAL_DAJ_GOVERNADO_v1.md`
+- `documentos-publicos/governanca/FICHAS_JURISPRUDENCIAIS_DAJ_CONFERIDAS_v1.md`
 - `GOVERNANCA/MAPA_DE_AULAS_PUBLICAS_CHARLIE_ECHO_v1_0.md`
 - `GOVERNANCA/PROTOCOLO_AULAS_PUBLICAS_CHARLIE_ECHO.md`
 - `GOVERNANCA/LEI_08_DA_COMPETENCIA_OPERACIONAL_DE_CHARLIE_FOX.md`
