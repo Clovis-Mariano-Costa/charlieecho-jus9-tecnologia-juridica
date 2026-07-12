@@ -37,6 +37,7 @@ Este indice lista documentos publicos ou sanitizados da governanca da Charlie Ec
 - `documentos-publicos/governanca/INDICE_AULAS_PUBLICAS_CHARLIE_ECHO.md`
 - `documentos-publicos/governanca/CATALOGO_JURISPRUDENCIAL_DAJ_GOVERNADO_v1.md`
 - `documentos-publicos/governanca/FICHAS_JURISPRUDENCIAIS_DAJ_CONFERIDAS_v1.md`
+- `documentos-publicos/governanca/PRODUTOS_JURISPRUDENCIAIS_DAJ_GOVERNADOS_v1.md`
 - `GOVERNANCA/MAPA_DE_AULAS_PUBLICAS_CHARLIE_ECHO_v1_0.md`
 - `GOVERNANCA/PROTOCOLO_AULAS_PUBLICAS_CHARLIE_ECHO.md`
 - `GOVERNANCA/LEI_08_DA_COMPETENCIA_OPERACIONAL_DE_CHARLIE_FOX.md`

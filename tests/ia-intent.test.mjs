@@ -820,6 +820,94 @@ test("verified DAJ jurisprudence precedent fiches v1 cover specific STJ cases wi
   }
 });
 
+test("verified DAJ jurisprudence work product builds petition argument without OpenAI", async () => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    throw new Error("OpenAI should not be called for verified DAJ jurisprudence work product");
+  };
+
+  try {
+    const response = await postIa("Monte um argumento de peticao com o REsp 2.077.278 sobre golpe do boleto.");
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(body.governance.operation, "jurisprudencia_operacional_daj");
+    assert.match(body.answer, /produtos-jurisprudenciais-daj-v1/i);
+    assert.match(body.answer, /Argumento de peticao/i);
+    assert.match(body.answer, /REsp 2\.077\.278\/SP/i);
+    assert.match(body.answer, /artigo 44 da LGPD|tratamento irregular|nexo causal/i);
+    assert.match(body.answer, /Nao e citacao literal/i);
+    assert.doesNotMatch(body.answer, /Para pesquisar/i);
+    assert.equal(body.artifact.kind, "jurisprudence-work-product");
+    assert.equal(body.artifact.driveDecision.classificacao, "PUBLICO");
+    assert.equal(body.artifact.shouldSaveToDrive, false);
+    assert.equal(body.artifact.criarLinkDownload, false);
+    assert.equal(body.driveSaver, null);
+    assert.equal(calls, 0);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("verified DAJ jurisprudence work product saves public download through Drive Saver", async () => {
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url, options = {}) => {
+    calls.push({ url: String(url), options });
+    assert.equal(String(url), "https://drive-saver.test/exec");
+    const payload = JSON.parse(String(options.body || "{}"));
+
+    assert.equal(payload.chaveInterna, "internal-test-key");
+    assert.equal(payload.classificacao, "PUBLICO");
+    assert.equal(payload.tipoDocumento, "PRODUTO_JURISPRUDENCIAL_DAJ_CHARLIE_ECHO");
+    assert.equal(payload.criarLinkDownload, true);
+    assert.match(payload.titulo, /Produto jurisprudencial DAJ/i);
+    assert.match(payload.conteudo, /Checklist probatorio/i);
+    assert.match(payload.conteudo, /REsp 2\.077\.278\/SP/i);
+    assert.match(payload.conteudo, /dados bancarios|nexo causal/i);
+
+    return Response.json({
+      ok: true,
+      mensagem: "Produto jurisprudencial salvo.",
+      fileId: "drive-juris-123",
+      viewUrl: "https://docs.google.com/document/d/drive-juris-123/edit",
+      downloadUrl: "https://docs.google.com/document/d/drive-juris-123/export?format=pdf",
+      linkPublicoCriado: true,
+      classificacaoFinal: "PUBLICO",
+      pastaDestino: "01_DOCUMENTOS_PUBLICOS_E_EDUCATIVOS",
+      revisaoHumanaObrigatoria: false
+    });
+  };
+
+  try {
+    const response = await postIa(
+      "Monte checklist probatorio do REsp 2.077.278 sobre golpe do boleto e gere link de download em PDF.",
+      {
+        JUS9_DRIVE_SAVER_URL: "https://drive-saver.test/exec",
+        JUS9_DRIVE_SAVER_CHAVE_INTERNA: "internal-test-key"
+      }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(body.governance.operation, "jurisprudencia_operacional_daj");
+    assert.equal(calls.length, 1);
+    assert.match(body.answer, /Arquivo salvo no Cartorio Digital Charlie Echo/i);
+    assert.match(body.answer, /Link de download: https:\/\/docs\.google\.com\/document\/d\/drive-juris-123\/export\?format=pdf/i);
+    assert.equal(body.artifact.kind, "jurisprudence-work-product");
+    assert.equal(body.artifact.driveDecision.classificacao, "PUBLICO");
+    assert.equal(body.artifact.shouldSaveToDrive, true);
+    assert.equal(body.artifact.criarLinkDownload, true);
+    assert.equal(body.driveSaver.downloadUrl, "https://docs.google.com/document/d/drive-juris-123/export?format=pdf");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("download prompt forbids empty link promises", async () => {
   const apiHandler = await fs.readFile(new URL("../functions/api/ia.js", import.meta.url), "utf8");
 

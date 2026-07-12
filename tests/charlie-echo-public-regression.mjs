@@ -124,6 +124,13 @@ await runLiveCase(
 );
 
 await runLiveCase(
+  "jurisprudencia-produto-argumento-resp-2077278",
+  "Monte um argumento de peticao com o REsp 2.077.278 sobre golpe do boleto.",
+  [/produtos-jurisprudenciais-daj-v1/i, /Argumento de peticao/i, /REsp 2\.077\.278\/SP/i, /nexo causal|tratamento irregular/i],
+  [/Para pesquisar/i, /Google Academico/i],
+);
+
+await runLiveCase(
   "deji-revisao-contrato",
   "No DEJI, crie um roteiro de revisao de contrato empresarial ficticio.",
   [/contrato|contratual/i, /risco|clausula|cláusula|revisao humana|revisão humana/i],
@@ -199,6 +206,7 @@ assert(apiHandler.includes("BIBLIOGRAPHIC_VERIFICATION_POLICY"), "politica de ve
 assert(apiHandler.includes("findVerifiedLegalBibliographyEntry"), "catalogo bibliografico verificado nao esta conectado a API");
 assert(apiHandler.includes("findVerifiedLegalJurisprudenceTheme"), "catalogo jurisprudencial governado nao esta conectado a API");
 assert(apiHandler.includes("findVerifiedLegalJurisprudencePrecedent"), "fichas jurisprudenciais governadas nao estao conectadas a API");
+assert(apiHandler.includes("knownJurisprudenceWorkProduct"), "produtos jurisprudenciais governados nao estao conectados a API");
 assert(legalBibliography.includes("catalogo-bibliografico-juridico-v6"), "versao v6 do catalogo bibliografico ausente");
 assert(legalBibliography.includes("Juarez Cirino dos Santos"), "obra do fato punivel ausente do catalogo");
 assert(legalBibliography.includes("Hans Kelsen"), "Teoria pura do direito ausente do catalogo");
@@ -262,6 +270,7 @@ assert(legalBibliography.includes("Wolfgang Hoffmann-Riem"), "IA e regulacao jur
 assert(legalBibliography.includes("Marcela Mattiuzzo"), "Discriminacao algoritmica ausente do catalogo");
 assert(legalJurisprudence.includes("catalogo-jurisprudencial-daj-v1"), "versao v1 do catalogo jurisprudencial DAJ ausente");
 assert(legalJurisprudence.includes("fichas-jurisprudenciais-daj-v1"), "versao v1 das fichas jurisprudenciais DAJ ausente");
+assert(legalJurisprudence.includes("produtos-jurisprudenciais-daj-v1"), "versao v1 dos produtos jurisprudenciais DAJ ausente");
 assert(legalJurisprudence.includes("Direito de propriedade e funcao social"), "tema propriedade/funcao social ausente do catalogo jurisprudencial");
 assert(legalJurisprudence.includes("Alimentos, revisao e execucao"), "tema alimentos/revisao/execucao ausente do catalogo jurisprudencial");
 assert(legalJurisprudence.includes("Responsabilidade civil, dano material, dano moral e nexo causal"), "tema responsabilidade civil ausente do catalogo jurisprudencial");

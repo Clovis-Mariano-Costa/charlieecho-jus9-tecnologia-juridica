@@ -1,5 +1,6 @@
 export const LEGAL_JURISPRUDENCE_CATALOG_VERSION = "catalogo-jurisprudencial-daj-v1";
 export const LEGAL_JURISPRUDENCE_PRECEDENTS_VERSION = "fichas-jurisprudenciais-daj-v1";
+export const LEGAL_JURISPRUDENCE_WORK_PRODUCTS_VERSION = "produtos-jurisprudenciais-daj-v1";
 
 export const LEGAL_JURISPRUDENCE_THEMES = Object.freeze([
   {
@@ -769,6 +770,173 @@ export function buildVerifiedLegalJurisprudencePrecedentContext(entry) {
     `Uso no DAJ: ${entry.useInDaj}`,
     `Limite: ${entry.caution}`,
     `Fontes: ${sources}`
+  ].join("\n");
+}
+
+export function inferVerifiedLegalJurisprudenceWorkProductType(value) {
+  const q = normalizeJurisprudenceText(value);
+  if (!q) return null;
+
+  const wantsWorkProduct = /\b(argumento|argumentacao|fundamento|fundamentos|tese|teses|peticao|peca|manifestacao|topico|paragrafo|checklist|prova|provas|probatorio|documentos|quadro|comparativo|tabela|comparacao|comparar|contrapor|aplicar|aplique|transforme|transformar|monte|montar|redija|redigir|elabore|elaborar|prepare|preparar|pacote)\b/.test(q);
+  if (!wantsWorkProduct) return null;
+
+  if (/\b(checklist|prova|provas|probatorio|documentos|documental|perguntas|quesitos)\b/.test(q)) return "checklist_probatorio";
+  if (/\b(quadro|comparativo|tabela|comparacao|comparar|lado a lado|contrapor)\b/.test(q)) return "quadro_comparativo";
+  if (/\b(pacote|completo|completa|argumento e checklist|tudo)\b/.test(q)) return "pacote_daj";
+  return "argumento_peticao";
+}
+
+function precedentEvidenceItems(entry) {
+  const common = [
+    "inteiro teor ou fonte oficial do precedente conferido",
+    "linha do tempo do caso concreto, com fatos separados de conclusoes",
+    "documentos que aproximam o caso concreto da tese do precedente",
+    "pontos de distincao que a parte contraria pode explorar"
+  ];
+
+  if (entry?.themeId === "consumidor_bancos_fraudes") {
+    return [
+      "extratos, comprovantes, boletos, contratos, logs ou protocolos da operacao discutida",
+      "historico de uso/perfil transacional antes e depois do evento",
+      "comunicacao ao banco, contestacao administrativa, boletim de ocorrencia quando houver e resposta da instituicao",
+      "provas de falha de seguranca, transacao atipica, engenharia social ou ausencia de bloqueio preventivo",
+      ...common
+    ];
+  }
+
+  if (entry?.themeId === "lgpd_vazamento_dados") {
+    return [
+      "identificacao da categoria de dados pessoais envolvida",
+      "provas da origem dos dados e do vinculo com a operacao bancaria ou servico contratado",
+      "evidencias do tratamento irregular, falha de seguranca, acesso indevido ou comunicacao do incidente",
+      "provas de nexo causal e dano concreto quando o pedido depender de reparacao",
+      ...common
+    ];
+  }
+
+  if (entry?.themeId === "propriedade_funcao_social") {
+    return [
+      "matricula, contrato, prova de posse, planta, fotos, mapas e historico de acesso ao imovel",
+      "descricao do encravamento, rotas possiveis e menor onerosidade da passagem",
+      "prova de tentativa de composicao e eventual abuso/recusa injustificada",
+      "elementos de funcao social, utilidade economica e proporcionalidade",
+      ...common
+    ];
+  }
+
+  if (entry?.themeId === "alimentos_revisao_execucao") {
+    return [
+      "decisao ou acordo anterior, planilha do debito e demonstrativo de parcelas vencidas",
+      "provas de necessidade atual, possibilidade economica e proporcionalidade",
+      "documentos de renda, despesas essenciais, capacidade laboral e situacao atual das partes",
+      "justificativa do rito escolhido e alternativa executiva menos gravosa quando cabivel",
+      ...common
+    ];
+  }
+
+  if (entry?.themeId === "tutela_coletiva_consumidor") {
+    return [
+      "estatuto, autorizacao/representacao, pertinencia tematica e prova da legitimidade ativa",
+      "sentenca coletiva, delimitacao do grupo, numero de beneficiarios habilitados e extensao do dano",
+      "justificativa da execucao coletiva subsidiaria e confronto com o artigo 100 do CDC",
+      "criterios de liquidacao, habilitacao e compatibilidade com a gravidade do dano",
+      ...common
+    ];
+  }
+
+  return common;
+}
+
+function sourceLinesForPrecedent(entry) {
+  return (entry?.sources || []).map((source) => `- ${source.label}: ${source.url}`);
+}
+
+function buildArgumentWorkProduct(entry) {
+  return [
+    "Argumento de peticao - modelo demonstrativo",
+    "",
+    "Tese de uso:",
+    `O precedente ${entry.caseNumber}, do ${entry.court}, reforca a seguinte linha: ${entry.holding}`,
+    "",
+    "Paragrafo-base para adaptar:",
+    `No caso concreto, a parte interessada pode sustentar, com a devida prova documental, que a situacao se aproxima da orientacao conferida no ${entry.caseNumber}. A tese nao deve ser usada como citacao literal nem como promessa de resultado; ela serve como apoio argumentativo para demonstrar que ${entry.useInDaj.toLowerCase()} A aplicacao depende da comprovacao dos fatos, da inexistencia de distincao relevante e da conferencia do inteiro teor pelo profissional responsavel.`,
+    "",
+    "Como encaixar na peca:",
+    "1. Abra o topico indicando o fato juridico central do caso concreto.",
+    "2. Mostre a prova que aproxima o caso da tese do precedente.",
+    "3. Cite a referencia conferida, sem inventar ementa, pagina ou trecho literal.",
+    "4. Explique por que nao ha distincao relevante ou reconheca o limite.",
+    "5. Conecte a tese ao pedido ou providencia processual."
+  ].join("\n");
+}
+
+function buildChecklistWorkProduct(entry) {
+  const evidenceLines = precedentEvidenceItems(entry).map((item, index) => `${index + 1}. ${item}.`);
+  return [
+    "Checklist probatorio - modelo demonstrativo",
+    "",
+    "Fato central a comprovar:",
+    `[descrever o fato do caso concreto relacionado a: ${entry.useInDaj}]`,
+    "",
+    "Provas e verificacoes:",
+    ...evidenceLines,
+    "",
+    "Perguntas de controle:",
+    "1. O fato do caso concreto e realmente semelhante ao precedente?",
+    "2. Ha distincao de tribunal, rito, prova, data, vulnerabilidade, relacao juridica ou pedido?",
+    "3. A fonte oficial foi conferida no inteiro teor antes de citar?",
+    "4. Algum dado real exige classificacao sigilosa ou revisao humana reforcada?"
+  ].join("\n");
+}
+
+function buildComparisonWorkProduct(entry) {
+  return [
+    "Quadro comparativo - modelo demonstrativo",
+    "",
+    "| Campo | Precedente conferido | Caso concreto | Prova/limite |",
+    "| --- | --- | --- | --- |",
+    `| Referencia | ${entry.caseNumber} - ${entry.court} | [numero/classe se houver, sem expor dado sensivel] | conferir inteiro teor |`,
+    `| Tese | ${entry.holding} | [tese pretendida] | demonstrar aderencia fatica |`,
+    `| Uso no DAJ | ${entry.useInDaj} | [pedido/providencia] | evitar promessa de resultado |`,
+    `| Risco de distincao | ${entry.caution} | [fatos que podem afastar aplicacao] | revisar com humano habilitado |`,
+    "",
+    "Leitura do quadro:",
+    "Use o precedente como fonte de comparacao, nao como atalho. A forca do argumento depende da prova do caso e da ausencia de distincao relevante."
+  ].join("\n");
+}
+
+export function buildVerifiedLegalJurisprudenceWorkProductAnswer(entry, type = "argumento_peticao") {
+  if (!entry) return "";
+
+  const normalizedType = type || "argumento_peticao";
+  const productBlocks = [];
+
+  if (normalizedType === "argumento_peticao" || normalizedType === "pacote_daj") {
+    productBlocks.push(buildArgumentWorkProduct(entry));
+  }
+  if (normalizedType === "checklist_probatorio" || normalizedType === "pacote_daj") {
+    productBlocks.push(buildChecklistWorkProduct(entry));
+  }
+  if (normalizedType === "quadro_comparativo" || normalizedType === "pacote_daj") {
+    productBlocks.push(buildComparisonWorkProduct(entry));
+  }
+
+  return [
+    `Produto jurisprudencial governado (${LEGAL_JURISPRUDENCE_WORK_PRODUCTS_VERSION}).`,
+    "",
+    `Base conferida: ${entry.caseNumber}.`,
+    `Tema DAJ: ${entry.theme}.`,
+    `Relatoria: ${entry.rapporteur}.`,
+    `Fonte-base: ${entry.sourceDate}.`,
+    "",
+    ...productBlocks.join("\n\n---\n\n").split("\n"),
+    "",
+    "Fontes oficiais para conferencia:",
+    ...sourceLinesForPrecedent(entry),
+    "",
+    `Limite: ${entry.caution}`,
+    "",
+    "Observacao: este produto e demonstrativo. Nao e citacao literal, nao substitui conferencia do inteiro teor e exige revisao humana antes de uso profissional real."
   ].join("\n");
 }
 

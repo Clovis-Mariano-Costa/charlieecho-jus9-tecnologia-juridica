@@ -9,8 +9,10 @@ import {
   buildVerifiedLegalJurisprudenceContext,
   buildVerifiedLegalJurisprudencePrecedentAnswer,
   buildVerifiedLegalJurisprudencePrecedentContext,
+  buildVerifiedLegalJurisprudenceWorkProductAnswer,
   findVerifiedLegalJurisprudencePrecedent,
-  findVerifiedLegalJurisprudenceTheme
+  findVerifiedLegalJurisprudenceTheme,
+  inferVerifiedLegalJurisprudenceWorkProductType
 } from "../lib/legal-jurisprudence.js";
 
 const corsHeaders = {
@@ -758,6 +760,18 @@ function knownJurisprudenceAnswer(message) {
   return buildVerifiedLegalJurisprudenceAnswer(verifiedTheme);
 }
 
+function knownJurisprudenceWorkProduct(message) {
+  const currentQuestion = extractCurrentQuestion(message);
+  const verifiedPrecedent = findVerifiedLegalJurisprudencePrecedent(currentQuestion);
+  const productType = inferVerifiedLegalJurisprudenceWorkProductType(currentQuestion);
+  if (!verifiedPrecedent || !productType) return null;
+  return {
+    entry: verifiedPrecedent,
+    productType,
+    answer: buildVerifiedLegalJurisprudenceWorkProductAnswer(verifiedPrecedent, productType)
+  };
+}
+
 function asksDocumentProductionDownload(message) {
   const q = normalizeForIntent(extractCurrentQuestion(message));
   const wantsDocument = /\b(minuta|modelo|contrato|peticao|peca|documento|oficio|requerimento|manifestacao|recurso|contestacao|inicial)\b/.test(q);
@@ -846,6 +860,7 @@ function inferGovernanceOperation(message) {
   const q = normalizeForIntent(extractCurrentQuestion(message));
   if (asksUserMemoryInstrumentSync(message)) return "memoria_usuario_instrumento";
   if (asksDriveSaverCorrectiveAction(message)) return "correcao_drive_saver";
+  if (knownJurisprudenceWorkProduct(message)) return "jurisprudencia_operacional_daj";
   if (asksLegalDocumentProduction(message)) return "producao_documental_juridica";
   if (asksDajAnalysisReport(message)) return "analise_daj_governada";
   if (knownJurisprudenceAnswer(message)) return "jurisprudencia_governada_daj";
@@ -862,6 +877,7 @@ function buildOperationalGovernanceDecision(message, mode) {
   const q = normalizeForIntent(extractCurrentQuestion(message));
   const userMemoryRecordIntent = asksUserMemoryInstrumentSync(message);
   const documentIntent = asksLegalDocumentProduction(message);
+  const jurisprudenceWorkProductIntent = Boolean(knownJurisprudenceWorkProduct(message));
   const dajAnalysisRecordIntent = asksDajAnalysisAutoSave(message);
   const governanceRecordIntent = /\b(governanca|cronograma|auditoria|investidor|parceiro|roadmap|pacote|relatorio|registro|versionamento|mvp)\b/.test(q);
 
@@ -886,7 +902,7 @@ function buildOperationalGovernanceDecision(message, mode) {
       automaticSaveAllowed: true,
       automaticPdfAllowed: true,
       publicLinkRule: "somente classificacao PUBLICO com downloadUrl real retornado pelo backend",
-      shouldConsiderRecord: userMemoryRecordIntent || documentIntent || dajAnalysisRecordIntent || governanceRecordIntent
+      shouldConsiderRecord: userMemoryRecordIntent || documentIntent || jurisprudenceWorkProductIntent || dajAnalysisRecordIntent || governanceRecordIntent
     }
   };
 }
@@ -1706,6 +1722,72 @@ function buildDajAnalysisArtifact(message, answer, governanceDecision = null) {
   };
 }
 
+function wantsJurisprudenceWorkProductDownloadOrPublicLink(message) {
+  const q = normalizeForIntent(currentUserIntentText(message));
+  return /\b(download|donwload|dowload|downlod|baixar|pdf|docx|word|arquivo|link para download|link de download|link publico|link publico do drive|gerar link|criar link|publicar)\b/.test(q);
+}
+
+function shouldSaveJurisprudenceWorkProductToDrive(message, driveDecision) {
+  if (driveDecision?.classificacao === "COFRE_NAO_AUTOMATICO") return false;
+  const q = normalizeForIntent(currentUserIntentText(message));
+  const explicitLocalOnly = /\b(sem salvar no drive|nao salvar no drive|nao grave no drive|download local|baixar local|somente local|apenas local|sem cartorio|sem cartorio digital)\b/.test(q);
+  if (explicitLocalOnly) return false;
+
+  const hasSaveVerb = /\b(salve|salvar|grave|gravar|guarde|guardar|registre|registrar|arquive|arquivar)\b/.test(q);
+  const hasGovernedPlace = /\b(drive|google drive|cartorio digital|cartorio|drive saver|mini backend)\b/.test(q);
+  const wantsDownloadOrPublicLink = wantsJurisprudenceWorkProductDownloadOrPublicLink(message);
+
+  if (driveDecision?.classificacao === "PUBLICO" && wantsDownloadOrPublicLink) return true;
+  return hasSaveVerb && hasGovernedPlace;
+}
+
+function classifyJurisprudenceWorkProductForDrive(message) {
+  const q = currentUserIntentText(message);
+  const normalized = normalizeForIntent(q);
+  const hasHardSensitiveSignal =
+    /\b(segredo de justica|processo real|dados reais|cliente real|documento pessoal|cpf|cnpj|rg|whatsapp|telefone|email|e-mail|senha|token|chave|\.env|cofre|violencia|abuso|crime)\b/.test(normalized) ||
+    /\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b/.test(q) ||
+    /\b\d{2}\.?\d{3}\.?\d{3}\/?\d{4}-?\d{2}\b/.test(q) ||
+    /\b\d{7}-\d{2}\.\d{4}\.\d\.\d{2}\.\d{4}\b/.test(q) ||
+    /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(q);
+
+  if (hasHardSensitiveSignal) {
+    return {
+      classificacao: "JURIDICO_SIGILOSO",
+      gerarLinkPublico: false,
+      motivo: "produto jurisprudencial com sinal de dado real, cliente, processo, segredo ou risco sensivel",
+      revisaoHumanaObrigatoria: true
+    };
+  }
+
+  return {
+    classificacao: "PUBLICO",
+    gerarLinkPublico: true,
+    motivo: "produto jurisprudencial demonstrativo baseado em fonte publica conferida e sem dados reais",
+    revisaoHumanaObrigatoria: false
+  };
+}
+
+function buildJurisprudenceWorkProductArtifact(message, workProduct, governanceDecision = null) {
+  if (!workProduct?.answer || !workProduct?.entry) return null;
+  const driveDecision = classifyJurisprudenceWorkProductForDrive(message);
+  const shouldSaveToDrive = shouldSaveJurisprudenceWorkProductToDrive(message, driveDecision);
+  const wantsDownloadOrPublicLink = wantsJurisprudenceWorkProductDownloadOrPublicLink(message);
+  const caseReference = String(workProduct.entry.caseNumber || "precedente").replace(/[^\w.\-/ ]+/g, "").trim();
+
+  return {
+    kind: "jurisprudence-work-product",
+    title: `Produto jurisprudencial DAJ - ${caseReference}`,
+    content: workProduct.answer,
+    formats: ["pdf", "docx", "txt", "zip"],
+    tipoDocumento: "PRODUTO_JURISPRUDENCIAL_DAJ_CHARLIE_ECHO",
+    driveDecision,
+    shouldSaveToDrive,
+    criarLinkDownload: shouldSaveToDrive && wantsDownloadOrPublicLink && driveDecision.classificacao === "PUBLICO",
+    governance: artifactGovernanceMetadata(governanceDecision, driveDecision, shouldSaveToDrive),
+  };
+}
+
 function sanitizeUserMemorySyncContent(message) {
   return String(message || "")
     .replace(/\r/g, "")
@@ -2094,19 +2176,19 @@ function appendArtifactDelivery(answer, artifact, driveSaver) {
   }
 
   if (driveSaver?.reason === "not_configured") {
-    lines.push("Preparei a minuta e deixei o conteudo pronto para baixar pelos botoes da pagina.");
+    lines.push("Preparei o documento e deixei o conteudo pronto para baixar pelos botoes da pagina.");
     lines.push(`Minha classificacao automatica: ${decision.classificacao}. ${decision.motivo}.`);
     lines.push("Quando o Drive Saver estiver ativo neste ambiente, eu salvo no Cartorio Digital e trago o link real.");
     return lines.join("\n");
   }
 
   if (driveSaver) {
-    lines.push("Preparei a minuta. Tentei salvar no Drive Saver, mas o backend nao concluiu agora.");
+    lines.push("Preparei o documento. Tentei salvar no Drive Saver, mas o backend nao concluiu agora.");
     lines.push("O download local da pagina continua disponivel; posso tentar salvar novamente depois.");
     return lines.join("\n");
   }
 
-  lines.push("Preparei a minuta e deixei o conteudo pronto para baixar pelos botoes da pagina.");
+  lines.push("Preparei o documento e deixei o conteudo pronto para baixar pelos botoes da pagina.");
   lines.push(`Minha classificacao automatica: ${decision.classificacao}. ${decision.motivo}.`);
   return lines.join("\n");
 }
@@ -2259,6 +2341,25 @@ export async function onRequestPost(context) {
         ok: true,
         mode,
         answer: removeUnsafeLinks(cleanPublicAnswer(verifiedBibliographicAnswer)),
+        governance,
+      });
+    }
+
+    const verifiedJurisprudenceWorkProduct = knownJurisprudenceWorkProduct(message);
+    if (verifiedJurisprudenceWorkProduct) {
+      const artifact = buildJurisprudenceWorkProductArtifact(message, verifiedJurisprudenceWorkProduct, governanceDecision);
+      const driveSaver = artifact ? await saveArtifactWithDriveSaver(env, artifact) : null;
+      const finalAnswer = removeUnsafeLinks(cleanPublicAnswer(appendArtifactDelivery(
+        verifiedJurisprudenceWorkProduct.answer,
+        artifact,
+        driveSaver
+      )));
+      return jsonResponse({
+        ok: true,
+        mode,
+        answer: finalAnswer,
+        artifact: publicArtifactMetadata(artifact),
+        driveSaver: driveSaver ? sanitizeDriveSaverData(driveSaver) : null,
         governance,
       });
     }
