@@ -30,7 +30,8 @@ const JUS9_DRIVE_SAVER_CONFIG = {
     INTERNO: "JUS9_FOLDER_INTERNO",
     COFRE_DEPOSITO: "JUS9_FOLDER_COFRE_DEPOSITO"
   },
-  maxContentLength: 90000
+  maxContentLength: 90000,
+  idempotencyTtlSeconds: 21600
 };
 
 function doGet() {
@@ -65,10 +66,19 @@ function doPost(e) {
     const payload = parsePayload_(e);
     validateInternalKey_(payload.chaveInterna);
     const acao = normalizeAction_(payload.acao || payload.action || "CRIAR_DOCUMENTO");
+    const idempotencyKey = normalizeIdempotencyKey_(payload.idempotencyKey);
+    const previousResult = readIdempotentResult_(idempotencyKey);
+    if (previousResult) {
+      return json_(Object.assign({}, previousResult, {
+        idempotentReplay: true,
+        mensagem: previousResult.mensagem || "Operacao ja concluida; retorno idempotente reutilizado."
+      }));
+    }
 
     if (acao !== "CRIAR_DOCUMENTO") {
       const normalizedAction = normalizeGovernedActionRequest_(payload, acao);
       const actionResult = performGovernedFileAction_(normalizedAction);
+      storeIdempotentResult_(idempotencyKey, actionResult);
       logSafe_(actionResult.status || "ACAO_GOVERNADA", normalizedAction, {
         folderName: actionResult.pastaDestino || "ACAO_GOVERNADA"
       }, normalizedAction.fileId, actionResult.auditId);
@@ -93,7 +103,7 @@ function doPost(e) {
     const created = createGovernedDocument_(normalized, route);
     logSafe_("CRIADO", normalized, route, created.fileId);
 
-    return json_({
+    const result = {
       ok: true,
       mensagem: "Documento salvo com governanca no Cartorio Digital Charlie Echo.",
       fileId: created.fileId,
@@ -107,7 +117,9 @@ function doPost(e) {
       revisaoHumanaObrigatoria: route.reviewRequired,
       cofreAutomatico: false,
       cofreDepositoAssistido: Boolean(route.vaultDepositOnly)
-    });
+    };
+    storeIdempotentResult_(idempotencyKey, result);
+    return json_(result);
   } catch (error) {
     return json_({
       ok: false,
@@ -154,6 +166,7 @@ function normalizeRequest_(payload) {
     autorOperacional: String(payload.autorOperacional || "Charlie Echo da Costa").trim(),
     observacao: String(payload.observacao || "").trim(),
     criarLinkDownload: Boolean(payload.criarLinkDownload),
+    idempotencyKey: normalizeIdempotencyKey_(payload.idempotencyKey),
     criadoEm: new Date()
   };
 }
@@ -202,8 +215,41 @@ function normalizeGovernedActionRequest_(payload, acao) {
     autorOperacional: String(payload.autorOperacional || "Charlie Echo da Costa").trim(),
     motivo: String(payload.motivo || payload.observacao || "Correcao governada solicitada pela Charlie Echo.").trim().slice(0, 500),
     observacao: String(payload.observacao || payload.motivo || "").trim().slice(0, 500),
+    idempotencyKey: normalizeIdempotencyKey_(payload.idempotencyKey),
     criadoEm: new Date()
   };
+}
+
+function normalizeIdempotencyKey_(value) {
+  return String(value || "").replace(/[^A-Za-z0-9._:-]/g, "").slice(0, 180);
+}
+
+function idempotencyCacheKey_(value) {
+  if (!value) return "";
+  const digest = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, value, Utilities.Charset.UTF_8);
+  const hex = digest.map(function(byte) {
+    const normalized = byte < 0 ? byte + 256 : byte;
+    return ("0" + normalized.toString(16)).slice(-2);
+  }).join("");
+  return `JUS9_IDEMPOTENCY_${hex}`;
+}
+
+function readIdempotentResult_(value) {
+  const key = idempotencyCacheKey_(value);
+  if (!key) return null;
+  const cached = CacheService.getScriptCache().get(key);
+  if (!cached) return null;
+  try {
+    return JSON.parse(cached);
+  } catch (error) {
+    return null;
+  }
+}
+
+function storeIdempotentResult_(value, result) {
+  const key = idempotencyCacheKey_(value);
+  if (!key || !result) return;
+  CacheService.getScriptCache().put(key, JSON.stringify(result), JUS9_DRIVE_SAVER_CONFIG.idempotencyTtlSeconds);
 }
 
 function resolveRoute_(classificacao) {
@@ -298,6 +344,7 @@ function createGovernedDocument_(data, route) {
   body.appendParagraph(`Criado em: ${timestamp}`);
   body.appendParagraph(`Revisao humana obrigatoria: ${route.reviewRequired ? "SIM" : "NAO"}`);
   body.appendParagraph(`Pasta destino: ${route.folderName}`);
+  if (data.idempotencyKey) body.appendParagraph(`Operacao idempotente: ${data.idempotencyKey}`);
   if (data.observacao) body.appendParagraph(`Observacao: ${data.observacao}`);
   body.appendParagraph("");
   body.appendParagraph("Aviso: documento criado por automacao assistida. Conteudo juridico real, sigiloso ou sensivel exige revisao humana antes de uso externo, publicacao, envio ou arquivamento definitivo.");

@@ -9,15 +9,19 @@ const {
   findVerifiedLegalJurisprudenceTheme
 } = await import("../functions/lib/legal-jurisprudence.js");
 
-async function postIa(message, env = {}) {
+async function postIa(message, env = {}, options = {}) {
+  const internalToken = String(env.JUS9_CHARLIE_INTERNAL_TOKEN || "test-charlie-internal-token");
+  const requestHeaders = { "Content-Type": "application/json" };
+  if (options.authorized !== false) requestHeaders.Authorization = `Bearer ${internalToken}`;
   return onRequestPost({
-    env,
+    env: { ...env, JUS9_CHARLIE_INTERNAL_TOKEN: internalToken },
     request: new Request("https://charlieecho.test/api/ia", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: requestHeaders,
       body: JSON.stringify({
         message,
-        mode: "profissional"
+        mode: "profissional",
+        requestId: options.requestId || "test-request-id"
       })
     })
   });
@@ -1016,6 +1020,34 @@ test("verified DAJ jurisprudence work product builds petition argument without O
   }
 });
 
+test("public API answers but refuses Drive side effects without internal proxy authorization", async () => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    return Response.json({ ok: true });
+  };
+
+  try {
+    const response = await postIa(
+      "Monte checklist probatorio do REsp 2.077.278 sobre golpe do boleto e gere link de download em PDF.",
+      {
+        JUS9_DRIVE_SAVER_URL: "https://drive-saver.test/exec",
+        JUS9_DRIVE_SAVER_CHAVE_INTERNA: "internal-test-key"
+      },
+      { authorized: false }
+    );
+    const body = await response.json();
+    assert.equal(response.status, 200);
+    assert.equal(body.artifact.shouldSaveToDrive, true);
+    assert.equal(body.driveSaver.reason, "authorization_required");
+    assert.equal(calls, 0);
+    assert.match(body.answer, /sessao nao possui permissao governada de escrita/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("verified DAJ jurisprudence work product saves public download through Drive Saver", async () => {
   const originalFetch = globalThis.fetch;
   const calls = [];
@@ -1028,6 +1060,7 @@ test("verified DAJ jurisprudence work product saves public download through Driv
     assert.equal(payload.classificacao, "PUBLICO");
     assert.equal(payload.tipoDocumento, "PRODUTO_JURISPRUDENCIAL_DAJ_CHARLIE_ECHO");
     assert.equal(payload.criarLinkDownload, true);
+    assert.equal(payload.idempotencyKey, "test-request-id:salvar:jurisprudence-work-product");
     assert.match(payload.titulo, /Produto jurisprudencial DAJ/i);
     assert.match(payload.conteudo, /Checklist probatorio/i);
     assert.match(payload.conteudo, /REsp 2\.077\.278\/SP/i);
@@ -2022,4 +2055,7 @@ test("Drive Saver Apps Script declares governed corrective actions", async () =>
   assert.match(code, /assertManagedDriveSaverFile_/);
   assert.match(code, /fileBelongsToManagedDriveSaverFolder_/);
   assert.match(code, /auditId/);
+  assert.match(code, /idempotencyKey/);
+  assert.match(code, /CacheService\.getScriptCache/);
+  assert.match(code, /idempotentReplay/);
 });

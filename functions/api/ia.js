@@ -18,8 +18,33 @@ import {
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
+
+function normalizeRequestId(value) {
+  return String(value || "").replace(/[^A-Za-z0-9._:-]/g, "").slice(0, 120);
+}
+
+async function secureTokenEqual(left, right) {
+  const encoder = new TextEncoder();
+  const [leftDigest, rightDigest] = await Promise.all([
+    crypto.subtle.digest("SHA-256", encoder.encode(String(left || ""))),
+    crypto.subtle.digest("SHA-256", encoder.encode(String(right || "")))
+  ]);
+  const leftBytes = new Uint8Array(leftDigest);
+  const rightBytes = new Uint8Array(rightDigest);
+  let difference = leftBytes.length ^ rightBytes.length;
+  for (let index = 0; index < leftBytes.length; index += 1) difference |= leftBytes[index] ^ rightBytes[index];
+  return difference === 0;
+}
+
+async function isDriveSideEffectAuthorized(request, env) {
+  const expected = String(env?.JUS9_CHARLIE_INTERNAL_TOKEN || "").trim();
+  if (!expected) return false;
+  const authorization = String(request?.headers?.get("authorization") || "");
+  const provided = authorization.replace(/^Bearer\s+/i, "").trim();
+  return Boolean(provided && await secureTokenEqual(provided, expected));
+}
 
 const LANGUAGE_POLICY = `
 REGRA DE IDIOMAS:
@@ -2394,7 +2419,8 @@ async function saveArtifactWithDriveSaver(env, artifact) {
         ? `Memoria operacional oficial: ${artifact.governance.memoryDestination}; acesso: ${artifact.governance.memoryAccess}; versao: ${artifact.governance.version}.`
         : ""
     ].filter(Boolean).join(" | "),
-    criarLinkDownload: Boolean(artifact.criarLinkDownload)
+    criarLinkDownload: Boolean(artifact.criarLinkDownload),
+    idempotencyKey: `${env?.__requestId || "sem-request-id"}:salvar:${artifact.kind || "documento"}`.slice(0, 180)
   };
 
   return callDriveSaver(env, payload);
@@ -2403,6 +2429,15 @@ async function saveArtifactWithDriveSaver(env, artifact) {
 async function callDriveSaver(env, payload) {
   const driveSaverUrl = String(env?.JUS9_DRIVE_SAVER_URL || "").trim();
   const driveSaverKey = String(env?.JUS9_DRIVE_SAVER_CHAVE_INTERNA || "").trim();
+
+  if (env?.__driveSideEffectsAuthorized !== true) {
+    return {
+      ok: false,
+      skipped: true,
+      reason: "authorization_required",
+      mensagem: "O pedido foi respondido, mas esta sessao nao possui permissao governada para alterar o Drive oficial."
+    };
+  }
 
   if (!driveSaverUrl || !driveSaverKey) {
     return {
@@ -2418,11 +2453,14 @@ async function callDriveSaver(env, payload) {
     chaveInterna: driveSaverKey
   };
 
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30_000);
   try {
     const response = await fetch(driveSaverUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
+      signal: controller.signal
     });
     const data = await response.json().catch(() => ({}));
     const sanitized = sanitizeDriveSaverData(data);
@@ -2443,10 +2481,12 @@ async function callDriveSaver(env, payload) {
     return {
       ok: false,
       skipped: false,
-      reason: "request_failed",
+      reason: error?.name === "AbortError" ? "request_timeout" : "request_failed",
       mensagem: "Nao consegui concluir o salvamento automatico no Drive Saver agora.",
       detail: error?.message || String(error)
     };
+  } finally {
+    clearTimeout(timeout);
   }
 }
 
@@ -2472,7 +2512,8 @@ function sanitizeDriveSaverData(data) {
     auditUrl: data?.auditUrl || null,
     auditFileId: data?.auditFileId || null,
     acaoExecutada: data?.acaoExecutada || null,
-    status: data?.status || null
+    status: data?.status || null,
+    idempotentReplay: Boolean(data?.idempotentReplay)
   };
 }
 
@@ -2498,7 +2539,8 @@ async function performDriveSaverCorrectiveAction(env, message) {
       origem: "Charlie Echo / API IA",
       autorOperacional: "Charlie Echo da Costa",
       motivo,
-      observacao: motivo
+      observacao: motivo,
+      idempotencyKey: `${env?.__requestId || "sem-request-id"}:${acao}:${fileId}`.slice(0, 180)
     });
     results.push({ fileId, driveSaver });
   }
@@ -2542,6 +2584,10 @@ function buildDriveSaverCorrectiveAnswer(acao, driveSaver) {
 
   if (driveSaver?.reason === "not_configured") {
     return "Eu entendi a correcao, mas o Drive Saver nao esta configurado neste ambiente. Assim que estiver ativo, consigo revogar link, mover para revisao ou enviar para lixeira governada pelo fileId.";
+  }
+
+  if (driveSaver?.reason === "authorization_required") {
+    return "Eu entendi a correcao, mas esta sessao nao tem permissao governada para alterar o Drive oficial. Entre no portal com um perfil autorizado e repita a acao.";
   }
 
   const detail = driveSaver?.reason || driveSaver?.mensagem || "o Drive Saver nao concluiu a acao";
@@ -2608,6 +2654,12 @@ function appendArtifactDelivery(answer, artifact, driveSaver) {
     return lines.join("\n");
   }
 
+  if (driveSaver?.reason === "authorization_required") {
+    lines.push("Preparei o documento e mantive o download local disponivel.");
+    lines.push("O Drive oficial nao foi alterado porque esta sessao nao possui permissao governada de escrita.");
+    return lines.join("\n");
+  }
+
   if (driveSaver) {
     lines.push("Preparei o documento. Tentei salvar no Drive Saver, mas o backend nao concluiu agora.");
     lines.push("O download local da pagina continua disponivel; posso tentar salvar novamente depois.");
@@ -2630,6 +2682,10 @@ function userMemoryInstrumentSyncAnswer(driveSaver) {
 
   if (driveSaver?.reason === "not_configured") {
     return "Memoria salva no painel local. O registro oficial no Google Drive ficara pendente ate o Drive Saver estar configurado neste ambiente.";
+  }
+
+  if (driveSaver?.reason === "authorization_required") {
+    return "Memoria salva no painel local. O Drive oficial nao foi alterado porque esta sessao nao possui permissao governada de escrita.";
   }
 
   const detail = driveSaver?.reason || driveSaver?.mensagem || "o Drive Saver nao concluiu agora";
@@ -2738,15 +2794,22 @@ export async function onRequestGet() {
     endpoint: "/api/ia",
     modes: ["estudantes", "profissional", "social"],
     accepts: "POST application/json { message, mode }",
+    driveSideEffects: "Somente via proxy interno autenticado do portal Jus 9.",
     secrets: "Somente em ambiente seguro; nunca no HTML/JS.",
   });
 }
 
 export async function onRequestPost(context) {
   try {
-    const { request, env } = context;
+    const request = context.request;
 
     const body = await request.json().catch(() => null);
+    const requestId = normalizeRequestId(body?.requestId) || crypto.randomUUID();
+    const env = {
+      ...(context.env || {}),
+      __requestId: requestId,
+      __driveSideEffectsAuthorized: await isDriveSideEffectAuthorized(request, context.env)
+    };
     const message = typeof body?.message === "string" ? body.message.trim() : "";
     const room = body?.room && typeof body.room === "object" ? body.room : null;
     const requestedMode = typeof body?.mode === "string" ? body.mode.trim().toLowerCase() : "estudantes";
