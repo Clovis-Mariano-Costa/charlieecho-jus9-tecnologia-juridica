@@ -201,6 +201,10 @@ assert(apiHandler.includes("analise jurisprudencial responsavel"), "intencao de 
 assert(apiHandler.includes("Se o usuario pedir \"proponha jurisprudencia\""), "regra de proposta jurisprudencial sem trava ausente");
 assert(apiHandler.includes("producao doutrinaria responsavel"), "intencao de producao doutrinaria ausente");
 assert(apiHandler.includes("asksGuidedLegalResearch"), "salvaguarda deterministica de pesquisa juridica ausente");
+assert(apiHandler.includes("asksDataJudProcessSearch"), "detector de consulta CNJ/DataJud ausente");
+assert(apiHandler.includes("performDataJudProcessSearch"), "chamada governada CNJ/DataJud ausente");
+assert(apiHandler.includes("consulta_datajud_cnj"), "operacao de governanca CNJ/DataJud ausente");
+assert(apiHandler.includes("CNJ/DataJud"), "resposta publica CNJ/DataJud ausente");
 assert(apiHandler.includes("Eu nao vou inventar autor, obra, pagina, citacao literal ou julgado"), "limite deterministico contra fontes inventadas ausente");
 assert(apiHandler.includes("BIBLIOGRAPHIC_VERIFICATION_POLICY"), "politica de verificacao bibliografica ausente");
 assert(apiHandler.includes("findVerifiedLegalBibliographyEntry"), "catalogo bibliografico verificado nao esta conectado a API");

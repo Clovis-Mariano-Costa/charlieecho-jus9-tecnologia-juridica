@@ -94,6 +94,90 @@ test("legal explanation with sources calls the model instead of guided protocol"
   }
 });
 
+test("DataJud process search without gateway token returns governed pending answer without OpenAI", async () => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    throw new Error("DataJud search without token should not call external fetch");
+  };
+
+  try {
+    const response = await postIa("consulte no CNJ/DataJud o processo 0000000-00.2024.8.24.0000");
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(calls, 0);
+    assert.equal(body.governance.operation, "consulta_datajud_cnj");
+    assert.equal(body.dataJudStatus, "pendente");
+    assert.match(body.answer, /CNJ\/DataJud/i);
+    assert.match(body.answer, /JUS9_TRIBUNAIS_GATEWAY_TOKEN/i);
+    assert.doesNotMatch(body.answer, /Para pesquisar doutrina e jurisprudencia|Fontes recomendadas/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("DataJud process search calls governed tribunal gateway and formats metadata", async () => {
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url, options = {}) => {
+    calls.push({ url: String(url), options });
+    assert.equal(String(url), "https://jus9tecnologia.com.br/api/tribunais/datajud/search");
+    assert.equal(options.method, "POST");
+    assert.equal(options.headers["X-Jus9-Internal-Token"], "gateway-test-token");
+    const payload = JSON.parse(String(options.body || "{}"));
+    assert.equal(payload.numeroProcesso, "00000000020248240000");
+    assert.equal(payload.tribunal, "TJSC");
+    assert.equal(payload.size, 5);
+
+    return Response.json({
+      ok: true,
+      source: "CNJ/DataJud",
+      tribunal: "TJSC",
+      alias: "api_publica_tjsc",
+      tribunalName: "Tribunal de Justica de Santa Catarina",
+      numeroProcesso: "00000000020248240000",
+      total: 1,
+      results: [
+        {
+          classe: { codigo: 7, nome: "Procedimento Comum Civel" },
+          grau: "G1",
+          nivelSigilo: 0,
+          assuntos: [{ codigo: 999, nome: "Obrigacoes" }],
+          orgaoJulgador: { nome: "1a Vara Civel" },
+          movimentos: [
+            { codigo: 26, nome: "Distribuicao", dataHora: "2024-01-10T12:00:00" },
+            { codigo: 51, nome: "Conclusos para decisao", dataHora: "2024-01-12T12:00:00" }
+          ]
+        }
+      ]
+    });
+  };
+
+  try {
+    const response = await postIa(
+      "Consulte no TJSC pelo CNJ/DataJud o processo 0000000-00.2024.8.24.0000",
+      { JUS9_TRIBUNAIS_GATEWAY_TOKEN: "gateway-test-token" }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(calls.length, 1);
+    assert.equal(body.governance.operation, "consulta_datajud_cnj");
+    assert.equal(body.dataJudStatus, "consultado");
+    assert.match(body.answer, /Consulta CNJ\/DataJud realizada/i);
+    assert.match(body.answer, /Tribunal de Justica de Santa Catarina/i);
+    assert.match(body.answer, /Procedimento Comum Civel/i);
+    assert.match(body.answer, /Distribuicao/i);
+    assert.doesNotMatch(body.answer, /Para pesquisar doutrina e jurisprudencia|Fontes recomendadas/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("doctrinal citation without theme asks for minimum research scope", async () => {
   const originalFetch = globalThis.fetch;
   let calls = 0;

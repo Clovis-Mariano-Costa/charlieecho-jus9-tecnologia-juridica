@@ -1009,6 +1009,167 @@ function asksDajAnalysisAutoSave(message) {
   return /\b(salve|salvar|grave|gravar|registre|registrar|cartorio|drive|pdf|relatorio)\b/.test(q);
 }
 
+function extractCnjProcessNumber(message) {
+  const text = extractCurrentQuestion(message);
+  const formatted = text.match(/\b\d{7}[-.]?\d{2}[.]?\d{4}[.]?\d[.]?\d{2}[.]?\d{4}\b/);
+  const compact = formatted ? formatted[0].replace(/\D/g, "") : (text.match(/\b\d{20}\b/)?.[0] || "");
+  return compact.length === 20 ? compact : "";
+}
+
+function asksDataJudProcessSearch(message) {
+  if (asksLegalDocumentProduction(message) || asksDajAnalysisReport(message)) return false;
+  const numeroProcesso = extractCnjProcessNumber(message);
+  if (!numeroProcesso) return false;
+
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  return /\b(datajud|cnj|consulta processual|consultar processo|consulte processo|buscar processo|busque processo|pesquisar processo|pesquise processo|movimentacao|movimentacoes|andamento|andamentos|capa processual|metadados processuais|numero do processo|processo no tribunal|tribunal)\b/.test(q);
+}
+
+function extractDataJudTribunalHint(message) {
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  const direct = q.match(/\b(stf|stj|stm|tse|tst|trf[1-6]|tj[a-z]{2}|trt(?:[1-9]|1\d|2[0-4]))\b/);
+  if (direct) return direct[1].toUpperCase();
+
+  const names = [
+    ["santa catarina", "TJSC"],
+    ["sao paulo", "TJSP"],
+    ["rio de janeiro", "TJRJ"],
+    ["minas gerais", "TJMG"],
+    ["rio grande do sul", "TJRS"],
+    ["parana", "TJPR"],
+    ["bahia", "TJBA"],
+    ["pernambuco", "TJPE"],
+    ["ceara", "TJCE"],
+    ["distrito federal", "TJDFT"]
+  ];
+
+  return names.find(([name]) => q.includes(name))?.[1] || "";
+}
+
+function dataJudGatewayUrl(env) {
+  return String(env?.JUS9_TRIBUNAIS_GATEWAY_URL || "https://jus9tecnologia.com.br/api/tribunais/datajud/search").trim();
+}
+
+function dataJudPendingAnswer(missing, status, detail) {
+  const parts = Array.isArray(missing) && missing.length ? missing.join(", ") : "configuracao do gateway";
+  const lines = [
+    "Eu reconheci uma consulta CNJ/DataJud, mas o conector seguro ainda esta pendente neste ambiente.",
+    `Falta configurar no provedor seguro: ${parts}.`
+  ];
+  if (status) lines.push(`Status tecnico: ${status}.`);
+  if (detail) lines.push(`Detalhe: ${String(detail).slice(0, 180)}.`);
+  lines.push("Nao vou substituir essa consulta por resposta local: para processo real, a resposta precisa vir do gateway autorizado CNJ/DataJud.");
+  return lines.join("\n");
+}
+
+function dataJudSafeList(items, mapper) {
+  return Array.isArray(items) ? items.slice(0, 8).map(mapper).filter(Boolean) : [];
+}
+
+function dataJudSuccessAnswer(payload) {
+  const results = Array.isArray(payload?.results) ? payload.results : [];
+  const lines = [
+    "Consulta CNJ/DataJud realizada pelo gateway governado da Jus 9.",
+    `Fonte: ${payload?.source || "CNJ/DataJud"}.`,
+    `Tribunal: ${payload?.tribunalName || payload?.tribunal || payload?.alias || "nao informado"}.`,
+    `Numero do processo: ${payload?.numeroProcesso || "nao informado"}.`,
+    `Total retornado: ${Number.isFinite(payload?.total) ? payload.total : results.length}.`
+  ];
+
+  if (!results.length) {
+    lines.push("", "Nao localizei metadados publicos para esse numero no retorno do DataJud. Confira numero, tribunal e grau antes de concluir.");
+  }
+
+  results.slice(0, 3).forEach((item, index) => {
+    const classe = item?.classe?.nome || item?.classe || "classe nao informada";
+    const orgao = item?.orgaoJulgador?.nome || item?.orgaoJulgador || "orgao julgador nao informado";
+    const assuntos = dataJudSafeList(item?.assuntos, (assunto) => assunto?.nome || assunto).join("; ");
+    const movimentos = dataJudSafeList(item?.movimentos, (movimento) => {
+      const nome = movimento?.nome || movimento?.descricao || "";
+      const data = movimento?.dataHora || movimento?.data || "";
+      return nome ? `${data ? `${data} - ` : ""}${nome}` : "";
+    });
+
+    lines.push(
+      "",
+      `Resultado ${index + 1}:`,
+      `- Classe: ${classe}.`,
+      `- Grau: ${item?.grau || "nao informado"}.`,
+      `- Orgao julgador: ${orgao}.`,
+      `- Nivel de sigilo informado: ${item?.nivelSigilo ?? "nao informado"}.`
+    );
+    if (assuntos) lines.push(`- Assuntos: ${assuntos}.`);
+    if (movimentos.length) {
+      lines.push("- Ultimas movimentacoes publicas:");
+      for (const movimento of movimentos.slice(0, 5)) lines.push(`  - ${movimento}`);
+    }
+  });
+
+  lines.push(
+    "",
+    "Limite: DataJud entrega metadados processuais publicos. Eu nao trato isso como inteiro teor, certidao, peticionamento, prazo fatal ou acesso a dado sigiloso. Para uso real, confira no tribunal competente e submeta a revisao humana."
+  );
+  return lines.join("\n");
+}
+
+async function performDataJudProcessSearch(env, message) {
+  const numeroProcesso = extractCnjProcessNumber(message);
+  const token = String(env?.JUS9_TRIBUNAIS_GATEWAY_TOKEN || "").trim();
+  if (!token) {
+    return {
+      ok: false,
+      pending: true,
+      status: 200,
+      answer: dataJudPendingAnswer(["JUS9_TRIBUNAIS_GATEWAY_TOKEN"], 501)
+    };
+  }
+
+  const body = {
+    numeroProcesso,
+    tribunal: extractDataJudTribunalHint(message),
+    size: 5
+  };
+
+  try {
+    const response = await fetch(dataJudGatewayUrl(env), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Jus9-Internal-Token": token
+      },
+      body: JSON.stringify(body)
+    });
+    const payload = await response.json().catch(() => null);
+
+    if (!response.ok || !payload?.ok) {
+      const missing = Array.isArray(payload?.missing) ? payload.missing : [];
+      const detail = payload?.error || payload?.detail || payload?.message || payload?.mensagem || null;
+      return {
+        ok: false,
+        pending: true,
+        status: 200,
+        answer: dataJudPendingAnswer(missing, response.status, detail),
+        dataJud: payload || null
+      };
+    }
+
+    return {
+      ok: true,
+      status: 200,
+      answer: dataJudSuccessAnswer(payload),
+      dataJud: payload
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      pending: true,
+      status: 200,
+      answer: dataJudPendingAnswer(["gateway CNJ/DataJud acessivel"], null, error?.message || "falha de rede"),
+      dataJud: null
+    };
+  }
+}
+
 function asksUserMemoryInstrumentSync(message) {
   return /\[SINCRONIZAR_MEMORIA_USUARIO_INSTRUMENTO\]|OPERACAO_INTERNA:\s*SINCRONIZAR_MEMORIA_USUARIO_INSTRUMENTO/i.test(String(message || ""));
 }
@@ -1064,6 +1225,7 @@ function inferGovernanceOperation(message) {
   const q = normalizeForIntent(extractCurrentQuestion(message));
   if (asksUserMemoryInstrumentSync(message)) return "memoria_usuario_instrumento";
   if (asksDriveSaverCorrectiveAction(message)) return "correcao_drive_saver";
+  if (asksDataJudProcessSearch(message)) return "consulta_datajud_cnj";
   if (knownJurisprudenceWorkProduct(message)) return "jurisprudencia_operacional_daj";
   if (asksLegalDocumentProduction(message)) return "producao_documental_juridica";
   if (asksDajAnalysisReport(message)) return "analise_daj_governada";
@@ -1241,6 +1403,7 @@ function inferCreativeIntent(message) {
 
 function creativeNextStep(intent) {
   if (intent === "producao de peca juridica completa") return "revisar competencia, fatos, documentos, pedidos, valor da causa e baixar a minuta local para revisao humana.";
+  if (intent === "consulta processual governada") return "conferir os metadados no CNJ/DataJud e, para uso real, validar no tribunal competente antes de agir.";
   if (intent === "pesquisa juridica guiada") return "montar uma ficha de conferencia com fonte, tese, data, inteiro teor e revisao humana.";
   if (intent === "analise jurisprudencial responsavel") return "separar tese, criterios de tribunal, limites de uso e fontes oficiais para conferencia se o usuario precisar citar julgado.";
   if (intent === "producao doutrinaria responsavel") return "transformar a sintese em estrutura, argumentos, limites e fontes para conferencia quando necessario.";
@@ -1255,6 +1418,7 @@ function inferLegalAwareCreativeIntent(message) {
   if (asksCompleteLegalDraft(message)) return "producao de peca juridica completa";
   if (asksDocumentProductionDownload(message)) return "producao documental demonstrativa";
   const q = normalizeForIntent(extractCurrentQuestion(message));
+  if (asksDataJudProcessSearch(message)) return "consulta processual governada";
   if (asksGuidedLegalResearch(message) || /\b(fonte|fontes|pesquise|pesquisar|busque|buscar|procure|procurar|autor|autores|obra|obras|citacao|pagina|inteiro teor|ementa|relator|numero do processo|tribunal)\b/.test(q)) return "pesquisa juridica guiada";
   if (/\b(jurisprudencia|precedente|acordao|entendimento dos tribunais|tese dos tribunais)\b/.test(q)) return "analise jurisprudencial responsavel";
   if (/\b(doutrina|doutrinario|doutrinaria|teoria|conceito juridico)\b/.test(q)) return "producao doutrinaria responsavel";
@@ -2634,6 +2798,18 @@ export async function onRequestPost(context) {
           : null,
         governance,
       }, corrective.ok ? 200 : 400);
+    }
+
+    if (asksDataJudProcessSearch(message)) {
+      const dataJud = await performDataJudProcessSearch(env, message);
+      return jsonResponse({
+        ok: true,
+        mode,
+        answer: removeUnsafeLinks(cleanPublicAnswer(dataJud.answer)),
+        dataJud: dataJud.dataJud || null,
+        dataJudStatus: dataJud.ok ? "consultado" : "pendente",
+        governance,
+      }, dataJud.status || 200);
     }
 
     if (asksActiveLegalCitationResearch(message) && !hasMinimumActiveLegalCitationTopic(message)) {
