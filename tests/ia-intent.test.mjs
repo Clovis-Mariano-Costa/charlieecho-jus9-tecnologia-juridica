@@ -21,7 +21,8 @@ async function postIa(message, env = {}, options = {}) {
       body: JSON.stringify({
         message,
         mode: "profissional",
-        requestId: options.requestId || "test-request-id"
+        requestId: options.requestId || "test-request-id",
+        ...(options.route ? { route: options.route } : {})
       })
     })
   });
@@ -37,6 +38,52 @@ test("document download requests do not fall into guided legal research", async 
   assert.equal(body.governance.driveMemory.official, true);
   assert.doesNotMatch(String(body.answer || body.error || ""), /Para pesquisar/i);
   assert.doesNotMatch(String(body.answer || body.error || ""), /Fontes recomendadas/i);
+});
+
+test("structured name lookup never calls OpenAI or creates a legal draft", async () => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    throw new Error("structured lookup must not call external fetch");
+  };
+  try {
+    const response = await postIa(
+      "Consulte processo por nome da parte no DAJ",
+      { OPENAI_API_KEY: "test-key" },
+      { route: { operation: "consulta_processual_por_nome", searchType: "nome" } }
+    );
+    const body = await response.json();
+    assert.equal(response.status, 200);
+    assert.equal(calls, 0);
+    assert.equal(body.governance.operation, "consulta_processual_por_nome");
+    assert.equal(body.structuredLookup.generativeModelCalled, false);
+    assert.equal(body.structuredLookup.inventedResults, false);
+    assert.match(body.answer, /endpoint autenticado \/api\/judicial\/parties\/search/i);
+    assert.doesNotMatch(body.answer, /minuta|peticao demonstrativa|excelentissimo/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("structured CPF lookup inferred from message fails closed without OpenAI", async () => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    throw new Error("structured lookup must not call external fetch");
+  };
+  try {
+    const response = await postIa("Pesquise processos pelo CPF no DAJ", { OPENAI_API_KEY: "test-key" });
+    const body = await response.json();
+    assert.equal(response.status, 200);
+    assert.equal(calls, 0);
+    assert.equal(body.governance.operation, "consulta_processual_por_cpf");
+    assert.match(body.answer, /aguardando orientacao oficial/i);
+    assert.doesNotMatch(body.answer, /minuta|peticao demonstrativa|resultado 1/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
 
 test("document download typo donwload does not fall into guided legal research", async () => {

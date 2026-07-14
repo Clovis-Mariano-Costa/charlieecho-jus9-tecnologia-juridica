@@ -1011,9 +1011,51 @@ function asksDocumentProductionDownload(message) {
 function asksCompleteLegalDraft(message) {
   const q = normalizeForIntent(extractCurrentQuestion(message));
   if (hasDajAnalysisSignal(message)) return false;
+  if (inferStructuredProcessLookupOperation(message)) return false;
   const wantsLegalDocument = /\b(minuta|modelo|contrato|peticao|peca|inicial|contestacao|recurso|agravo|apelacao|manifestacao|parecer|oficio|requerimento|impugnacao|embargos)\b/.test(q);
   const wantsProduction = /\b(completa|completo|inteira|inteiro|redija|redigir|faca|fazer|crie|criar|elabore|elaborar|monte|montar|prepare|preparar|produza|produzir|quero|preciso|download|baixar|arquivo|pdf|docx|word)\b/.test(q);
   return wantsLegalDocument && wantsProduction;
+}
+
+function inferStructuredProcessLookupOperation(message) {
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  const asksLookup = /\b(consulte|consultar|consulta|pesquise|pesquisar|pesquisa|busque|buscar|busca|localize|localizar|encontre|encontrar)\b/.test(q);
+  const processContext = /\b(processo|processos|processual|daj|dossie administrativo juridico)\b/.test(q);
+  if (!asksLookup || !processContext) return "";
+  if (/\bcpf\b/.test(q)) return "consulta_processual_por_cpf";
+  if (/\b(nome da parte|nome de parte|por nome|pelo nome)\b/.test(q)) return "consulta_processual_por_nome";
+  if (/\b(daj|dossie administrativo juridico)\b/.test(q)) return "consulta_daj_por_id";
+  return "";
+}
+
+function normalizeStructuredProcessRoute(route) {
+  if (!route || typeof route !== "object" || Array.isArray(route)) return null;
+  const operation = String(route.operation || "").trim().toLowerCase();
+  const searchType = String(route.searchType || "").trim().toLowerCase();
+  const allowed = {
+    consulta_processual_por_nome: "nome",
+    consulta_processual_por_cpf: "cpf",
+    consulta_daj_por_id: "daj"
+  };
+  if (!allowed[operation] || allowed[operation] !== searchType) return null;
+  return { operation, searchType };
+}
+
+function structuredProcessLookupAnswer(operation) {
+  if (operation === "consulta_daj_por_id") {
+    return [
+      "A consulta por DAJ deve ser executada no indice estruturado e autenticado do portal Jus 9.",
+      "Esta API generativa nao vai criar, completar ou presumir vinculo DAJ-processo.",
+      "Use o endpoint governado /api/daj-process-links e exiba somente o registro efetivamente retornado."
+    ].join("\n");
+  }
+  const key = operation === "consulta_processual_por_cpf" ? "CPF" : "nome";
+  return [
+    `A consulta processual por ${key} foi interrompida nesta API generativa.`,
+    "Ela deve ser executada pelo endpoint autenticado /api/judicial/parties/search, em modo somente leitura.",
+    "A API Publica DataJud nao oferece pesquisa nacional de partes. O conector externo permanece aguardando orientacao oficial e credenciais.",
+    "Nenhum modelo generativo foi chamado e nenhum processo, DAJ ou vinculo foi presumido."
+  ].join("\n");
 }
 
 function asksLegalDocumentProduction(message) {
@@ -1250,6 +1292,8 @@ function inferGovernanceOperation(message) {
   const q = normalizeForIntent(extractCurrentQuestion(message));
   if (asksUserMemoryInstrumentSync(message)) return "memoria_usuario_instrumento";
   if (asksDriveSaverCorrectiveAction(message)) return "correcao_drive_saver";
+  const structuredProcessOperation = inferStructuredProcessLookupOperation(message);
+  if (structuredProcessOperation) return structuredProcessOperation;
   if (asksDataJudProcessSearch(message)) return "consulta_datajud_cnj";
   if (knownJurisprudenceWorkProduct(message)) return "jurisprudencia_operacional_daj";
   if (asksLegalDocumentProduction(message)) return "producao_documental_juridica";
@@ -2812,6 +2856,7 @@ export async function onRequestPost(context) {
     };
     const message = typeof body?.message === "string" ? body.message.trim() : "";
     const room = body?.room && typeof body.room === "object" ? body.room : null;
+    const structuredRoute = normalizeStructuredProcessRoute(body?.route);
     const requestedMode = typeof body?.mode === "string" ? body.mode.trim().toLowerCase() : "estudantes";
     const allowedModes = new Set(["estudantes", "profissional", "social"]);
     const mode = allowedModes.has(requestedMode) ? requestedMode : "estudantes";
@@ -2821,7 +2866,24 @@ export async function onRequestPost(context) {
     }
 
     const governanceDecision = buildOperationalGovernanceDecision(message, mode);
+    const structuredOperation = structuredRoute?.operation || inferStructuredProcessLookupOperation(message);
+    if (structuredOperation) governanceDecision.operation = structuredOperation;
     const governance = publicGovernanceMetadata(governanceDecision);
+
+    if (structuredOperation) {
+      return jsonResponse({
+        ok: true,
+        mode,
+        answer: structuredProcessLookupAnswer(structuredOperation),
+        structuredLookup: {
+          operation: structuredOperation,
+          status: "delegated_to_authenticated_structured_endpoint",
+          generativeModelCalled: false,
+          inventedResults: false
+        },
+        governance,
+      });
+    }
 
     if (asksUserMemoryInstrumentSync(message)) {
       const artifact = buildUserMemoryInstrumentArtifact(message, governanceDecision);
