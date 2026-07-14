@@ -86,6 +86,97 @@ test("structured CPF lookup inferred from message fails closed without OpenAI", 
   }
 });
 
+test("governed DAJ analysis route reaches OpenAI instead of structured DAJ lookup", async () => {
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url, options = {}) => {
+    calls.push({ url: String(url), options });
+    assert.match(String(url), /api\.openai\.com/);
+    return Response.json({
+      output_text: [
+        "Sintese fiel dos fatos: o relato ambiental ficticio requer apuracao sem presumir autoria ou enquadramento.",
+        "Riscos e urgencias: nao ha prazo confirmado; o sigilo informado deve ser preservado.",
+        "Documentos faltantes: identificacao do fato, local, data e eventuais registros oficiais.",
+        "Perguntas objetivas: houve comunicacao a autoridade ambiental e existe documento comprobatorio?",
+        "Proximos atos: a equipe deve conferir os fatos; a Charlie pode organizar documentos e fontes.",
+        "Fontes a consultar: legislacao ambiental vigente e bases oficiais, sem inventar citacao.",
+        "Limites: nao e possivel concluir autoria, tipificacao ou prazo com os dados atuais."
+      ].join("\n\n")
+    });
+  };
+
+  try {
+    const message = [
+      "[ANALISE DAJ GOVERNADA]",
+      "Analise o DAJ abaixo, lido agora do cadastro oficial governado da Jus 9.",
+      "Identificador: DAJ-2026-0001",
+      "Area informada: Ambiental",
+      "Resumo do caso: relato ficticio de possivel dano a ave.",
+      "Entregue fontes oficiais a consultar, sem inventar citacao."
+    ].join("\n");
+    const response = await postIa(
+      message,
+      { OPENAI_API_KEY: "test-key", JUS9_MODEL_DEFAULT: "test-model" },
+      {
+        route: {
+          id: "daj_analise_governada",
+          apiFirst: true,
+          useRoomMemory: false,
+          allowLocalFallback: false,
+          dajId: "DAJ-2026-0001"
+        }
+      }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(calls.length, 1);
+    assert.equal(body.governance.operation, "analise_daj_governada");
+    assert.match(body.answer, /relato ambiental ficticio/i);
+    assert.doesNotMatch(body.answer, /consulta por DAJ deve ser executada|indice estruturado/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("incomplete governed DAJ route cannot bypass structured lookup guard", async () => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    throw new Error("invalid governed route must not call OpenAI");
+  };
+
+  try {
+    const response = await postIa(
+      [
+        "[ANALISE DAJ GOVERNADA]",
+        "Analise o DAJ e entregue fontes a consultar.",
+        "Identificador: DAJ-2026-0001"
+      ].join("\n"),
+      { OPENAI_API_KEY: "test-key" },
+      {
+        route: {
+          id: "daj_analise_governada",
+          apiFirst: true,
+          useRoomMemory: false,
+          allowLocalFallback: true,
+          dajId: "DAJ-2026-0001"
+        }
+      }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(calls, 0);
+    assert.equal(body.governance.operation, "consulta_daj_por_id");
+    assert.match(body.answer, /indice estruturado e autenticado/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("document download typo donwload does not fall into guided legal research", async () => {
   const response = await postIa("quero link para donwload de uma minuta de pensao alimenticia");
   const body = await response.json();

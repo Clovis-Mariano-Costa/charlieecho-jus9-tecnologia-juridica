@@ -1041,6 +1041,22 @@ function normalizeStructuredProcessRoute(route) {
   return { operation, searchType };
 }
 
+function normalizeGovernedDajAnalysisRoute(route, message) {
+  if (!route || typeof route !== "object" || Array.isArray(route)) return null;
+  if (String(route.id || "").trim().toLowerCase() !== "daj_analise_governada") return null;
+  if (route.apiFirst !== true || route.useRoomMemory !== false || route.allowLocalFallback !== false) return null;
+
+  const text = String(message || "");
+  if (!/^\s*\[ANALISE DAJ GOVERNADA\]/i.test(text)) return null;
+  if (!asksDajAnalysisReport(text)) return null;
+
+  const messageDajId = extractDajId(text);
+  const routeDajId = String(route.dajId || "").trim().toUpperCase();
+  if (!/^DAJ-\d{4}-\d{4,}$/.test(messageDajId) || routeDajId !== messageDajId) return null;
+
+  return { id: "daj_analise_governada", dajId: messageDajId };
+}
+
 function structuredProcessLookupAnswer(operation) {
   if (operation === "consulta_daj_por_id") {
     return [
@@ -2857,6 +2873,9 @@ export async function onRequestPost(context) {
     const message = typeof body?.message === "string" ? body.message.trim() : "";
     const room = body?.room && typeof body.room === "object" ? body.room : null;
     const structuredRoute = normalizeStructuredProcessRoute(body?.route);
+    const governedDajAnalysisRoute = structuredRoute
+      ? null
+      : normalizeGovernedDajAnalysisRoute(body?.route, message);
     const requestedMode = typeof body?.mode === "string" ? body.mode.trim().toLowerCase() : "estudantes";
     const allowedModes = new Set(["estudantes", "profissional", "social"]);
     const mode = allowedModes.has(requestedMode) ? requestedMode : "estudantes";
@@ -2866,8 +2885,10 @@ export async function onRequestPost(context) {
     }
 
     const governanceDecision = buildOperationalGovernanceDecision(message, mode);
-    const structuredOperation = structuredRoute?.operation || inferStructuredProcessLookupOperation(message);
+    const structuredOperation = structuredRoute?.operation
+      || (governedDajAnalysisRoute ? "" : inferStructuredProcessLookupOperation(message));
     if (structuredOperation) governanceDecision.operation = structuredOperation;
+    if (governedDajAnalysisRoute) governanceDecision.operation = "analise_daj_governada";
     const governance = publicGovernanceMetadata(governanceDecision);
 
     if (structuredOperation) {
