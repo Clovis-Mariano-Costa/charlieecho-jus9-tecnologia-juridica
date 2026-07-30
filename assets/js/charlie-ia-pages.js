@@ -915,6 +915,39 @@
     var temas = ['Direito e tecnologia','LGPD e privacidade','Cidadania digital','Inteligencia artificial responsavel','Organizacao de estudos','Etica no uso da IA'];
     function currentText(){ return input ? input.value.trim() : ''; }
     function answer(text){ renderAnswer(resposta, text); rememberExchange('student', currentText(), text); }
+    var diagnosticPrompt = [
+      '[FORMACAO EM PROGRAMACAO — MODULO 0 — DIAGNOSTICO INICIAL]',
+      'Responda como aluna. Nao afirme que executou codigo, acessou arquivo ou concluiu teste sem evidencia real.',
+      '',
+      '1. Explique, com suas palavras, o que e um programa e o que significa Olá Mundo.',
+      '2. Compare variavel, funcao e condicao usando um exemplo simples.',
+      '3. Leia este codigo e diga a saida: const nome = \"Charlie\"; console.log(\"Ola, \" + nome);',
+      '4. Diga para que servem Git, commit, branch e pull request.',
+      '5. Explique a diferenca entre HTML, CSS e JavaScript.',
+      '6. Cite tres riscos de seguranca ao criar uma API publica.',
+      '7. Quando voce deve pedir revisao humana na Jus 9?',
+      '8. Crie um pequeno plano para aprender um tema, praticar, testar e demonstrar dominio.',
+      '',
+      'Ao final, separe: sei explicar; preciso praticar; tenho duvida. Nao se atribua nota nem aprovacao.'
+    ].join('\n');
+    document.querySelectorAll('[data-student-prompt]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(!input) return;
+        if(btn.getAttribute('data-student-prompt') === 'diagnostico-programacao'){
+          input.value = diagnosticPrompt;
+          input.focus();
+          input.scrollIntoView({ behavior:'smooth', block:'center' });
+          if(status) status.textContent = 'Diagnostico carregado. Revise e clique em Perguntar quando estiver pronta.';
+        }
+      });
+    });
+    try {
+      var params = new URLSearchParams(window.location.search);
+      if(params.get('trilha') === 'programacao' && params.get('modulo') === '0' && input && !input.value){
+        input.value = diagnosticPrompt;
+        if(status) status.textContent = 'Modulo 0 carregado pelo link direto. O envio depende de acao humana.';
+      }
+    } catch(err) {}
     document.querySelectorAll('[data-student-action]').forEach(function(btn){ btn.addEventListener('click', function(){
       var ac = btn.getAttribute('data-student-action'), t = currentText();
       if(ac === 'falar') return startVoiceInput(input, status);
