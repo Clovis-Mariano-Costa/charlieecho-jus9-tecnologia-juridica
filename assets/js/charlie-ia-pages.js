@@ -930,22 +930,38 @@
       '',
       'Ao final, separe: sei explicar; preciso praticar; tenho duvida. Nao se atribua nota nem aprovacao.'
     ].join('\n');
+    var moduleZeroPartAPrompt = [
+      '[FORMACAO EM PROGRAMACAO — MODULO 0 — PARTE A: COMPREENSAO]',
+      'Responda como aluna, de forma concisa e numerada. Nao afirme que executou codigo ou acessou arquivos.',
+      '1. Qual e a diferenca entre editor e terminal?',
+      '2. O que o Node.js faz neste modulo?',
+      '3. O que o navegador faz que o terminal nao faz neste exemplo?',
+      '4. O que significa executar um arquivo?',
+      '5. Por que uma saida visivel nao prova que todo o sistema esta correto?',
+      '6. Qual e a diferenca entre codigo e dado?',
+      '7. Qual e a diferenca entre configuracao e segredo?',
+      '8. Por que um .env.example pode ser publico, mas um .env real nao?',
+      '9. O que deve constar em um bom relato de erro?',
+      '10. Quando Charlie Echo deve parar e pedir revisao humana?',
+      'Ao final diga apenas o que ainda precisa praticar. Nao se atribua nota nem aprovacao.'
+    ].join('\n');
     document.querySelectorAll('[data-student-prompt]').forEach(function(btn){
       btn.addEventListener('click', function(){
         if(!input) return;
-        if(btn.getAttribute('data-student-prompt') === 'diagnostico-programacao'){
-          input.value = diagnosticPrompt;
+        var promptType = btn.getAttribute('data-student-prompt');
+        if(promptType === 'diagnostico-programacao' || promptType === 'modulo-0-parte-a'){
+          input.value = promptType === 'modulo-0-parte-a' ? moduleZeroPartAPrompt : diagnosticPrompt;
           input.focus();
           input.scrollIntoView({ behavior:'smooth', block:'center' });
-          if(status) status.textContent = 'Diagnostico carregado. Revise e clique em Perguntar quando estiver pronta.';
+          if(status) status.textContent = 'Roteiro carregado. Revise e clique em Perguntar quando estiver pronta.';
         }
       });
     });
     try {
       var params = new URLSearchParams(window.location.search);
       if(params.get('trilha') === 'programacao' && params.get('modulo') === '0' && input && !input.value){
-        input.value = diagnosticPrompt;
-        if(status) status.textContent = 'Modulo 0 carregado pelo link direto. O envio depende de acao humana.';
+        input.value = moduleZeroPartAPrompt;
+        if(status) status.textContent = 'Parte A canonica do Modulo 0 carregada pelo link direto. O envio depende de acao humana.';
       }
     } catch(err) {}
     document.querySelectorAll('[data-student-action]').forEach(function(btn){ btn.addEventListener('click', function(){
