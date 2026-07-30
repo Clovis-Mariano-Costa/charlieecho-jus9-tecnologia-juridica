@@ -1001,7 +1001,15 @@ function knownJurisprudenceWorkProduct(message) {
   };
 }
 
+function isProgrammingLearningPrompt(message) {
+  const q = normalizeForIntent(extractCurrentQuestion(message));
+  const programmingSignal = /\b(programacao|programar|codigo|javascript|html|css|node|git|github|api publica|variavel|funcao|condicao|ola mundo|modulo 0)\b/.test(q);
+  const learningSignal = /\b(aluna|aluno|estudante|aprender|aprendizagem|diagnostico|aula|formacao|explique|exercicio|praticar|demonstrar dominio)\b/.test(q);
+  return programmingSignal && learningSignal;
+}
+
 function asksDocumentProductionDownload(message) {
+  if (isProgrammingLearningPrompt(message)) return false;
   const q = normalizeForIntent(extractCurrentQuestion(message));
   const wantsDocument = /\b(minuta|modelo|contrato|peticao|peca|documento|oficio|requerimento|manifestacao|recurso|contestacao|inicial)\b/.test(q);
   const wantsFile = /\b(download|donwload|dowload|downlod|baixar|arquivo|pdf|docx|word|link para download|link para donwload|link de download|link de donwload|gerar link|criar link)\b/.test(q);
@@ -1009,6 +1017,7 @@ function asksDocumentProductionDownload(message) {
 }
 
 function asksCompleteLegalDraft(message) {
+  if (isProgrammingLearningPrompt(message)) return false;
   const q = normalizeForIntent(extractCurrentQuestion(message));
   if (hasDajAnalysisSignal(message)) return false;
   if (inferStructuredProcessLookupOperation(message)) return false;
@@ -1260,6 +1269,7 @@ function asksUserMemoryInstrumentSync(message) {
 function inferOperationalMvp(message, mode = "estudantes") {
   const q = normalizeForIntent(extractCurrentQuestion(message));
 
+  if (isProgrammingLearningPrompt(message)) return "DEJ_ESTUDANTES";
   if (/\b(daj|advogado|advogada|advogados|advogadas|defensor|defensoria|peticao|peca|inicial|contestacao|recurso|alimentos|pensao|processo|prazo|audiencia|dossie administrativo juridico)\b/.test(q)) {
     return "DAJ_ADVOGADOS";
   }
@@ -1306,6 +1316,7 @@ function inferOperationalMvp(message, mode = "estudantes") {
 
 function inferGovernanceOperation(message) {
   const q = normalizeForIntent(extractCurrentQuestion(message));
+  if (isProgrammingLearningPrompt(message)) return "diagnostico_formacao_programacao";
   if (asksUserMemoryInstrumentSync(message)) return "memoria_usuario_instrumento";
   if (asksDriveSaverCorrectiveAction(message)) return "correcao_drive_saver";
   const structuredProcessOperation = inferStructuredProcessLookupOperation(message);
