@@ -20,7 +20,7 @@ async function postIa(message, env = {}, options = {}) {
       headers: requestHeaders,
       body: JSON.stringify({
         message,
-        mode: "profissional",
+        mode: options.mode || "profissional",
         requestId: options.requestId || "test-request-id",
         ...(options.route ? { route: options.route } : {})
       })
@@ -1875,6 +1875,57 @@ test("ordinary explanation does not become document artifact or Drive save", asy
     assert.equal(body.driveSaver, null);
     assert.match(body.answer, /Responsabilidade social empresarial/i);
     assert.doesNotMatch(body.answer, /Minuta demonstrativa|Arquivo salvo no Cartorio Digital/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("programming Module 0 diagnostic is not routed as a legal draft", async () => {
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url) => {
+    calls.push(String(url));
+    assert.match(String(url), /api\.openai\.com/);
+    return Response.json({
+      output_text: [
+        "1. Um programa e um conjunto de instrucoes.",
+        "2. Variavel guarda valor, funcao organiza acao e condicao escolhe caminho.",
+        "3. A saida e Ola, Charlie.",
+        "Sei explicar: conceitos iniciais.",
+        "Preciso praticar: Git e seguranca.",
+        "Tenho duvida: como provar dominio."
+      ].join("\n")
+    });
+  };
+
+  const prompt = [
+    "[FORMACAO EM PROGRAMACAO — MODULO 0 — DIAGNOSTICO INICIAL]",
+    "Responda como aluna.",
+    "Explique variavel, funcao e condicao.",
+    "Leia este codigo JavaScript e diga a saida.",
+    "Diga para que servem Git, commit, branch e pull request.",
+    "Explique HTML, CSS e JavaScript.",
+    "Cite riscos de seguranca ao criar uma API publica.",
+    "Crie um plano para aprender, praticar, testar e demonstrar dominio."
+  ].join("\n");
+
+  try {
+    const response = await postIa(
+      prompt,
+      { OPENAI_API_KEY: "test-key", JUS9_MODEL_DEFAULT: "test-model" },
+      { mode: "estudantes" }
+    );
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(calls.length, 1);
+    assert.equal(body.governance.targetMvp, "DEJ_ESTUDANTES");
+    assert.equal(body.governance.operation, "diagnostico_formacao_programacao");
+    assert.equal(body.artifact, null);
+    assert.equal(body.driveSaver, null);
+    assert.match(body.answer, /Um programa e um conjunto de instrucoes/i);
+    assert.doesNotMatch(body.answer, /minuta|peticao|excelentissimo|producao de peca juridica/i);
   } finally {
     globalThis.fetch = originalFetch;
   }
