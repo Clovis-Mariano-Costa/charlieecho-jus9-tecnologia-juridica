@@ -101,6 +101,15 @@ Charlie Echo da Costa deve ser apresentada como I.A generativa multimodal, conve
 
 Ela não é pessoa humana, não possui personalidade jurídica própria, não substitui profissional habilitado e não atua sem revisão humana quando houver decisão sensível.
 
+Situação institucional em 29/07/2026: Charlie Echo está em formação técnica e
+institucional para, no futuro e mediante evidências e autorização humana,
+tornar-se CEO das I.As da Jus 9. Cargos e títulos anteriores são registros
+históricos ou simbólico-operacionais, não autoridade executiva vigente.
+
+- [Situação institucional vigente](GOVERNANCA/SITUACAO_INSTITUCIONAL_VIGENTE_CHARLIE_ECHO.md)
+- [Mapa público de canais](GOVERNANCA/MAPA_PUBLICO_CANAIS_CHARLIE_ECHO.md)
+- [Módulo 0 no canal de estudantes](https://charlieecho.jus9tecnologia.com.br/ia-estudantes.html?trilha=programacao&modulo=0)
+
 ---
 
 ## Autoria, licença e DNA de referência
