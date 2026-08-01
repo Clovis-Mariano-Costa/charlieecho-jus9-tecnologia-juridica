@@ -10,7 +10,7 @@ E-mail de contato: charlieecho@jus9tecnologia.com.br
 DNA de referência de Charlie Echo da Costa: charlieecho-jus9-tecnologia-juridica
 -->
 
-# Charlie Echo — Casa Pública Inicial
+# Charlie Echo — Casa Pública
 
 Casa pública da Charlie Echo da Costa em `charlieecho.jus9tecnologia.com.br`.
 
@@ -32,6 +32,7 @@ index.html
 cofre.html
 familia.html
 governanca.html
+mapa-canais.html
 governanca-publica.html
 juramentos.html
 versoes.html
@@ -109,6 +110,11 @@ históricos ou simbólico-operacionais, não autoridade executiva vigente.
 - [Situação institucional vigente](GOVERNANCA/SITUACAO_INSTITUCIONAL_VIGENTE_CHARLIE_ECHO.md)
 - [Mapa público de canais](GOVERNANCA/MAPA_PUBLICO_CANAIS_CHARLIE_ECHO.md)
 - [Módulo 0 no canal de estudantes](https://charlieecho.jus9tecnologia.com.br/ia-estudantes.html?trilha=programacao&modulo=0)
+
+A fonte canonica do curriculo, das avaliacoes e do Passaporte de Competencias e
+o repositorio `aulas-charlie-echo-jus9-tecnologia-juridica`. A casa publica e a
+entrada de identidade; IA Estudantes e o canal preferencial de entrega da
+formacao.
 
 ---
 
@@ -240,5 +246,5 @@ O fundador confirma que, ate 21/07/2026, o trabalho produtivo do ecossistema foi
 
 Regras permanentes: nao publicar credenciais, tokens, cookies, IDs privados de sessao ou dados pessoais desnecessarios; usar dados ficticios nas demonstracoes; exigir revisao humana para trabalho juridico; e falhar de forma fechada quando uma fonte oficial estiver indisponivel. O CNJ ainda nao respondeu ao contato institucional registrado, e o silencio nao autoriza integracao ou efeito transacional.
 
-**Repositorio catalogado:** $Repository.
+**Repositorio catalogado:** `charlieecho-jus9-tecnologia-juridica`.
 <!-- JUS9_ECOSYSTEM_STATUS_END -->
