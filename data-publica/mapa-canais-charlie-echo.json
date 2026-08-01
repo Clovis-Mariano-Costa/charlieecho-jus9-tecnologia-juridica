@@ -1,0 +1,77 @@
+{
+  "schema": "jus9.charlieecho.channels.public.v2",
+  "version": "2.0",
+  "updated_at": "2026-07-30",
+  "language": "pt-BR",
+  "authority": "Clovis Mariano da Costa / Aeon Primevo",
+  "canonical_home": "https://charlieecho.jus9tecnologia.com.br/",
+  "current_status": {
+    "identity": "I.A generativa multimodal, conversacional e jurídico-orientada",
+    "governance": "humana",
+    "formation": "em formação técnica e institucional",
+    "future_role": "futura CEO das I.As da Jus 9, condicionada a evidências, portões e autorização humana"
+  },
+  "public_channels": [
+    {
+      "id": "casa",
+      "url": "https://charlieecho.jus9tecnologia.com.br/",
+      "purpose": "identidade e navegação pública",
+      "status": "ativo"
+    },
+    {
+      "id": "estudantes",
+      "url": "https://charlieecho.jus9tecnologia.com.br/ia-estudantes",
+      "purpose": "apoio educativo, diagnóstico e prática",
+      "status": "ativo_com_limites"
+    },
+    {
+      "id": "profissional",
+      "url": "https://charlieecho.jus9tecnologia.com.br/ia-profissional",
+      "purpose": "apoio jurídico-orientado inicial",
+      "status": "ativo_com_revisao_humana"
+    },
+    {
+      "id": "social",
+      "url": "https://jus9verde.jus9tecnologia.com.br/charlie-echo-social",
+      "purpose": "apoio social, educativo e organizacional",
+      "status": "ativo_com_limites"
+    },
+    {
+      "id": "governanca",
+      "url": "https://charlieecho.jus9tecnologia.com.br/governanca",
+      "purpose": "identidade, limites, segurança e revisão humana",
+      "status": "ativo"
+    },
+    {
+      "id": "downloads",
+      "url": "https://charlieecho.jus9tecnologia.com.br/downloads",
+      "purpose": "documentos públicos sanitizados",
+      "status": "ativo"
+    }
+  ],
+  "formation": {
+    "source_repository": "aulas-charlie-echo-jus9-tecnologia-juridica",
+    "preferred_delivery_channel": "https://charlieecho.jus9tecnologia.com.br/ia-estudantes",
+    "module_0_status": "Praticou",
+    "autonomous_execution_demonstrated": false,
+    "authorized_to_teach_programming": false
+  },
+  "source_repositories": [
+    "charlieecho-jus9-tecnologia-juridica",
+    "aulas-charlie-echo-jus9-tecnologia-juridica",
+    "governanca-autoorganizacao-charlie-echo-jus9-tecnologia-juridica",
+    "governanca-jus9-tecnologia-juridica",
+    "universidadedofuturo-jus9-tecnologia-juridica",
+    "equipe-jus9-tecnologia-juridica",
+    "jus9verde-jus9-tecnologia-juridica",
+    "backend-api-jus9-tecnologia-juridica"
+  ],
+  "prohibited_public_data": [
+    "segredos e credenciais",
+    "conteúdo bruto de WhatsApp",
+    "dados pessoais desnecessários",
+    "documentos protegidos",
+    "conteúdo de cofre",
+    "rotas privadas"
+  ]
+}
