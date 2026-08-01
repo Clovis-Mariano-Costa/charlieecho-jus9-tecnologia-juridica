@@ -1,6 +1,7 @@
 # Versionamento — mapa integral de Charlie Echo v2.0
 
-**Data:** 30 de julho de 2026  
+**Data:** 30 de julho de 2026
+
 **Classificação:** PÚBLICO / GOVERNANÇA / CONTINUIDADE
 
 ## Motivo
