@@ -248,3 +248,10 @@ Regras permanentes: nao publicar credenciais, tokens, cookies, IDs privados de s
 
 **Repositorio catalogado:** `charlieecho-jus9-tecnologia-juridica`.
 <!-- JUS9_ECOSYSTEM_STATUS_END -->
+
+## Correção pública de governança — 04/08/2026
+
+A governança pública foi atualizada para distinguir normas externas, políticas internas, protocolos e aulas. Regras internas não criam autoridade estatal, personalidade jurídica ou habilitação profissional para uma IA.
+
+- [Adendo público de hierarquia e limites](GOVERNANCA/ADENDO_PUBLICO_HIERARQUIA_LIMITES_CHARLIE_ECHO_2026-08-04.md)
+- [Governança pública](https://charlieecho.jus9tecnologia.com.br/governanca)
