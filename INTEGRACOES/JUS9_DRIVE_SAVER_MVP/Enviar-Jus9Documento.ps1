@@ -8,6 +8,8 @@ param(
 
   [switch]$PedirChave,
 
+  [switch]$UsarChaveLegada,
+
   [Parameter(Mandatory = $true)]
   [ValidateSet("PUBLICO", "INTERNO", "JURIDICO_SIGILOSO", "COFRE_NAO_AUTOMATICO", "COFRE_DEPOSITO_ASSISTIDO")]
   [string]$Classificacao,
@@ -22,6 +24,7 @@ param(
   [string]$Origem = "Charlie Echo / Jus 9",
   [string]$AutorOperacional = "Charlie Echo / Codex",
   [string]$Observacao = "",
+  [string]$IdempotencyKey = "",
   [string]$RegistrarEm = "",
   [switch]$CriarLinkDownload,
   [switch]$AbrirUrlCriada
@@ -66,8 +69,71 @@ if (-not $ChaveInterna) {
   throw "CHAVE_INTERNA ausente. Use -PedirChave ou configure a variavel de ambiente $ChaveInternaEnv."
 }
 
-$body = @{
-  chaveInterna = $ChaveInterna
+if ($ChaveInterna.Length -lt 32) {
+  throw "CHAVE_INTERNA deve ter pelo menos 32 caracteres para HMAC-SHA256."
+}
+
+function ConvertTo-Base64Url {
+  param(
+    [Parameter(Mandatory = $true)]
+    [byte[]]$Bytes
+  )
+
+  ([Convert]::ToBase64String($Bytes)).TrimEnd("=").Replace("+", "-").Replace("/", "_")
+}
+
+function Get-HmacSha256Base64Url {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Key,
+
+    [Parameter(Mandatory = $true)]
+    [string]$Value
+  )
+
+  $hmac = [System.Security.Cryptography.HMACSHA256]::new([Text.Encoding]::UTF8.GetBytes($Key))
+  try {
+    ConvertTo-Base64Url -Bytes $hmac.ComputeHash([Text.Encoding]::UTF8.GetBytes($Value))
+  } finally {
+    $hmac.Dispose()
+  }
+}
+
+if (-not $IdempotencyKey) {
+  $IdempotencyKey = ([guid]::NewGuid()).ToString("N")
+}
+
+$timestamp = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
+$nonce = ([guid]::NewGuid()).ToString("N")
+$criarLink = [bool]($CriarLinkDownload -and $Classificacao -eq "PUBLICO")
+
+$signedFields = [ordered]@{
+  acao = $null
+  action = $null
+  idempotencyKey = $IdempotencyKey
+  titulo = $Titulo
+  title = $null
+  conteudo = $Conteudo
+  classificacao = $Classificacao
+  tipoDocumento = $TipoDocumento
+  origem = $Origem
+  autorOperacional = $AutorOperacional
+  observacao = $Observacao
+  criarLinkDownload = $criarLink
+  fileId = $null
+  id = $null
+  documentId = $null
+  motivo = $null
+}
+$canonicalJson = $signedFields | ConvertTo-Json -Compress -Depth 5
+$signatureInput = "{0}.{1}.{2}" -f $timestamp, $nonce, $canonicalJson
+$signature = Get-HmacSha256Base64Url -Key $ChaveInterna -Value $signatureInput
+
+$payload = [ordered]@{
+  timestamp = $timestamp
+  nonce = $nonce
+  assinatura = $signature
+  idempotencyKey = $IdempotencyKey
   titulo = $Titulo
   conteudo = $Conteudo
   classificacao = $Classificacao
@@ -75,8 +141,15 @@ $body = @{
   origem = $Origem
   autorOperacional = $AutorOperacional
   observacao = $Observacao
-  criarLinkDownload = [bool]($CriarLinkDownload -and $Classificacao -eq "PUBLICO")
-} | ConvertTo-Json -Depth 5
+  criarLinkDownload = $criarLink
+}
+
+if ($UsarChaveLegada) {
+  Write-Warning "Modo de transicao: a chave sera enviada no JSON. Remova -UsarChaveLegada apos ativar JUS9_REQUIRE_SIGNED_REQUESTS."
+  $payload.chaveInterna = $ChaveInterna
+}
+
+$body = $payload | ConvertTo-Json -Depth 5
 
 $response = Invoke-RestMethod `
   -Method Post `

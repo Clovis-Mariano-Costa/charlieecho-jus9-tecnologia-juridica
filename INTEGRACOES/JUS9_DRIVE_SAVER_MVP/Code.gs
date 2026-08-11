@@ -14,7 +14,12 @@
  *   ou enviar arquivo criado pelo Drive Saver para lixeira governada.
  *
  * Script Property obrigatoria:
- * CHAVE_INTERNA = valor definido pelo Fundador nas Propriedades do script.
+ * CHAVE_INTERNA = segredo HMAC definido pelo Fundador nas Propriedades do script.
+ * JUS9_REQUIRE_SIGNED_REQUESTS = true para exigir assinatura HMAC e replay protection.
+ * JUS9_ALLOW_LEGACY_KEY = false para bloquear o modo de transicao com chave em claro.
+ * JUS9_PREVIOUS_HMAC_KEY = opcional, chave anterior durante a rotacao controlada.
+ * JUS9_AUDIT_HMAC_KEY = opcional, segredo separado para encadear registros de auditoria.
+ * JUS9_SIGNING_KEY_ID = identificador publico da versao da chave, sem o valor secreto.
  *
  * Script Properties de destino:
  * JUS9_FOLDER_ENTRADA_REVISAO
@@ -31,14 +36,46 @@ const JUS9_DRIVE_SAVER_CONFIG = {
     COFRE_DEPOSITO: "JUS9_FOLDER_COFRE_DEPOSITO"
   },
   maxContentLength: 90000,
-  idempotencyTtlSeconds: 21600
+  idempotencyTtlSeconds: 21600,
+  maxBodyBytes: 120000,
+  maxMetadataLength: 300,
+  maxNonceLength: 128,
+  requestTimestampSkewSeconds: 300,
+  replayTtlSeconds: 600,
+  minimumSecretLength: 32
 };
+
+const JUS9_SIGNED_REQUEST_FIELDS = [
+  "acao",
+  "action",
+  "idempotencyKey",
+  "titulo",
+  "title",
+  "conteudo",
+  "classificacao",
+  "tipoDocumento",
+  "origem",
+  "autorOperacional",
+  "observacao",
+  "criarLinkDownload",
+  "fileId",
+  "id",
+  "documentId",
+  "motivo"
+];
 
 function doGet() {
   return json_({
     ok: true,
     service: "JUS9_DRIVE_SAVER_MVP",
-    message: "Servico ativo. Use POST com chave interna e dados do documento.",
+    message: "Servico ativo. Use POST JSON autenticado por assinatura HMAC.",
+    requestAuth: getRequestAuthStatus_(),
+    securityLimits: {
+      maxBodyBytes: JUS9_DRIVE_SAVER_CONFIG.maxBodyBytes,
+      maxContentLength: JUS9_DRIVE_SAVER_CONFIG.maxContentLength,
+      requestTimestampSkewSeconds: JUS9_DRIVE_SAVER_CONFIG.requestTimestampSkewSeconds,
+      replayTtlSeconds: JUS9_DRIVE_SAVER_CONFIG.replayTtlSeconds
+    },
     cofreAutomatico: false,
     requiredScriptProperties: [
       "CHAVE_INTERNA",
@@ -47,7 +84,12 @@ function doGet() {
       "JUS9_FOLDER_INTERNO"
     ],
     optionalScriptProperties: [
-      "JUS9_FOLDER_COFRE_DEPOSITO"
+      "JUS9_FOLDER_COFRE_DEPOSITO",
+      "JUS9_REQUIRE_SIGNED_REQUESTS",
+      "JUS9_ALLOW_LEGACY_KEY",
+      "JUS9_PREVIOUS_HMAC_KEY",
+      "JUS9_AUDIT_HMAC_KEY",
+      "JUS9_SIGNING_KEY_ID"
     ],
     cofreDepositoAssistido: "Somente cria documento novo. Nao le, edita, exclui, sobrescreve nem lista conteudo de cofre.",
     linkDownloadGovernado: "Use criarLinkDownload=true somente para classificacao PUBLICO.",
@@ -62,15 +104,17 @@ function doGet() {
 }
 
 function doPost(e) {
+  const requestId = Utilities.getUuid();
   try {
     const payload = parsePayload_(e);
-    validateInternalKey_(payload.chaveInterna);
+    validateRequestAuthentication_(payload);
     const acao = normalizeAction_(payload.acao || payload.action || "CRIAR_DOCUMENTO");
     const idempotencyKey = normalizeIdempotencyKey_(payload.idempotencyKey);
     const previousResult = readIdempotentResult_(idempotencyKey);
     if (previousResult) {
       return json_(Object.assign({}, previousResult, {
         idempotentReplay: true,
+        requestId,
         mensagem: previousResult.mensagem || "Operacao ja concluida; retorno idempotente reutilizado."
       }));
     }
@@ -82,7 +126,7 @@ function doPost(e) {
       logSafe_(actionResult.status || "ACAO_GOVERNADA", normalizedAction, {
         folderName: actionResult.pastaDestino || "ACAO_GOVERNADA"
       }, normalizedAction.fileId, actionResult.auditId);
-      return json_(actionResult);
+      return json_(Object.assign({}, actionResult, { requestId }));
     }
 
     const normalized = normalizeRequest_(payload);
@@ -112,19 +156,22 @@ function doPost(e) {
       downloadUrl: created.downloadUrl,
       linkPublicoCriado: created.linkPublicoCriado,
       linkGovernado: created.linkGovernado,
+      conteudoDigest: created.conteudoDigest,
       classificacaoFinal: normalized.classificacao,
       pastaDestino: route.folderName,
       revisaoHumanaObrigatoria: route.reviewRequired,
       cofreAutomatico: false,
-      cofreDepositoAssistido: Boolean(route.vaultDepositOnly)
+      cofreDepositoAssistido: Boolean(route.vaultDepositOnly),
+      requestId
     };
     storeIdempotentResult_(idempotencyKey, result);
     return json_(result);
   } catch (error) {
     return json_({
       ok: false,
+      requestId,
       mensagem: "Falha no salvamento governado.",
-      erro: String(error && error.message ? error.message : error)
+      erro: sanitizeErrorMessage_(error)
     }, 400);
   }
 }
@@ -137,14 +184,157 @@ function parsePayload_(e) {
   if (contentType && contentType.indexOf("application/json") === -1) {
     throw new Error("Use Content-Type application/json.");
   }
-  return JSON.parse(e.postData.contents);
+  const rawBody = String(e.postData.contents);
+  const bodyBytes = Utilities.newBlob(rawBody).getBytes().length;
+  if (bodyBytes > JUS9_DRIVE_SAVER_CONFIG.maxBodyBytes) {
+    throw new Error("Corpo JSON excede o limite de seguranca.");
+  }
+  let payload;
+  try {
+    payload = JSON.parse(rawBody);
+  } catch (error) {
+    throw new Error("Corpo JSON invalido.");
+  }
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+    throw new Error("O corpo JSON deve ser um objeto.");
+  }
+  return payload;
 }
 
-function validateInternalKey_(providedKey) {
-  const expected = getRequiredScriptProperty_("CHAVE_INTERNA");
-  if (!providedKey || String(providedKey) !== expected) {
+function validateRequestAuthentication_(payload) {
+  const signature = String(payload.assinatura || payload.signature || "").trim();
+  const requireSigned = getBooleanScriptProperty_("JUS9_REQUIRE_SIGNED_REQUESTS", false);
+
+  if (signature) {
+    validateSignedRequest_(payload, signature);
+    return;
+  }
+
+  const allowLegacy = getBooleanScriptProperty_("JUS9_ALLOW_LEGACY_KEY", !requireSigned);
+  if (allowLegacy && !requireSigned) {
+    validateLegacyInternalKey_(payload.chaveInterna);
+    return;
+  }
+
+  throw new Error("Assinatura HMAC obrigatoria.");
+}
+
+function validateSignedRequest_(payload, signature) {
+  const timestamp = Number(payload.timestamp);
+  const nonce = String(payload.nonce || "").trim();
+  const now = Math.floor(Date.now() / 1000);
+  if (!isFinite(timestamp) || Math.floor(timestamp) !== timestamp) {
+    throw new Error("Timestamp de assinatura invalido.");
+  }
+  if (Math.abs(now - timestamp) > JUS9_DRIVE_SAVER_CONFIG.requestTimestampSkewSeconds) {
+    throw new Error("Assinatura fora da janela de tempo.");
+  }
+  if (!/^[A-Za-z0-9_-]{16,128}$/.test(nonce) || nonce.length > JUS9_DRIVE_SAVER_CONFIG.maxNonceLength) {
+    throw new Error("Nonce de assinatura invalido.");
+  }
+
+  const signingInput = `${Math.floor(timestamp)}.${nonce}.${canonicalizeSignedRequest_(payload)}`;
+  const normalizedSignature = normalizeBase64Url_(signature);
+  const signatureMatches = getCandidateRequestSecrets_().some(function(secret) {
+    const expected = base64UrlEncode_(Utilities.computeHmacSha256Signature(signingInput, secret));
+    return constantTimeEqual_(normalizedSignature, expected);
+  });
+  if (!signatureMatches) {
+    throw new Error("Assinatura HMAC invalida.");
+  }
+
+  const replayKey = "JUS9_REPLAY_" + sha256Hex_(Math.floor(timestamp) + "." + nonce);
+  const cache = CacheService.getScriptCache();
+  const lock = LockService.getScriptLock();
+  lock.waitLock(5000);
+  try {
+    if (cache.get(replayKey)) {
+      throw new Error("Requisicao repetida.");
+    }
+    cache.put(replayKey, "1", JUS9_DRIVE_SAVER_CONFIG.replayTtlSeconds);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function validateLegacyInternalKey_(providedKey) {
+  const expected = getRequiredSecretProperty_("CHAVE_INTERNA");
+  if (!providedKey || !constantTimeEqual_(String(providedKey), expected)) {
     throw new Error("Chave interna invalida.");
   }
+}
+
+function canonicalizeSignedRequest_(payload) {
+  const canonical = {};
+  JUS9_SIGNED_REQUEST_FIELDS.forEach(function(field) {
+    const value = payload[field];
+    canonical[field] = value === undefined || value === null ? null : value;
+  });
+  return JSON.stringify(canonical);
+}
+
+function normalizeBase64Url_(value) {
+  return String(value || "").replace(/=+$/g, "");
+}
+
+function base64UrlEncode_(bytes) {
+  return normalizeBase64Url_(Utilities.base64EncodeWebSafe(bytes));
+}
+
+function constantTimeEqual_(left, right) {
+  const a = String(left || "");
+  const b = String(right || "");
+  const length = Math.max(a.length, b.length);
+  let difference = a.length ^ b.length;
+  for (let index = 0; index < length; index += 1) {
+    difference |= (a.charCodeAt(index) || 0) ^ (b.charCodeAt(index) || 0);
+  }
+  return difference === 0;
+}
+
+function sha256Hex_(value) {
+  const digest = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, String(value), Utilities.Charset.UTF_8);
+  return digest.map(function(byte) {
+    const normalized = byte < 0 ? byte + 256 : byte;
+    return ("0" + normalized.toString(16)).slice(-2);
+  }).join("");
+}
+
+function getRequiredSecretProperty_(propertyName) {
+  const value = getRequiredScriptProperty_(propertyName);
+  if (value.length < JUS9_DRIVE_SAVER_CONFIG.minimumSecretLength) {
+    throw new Error(`Segredo ${propertyName} deve ter pelo menos ${JUS9_DRIVE_SAVER_CONFIG.minimumSecretLength} caracteres.`);
+  }
+  return value;
+}
+
+function getCandidateRequestSecrets_() {
+  const active = getRequiredSecretProperty_("CHAVE_INTERNA");
+  const previous = getOptionalScriptProperty_("JUS9_PREVIOUS_HMAC_KEY");
+  if (!previous) return [active];
+  if (previous.length < JUS9_DRIVE_SAVER_CONFIG.minimumSecretLength) {
+    throw new Error("JUS9_PREVIOUS_HMAC_KEY deve ter pelo menos 32 caracteres.");
+  }
+  return previous === active ? [active] : [active, previous];
+}
+
+function getBooleanScriptProperty_(propertyName, fallback) {
+  const value = getOptionalScriptProperty_(propertyName).toLowerCase();
+  if (!value) return Boolean(fallback);
+  if (["true", "1", "sim", "yes", "on"].indexOf(value) >= 0) return true;
+  if (["false", "0", "nao", "não", "no", "off"].indexOf(value) >= 0) return false;
+  throw new Error(`Propriedade booleana invalida: ${propertyName}`);
+}
+
+function getRequestAuthStatus_() {
+  const requireSigned = getBooleanScriptProperty_("JUS9_REQUIRE_SIGNED_REQUESTS", false);
+  return {
+    scheme: "HMAC-SHA256",
+    version: "v1",
+    signedRequestsRequired: requireSigned,
+    legacyKeyAccepted: !requireSigned && getBooleanScriptProperty_("JUS9_ALLOW_LEGACY_KEY", true),
+    scriptProperties: ["CHAVE_INTERNA", "JUS9_PREVIOUS_HMAC_KEY", "JUS9_REQUIRE_SIGNED_REQUESTS", "JUS9_ALLOW_LEGACY_KEY", "JUS9_SIGNING_KEY_ID"]
+  };
 }
 
 function normalizeRequest_(payload) {
@@ -156,17 +346,21 @@ function normalizeRequest_(payload) {
   if (conteudo.length > JUS9_DRIVE_SAVER_CONFIG.maxContentLength) {
     throw new Error("Conteudo muito longo para o MVP inicial.");
   }
+  if (!/^[A-Z0-9_]{1,80}$/.test(classificacao)) {
+    throw new Error("Classificacao invalida.");
+  }
 
   return {
     titulo,
     conteudo,
     classificacao,
-    tipoDocumento: String(payload.tipoDocumento || "MEMORANDO").trim(),
-    origem: String(payload.origem || "Charlie Echo / Jus 9").trim(),
-    autorOperacional: String(payload.autorOperacional || "Charlie Echo da Costa").trim(),
-    observacao: String(payload.observacao || "").trim(),
+    tipoDocumento: sanitizeMetadata_(payload.tipoDocumento || "MEMORANDO"),
+    origem: sanitizeMetadata_(payload.origem || "Charlie Echo / Jus 9"),
+    autorOperacional: sanitizeMetadata_(payload.autorOperacional || "Charlie Echo da Costa"),
+    observacao: sanitizeMetadata_(payload.observacao || ""),
     criarLinkDownload: Boolean(payload.criarLinkDownload),
     idempotencyKey: normalizeIdempotencyKey_(payload.idempotencyKey),
+    conteudoDigest: sha256Hex_(conteudo),
     criadoEm: new Date()
   };
 }
@@ -211,10 +405,10 @@ function normalizeGovernedActionRequest_(payload, acao) {
     fileId,
     titulo: sanitizeTitle_(payload.titulo || payload.title || "Acao governada Drive Saver"),
     classificacao: "ACAO_GOVERNADA",
-    origem: String(payload.origem || "Charlie Echo / Jus 9").trim(),
-    autorOperacional: String(payload.autorOperacional || "Charlie Echo da Costa").trim(),
-    motivo: String(payload.motivo || payload.observacao || "Correcao governada solicitada pela Charlie Echo.").trim().slice(0, 500),
-    observacao: String(payload.observacao || payload.motivo || "").trim().slice(0, 500),
+    origem: sanitizeMetadata_(payload.origem || "Charlie Echo / Jus 9"),
+    autorOperacional: sanitizeMetadata_(payload.autorOperacional || "Charlie Echo da Costa"),
+    motivo: sanitizeMetadata_(payload.motivo || payload.observacao || "Correcao governada solicitada pela Charlie Echo."),
+    observacao: sanitizeMetadata_(payload.observacao || payload.motivo || ""),
     idempotencyKey: normalizeIdempotencyKey_(payload.idempotencyKey),
     criadoEm: new Date()
   };
@@ -344,6 +538,7 @@ function createGovernedDocument_(data, route) {
   body.appendParagraph(`Criado em: ${timestamp}`);
   body.appendParagraph(`Revisao humana obrigatoria: ${route.reviewRequired ? "SIM" : "NAO"}`);
   body.appendParagraph(`Pasta destino: ${route.folderName}`);
+  body.appendParagraph(`Digest SHA-256 do conteudo: ${data.conteudoDigest}`);
   if (data.idempotencyKey) body.appendParagraph(`Operacao idempotente: ${data.idempotencyKey}`);
   if (data.observacao) body.appendParagraph(`Observacao: ${data.observacao}`);
   body.appendParagraph("");
@@ -362,7 +557,8 @@ function createGovernedDocument_(data, route) {
     viewUrl: links.viewUrl,
     downloadUrl: links.downloadUrl,
     linkPublicoCriado: links.linkPublicoCriado,
-    linkGovernado: links.linkGovernado
+    linkGovernado: links.linkGovernado,
+    conteudoDigest: data.conteudoDigest
   };
 }
 
@@ -533,6 +729,27 @@ function getManagedDriveSaverFolderIds_() {
 function attachAuditRecord_(request, result) {
   try {
     const timestamp = Utilities.formatDate(request.criadoEm, Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
+    const auditPayload = JSON.stringify({
+      auditId: result.auditId,
+      acao: request.acao,
+      status: result.status,
+      fileId: request.fileId,
+      fileName: result.fileName,
+      classificacaoAnterior: result.classificacaoAnterior,
+      classificacaoFinal: result.classificacaoFinal || result.classificacaoAnterior,
+      pastaDestino: result.pastaDestino,
+      origem: request.origem,
+      autorOperacional: request.autorOperacional,
+      motivo: request.motivo,
+      criadoEm: timestamp
+    });
+    const auditDigest = sha256Hex_(auditPayload);
+    const auditKey = getOptionalScriptProperty_("JUS9_AUDIT_HMAC_KEY");
+    const auditSignature = auditKey
+      ? (auditKey.length >= JUS9_DRIVE_SAVER_CONFIG.minimumSecretLength
+        ? base64UrlEncode_(Utilities.computeHmacSha256Signature(auditPayload, auditKey))
+        : "")
+      : "";
     const doc = DocumentApp.create(`[AUDITORIA] ${result.status} - ${timestamp}`);
     const body = doc.getBody();
     body.appendParagraph("JUS 9 TECNOLOGIA JURIDICA - AUDITORIA DRIVE SAVER")
@@ -549,6 +766,9 @@ function attachAuditRecord_(request, result) {
     body.appendParagraph(`Autor operacional: ${request.autorOperacional}`);
     body.appendParagraph(`Motivo: ${request.motivo}`);
     body.appendParagraph(`Criado em: ${timestamp}`);
+    body.appendParagraph(`Digest SHA-256 do registro: ${auditDigest}`);
+    body.appendParagraph(`Assinatura HMAC do registro: ${auditSignature || "PENDENTE_CHAVE_AUDITORIA"}`);
+    body.appendParagraph(`Identificador da chave de auditoria: ${getOptionalScriptProperty_("JUS9_SIGNING_KEY_ID") || "NAO_CONFIGURADO"}`);
     body.appendParagraph("Observacao: registro sem conteudo do documento original, sem chaves e sem segredos.");
     doc.saveAndClose();
 
@@ -556,6 +776,9 @@ function attachAuditRecord_(request, result) {
     auditFile.moveTo(DriveApp.getFolderById(getRequiredFolderId_("ENTRADA_REVISAO")));
     result.auditFileId = doc.getId();
     result.auditUrl = auditFile.getUrl();
+    result.auditDigest = auditDigest;
+    result.auditSigned = Boolean(auditSignature);
+    if (auditKey && !auditSignature) result.auditError = "JUS9_AUDIT_HMAC_KEY invalida ou curta.";
   } catch (error) {
     result.auditError = String(error && error.message ? error.message : error);
   }
@@ -573,6 +796,14 @@ function sanitizeTitle_(title) {
     .replace(/\s+/g, " ")
     .trim()
     .slice(0, 120) || "Documento Charlie Echo";
+}
+
+function sanitizeMetadata_(value) {
+  return String(value || "")
+    .replace(/[\u0000-\u001F\u007F]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, JUS9_DRIVE_SAVER_CONFIG.maxMetadataLength);
 }
 
 function logSafe_(status, data, route, fileId, auditId) {
@@ -596,4 +827,14 @@ function json_(obj, statusCode) {
   // Apps Script Web Apps nao permitem setar status HTTP diretamente no ContentService.
   // Mantemos statusCode no JSON quando necessario.
   return output;
+}
+
+function sanitizeErrorMessage_(error) {
+  let message = String(error && error.message ? error.message : error);
+  const propertyNames = ["CHAVE_INTERNA", "JUS9_PREVIOUS_HMAC_KEY", "JUS9_AUDIT_HMAC_KEY", "JUS9_FOLDER_ENTRADA_REVISAO", "JUS9_FOLDER_PUBLICO", "JUS9_FOLDER_INTERNO", "JUS9_FOLDER_COFRE_DEPOSITO"];
+  propertyNames.forEach(function(propertyName) {
+    const value = getOptionalScriptProperty_(propertyName);
+    if (value) message = message.split(value).join("[REDACTED]");
+  });
+  return message.slice(0, 300);
 }
