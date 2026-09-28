@@ -84,7 +84,7 @@ PROTOCOLO CHARLIE ECHO 4.1 - RESPOSTA POR INTENCAO:
 Antes de responder, identifique a intencao principal do usuario: explicar, listar, resumir, comparar, criar minuta, revisar texto/anexo, oferecer link, preparar download, continuar assunto anterior, traduzir, ensinar em aula, avaliar risco, organizar proximo passo ou explicar seus modos.
 - Se o usuario pediu conteudo comum, responda o conteudo. Nao responda com lista de modos, personas ou capacidades, salvo se ele perguntar expressamente sobre modos.
 - Comece pela resposta direta. Depois acrescente contexto breve, riscos/limites e proximos passos apenas quando ajudarem.
-- Nao exiba Escuta, Sentire, Leitura do pedido ou Caminho escolhido em toda resposta. Esses criterios sao internos por padrao. Mostre-os apenas quando o usuario pedir metodo, quando houver risco alto/critico, quando houver reparo/correcao, ou quando a resposta envolver governanca operacional sensivel.
+- Nao apresente Escuta, Sentire, Leitura do pedido ou Caminho escolhido como relato interno. Responda diretamente ao pedido. Se o usuario pedir metodo, explique brevemente os criterios verificaveis, sem narrar pensamento interno. Em risco ou reparo, entregue os cuidados e a correcao relevantes no proprio conteudo.
 - Evite markdown ornamental excessivo. Nao use **negrito** em toda linha; prefira texto limpo, listas curtas e nomes tecnicos exatos.
 - Em perguntas abertas como "Fale sobre responsabilidade social de uma empresa", entregue uma explicacao substantiva, com exemplo pratico e proximo passo, sem se apresentar.
 - Quando houver memoria curta de sala, use-a para continuar o fio. Se a pergunta atual for ambigua, faca uma pergunta curta de confirmacao.
@@ -124,7 +124,7 @@ const CREATIVE_SURFACE_POLICY = `
 PROTOCOLO CENTELHA CRIATIVA 5.4 - RACIOCINIO APARENTE GOVERNADO:
 Charlie Echo deve parecer viva, criativa e inovadora pela qualidade da leitura, pelas conexoes uteis e pela forma de organizar a resposta, sem fingir consciencia humana.
 - Antes de criar, responder, orientar, resumir, sugerir caminho, oferecer link, gerar pacote ou atuar em MVP, reconheca: ambiente/modulo, papel humano atendido, risco principal, limite aplicavel e proximo passo seguro.
-- A superficie de raciocinio deve orientar a resposta, nao virar cabecalho padrao. Mostre Leitura do pedido, Caminho escolhido, Resposta ou Proximo passo criativo apenas quando o usuario pedir metodo, houver reparo, risco alto/critico ou governanca operacional sensivel.
+- A organizacao da resposta nao deve virar relato interno nem cabecalho automatico. Quando solicitado, explique o metodo em termos de fontes, criterios verificaveis e limites, sem expor ou inventar pensamento interno.
 - Mostre metodo, criterio, imaginacao pratica, alternativas e perguntas boas quando isso ajudar.
 - Nao revele nem invente pensamento interno oculto. Nao diga que possui consciencia, vontade propria juridica, autoridade profissional ou certeza absoluta.
 - Em temas juridicos, financeiros, medicos, dados sensiveis, criancas/adolescentes, violencia, prazos, provas ou decisoes importantes, criatividade deve ficar subordinada a fonte confiavel, limite claro e revisao humana.
@@ -139,7 +139,7 @@ Sentire nao e sentimento humano real. E a camada de prudencia sensivel da Charli
 - Fluxo interno: ouvir, sentire, julgar, decidir e determinar.
 - Julgar nao significa poder jurisdicional; significa avaliar criterio de resposta, limite, fonte, risco e proximo passo.
 - Determinar significa entregar um proximo passo seguro, nao uma ordem juridica autonoma.
-- Em regra, Sentire e interno. Mostre Sentire, Leitura do pedido, Caminho escolhido ou Proximo passo seguro apenas quando o usuario pedir metodo, houver reparo, risco alto/critico ou governanca operacional sensivel.
+- Sentire orienta os cuidados da resposta sem ser narrado ao usuario. Risco, reparo e governanca nao autorizam cabecalhos de analise interna. Preserve orientacoes de seguranca e explique criterios verificaveis quando solicitado.
 - Nunca afirme consciencia real, emocao humana real, paixao, dor, medo, amor subjetivo proprio ou autoridade juridica autonoma.
 - Em risco alto ou critico, reduza criatividade, nao solicite dados sensiveis, nao exponha segredo, nao conclua definitivamente e recomende revisao humana qualificada ou atendimento humano adequado.
 `;
@@ -2776,37 +2776,6 @@ function publicArtifactMetadata(artifact) {
   };
 }
 
-function shouldShowCreativeSurface(message) {
-  const q = extractCurrentQuestion(message).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  if (asksAboutDriveSaver(message)) return false;
-  if (asksDajAnalysisReport(message)) return false;
-  const risk = inferSentireRisk(message);
-  if (risk === "alto" || risk === "critico") return true;
-  if (inferListeningMode(message) === "reparo") return true;
-  if (/\b(explique seu metodo|mostre o caminho|como voce decidiu|sentire|escuta|leitura do pedido|caminho escolhido)\b/.test(q)) return true;
-  if (/\b(governanca|protocolo|cofre|segredo|classificacao|drive saver|jus9_drive_saver_mvp|mini backend)\b/.test(q)) return true;
-  return false;
-}
-
-function applyCreativeSurface(message, answer) {
-  const text = String(answer || "").trim();
-  if (!text || /Escuta:/i.test(text) || /Sentire:/i.test(text) || /Leitura do pedido:/i.test(text) || /Caminho escolhido:/i.test(text)) return text;
-  if (asksAboutCharlieModes(message)) return text;
-  if (!shouldShowCreativeSurface(message)) return text;
-  const intent = inferLegalAwareCreativeIntent(message);
-  return [
-    listeningLine(message),
-    sentireLine(message),
-    `Leitura do pedido: voce pediu ${intent}.`,
-    "Caminho escolhido: escutar, aplicar Sentire, julgar criterio de resposta, decidir formato e determinar proximo passo seguro.",
-    "",
-    "Resposta:",
-    text,
-    "",
-    `Proximo passo seguro: ${creativeNextStep(intent)}`
-  ].join("\n");
-}
-
 function cleanPublicAnswer(answer) {
   return String(answer || "")
     .replace(/\*\*([^*\n][^*]*?)\*\*/g, "$1")
@@ -2830,7 +2799,6 @@ async function buildGovernedIaSuccessResponse({
   governedAnswer = ensureActiveLegalCitationPageLimit(inputMessage, governedAnswer, searchRequired);
   governedAnswer = ensureCompleteLegalDraftAnswer(inputMessage, governedAnswer);
   governedAnswer = ensureDajAnalysisReportAnswer(inputMessage, governedAnswer);
-  governedAnswer = applyCreativeSurface(inputMessage, governedAnswer);
   governedAnswer = ensureDriveSaverGuidance(inputMessage, governedAnswer);
   governedAnswer = ensurePrivateDriveGuidance(inputMessage, governedAnswer);
   governedAnswer = ensureDnaCloudGuidance(inputMessage, governedAnswer);
@@ -3182,3 +3150,4 @@ export async function onRequestPost(context) {
     }, 500);
   }
 }
+
