@@ -73,48 +73,34 @@ function logOpenAiDiagnostic(diagnostic) {
 
 async function fetchOpenAiGoverned(env, url, init, { route, model } = {}) {
   const timeoutMs = openAiTimeoutMs(env);
-  const controller = new AbortController();
   const clientRequestId = createOpenAiClientRequestId();
   const headers = new Headers(init?.headers || {});
   headers.set("X-Client-Request-Id", clientRequestId);
   const startedAt = Date.now();
+
   console.error(JSON.stringify({
     event: "charlie_echo_openai_start",
     route: safeDiagnosticToken(route, 80),
     model: safeDiagnosticToken(model, 120),
     client_request_id: clientRequestId,
     timeout_ms: timeoutMs,
+    timeout_strategy: "promise_race_no_abort",
   }));
-  let timedOut = false;
-  const timer = setTimeout(() => {
-    timedOut = true;
-    controller.abort();
-  }, timeoutMs);
 
-  try {
-    const response = await fetch(url, {
-      ...init,
-      headers,
-      signal: controller.signal,
-    });
+  let timer;
+  const timeoutPromise = new Promise((resolve) => {
+    timer = setTimeout(() => resolve({ kind: "timeout" }), timeoutMs);
+  });
+  const fetchPromise = fetch(url, { ...init, headers })
+    .then((response) => ({ kind: "response", response }))
+    .catch((error) => ({ kind: "error", error }));
+
+  const outcome = await Promise.race([fetchPromise, timeoutPromise]);
+  clearTimeout(timer);
+
+  if (outcome.kind === "timeout") {
     const diagnostic = {
-      failure_class: response.ok ? null : "upstream_http_error",
-      route: safeDiagnosticToken(route, 80),
-      model: safeDiagnosticToken(model, 120),
-      upstream_status: response.status,
-      upstream_request_id: safeDiagnosticToken(response.headers.get("x-request-id"), 200),
-      client_request_id: clientRequestId,
-      upstream_processing_ms: safeDiagnosticToken(response.headers.get("openai-processing-ms"), 40),
-      latency_ms: Date.now() - startedAt,
-      timeout_ms: timeoutMs,
-      timed_out: false,
-    };
-    if (!response.ok) logOpenAiDiagnostic(diagnostic);
-    return { response, diagnostic };
-  } catch (error) {
-    const timeout = timedOut || error?.name === "AbortError";
-    const diagnostic = {
-      failure_class: timeout ? "timeout_abort" : "network_or_runtime_error",
+      failure_class: "timeout_soft",
       route: safeDiagnosticToken(route, 80),
       model: safeDiagnosticToken(model, 120),
       upstream_status: null,
@@ -123,16 +109,50 @@ async function fetchOpenAiGoverned(env, url, init, { route, model } = {}) {
       upstream_processing_ms: null,
       latency_ms: Date.now() - startedAt,
       timeout_ms: timeoutMs,
-      timed_out: timeout,
+      timed_out: true,
     };
     logOpenAiDiagnostic(diagnostic);
-    const governedError = new Error(timeout ? "openai_upstream_timeout" : "openai_upstream_fetch_failed");
-    governedError.code = timeout ? "OPENAI_UPSTREAM_TIMEOUT" : "OPENAI_UPSTREAM_FETCH_FAILED";
+    const governedError = new Error("openai_upstream_timeout");
+    governedError.code = "OPENAI_UPSTREAM_TIMEOUT";
     governedError.diagnostic = diagnostic;
     throw governedError;
-  } finally {
-    clearTimeout(timer);
   }
+
+  if (outcome.kind === "error") {
+    const diagnostic = {
+      failure_class: "network_or_runtime_error",
+      route: safeDiagnosticToken(route, 80),
+      model: safeDiagnosticToken(model, 120),
+      upstream_status: null,
+      upstream_request_id: null,
+      client_request_id: clientRequestId,
+      upstream_processing_ms: null,
+      latency_ms: Date.now() - startedAt,
+      timeout_ms: timeoutMs,
+      timed_out: false,
+    };
+    logOpenAiDiagnostic(diagnostic);
+    const governedError = new Error("openai_upstream_fetch_failed");
+    governedError.code = "OPENAI_UPSTREAM_FETCH_FAILED";
+    governedError.diagnostic = diagnostic;
+    throw governedError;
+  }
+
+  const response = outcome.response;
+  const diagnostic = {
+    failure_class: response.ok ? null : "upstream_http_error",
+    route: safeDiagnosticToken(route, 80),
+    model: safeDiagnosticToken(model, 120),
+    upstream_status: response.status,
+    upstream_request_id: safeDiagnosticToken(response.headers.get("x-request-id"), 200),
+    client_request_id: clientRequestId,
+    upstream_processing_ms: safeDiagnosticToken(response.headers.get("openai-processing-ms"), 40),
+    latency_ms: Date.now() - startedAt,
+    timeout_ms: timeoutMs,
+    timed_out: false,
+  };
+  if (!response.ok) logOpenAiDiagnostic(diagnostic);
+  return { response, diagnostic };
 }
 
 async function secureTokenEqual(left, right) {
@@ -2951,8 +2971,8 @@ export async function onRequestGet() {
     driveSideEffects: "Somente via proxy interno autenticado do portal Jus 9.",
     secrets: "Somente em ambiente seguro; nunca no HTML/JS.",
     upstreamGuard: {
-      version: "s48",
-      timeoutPolicy: "JUS9_OPENAI_TIMEOUT_MS_or_3000ms",
+      version: "s49",
+      timeoutPolicy: "promise_race_no_abort_3000ms_or_JUS9_OPENAI_TIMEOUT_MS",
       correlation: "X-Client-Request-Id",
       publicDiagnosticsContainContent: false,
     },

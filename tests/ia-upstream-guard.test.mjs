@@ -19,13 +19,7 @@ test("generative subrequest aborts locally and returns governed JSON timeout", a
   globalThis.fetch = async (url, init) => {
     assert.equal(String(url), "https://api.openai.com/v1/responses");
     observedClientRequestId = init.headers.get("X-Client-Request-Id");
-    return new Promise((_resolve, reject) => {
-      init.signal.addEventListener("abort", () => {
-        const error = new Error("aborted");
-        error.name = "AbortError";
-        reject(error);
-      }, { once: true });
-    });
+    return new Promise(() => {});
   };
   console.error = (...args) => logs.push(args.join(" "));
 
@@ -41,7 +35,7 @@ test("generative subrequest aborts locally and returns governed JSON timeout", a
 
     assert.equal(response.status, 504, JSON.stringify(body));
     assert.equal(body.ok, false);
-    assert.equal(body.debug?.failure_class, "timeout_abort");
+    assert.equal(body.debug?.failure_class, "timeout_soft");
     assert.equal(body.debug?.route, "responses");
     assert.equal(body.debug?.timed_out, true);
     assert.equal(body.debug?.timeout_ms, 100);
