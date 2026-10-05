@@ -30,9 +30,9 @@ function openAiTimeoutMs(env) {
   if (Number.isFinite(configured)) {
     return Math.min(30000, Math.max(100, Math.trunc(configured)));
   }
-  // Deliberately shorter than the previously observed ~6s edge failure so the
-  // function can return a governed JSON timeout instead of depending on edge termination.
-  return 5000;
+  // The public edge was observed terminating near 5s before the governed catch
+  // could respond. Abort earlier so the function can return structured JSON first.
+  return 3000;
 }
 
 function safeDiagnosticToken(value, maxLength = 200) {
@@ -2951,8 +2951,8 @@ export async function onRequestGet() {
     driveSideEffects: "Somente via proxy interno autenticado do portal Jus 9.",
     secrets: "Somente em ambiente seguro; nunca no HTML/JS.",
     upstreamGuard: {
-      version: "s45",
-      timeoutPolicy: "JUS9_OPENAI_TIMEOUT_MS_or_5000ms",
+      version: "s48",
+      timeoutPolicy: "JUS9_OPENAI_TIMEOUT_MS_or_3000ms",
       correlation: "X-Client-Request-Id",
       publicDiagnosticsContainContent: false,
     },
