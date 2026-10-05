@@ -52,7 +52,6 @@ function publicUpstreamDiagnostic(diagnostic) {
   return {
     failure_class: diagnostic.failure_class ?? null,
     route: diagnostic.route ?? null,
-    model: diagnostic.model ?? null,
     upstream_status: diagnostic.upstream_status ?? null,
     upstream_request_id: diagnostic.upstream_request_id ?? null,
     client_request_id: diagnostic.client_request_id ?? null,
@@ -64,9 +63,12 @@ function publicUpstreamDiagnostic(diagnostic) {
 }
 
 function logOpenAiDiagnostic(diagnostic) {
-  const safe = publicUpstreamDiagnostic(diagnostic);
-  if (!safe) return;
-  console.error(JSON.stringify({ event: "charlie_echo_openai_upstream", ...safe }));
+  if (!diagnostic) return;
+  console.error(JSON.stringify({
+    event: "charlie_echo_openai_upstream",
+    ...publicUpstreamDiagnostic(diagnostic),
+    model: safeDiagnosticToken(diagnostic.model, 120),
+  }));
 }
 
 async function fetchOpenAiGoverned(env, url, init, { route, model } = {}) {
@@ -76,6 +78,13 @@ async function fetchOpenAiGoverned(env, url, init, { route, model } = {}) {
   const headers = new Headers(init?.headers || {});
   headers.set("X-Client-Request-Id", clientRequestId);
   const startedAt = Date.now();
+  console.error(JSON.stringify({
+    event: "charlie_echo_openai_start",
+    route: safeDiagnosticToken(route, 80),
+    model: safeDiagnosticToken(model, 120),
+    client_request_id: clientRequestId,
+    timeout_ms: timeoutMs,
+  }));
   let timedOut = false;
   const timer = setTimeout(() => {
     timedOut = true;
