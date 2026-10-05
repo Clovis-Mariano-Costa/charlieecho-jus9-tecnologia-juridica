@@ -145,10 +145,7 @@ async function fetchOpenAiGoverned(env, url, init, { route, model } = {}) {
     }
 
     logOpenAiDiagnostic(diagnostic);
-    const governedError = new Error("openai_upstream_timeout");
-    governedError.code = "OPENAI_UPSTREAM_TIMEOUT";
-    governedError.diagnostic = diagnostic;
-    throw governedError;
+    return { response: null, diagnostic, failure: "timeout" };
   }
 
   if (outcome.kind === "error") {
@@ -165,10 +162,7 @@ async function fetchOpenAiGoverned(env, url, init, { route, model } = {}) {
       timed_out: false,
     };
     logOpenAiDiagnostic(diagnostic);
-    const governedError = new Error("openai_upstream_fetch_failed");
-    governedError.code = "OPENAI_UPSTREAM_FETCH_FAILED";
-    governedError.diagnostic = diagnostic;
-    throw governedError;
+    return { response: null, diagnostic, failure: "network" };
   }
 
   const response = outcome.response;
@@ -185,7 +179,7 @@ async function fetchOpenAiGoverned(env, url, init, { route, model } = {}) {
     timed_out: false,
   };
   if (!response.ok) logOpenAiDiagnostic(diagnostic);
-  return { response, diagnostic };
+  return { response, diagnostic, failure: null };
 }
 
 async function secureTokenEqual(left, right) {
@@ -850,7 +844,7 @@ async function callOpenAiActiveLegalSearch(env, _instructions, inputMessage) {
     ],
   };
 
-  const { response, diagnostic } = await fetchOpenAiGoverned(
+  const { response, diagnostic, failure } = await fetchOpenAiGoverned(
     env,
     "https://api.openai.com/v1/chat/completions",
     {
@@ -864,8 +858,9 @@ async function callOpenAiActiveLegalSearch(env, _instructions, inputMessage) {
     { route: "chat_completions_search", model: requestBody.model }
   );
 
+  if (failure) return { response: null, result: null, diagnostic, failure };
   const result = await response.json().catch(() => null);
-  return { response, result, diagnostic };
+  return { response, result, diagnostic, failure: null };
 }
 
 function isSafePublicHttpsUrl(rawUrl) {
@@ -3004,8 +2999,8 @@ export async function onRequestGet() {
     driveSideEffects: "Somente via proxy interno autenticado do portal Jus 9.",
     secrets: "Somente em ambiente seguro; nunca no HTML/JS.",
     upstreamGuard: {
-      version: "s50",
-      timeoutPolicy: "promise_race_waitUntil_3000ms_or_JUS9_OPENAI_TIMEOUT_MS",
+      version: "s51",
+      timeoutPolicy: "typed_result_waitUntil_3000ms_or_JUS9_OPENAI_TIMEOUT_MS",
       correlation: "X-Client-Request-Id",
       publicDiagnosticsContainContent: false,
     },
@@ -3227,7 +3222,25 @@ export async function onRequestPost(context) {
 
     if (searchRequired) {
       const searchInputMessage = activeLegalSearchInput(message, governanceDecision);
-      const { response: searchResponse, result: searchResult, diagnostic: searchDiagnostic } = await callOpenAiActiveLegalSearch(env, instructions, searchInputMessage);
+      const {
+        response: searchResponse,
+        result: searchResult,
+        diagnostic: searchDiagnostic,
+        failure: searchFailure
+      } = await callOpenAiActiveLegalSearch(env, instructions, searchInputMessage);
+
+      if (searchFailure) {
+        const timedOut = searchFailure === "timeout";
+        return jsonResponse({
+          ok: false,
+          error: timedOut
+            ? "A busca generativa excedeu o tempo técnico seguro desta rota. Tente novamente mais tarde."
+            : "Não foi possível alcançar o provedor generativo nesta tentativa.",
+          status: timedOut ? 504 : 502,
+          debug: publicUpstreamDiagnostic(searchDiagnostic),
+          governance,
+        }, timedOut ? 504 : 502);
+      }
 
       if (!searchResponse.ok) {
         return jsonResponse({
@@ -3274,7 +3287,11 @@ export async function onRequestPost(context) {
       max_output_tokens: mode === "profissional" ? 1200 : mode === "social" ? 700 : 900,
     };
 
-    const { response: openaiResponse, diagnostic: openaiDiagnostic } = await fetchOpenAiGoverned(
+    const {
+      response: openaiResponse,
+      diagnostic: openaiDiagnostic,
+      failure: openaiFailure
+    } = await fetchOpenAiGoverned(
       env,
       "https://api.openai.com/v1/responses",
       {
@@ -3287,6 +3304,19 @@ export async function onRequestPost(context) {
       },
       { route: "responses", model }
     );
+
+    if (openaiFailure) {
+      const timedOut = openaiFailure === "timeout";
+      return jsonResponse({
+        ok: false,
+        error: timedOut
+          ? "A resposta generativa excedeu o tempo técnico seguro desta rota. Tente novamente mais tarde."
+          : "Não foi possível alcançar o provedor generativo nesta tentativa.",
+        status: timedOut ? 504 : 502,
+        debug: publicUpstreamDiagnostic(openaiDiagnostic),
+        governance,
+      }, timedOut ? 504 : 502);
+    }
 
     const result = await openaiResponse.json().catch(() => null);
 
