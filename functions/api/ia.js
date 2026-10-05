@@ -25,6 +25,107 @@ function normalizeRequestId(value) {
   return String(value || "").replace(/[^A-Za-z0-9._:-]/g, "").slice(0, 120);
 }
 
+function openAiTimeoutMs(env) {
+  const configured = Number(env?.JUS9_OPENAI_TIMEOUT_MS);
+  if (Number.isFinite(configured)) {
+    return Math.min(30000, Math.max(100, Math.trunc(configured)));
+  }
+  // Deliberately shorter than the previously observed ~6s edge failure so the
+  // function can return a governed JSON timeout instead of depending on edge termination.
+  return 5000;
+}
+
+function safeDiagnosticToken(value, maxLength = 200) {
+  const token = String(value || "").trim();
+  if (!token) return null;
+  return token.replace(/[^A-Za-z0-9._:/-]/g, "").slice(0, maxLength) || null;
+}
+
+function createOpenAiClientRequestId() {
+  const uuid = globalThis.crypto?.randomUUID?.();
+  if (uuid) return "charlie-echo-" + uuid;
+  return "charlie-echo-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 12);
+}
+
+function publicUpstreamDiagnostic(diagnostic) {
+  if (!diagnostic) return null;
+  return {
+    failure_class: diagnostic.failure_class ?? null,
+    route: diagnostic.route ?? null,
+    model: diagnostic.model ?? null,
+    upstream_status: diagnostic.upstream_status ?? null,
+    upstream_request_id: diagnostic.upstream_request_id ?? null,
+    client_request_id: diagnostic.client_request_id ?? null,
+    upstream_processing_ms: diagnostic.upstream_processing_ms ?? null,
+    latency_ms: diagnostic.latency_ms ?? null,
+    timeout_ms: diagnostic.timeout_ms ?? null,
+    timed_out: diagnostic.timed_out === true,
+  };
+}
+
+function logOpenAiDiagnostic(diagnostic) {
+  const safe = publicUpstreamDiagnostic(diagnostic);
+  if (!safe) return;
+  console.error(JSON.stringify({ event: "charlie_echo_openai_upstream", ...safe }));
+}
+
+async function fetchOpenAiGoverned(env, url, init, { route, model } = {}) {
+  const timeoutMs = openAiTimeoutMs(env);
+  const controller = new AbortController();
+  const clientRequestId = createOpenAiClientRequestId();
+  const headers = new Headers(init?.headers || {});
+  headers.set("X-Client-Request-Id", clientRequestId);
+  const startedAt = Date.now();
+  let timedOut = false;
+  const timer = setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, timeoutMs);
+
+  try {
+    const response = await fetch(url, {
+      ...init,
+      headers,
+      signal: controller.signal,
+    });
+    const diagnostic = {
+      failure_class: response.ok ? null : "upstream_http_error",
+      route: safeDiagnosticToken(route, 80),
+      model: safeDiagnosticToken(model, 120),
+      upstream_status: response.status,
+      upstream_request_id: safeDiagnosticToken(response.headers.get("x-request-id"), 200),
+      client_request_id: clientRequestId,
+      upstream_processing_ms: safeDiagnosticToken(response.headers.get("openai-processing-ms"), 40),
+      latency_ms: Date.now() - startedAt,
+      timeout_ms: timeoutMs,
+      timed_out: false,
+    };
+    if (!response.ok) logOpenAiDiagnostic(diagnostic);
+    return { response, diagnostic };
+  } catch (error) {
+    const timeout = timedOut || error?.name === "AbortError";
+    const diagnostic = {
+      failure_class: timeout ? "timeout_abort" : "network_or_runtime_error",
+      route: safeDiagnosticToken(route, 80),
+      model: safeDiagnosticToken(model, 120),
+      upstream_status: null,
+      upstream_request_id: null,
+      client_request_id: clientRequestId,
+      upstream_processing_ms: null,
+      latency_ms: Date.now() - startedAt,
+      timeout_ms: timeoutMs,
+      timed_out: timeout,
+    };
+    logOpenAiDiagnostic(diagnostic);
+    const governedError = new Error(timeout ? "openai_upstream_timeout" : "openai_upstream_fetch_failed");
+    governedError.code = timeout ? "OPENAI_UPSTREAM_TIMEOUT" : "OPENAI_UPSTREAM_FETCH_FAILED";
+    governedError.diagnostic = diagnostic;
+    throw governedError;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function secureTokenEqual(left, right) {
   const encoder = new TextEncoder();
   const [leftDigest, rightDigest] = await Promise.all([
@@ -687,17 +788,22 @@ async function callOpenAiActiveLegalSearch(env, _instructions, inputMessage) {
     ],
   };
 
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
-      "Content-Type": "application/json",
+  const { response, diagnostic } = await fetchOpenAiGoverned(
+    env,
+    "https://api.openai.com/v1/chat/completions",
+    {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
     },
-    body: JSON.stringify(requestBody),
-  });
+    { route: "chat_completions_search", model: requestBody.model }
+  );
 
   const result = await response.json().catch(() => null);
-  return { response, result };
+  return { response, result, diagnostic };
 }
 
 function isSafePublicHttpsUrl(rawUrl) {
@@ -3050,13 +3156,14 @@ export async function onRequestPost(context) {
 
     if (searchRequired) {
       const searchInputMessage = activeLegalSearchInput(message, governanceDecision);
-      const { response: searchResponse, result: searchResult } = await callOpenAiActiveLegalSearch(env, instructions, searchInputMessage);
+      const { response: searchResponse, result: searchResult, diagnostic: searchDiagnostic } = await callOpenAiActiveLegalSearch(env, instructions, searchInputMessage);
 
       if (!searchResponse.ok) {
         return jsonResponse({
           ok: false,
           error: searchResult?.error?.message || "Nao foi possivel concluir a pesquisa ativa agora. Tente novamente mais tarde.",
           status: searchResponse.status,
+          debug: publicUpstreamDiagnostic(searchDiagnostic),
           governance,
         }, 502);
       }
@@ -3096,14 +3203,19 @@ export async function onRequestPost(context) {
       max_output_tokens: mode === "profissional" ? 1200 : mode === "social" ? 700 : 900,
     };
 
-    const openaiResponse = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
-        "Content-Type": "application/json",
+    const { response: openaiResponse, diagnostic: openaiDiagnostic } = await fetchOpenAiGoverned(
+      env,
+      "https://api.openai.com/v1/responses",
+      {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(openaiRequestBody),
       },
-      body: JSON.stringify(openaiRequestBody),
-    });
+      { route: "responses", model }
+    );
 
     const result = await openaiResponse.json().catch(() => null);
 
@@ -3112,6 +3224,7 @@ export async function onRequestPost(context) {
         ok: false,
         error: result?.error?.message || "Não foi possível concluir a resposta agora. Tente novamente mais tarde.",
         status: openaiResponse.status,
+        debug: publicUpstreamDiagnostic(openaiDiagnostic),
         governance,
       }, 502);
     }
@@ -3143,6 +3256,17 @@ export async function onRequestPost(context) {
       governance,
     });
   } catch (error) {
+    if (error?.code === "OPENAI_UPSTREAM_TIMEOUT" || error?.code === "OPENAI_UPSTREAM_FETCH_FAILED") {
+      const timedOut = error.code === "OPENAI_UPSTREAM_TIMEOUT";
+      return jsonResponse({
+        ok: false,
+        error: timedOut
+          ? "A resposta generativa excedeu o tempo técnico seguro desta rota. Tente novamente mais tarde."
+          : "Não foi possível alcançar o provedor generativo nesta tentativa.",
+        status: timedOut ? 504 : 502,
+        debug: publicUpstreamDiagnostic(error.diagnostic),
+      }, timedOut ? 504 : 502);
+    }
     return jsonResponse({
       ok: false,
       error: "Erro interno temporário na função da Charlie Echo.",
