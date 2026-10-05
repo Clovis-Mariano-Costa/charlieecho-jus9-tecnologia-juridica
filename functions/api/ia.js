@@ -2950,6 +2950,12 @@ export async function onRequestGet() {
     accepts: "POST application/json { message, mode }",
     driveSideEffects: "Somente via proxy interno autenticado do portal Jus 9.",
     secrets: "Somente em ambiente seguro; nunca no HTML/JS.",
+    upstreamGuard: {
+      version: "s45",
+      timeoutPolicy: "JUS9_OPENAI_TIMEOUT_MS_or_5000ms",
+      correlation: "X-Client-Request-Id",
+      publicDiagnosticsContainContent: false,
+    },
   });
 }
 
