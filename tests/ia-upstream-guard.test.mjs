@@ -15,6 +15,7 @@ test("generative subrequest aborts locally and returns governed JSON timeout", a
   const previousError = console.error;
   const logs = [];
   let observedClientRequestId = null;
+  let waitUntilCalls = 0;
 
   globalThis.fetch = async (url, init) => {
     assert.equal(String(url), "https://api.openai.com/v1/responses");
@@ -29,18 +30,23 @@ test("generative subrequest aborts locally and returns governed JSON timeout", a
         OPENAI_API_KEY: "test-key-not-a-credential",
         JUS9_OPENAI_TIMEOUT_MS: "100"
       },
+      waitUntil(promise) {
+        assert.ok(promise instanceof Promise);
+        waitUntilCalls += 1;
+      },
       request: requestFor()
     });
     const body = await response.json();
 
     assert.equal(response.status, 504, JSON.stringify(body));
     assert.equal(body.ok, false);
-    assert.equal(body.debug?.failure_class, "timeout_soft");
+    assert.equal(body.debug?.failure_class, "timeout_soft_background");
     assert.equal(body.debug?.route, "responses");
     assert.equal(body.debug?.timed_out, true);
     assert.equal(body.debug?.timeout_ms, 100);
     assert.match(observedClientRequestId, /^charlie-echo-/);
     assert.equal(body.debug?.client_request_id, observedClientRequestId);
+    assert.equal(waitUntilCalls, 1);
 
     const logged = logs.join("\n");
     assert.match(logged, /charlie_echo_openai_upstream/);
