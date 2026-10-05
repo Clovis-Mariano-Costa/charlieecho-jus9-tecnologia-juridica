@@ -8,7 +8,8 @@ test("GET exposes safe upstream guard runtime marker without secrets", async () 
 
   assert.equal(response.status, 200);
   assert.equal(body.ok, true);
-  assert.equal(body.upstreamGuard?.version, "s45");
+  assert.equal(body.upstreamGuard?.version, "s48");
+  assert.equal(body.upstreamGuard?.timeoutPolicy, "JUS9_OPENAI_TIMEOUT_MS_or_3000ms");
   assert.equal(body.upstreamGuard?.correlation, "X-Client-Request-Id");
   assert.equal(body.upstreamGuard?.publicDiagnosticsContainContent, false);
   assert.doesNotMatch(JSON.stringify(body), /OPENAI_API_KEY|Bearer|secret[-_]?value/i);
