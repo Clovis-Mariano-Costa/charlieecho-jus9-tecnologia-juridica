@@ -100,7 +100,7 @@ async function fetchOpenAiGoverned(env, url, init, { route, model } = {}) {
 
   if (outcome.kind === "timeout") {
     const diagnostic = {
-      failure_class: "timeout_soft",
+      failure_class: "timeout_soft_background",
       route: safeDiagnosticToken(route, 80),
       model: safeDiagnosticToken(model, 120),
       upstream_status: null,
@@ -111,6 +111,39 @@ async function fetchOpenAiGoverned(env, url, init, { route, model } = {}) {
       timeout_ms: timeoutMs,
       timed_out: true,
     };
+
+    if (typeof env?.__waitUntil === "function") {
+      env.__waitUntil(fetchPromise.then((lateOutcome) => {
+        if (lateOutcome?.kind === "response") {
+          logOpenAiDiagnostic({
+            failure_class: lateOutcome.response.ok ? "late_success_after_timeout" : "late_http_error_after_timeout",
+            route: safeDiagnosticToken(route, 80),
+            model: safeDiagnosticToken(model, 120),
+            upstream_status: lateOutcome.response.status,
+            upstream_request_id: safeDiagnosticToken(lateOutcome.response.headers.get("x-request-id"), 200),
+            client_request_id: clientRequestId,
+            upstream_processing_ms: safeDiagnosticToken(lateOutcome.response.headers.get("openai-processing-ms"), 40),
+            latency_ms: Date.now() - startedAt,
+            timeout_ms: timeoutMs,
+            timed_out: true,
+          });
+        } else if (lateOutcome?.kind === "error") {
+          logOpenAiDiagnostic({
+            failure_class: "late_fetch_error_after_timeout",
+            route: safeDiagnosticToken(route, 80),
+            model: safeDiagnosticToken(model, 120),
+            upstream_status: null,
+            upstream_request_id: null,
+            client_request_id: clientRequestId,
+            upstream_processing_ms: null,
+            latency_ms: Date.now() - startedAt,
+            timeout_ms: timeoutMs,
+            timed_out: true,
+          });
+        }
+      }));
+    }
+
     logOpenAiDiagnostic(diagnostic);
     const governedError = new Error("openai_upstream_timeout");
     governedError.code = "OPENAI_UPSTREAM_TIMEOUT";
@@ -2971,8 +3004,8 @@ export async function onRequestGet() {
     driveSideEffects: "Somente via proxy interno autenticado do portal Jus 9.",
     secrets: "Somente em ambiente seguro; nunca no HTML/JS.",
     upstreamGuard: {
-      version: "s49",
-      timeoutPolicy: "promise_race_no_abort_3000ms_or_JUS9_OPENAI_TIMEOUT_MS",
+      version: "s50",
+      timeoutPolicy: "promise_race_waitUntil_3000ms_or_JUS9_OPENAI_TIMEOUT_MS",
       correlation: "X-Client-Request-Id",
       publicDiagnosticsContainContent: false,
     },
@@ -2988,7 +3021,10 @@ export async function onRequestPost(context) {
     const env = {
       ...(context.env || {}),
       __requestId: requestId,
-      __driveSideEffectsAuthorized: await isDriveSideEffectAuthorized(request, context.env)
+      __driveSideEffectsAuthorized: await isDriveSideEffectAuthorized(request, context.env),
+      __waitUntil: typeof context.waitUntil === "function"
+        ? (promise) => context.waitUntil(promise)
+        : null
     };
     const message = typeof body?.message === "string" ? body.message.trim() : "";
     const room = body?.room && typeof body.room === "object" ? body.room : null;
