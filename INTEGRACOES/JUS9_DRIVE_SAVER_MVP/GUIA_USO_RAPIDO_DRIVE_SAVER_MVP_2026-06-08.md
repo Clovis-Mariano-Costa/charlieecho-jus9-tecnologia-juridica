@@ -5,7 +5,7 @@ Data: 2026-06-08
 
 ## Finalidade
 
-Reduzir o atrito para a Charlie Echo e para a equipe ao salvar documentos no Cartorio Digital via mini backend.
+Reduzir o atrito para Charlie Echo, Gemini e demais I.As autorizadas da Jus 9, além da equipe humana, ao salvar documentos no Cartorio Digital via mini backend.
 
 ## Pre-requisitos
 
@@ -103,3 +103,19 @@ Para deposito assistido write-only, usar a classificacao `COFRE_DEPOSITO_ASSISTI
 ## Boa pratica
 
 Depois da janela de testes, preferir voltar o Web App para modo fechado e executar teste final de confirmacao.
+
+
+## Uso por qualquer I.A. autorizada
+
+O Drive Saver nao deve inferir identidade da I.A. pelo endpoint. Cada chamada deve preencher:
+- `origem`: sistema/casa/projeto de onde a comunicacao saiu;
+- `autorOperacional`: nome funcional da I.A. ou agente que produziu o documento.
+
+Exemplos:
+- Charlie Echo: `origem="Charlie Echo / Jus 9"`, `autorOperacional="Charlie Echo da Costa"`;
+- Gemini Alfa: `origem="Gemini / Jus 9"`, `autorOperacional="Gemini Alfa da Costa"`;
+- Gemini Beta: `origem="Gemini / Jus 9"`, `autorOperacional="Gemini Beta da Costa"`;
+- Gemini Celeste: `origem="Gemini / Jus 9"`, `autorOperacional="Gemini Celeste da Costa"`;
+- outra I.A. autorizada: usar sua identidade funcional real e a origem correspondente.
+
+Esses campos registram proveniencia operacional; nao criam autorizacao, competencia ou efeito processual. Autenticacao HMAC, classificacao, gates e revisao humana continuam obrigatorios conforme o contrato.
