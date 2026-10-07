@@ -1,6 +1,6 @@
 /**
  * JUS9_DRIVE_SAVER_MVP
- * Mini-backend gratuito em Google Apps Script para salvar documentos da Charlie Echo.
+ * Mini-backend gratuito em Google Apps Script para salvar documentos de I.As autorizadas da Jus 9, incluindo Charlie Echo.
  *
  * Regra maior:
  * - Nao pedir senha Google.
@@ -99,7 +99,9 @@ function doGet() {
       "RESTRINGIR_E_MOVER_PARA_REVISAO",
       "ENVIAR_LIXEIRA_GOVERNADA"
     ],
-    regraAcoesGovernadas: "Acoes corretivas exigem fileId de documento criado pelo Drive Saver e geram auditId."
+    regraAcoesGovernadas: "Acoes corretivas exigem fileId de documento criado pelo Drive Saver e geram auditId.",
+    callerScope: "IAs autorizadas da Jus 9",
+    identityFields: ["origem", "autorOperacional"]
   });
 }
 
@@ -149,7 +151,7 @@ function doPost(e) {
 
     const result = {
       ok: true,
-      mensagem: "Documento salvo com governanca no Cartorio Digital Charlie Echo.",
+      mensagem: "Documento salvo com governanca no Cartorio Digital Jus 9.",
       fileId: created.fileId,
       url: created.url,
       viewUrl: created.viewUrl,
@@ -338,7 +340,7 @@ function getRequestAuthStatus_() {
 }
 
 function normalizeRequest_(payload) {
-  const titulo = sanitizeTitle_(payload.titulo || "Documento Charlie Echo");
+  const titulo = sanitizeTitle_(payload.titulo || "Documento Jus 9");
   const conteudo = String(payload.conteudo || "").trim();
   const classificacao = String(payload.classificacao || "INTERNO").toUpperCase().trim();
 
@@ -355,8 +357,8 @@ function normalizeRequest_(payload) {
     conteudo,
     classificacao,
     tipoDocumento: sanitizeMetadata_(payload.tipoDocumento || "MEMORANDO"),
-    origem: sanitizeMetadata_(payload.origem || "Charlie Echo / Jus 9"),
-    autorOperacional: sanitizeMetadata_(payload.autorOperacional || "Charlie Echo da Costa"),
+    origem: sanitizeMetadata_(payload.origem || "I.A. autorizada / Jus 9"),
+    autorOperacional: sanitizeMetadata_(payload.autorOperacional || "I.A. autorizada"),
     observacao: sanitizeMetadata_(payload.observacao || ""),
     criarLinkDownload: Boolean(payload.criarLinkDownload),
     idempotencyKey: normalizeIdempotencyKey_(payload.idempotencyKey),
@@ -405,9 +407,9 @@ function normalizeGovernedActionRequest_(payload, acao) {
     fileId,
     titulo: sanitizeTitle_(payload.titulo || payload.title || "Acao governada Drive Saver"),
     classificacao: "ACAO_GOVERNADA",
-    origem: sanitizeMetadata_(payload.origem || "Charlie Echo / Jus 9"),
-    autorOperacional: sanitizeMetadata_(payload.autorOperacional || "Charlie Echo da Costa"),
-    motivo: sanitizeMetadata_(payload.motivo || payload.observacao || "Correcao governada solicitada pela Charlie Echo."),
+    origem: sanitizeMetadata_(payload.origem || "I.A. autorizada / Jus 9"),
+    autorOperacional: sanitizeMetadata_(payload.autorOperacional || "I.A. autorizada"),
+    motivo: sanitizeMetadata_(payload.motivo || payload.observacao || "Correcao governada solicitada por I.A. autorizada."),
     observacao: sanitizeMetadata_(payload.observacao || payload.motivo || ""),
     idempotencyKey: normalizeIdempotencyKey_(payload.idempotencyKey),
     criadoEm: new Date()
@@ -529,7 +531,7 @@ function createGovernedDocument_(data, route) {
   const doc = DocumentApp.create(docName);
   const body = doc.getBody();
 
-  body.appendParagraph("JUS 9 TECNOLOGIA JURIDICA - CARTORIO DIGITAL CHARLIE ECHO")
+  body.appendParagraph("JUS 9 TECNOLOGIA JURIDICA - CARTORIO DIGITAL / DRIVE SAVER")
     .setHeading(DocumentApp.ParagraphHeading.HEADING1);
   body.appendParagraph(`Classificacao: ${data.classificacao}`);
   body.appendParagraph(`Tipo de documento: ${data.tipoDocumento}`);
@@ -795,7 +797,7 @@ function sanitizeTitle_(title) {
     .replace(/[\\/:*?"<>|#%{}~&]/g, " ")
     .replace(/\s+/g, " ")
     .trim()
-    .slice(0, 120) || "Documento Charlie Echo";
+    .slice(0, 120) || "Documento Jus 9";
 }
 
 function sanitizeMetadata_(value) {
