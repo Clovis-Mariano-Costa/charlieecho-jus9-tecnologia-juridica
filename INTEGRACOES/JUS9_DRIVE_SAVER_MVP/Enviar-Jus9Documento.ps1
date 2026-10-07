@@ -21,8 +21,8 @@ param(
   [string]$Conteudo,
 
   [string]$TipoDocumento = "MEMORANDO",
-  [string]$Origem = "Charlie Echo / Jus 9",
-  [string]$AutorOperacional = "Charlie Echo / Codex",
+  [string]$Origem = "I.A. autorizada / Jus 9",
+  [string]$AutorOperacional = "I.A. autorizada",
   [string]$Observacao = "",
   [string]$IdempotencyKey = "",
   [string]$RegistrarEm = "",
