@@ -14,6 +14,13 @@ import {
   findVerifiedLegalJurisprudenceTheme,
   inferVerifiedLegalJurisprudenceWorkProductType
 } from "../lib/legal-jurisprudence.js";
+import {
+  createAsyncJob,
+  expireIfNeeded,
+  getAsyncJobRoute,
+  getConfiguredAsyncJobStore,
+  publicJob,
+} from "../lib/async-jobs.js";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -2989,7 +2996,33 @@ export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: corsHeaders });
 }
 
-export async function onRequestGet() {
+export async function onRequestGet(context = {}) {
+  const route = getAsyncJobRoute(context.request);
+  if (route) {
+    const store = getConfiguredAsyncJobStore(context.env);
+    if (!store) {
+      return jsonResponse({
+        ok: false,
+        error: "async_job_store_not_configured",
+        process_effect: "none",
+        retryable: false,
+      }, 503);
+    }
+
+    if (!route.jobId) {
+      return jsonResponse({
+        ok: true,
+        endpoint: "/api/ia/jobs",
+        states: ["queued", "running", "succeeded", "failed", "expired", "reconciliation_required"],
+        process_effect: "none",
+      });
+    }
+
+    const job = await expireIfNeeded(await store.get(route.jobId), { store });
+    if (!job) return jsonResponse({ ok: false, error: "job_not_found" }, 404);
+    return jsonResponse({ ok: true, job: publicJob(job) });
+  }
+
   return jsonResponse({
     ok: true,
     service: "charlie-echo-api",
@@ -3010,6 +3043,45 @@ export async function onRequestGet() {
 export async function onRequestPost(context) {
   try {
     const request = context.request;
+
+    const asyncJobRoute = getAsyncJobRoute(request);
+    if (asyncJobRoute && !asyncJobRoute.jobId) {
+      const store = getConfiguredAsyncJobStore(context.env);
+      if (!store) {
+        return jsonResponse({
+          ok: false,
+          error: "async_job_store_not_configured",
+          process_effect: "none",
+          retryable: false,
+        }, 503);
+      }
+
+      const body = await request.json().catch(() => null);
+      try {
+        const result = await createAsyncJob(body, { store });
+        const status = result.kind === "created" || result.kind === "replay" ? 202 : 409;
+        return jsonResponse({
+          ok: status === 202,
+          job_id: result.job.job_id,
+          state: result.job.state,
+          queued: result.job.state === "queued",
+          poll_url: `${asyncJobRoute.collectionUrl}/${encodeURIComponent(result.job.job_id)}`,
+          expires_at: result.job.expires_at,
+          process_effect: "none",
+          idempotent_replay: result.kind === "replay",
+          reconciliation_required: result.kind === "conflict",
+          error: result.kind === "conflict" ? "request_id_payload_conflict" : undefined,
+        }, status);
+      } catch (error) {
+        const status = error?.message === "async_job_store_not_configured" ? 503 : 400;
+        return jsonResponse({
+          ok: false,
+          error: error?.message || "invalid_async_job_request",
+          process_effect: "none",
+          retryable: false,
+        }, status);
+      }
+    }
 
     const body = await request.json().catch(() => null);
     const requestId = normalizeRequestId(body?.requestId) || crypto.randomUUID();
