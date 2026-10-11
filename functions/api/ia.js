@@ -1,3 +1,4 @@
+import { readBoundedJsonRequest } from "../lib/bounded-json-request.js";
 import { CHARLIE_ECHO_IDENTITY_CONTEXT } from "../lib/charlie-echo-identity.js";
 import {
   buildVerifiedLegalBibliographyAnswer,
@@ -3011,7 +3012,11 @@ export async function onRequestPost(context) {
   try {
     const request = context.request;
 
-    const body = await request.json().catch(() => null);
+    const parsedRequest = await readBoundedJsonRequest(request);
+    if (!parsedRequest.ok) {
+      return jsonResponse({ ok: false, error: parsedRequest.error }, parsedRequest.status);
+    }
+    const body = parsedRequest.value;
     const requestId = normalizeRequestId(body?.requestId) || crypto.randomUUID();
     const env = {
       ...(context.env || {}),
