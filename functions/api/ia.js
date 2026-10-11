@@ -32,7 +32,7 @@ const MAX_PUBLIC_REQUEST_BODY_BYTES = 64 * 1024;
 // can omit or forge it, so the actual stream is counted as it is consumed.
 async function readBoundedPublicJson(request) {
   const lengthHeader = request?.headers?.get?.("content-length");
-  if (lengthHeader && /^\\d+$/.test(lengthHeader) &&
+  if (lengthHeader && /^\d+$/.test(lengthHeader) &&
       Number(lengthHeader) > MAX_PUBLIC_REQUEST_BODY_BYTES) {
     return { body: null, tooLarge: true };
   }
