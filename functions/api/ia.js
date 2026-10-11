@@ -25,6 +25,43 @@ function normalizeRequestId(value) {
   return String(value || "").replace(/[^A-Za-z0-9._:-]/g, "").slice(0, 120);
 }
 
+const MAX_PUBLIC_REQUEST_BODY_BYTES = 64 * 1024;
+
+// Enforce the wire payload limit *before* JSON parsing, logging or invoking
+// any downstream provider. Content-Length is only an optimization; a client
+// can omit or forge it, so the actual stream is counted as it is consumed.
+async function readBoundedPublicJson(request) {
+  const lengthHeader = request?.headers?.get?.("content-length");
+  if (lengthHeader && /^\\d+$/.test(lengthHeader) &&
+      Number(lengthHeader) > MAX_PUBLIC_REQUEST_BODY_BYTES) {
+    return { body: null, tooLarge: true };
+  }
+  if (!request?.body) return { body: null, tooLarge: false };
+  if (typeof request.body.getReader !== "function") {
+    throw new TypeError("invalid_request_body_stream");
+  }
+  const reader = request.body.getReader();
+  const decoder = new TextDecoder();
+  let bytes = 0;
+  let text = "";
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    bytes += value.byteLength;
+    if (bytes > MAX_PUBLIC_REQUEST_BODY_BYTES) {
+      try { await reader.cancel(); } catch { /* best effort */ }
+      return { body: null, tooLarge: true };
+    }
+    text += decoder.decode(value, { stream: true });
+  }
+  text += decoder.decode();
+  try {
+    return { body: JSON.parse(text), tooLarge: false };
+  } catch {
+    return { body: null, tooLarge: false };
+  }
+}
+
 function openAiTimeoutMs(env) {
   const configured = Number(env?.JUS9_OPENAI_TIMEOUT_MS);
   if (Number.isFinite(configured)) {
@@ -3011,7 +3048,11 @@ export async function onRequestPost(context) {
   try {
     const request = context.request;
 
-    const body = await request.json().catch(() => null);
+    const parsed = await readBoundedPublicJson(request);
+    if (parsed.tooLarge) {
+      return jsonResponse({ ok: false, error: "Requisicao muito grande para esta rota publica." }, 413);
+    }
+    const body = parsed.body;
     const requestId = normalizeRequestId(body?.requestId) || crypto.randomUUID();
     const env = {
       ...(context.env || {}),
@@ -3245,7 +3286,7 @@ export async function onRequestPost(context) {
       if (!searchResponse.ok) {
         return jsonResponse({
           ok: false,
-          error: searchResult?.error?.message || "Nao foi possivel concluir a pesquisa ativa agora. Tente novamente mais tarde.",
+          error: "Nao foi possivel concluir a pesquisa ativa agora. Tente novamente mais tarde.",
           status: searchResponse.status,
           debug: publicUpstreamDiagnostic(searchDiagnostic),
           governance,
@@ -3323,7 +3364,7 @@ export async function onRequestPost(context) {
     if (!openaiResponse.ok) {
       return jsonResponse({
         ok: false,
-        error: result?.error?.message || "Não foi possível concluir a resposta agora. Tente novamente mais tarde.",
+        error: "Não foi possível concluir a resposta agora. Tente novamente mais tarde.",
         status: openaiResponse.status,
         debug: publicUpstreamDiagnostic(openaiDiagnostic),
         governance,
@@ -3371,7 +3412,7 @@ export async function onRequestPost(context) {
     return jsonResponse({
       ok: false,
       error: "Erro interno temporário na função da Charlie Echo.",
-      detail: error?.message || null,
+      // Never return internal exception text to unauthenticated callers.
     }, 500);
   }
 }
